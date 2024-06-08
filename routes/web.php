@@ -21,16 +21,4 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 
-Route::prefix('employer')->as('employer.')->group(function () {
-   Route::controller(EmployerRegister::class)->group(function () {
-      Route::get('/register', 'showRegisterForm')->name('register');
-   });
-});
-
-Route::prefix('employee')->as('employee.')->group(function () {
-    Route::controller(EmployeeRegister::class)->group(function () {
-        Route::get('/register', 'showRegisterForm')->name('register');
-    });
-});
-
 Route::redirect('/home', '/');

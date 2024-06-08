@@ -32,7 +32,7 @@
 
             <div class="row my-4">
                 <div class="col">
-                    <input type="text" class="form-control" placeholder="Search Laravel Gigs...">
+                    <input type="text" class="form-control" placeholder="Search Jobavel...">
                 </div>
                 <div class="col-auto">
                     <button class="btn btn-danger">Search</button>

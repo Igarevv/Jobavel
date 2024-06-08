@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\App;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         return view('home');
     }

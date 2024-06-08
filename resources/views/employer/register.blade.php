@@ -22,7 +22,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <form action="#!">
+                            <form action="#!" method="post">
                                 @csrf
                                 <div class="row gy-3 overflow-hidden">
                                     <div class="col-12">
