@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Employee\RegisterController as EmployeeRegister;
+use App\Http\Controllers\Employer\RegisterController as EmployerRegister;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +17,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function (){
-   return view('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/login', [AuthController::class, 'index'])->name('login');
+
+Route::prefix('employer')->as('employer.')->group(function () {
+   Route::controller(EmployerRegister::class)->group(function () {
+      Route::get('/register', 'showRegisterForm')->name('register');
+   });
 });
+
+Route::prefix('employee')->as('employee.')->group(function () {
+    Route::controller(EmployeeRegister::class)->group(function () {
+        Route::get('/register', 'showRegisterForm')->name('register');
+    });
+});
+
+Route::redirect('/home', '/');
