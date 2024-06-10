@@ -3,8 +3,6 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Employee\RegisterController as EmployeeRegister;
-use App\Http\Controllers\Employer\RegisterController as EmployerRegister;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +17,10 @@ use App\Http\Controllers\Employer\RegisterController as EmployerRegister;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/login', [AuthController::class, 'index'])->name('login');
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'index'])->name('login.show');
+    Route::post('/login', [AuthController::class, 'login'])
+        ->name('login.enter');
+});
 
 Route::redirect('/home', '/');

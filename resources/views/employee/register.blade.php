@@ -1,9 +1,8 @@
 <x-layout>
+    <x-slot:title>Register</x-slot:title>
     <x-slot:injectBody>background-auth</x-slot:injectBody>
-    <x-slot:heading :showHeading="false"></x-slot:heading>
-    <x-slot:footer :showFooter="false"></x-slot:footer>
 
-    <section class="p-3 p-md-4 p-xl-5" @style(['height:100vh'])>
+    <section class="form-smaller" @style(['height:100vh'])>
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-9 col-lg-7 col-xl-6 col-xxl-5">
@@ -14,11 +13,13 @@
                                     <div class="mb-5">
                                         <div class="text-center mb-4">
                                             <a href="/" class="navbar-brand d-flex justify-content-center">
-                                                <strong class="h4">Job<span @style(['color:#f9322c'])>avel</span></strong>
+                                                <strong
+                                                    class="h4">Job<span @style(['color:#f9322c'])>avel</span></strong>
                                             </a>
                                         </div>
                                         <h2 class="h4 text-center">Employee Registration</h2>
-                                        <h3 class="fs-6 fw-normal text-secondary text-center m-0">Enter your details to register</h3>
+                                        <h3 class="fs-6 fw-normal text-secondary text-center m-0">Enter your details to
+                                            register</h3>
                                     </div>
                                 </div>
                             </div>
@@ -26,34 +27,45 @@
                                 @csrf
                                 <div class="row gy-3 overflow-hidden">
                                     <div class="col-12">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First Name" required>
-                                            <label for="firstName" class="form-label">First Name</label>
-                                        </div>
+                                        <x-input type="text" name="firstName" id="firstName" placeholder="John"
+                                                 label="First name" value="{{ old('firstName') }}"></x-input>
+                                        @error('firstName')
+                                        <p class="text-danger fst-italic fw-bolder h6">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                     <div class="col-12">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last Name" required>
-                                            <label for="lastName" class="form-label">Last Name</label>
-                                        </div>
+                                        <x-input type="text" name="lastName" id="lastName" placeholder="Doe"
+                                                 label="Last name" value="{{ old('lastName') }}"></x-input>
+                                        @error('lastName')
+                                        <p class="text-danger fst-italic fw-bolder h6">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                     <div class="col-12">
-                                        <div class="form-floating mb-3">
-                                            <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required>
-                                            <label for="email" class="form-label">Email</label>
-                                        </div>
+                                        <x-input type="email" name="email" id="email" placeholder="index@mail.com"
+                                                 label="Email" value="{{ old('email') }}"></x-input>
+                                        @error('email')
+                                        <p class="text-danger fst-italic fw-bolder h6">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                     <div class="col-12">
-                                        <div class="form-floating mb-3">
-                                            <input type="password" class="form-control" name="password" id="password" value="" placeholder="Password" required>
-                                            <label for="password" class="form-label">Password</label>
-                                        </div>
+                                        <x-input type="password" name="password" id="password" placeholder="********"
+                                                 label="Password"></x-input>
+                                    </div>
+                                    <div class="col-12">
+                                        <x-input type="password" name="password_confirmation" id="password_confirmation"
+                                                 placeholder="********"
+                                                 label="Confirm password"></x-input>
+                                        @error('password')
+                                        <p class="text-danger text-center fst-italic fw-bolder h6">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                     <div class="col-12">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" name="iAgree" id="iAgree" required>
+                                            <input class="form-check-input" type="checkbox" value="true" name="iAgree"
+                                                   id="iAgree" required>
                                             <label class="form-check-label text-secondary" for="iAgree">
-                                                I agree to the <a href="#!" class="link-primary text-decoration-none">terms and conditions</a>
+                                                I agree to the <a href="#!" class="link-primary text-decoration-none">terms
+                                                    and conditions</a>
                                             </label>
                                         </div>
                                     </div>
@@ -67,7 +79,9 @@
                             <div class="row">
                                 <div class="col-12">
                                     <hr class="mt-5 mb-4 border-secondary-subtle">
-                                    <p class="m-0 text-secondary text-center">Already have an account? <a href="/login" class="link-primary text-decoration-none">Sign in</a></p>
+                                    <p class="m-0 text-secondary text-center">Already have an account? <a
+                                            href="{{ route('login.show') }}" class="link-primary text-decoration-none">Sign
+                                            in</a></p>
                                 </div>
                             </div>
                         </div>

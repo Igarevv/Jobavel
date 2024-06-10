@@ -3,11 +3,19 @@
 use App\Http\Controllers\Employee\RegisterController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('employee')->as('employee.')
-    ->group(function () {
-        Route::get('/register', [RegisterController::class, 'showRegisterForm'])
-            ->name('register');
+Route::prefix('employee')->name('employee.')->group(function () {
+    Route::match(['get', 'post'], '/register', RegisterController::class)
+        ->middleware('guest')
+        ->name('register');
 
-        // Latest in this group
-        Route::fallback(fn() => redirect()->to('home'));
+    Route::middleware('auth')->group(function () {
+        Route::redirect('/', '/main');
+
+        Route::get('/main', function () {
+            return 'employee main page';
+        })->name('main');
     });
+
+    // Latest
+    // Route::fallback(fn() => redirect()->to('home'));
+});

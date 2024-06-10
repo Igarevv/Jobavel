@@ -1,5 +1,5 @@
 .background-auth {
-    background: linear-gradient(to right bottom, #ce2424, #ecc6c6, #ffffff);
+    background: linear-gradient(to right bottom, #ce2424, #ecc6c6, #fff);
 }
 
 .bd-placeholder-img {
@@ -85,4 +85,8 @@
 
 .background-badge {
     background: linear-gradient(to right bottom, #ce2424, #212529, #ce2424);
+}
+
+.form-smaller {
+    transform: scale(0.9);
 }

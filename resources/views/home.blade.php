@@ -1,24 +1,18 @@
 <x-layout>
-
-    <x-slot:heading>
-        @include('components/basehead')
-    </x-slot:heading>
-
-    <x-slot:footer>
-        @include('components/basefooter')
-    </x-slot:footer>
-
+    <x-slot:title>Jobavel</x-slot:title>
+    <x-header></x-header>
     <div class="mt-5 background-badge">
         <section class="py-5 text-center container">
             <div class="row py-lg-5">
                 <div class="col-lg-6 col-md-8 mx-auto">
-                    <h1 class="fw-light"><strong @style(['color:white'])>Job<span @style(['color:#f9322c'])>avel</span></strong></h1>
+                    <h1 class="fw-light"><strong @style(['color:white'])>Job<span @style(['color:#f9322c'])>avel</span></strong>
+                    </h1>
                     <p class="lead text-light">Find or post developers jobs</p>
                     <div class="d-flex justify-content-center align-items-center flex-row">
                         <div class="text-center">
                             <p class="text-white m-2">↓ I'm an Employee</p>
-                            <a href="/employee/register" class="btn btn-danger mx-2">Start finding job</a>
-                            <a href="/employer/register" class="btn btn-danger mx-2">Start posting job</a>
+                            <a href="{{ route('employee.register') }}" class="btn btn-danger mx-2">Start finding job</a>
+                            <a href="{{ route('employer.register') }}" class="btn btn-danger mx-2">Start posting job</a>
                             <p class="text-white m-2">I'm an Employer ↑</p>
                         </div>
                     </div>
@@ -99,4 +93,7 @@
             </div>
         </div>
     </div>
+
+    <x-footer></x-footer>
 </x-layout>
+

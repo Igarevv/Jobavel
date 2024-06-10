@@ -1,8 +1,7 @@
 <x-layout>
+    <x-slot:title>Login</x-slot:title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.0/mdb.min.css" rel="stylesheet">
     <x-slot:injectBody>background-auth</x-slot:injectBody>
-    <x-slot:heading :showHeading="false"></x-slot:heading>
-    <x-slot:footer :showFooter="false"></x-slot:footer>
 
     <section class="vh-100 gradient-custom">
         <div class="container py-5 h-100">
@@ -43,8 +42,8 @@
 
                             <div>
                                 <p class="mb-0">Don't have an account? Sign Up<br>
-                                    <a href="/employee/register" class="text-white-50 fw-bold"> as Employee</a>
-                                    or <a href="/employer/register" class="text-white-50 fw-bold">as Employer</a>
+                                    <a href="{{ route('employee.register') }}" class="text-white-50 fw-bold"> as Employee</a>
+                                    or <a href="{{ route('employer.register') }}" class="text-white-50 fw-bold">as Employer</a>
                                 </p>
                             </div>
 

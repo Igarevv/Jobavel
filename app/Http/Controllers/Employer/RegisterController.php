@@ -1,16 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Employer;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
+use App\Http\Requests\EmployerRegisterRequest;
 
 class RegisterController extends Controller
 {
-    public function showRegisterForm(): View
+
+    // TODO добавить проверку на уникальность названии компании + почты
+    public function __invoke(EmployerRegisterRequest $request)
     {
-        return view('employer/register');
+        if ($request->isMethod('GET')) {
+            return view('employer.register');
+        }
     }
 
 }
