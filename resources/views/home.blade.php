@@ -1,6 +1,8 @@
 <x-layout>
     <x-slot:title>Jobavel</x-slot:title>
-    <x-header></x-header>
+
+    <x-employer.header></x-employer.header>
+
     <div class="mt-5 background-badge">
         <section class="py-5 text-center container">
             <div class="row py-lg-5">
@@ -34,62 +36,49 @@
             </div>
 
             <div class="row">
-                <div class="col-md-6 job-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Senior Developer | Laravel & Vue</h5>
-                            <p class="card-text">Wonka Industries</p>
-                            <div>
-                                <span class="badge bg-dark text-light">laravel</span>
-                                <span class="badge bg-dark text-light">api</span>
-                                <span class="badge bg-dark text-light">vue</span>
-                            </div>
-                            <p class="card-text"><small class="text-muted">Miami, FL</small></p>
-                        </div>
+                <x-jobcard>
+                    <h5 class="card-title">Backend Engineer</h5>
+                    <p class="card-text">Skynet Systems</p>
+                    <div>
+                        <span class="badge bg-dark text-light">laravel</span>
+                        <span class="badge bg-dark text-light">backend</span>
+                        <span class="badge bg-dark text-light">api</span>
                     </div>
-                </div>
-                <div class="col-md-6 job-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Backend Engineer</h5>
-                            <p class="card-text">Skynet Systems</p>
-                            <div>
-                                <span class="badge bg-dark text-light">laravel</span>
-                                <span class="badge bg-dark text-light">backend</span>
-                                <span class="badge bg-dark text-light">api</span>
-                            </div>
-                            <p class="card-text"><small class="text-muted">Boston, MA</small></p>
-                        </div>
+                    <p class="card-text"><small class="text-muted">Boston, MA</small></p>
+                </x-jobcard>
+
+                <x-jobcard>
+                    <h5 class="card-title">Backend Engineer</h5>
+                    <p class="card-text">Skynet Systems</p>
+                    <div>
+                        <span class="badge bg-dark text-light">laravel</span>
+                        <span class="badge bg-dark text-light">backend</span>
+                        <span class="badge bg-dark text-light">api</span>
                     </div>
-                </div>
-                <div class="col-md-6 job-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Laravel Developer</h5>
-                            <p class="card-text">Wayne Enterprises</p>
-                            <div>
-                                <span class="badge bg-dark text-light">laravel</span>
-                                <span class="badge bg-dark text-light">vue</span>
-                                <span class="badge bg-dark text-light">api</span>
-                            </div>
-                            <p class="card-text"><small class="text-muted">Gotham, NY</small></p>
-                        </div>
+                    <p class="card-text"><small class="text-muted">Boston, MA</small></p>
+                </x-jobcard>
+
+                <x-jobcard>
+                    <h5 class="card-title">Backend Engineer</h5>
+                    <p class="card-text">Skynet Systems</p>
+                    <div>
+                        <span class="badge bg-dark text-light">laravel</span>
+                        <span class="badge bg-dark text-light">backend</span>
+                        <span class="badge bg-dark text-light">api</span>
                     </div>
-                </div>
-                <div class="col-md-6 job-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Junior Developer</h5>
-                            <p class="card-text">Stark Industries</p>
-                            <div>
-                                <span class="badge bg-dark text-light">laravel</span>
-                                <span class="badge bg-dark text-light">html</span>
-                                <span class="badge bg-dark text-light">css</span>
-                            </div>
-                            <p class="card-text"><small class="text-muted">Newark, NJ</small></p>
-                        </div>
+                    <p class="card-text"><small class="text-muted">Boston, MA</small></p>
+                </x-jobcard>
+
+                <x-jobcard>
+                    <h5 class="card-title">Backend Engineer</h5>
+                    <p class="card-text">Skynet Systems</p>
+                    <div>
+                        <span class="badge bg-dark text-light">laravel</span>
+                        <span class="badge bg-dark text-light">backend</span>
+                        <span class="badge bg-dark text-light">api</span>
                     </div>
-                </div>
+                    <p class="card-text"><small class="text-muted">Boston, MA</small></p>
+                </x-jobcard>
             </div>
         </div>
     </div>

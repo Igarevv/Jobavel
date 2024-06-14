@@ -90,3 +90,16 @@
 .form-smaller {
     transform: scale(0.9);
 }
+
+.logo-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+@media (min-width: 992px) {
+    .custom-col-lg-3 {
+        flex: 0 0 auto;
+        width: 35%;
+    }
+}

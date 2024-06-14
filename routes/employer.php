@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Employer\HomeController;
 use App\Http\Controllers\Employer\RegisterController;
 use Illuminate\Support\Facades\Route;
 
@@ -11,9 +12,9 @@ Route::prefix('employer')->name('employer.')->group(function () {
     Route::middleware('auth')->group(function () {
         Route::redirect('/', '/main');
 
-        Route::get('/main', function () {
-            return 'employer main page';
-        })->name('main');
+        Route::get('/main', [HomeController::class, 'index'])
+            ->name('main')
+            ->withoutMiddleware('auth');
     });
 
     // Latest

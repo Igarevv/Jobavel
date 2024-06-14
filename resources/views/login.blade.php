@@ -22,16 +22,19 @@
                                 <form action="" method="post">
                                     @csrf
                                     <div data-mdb-input-init class="form-outline form-white mb-4">
-                                        <input type="email" id="typeEmailX" class="form-control form-control-lg text-white border"/>
+                                        <input type="email" id="typeEmailX"
+                                               class="form-control form-control-lg text-white border">
                                         <label class="form-label" for="typeEmailX">Email</label>
                                     </div>
 
                                     <div data-mdb-input-init class="form-outline form-white mb-4">
-                                        <input type="password" id="typePasswordX" class="form-control form-control-lg text-white border"/>
+                                        <input type="password" id="typePasswordX"
+                                               class="form-control form-control-lg text-white border"/>
                                         <label class="form-label" for="typePasswordX">Password</label>
                                     </div>
 
-                                    <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">Forgot password?</a>
+                                    <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">Forgot
+                                            password?</a>
                                     </p>
 
                                     <button data-mdb-button-init data-mdb-ripple-init
@@ -42,8 +45,10 @@
 
                             <div>
                                 <p class="mb-0">Don't have an account? Sign Up<br>
-                                    <a href="{{ route('employee.register') }}" class="text-white-50 fw-bold"> as Employee</a>
-                                    or <a href="{{ route('employer.register') }}" class="text-white-50 fw-bold">as Employer</a>
+                                    <a href="{{ route('employee.register') }}" class="text-white-50 fw-bold"> as
+                                        Employee</a>
+                                    or <a href="{{ route('employer.register') }}" class="text-white-50 fw-bold">as
+                                        Employer</a>
                                 </p>
                             </div>
 

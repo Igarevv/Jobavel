@@ -168,7 +168,8 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        ClockworkServiceProvider::class
+        ClockworkServiceProvider::class,
+        \App\Providers\ViewServiceProvider::class,
     ])->toArray(),
 
     /*
