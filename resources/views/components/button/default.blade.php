@@ -1,6 +1,6 @@
 @props([
     'colorType' => 'primary'
-]);
+])
 
 <button {{ $attributes->class([
     'btn', 'btn-'.$colorType

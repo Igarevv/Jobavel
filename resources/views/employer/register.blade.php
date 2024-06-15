@@ -26,24 +26,24 @@
                             <form action="#!" method="post">
                                 @csrf
                                 <div class="row gy-3 overflow-hidden">
-                                    <div class="col-12">
-                                        <x-input type="text" name="company" id="company" placeholder="Google Inc."
-                                                 label="Company name" value="{{ old('company') }}"></x-input>
-                                    </div>
-                                    <div class="col-12">
-                                        <x-input type="email" name="email" id="email" placeholder="index@mail.com"
-                                                 label="Company email" value="{{ old('email') }}"></x-input>
-                                    </div>
-                                    <div class="col-12">
-                                        <x-input type="password" name="password" id="password" placeholder="*******"
-                                                 label="Password"></x-input>
-                                    </div>
-                                    <div class="col-12">
-                                        <x-input type="password" name="password_confirmation" id="password_confirmation"
+                                    <x-input.block>
+                                        <x-input.index type="text" name="company" id="company" placeholder="Google Inc."
+                                                 label="Company name" value="{{ old('company') }}" required></x-input.index>
+                                    </x-input.block>
+                                    <x-input.block>
+                                        <x-input.index type="email" name="email" id="email" placeholder="index@mail.com"
+                                                 label="Company email" value="{{ old('email') }}" required></x-input.index>
+                                    </x-input.block>
+                                    <x-input.block>
+                                        <x-input.index type="password" name="password" id="password" placeholder="*******"
+                                                 label="Password" required></x-input.index>
+                                    </x-input.block>
+                                    <x-input.block>
+                                        <x-input.index type="password" name="password_confirmation" id="password_confirmation"
                                                  placeholder="********"
-                                                 label="Confirm password"></x-input>
-                                    </div>
-                                    <div class="col-12">
+                                                 label="Confirm password" required></x-input.index>
+                                    </x-input.block>
+                                    <x-input.block>
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="true" name="iAgree"
                                                    id="iAgree" required>
@@ -52,12 +52,12 @@
                                                     and conditions</a>
                                             </label>
                                         </div>
-                                    </div>
-                                    <div class="col-12">
+                                    </x-input.block>
+                                    <x-input.block>
                                         <div class="d-grid">
                                             <button class="btn bsb-btn-xl btn-primary" type="submit">Sign up</button>
                                         </div>
-                                    </div>
+                                    </x-input.block>
                                 </div>
                             </form>
                             <div class="row">

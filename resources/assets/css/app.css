@@ -103,3 +103,38 @@
         width: 35%;
     }
 }
+
+.background-logo {
+    transform: scale(0.9);
+    position: relative;
+    overflow: hidden;
+}
+
+.blur {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    backdrop-filter: blur(10px);
+}
+
+.container {
+    position: relative;
+    z-index: 2;
+}
+
+.square-background {
+    background-color: #fff;
+    width: 20%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.maxw-25 {
+    max-width: 25%;
+}

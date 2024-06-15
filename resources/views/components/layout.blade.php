@@ -1,5 +1,4 @@
 @props(['title'])
-
     <!doctype html>
 <html lang="en" data-bs-theme="auto">
 <head>
@@ -25,7 +24,7 @@
           href="https://unpkg.com/bs-brain@2.0.4/components/registrations/registration-3/assets/css/registration-3.css">
 </head>
 
-<body class="{{ $injectBody ?? '' }}">
+<body {{ $attributes->class([$injectBody ?? '']) }}>
 
 <main>
     {{ $slot }}

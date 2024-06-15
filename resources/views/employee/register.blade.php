@@ -26,40 +26,40 @@
                             <form action="#!" method="post">
                                 @csrf
                                 <div class="row gy-3 overflow-hidden">
-                                    <div class="col-12">
-                                        <x-input type="text" name="firstName" id="firstName" placeholder="John"
-                                                 label="First name" value="{{ old('firstName') }}"></x-input>
+                                    <x-input.block>
+                                        <x-input.index type="text" name="firstName" id="firstName" placeholder="John"
+                                                        label="First name" value="{{ old('firstName') }}" required></x-input.index>
                                         @error('firstName')
                                         <p class="text-danger fst-italic fw-bolder h6">{{ $message }}</p>
                                         @enderror
-                                    </div>
-                                    <div class="col-12">
-                                        <x-input type="text" name="lastName" id="lastName" placeholder="Doe"
-                                                 label="Last name" value="{{ old('lastName') }}"></x-input>
+                                    </x-input.block>
+                                    <x-input.block>
+                                        <x-input.index type="text" name="lastName" id="lastName" placeholder="Doe"
+                                                 label="Last name" value="{{ old('lastName') }}" required></x-input.index>
                                         @error('lastName')
                                         <p class="text-danger fst-italic fw-bolder h6">{{ $message }}</p>
                                         @enderror
-                                    </div>
-                                    <div class="col-12">
-                                        <x-input type="email" name="email" id="email" placeholder="index@mail.com"
-                                                 label="Email" value="{{ old('email') }}"></x-input>
+                                    </x-input.block>
+                                    <x-input.block>
+                                        <x-input.index type="email" name="email" id="email" placeholder="index@mail.com"
+                                                 label="Email" value="{{ old('email') }}" required></x-input.index>
                                         @error('email')
                                         <p class="text-danger fst-italic fw-bolder h6">{{ $message }}</p>
                                         @enderror
-                                    </div>
-                                    <div class="col-12">
-                                        <x-input type="password" name="password" id="password" placeholder="********"
-                                                 label="Password"></x-input>
-                                    </div>
-                                    <div class="col-12">
-                                        <x-input type="password" name="password_confirmation" id="password_confirmation"
+                                    </x-input.block>
+                                    <x-input.block>
+                                        <x-input.index type="password" name="password" id="password" placeholder="********"
+                                                 label="Password" required></x-input.index>
+                                    </x-input.block>
+                                    <x-input.block>
+                                        <x-input.index type="password" name="password_confirmation" id="password_confirmation"
                                                  placeholder="********"
-                                                 label="Confirm password"></x-input>
+                                                 label="Confirm password" required></x-input.index>
                                         @error('password')
                                         <p class="text-danger text-center fst-italic fw-bolder h6">{{ $message }}</p>
                                         @enderror
-                                    </div>
-                                    <div class="col-12">
+                                    </x-input.block>
+                                    <x-input.block>
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="true" name="iAgree"
                                                    id="iAgree" required>
@@ -68,12 +68,12 @@
                                                     and conditions</a>
                                             </label>
                                         </div>
-                                    </div>
-                                    <div class="col-12">
+                                    </x-input.block>
+                                    <x-input.block>
                                         <div class="d-grid">
                                             <button class="btn bsb-btn-xl btn-primary" type="submit">Sign up</button>
                                         </div>
-                                    </div>
+                                    </x-input.block>
                                 </div>
                             </form>
                             <div class="row">
