@@ -36,7 +36,7 @@
             </div>
 
             <div class="row">
-                <x-jobcard>
+                <x-card.jobcard>
                     <h5 class="card-title">Backend Engineer</h5>
                     <p class="card-text">Skynet Systems</p>
                     <div>
@@ -45,9 +45,9 @@
                         <span class="badge bg-dark text-light">api</span>
                     </div>
                     <p class="card-text"><small class="text-muted">Boston, MA</small></p>
-                </x-jobcard>
+                </x-card.jobcard>
 
-                <x-jobcard>
+                <x-card.jobcard>
                     <h5 class="card-title">Backend Engineer</h5>
                     <p class="card-text">Skynet Systems</p>
                     <div>
@@ -56,9 +56,9 @@
                         <span class="badge bg-dark text-light">api</span>
                     </div>
                     <p class="card-text"><small class="text-muted">Boston, MA</small></p>
-                </x-jobcard>
+                </x-card.jobcard>
 
-                <x-jobcard>
+                <x-card.jobcard>
                     <h5 class="card-title">Backend Engineer</h5>
                     <p class="card-text">Skynet Systems</p>
                     <div>
@@ -67,9 +67,9 @@
                         <span class="badge bg-dark text-light">api</span>
                     </div>
                     <p class="card-text"><small class="text-muted">Boston, MA</small></p>
-                </x-jobcard>
+                </x-card.jobcard>
 
-                <x-jobcard>
+                <x-card.jobcard>
                     <h5 class="card-title">Backend Engineer</h5>
                     <p class="card-text">Skynet Systems</p>
                     <div>
@@ -78,7 +78,7 @@
                         <span class="badge bg-dark text-light">api</span>
                     </div>
                     <p class="card-text"><small class="text-muted">Boston, MA</small></p>
-                </x-jobcard>
+                </x-card.jobcard>
             </div>
         </div>
     </div>

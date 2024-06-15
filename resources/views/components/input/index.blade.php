@@ -1,9 +1,14 @@
 @props([
-    'label',
+    'label' => '',
     'id',
     'value' => '',
-    'required' => false
+    'required' => false,
+    'hidden' => false,
 ])
 
-<label for="{{ $id }}" class="form-label fw-bold">{{ $label }}</label>
-<input id="{{ $id }}" {{ $attributes->class(['form-control']) }} value="{{ $value }}" {{ $attributes->merge(['type' => 'text']) }}  {{ $required ? 'required' : '' }}>
+@isset($label)
+    <label for="{{ $id }}" class="form-label fw-bold">{{ $label }}</label>
+@endisset
+<input id="{{ $id }}" {{ $attributes->class(['form-control']) }} @isset($value)value="{{ $value }}@endisset"
+    {{ $attributes->merge(['type' => 'text']) }}
+    {{ $required ? 'required' : '' }} {{ $hidden ? 'hidden' : '' }}>
