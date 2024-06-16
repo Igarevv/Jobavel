@@ -1,7 +1,7 @@
 <div class="navbar navbar-dark bg-dark shadow-sm">
     <div class="container">
         <a href="/" class="navbar-brand d-flex align-items-center">
-            <strong>Job<span @style(['color:#f9322c'])>avel</span></strong>
+            <strong>Job<span class="red">avel</span></strong>
         </a>
         <div class="d-flex gap-3">
             <div>

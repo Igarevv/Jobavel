@@ -2,6 +2,6 @@
     'form' => 'group'
 ])
 
-<div {{ $attributes->class('col-12 form-'.$form) }}>
+<div {{ $attributes->class('form-'.$form) }}>
     {{ $slot }}
 </div>

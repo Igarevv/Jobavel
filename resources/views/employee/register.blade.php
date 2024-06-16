@@ -14,7 +14,7 @@
                                         <div class="text-center mb-4">
                                             <a href="/" class="navbar-brand d-flex justify-content-center">
                                                 <strong
-                                                    class="h4">Job<span @style(['color:#f9322c'])>avel</span></strong>
+                                                    class="h4">Job<span class="red">avel</span></strong>
                                             </a>
                                         </div>
                                         <h2 class="h4 text-center">Employee Registration</h2>
@@ -26,32 +26,32 @@
                             <form action="#!" method="post">
                                 @csrf
                                 <div class="row gy-3 overflow-hidden">
-                                    <x-input.block>
+                                    <x-input.block class="col-12">
                                         <x-input.index type="text" name="firstName" id="firstName" placeholder="John"
                                                         label="First name" value="{{ old('firstName') }}" required></x-input.index>
                                         @error('firstName')
                                         <p class="text-danger fst-italic fw-bolder h6">{{ $message }}</p>
                                         @enderror
                                     </x-input.block>
-                                    <x-input.block>
+                                    <x-input.block class="col-12">
                                         <x-input.index type="text" name="lastName" id="lastName" placeholder="Doe"
                                                  label="Last name" value="{{ old('lastName') }}" required></x-input.index>
                                         @error('lastName')
                                         <p class="text-danger fst-italic fw-bolder h6">{{ $message }}</p>
                                         @enderror
                                     </x-input.block>
-                                    <x-input.block>
+                                    <x-input.block class="col-12">
                                         <x-input.index type="email" name="email" id="email" placeholder="index@mail.com"
                                                  label="Email" value="{{ old('email') }}" required></x-input.index>
                                         @error('email')
                                         <p class="text-danger fst-italic fw-bolder h6">{{ $message }}</p>
                                         @enderror
                                     </x-input.block>
-                                    <x-input.block>
+                                    <x-input.block class="col-12">
                                         <x-input.index type="password" name="password" id="password" placeholder="********"
                                                  label="Password" required></x-input.index>
                                     </x-input.block>
-                                    <x-input.block>
+                                    <x-input.block class="col-12">
                                         <x-input.index type="password" name="password_confirmation" id="password_confirmation"
                                                  placeholder="********"
                                                  label="Confirm password" required></x-input.index>
@@ -59,7 +59,7 @@
                                         <p class="text-danger text-center fst-italic fw-bolder h6">{{ $message }}</p>
                                         @enderror
                                     </x-input.block>
-                                    <x-input.block>
+                                    <x-input.block class="col-12">
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="true" name="iAgree"
                                                    id="iAgree" required>
@@ -69,7 +69,7 @@
                                             </label>
                                         </div>
                                     </x-input.block>
-                                    <x-input.block>
+                                    <x-input.block class="col-12">
                                         <div class="d-grid">
                                             <button class="btn bsb-btn-xl btn-primary" type="submit">Sign up</button>
                                         </div>

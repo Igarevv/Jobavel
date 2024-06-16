@@ -31,9 +31,6 @@
 
 <body {{ $attributes->class([$injectBody ?? '']) }}>
 
-<main>
-    {{ $slot }}
-</main>
-
+{{ $slot }}
 </body>
 </html>

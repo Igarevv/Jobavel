@@ -180,3 +180,46 @@
         max-width: 25%;
     }
 }
+
+.money {
+    color: #f9322c;
+}
+
+.filter-column {
+    border-right: 1px solid #ddd;
+    background-color: #212529;
+    color: white;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.content-column {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    background-color: #fff;
+}
+
+.scrollable-list {
+    background-color: #212529;
+    max-height: 25%;
+    overflow-y: auto;
+    padding-left: 1rem;
+}
+
+.red {
+    color: #f9322c;
+}
+
+.add-requirements, .remove-requirements {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.add-requirements:hover, .remove-requirements:hover {
+    background-color: #0056b3;
+}

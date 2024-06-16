@@ -1,32 +1,30 @@
 <?php
 
-declare(strict_types=1);
+namespace App\Http\Controllers\Employer;
 
-namespace App\Http\Controllers;
-
+use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 
-class HomeController extends Controller
+class VacancyController extends Controller
 {
-
-    public function index(): View
+    public function list(): View
     {
         $jobInfo = (object) [
             'position' => 'Backend Laravel Developer',
             'company'  => 'Google Inc.',
             'address'  => 'New York',
             'salary'   => '$2500',
-            'image'    => '',
+            'image'    => 'Adidas_Logo.jpg',
             'skills'   => [
                 'Laravel',
                 'PHP',
                 'PostgreSql',
                 'Docker',
-                'Git'
-            ]
+                'Git',
+            ],
         ];
 
-        return view('home', ['jobInfo' => $jobInfo]);
+        return view('employer.vacancy.list', ['jobInfo' => $jobInfo]);
     }
-
 }
