@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let btnFile = document.getElementById('chooseNewLogo');
 
+    const message = document.getElementById('bad-file-extension');
+
     btnFile.addEventListener('change', (e) => {
         const files = e.target.files;
 
@@ -14,14 +16,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if (allowedLogoType.includes(files[file].type)) {
                 newLogo.push(file);
                 image.src = URL.createObjectURL(files[file]);
+                message.innerHTML = '';
                 break;
             }
             newLogo = [];
         }
 
         if (newLogo.length === 0){
-            image.remove();
-            document.getElementById('bad-file-extension').innerHTML = 'Only jpeg, jpg, png files allowed';
+            image.src = '';
+            image.alt = '';
+            message.innerHTML = 'Only jpeg, jpg, png files allowed';
         }
     });
 });

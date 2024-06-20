@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Dev;
 use App\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
+use Ramsey\Uuid\Uuid;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-
+        
     }
 
     /**

@@ -30,10 +30,16 @@
                                         <x-input.block class="col-12">
                                             <x-input.index type="text" name="company" id="company" placeholder="Google Inc."
                                                            label="Company name" value="{{ old('company') }}" required></x-input.index>
+                                            @error('company')
+                                            <p class="text-danger fst-italic fw-bolder h6">{{ $message }}</p>
+                                            @enderror
                                         </x-input.block>
                                         <x-input.block class="col-12">
                                             <x-input.index type="email" name="email" id="email" placeholder="index@mail.com"
                                                            label="Company email" value="{{ old('email') }}" required></x-input.index>
+                                            @error('email')
+                                            <p class="text-danger fst-italic fw-bolder h6">{{ $message }}</p>
+                                            @enderror
                                         </x-input.block>
                                         <x-input.block class="col-12">
                                             <x-input.index type="password" name="password" id="password" placeholder="*******"
@@ -43,6 +49,9 @@
                                             <x-input.index type="password" name="password_confirmation" id="password_confirmation"
                                                            placeholder="********"
                                                            label="Confirm password" required></x-input.index>
+                                            @error('password')
+                                            <p class="text-danger fst-italic fw-bolder h6">{{ $message }}</p>
+                                            @enderror
                                         </x-input.block>
                                         <x-input.block class="col-12">
                                             <div class="form-check">
