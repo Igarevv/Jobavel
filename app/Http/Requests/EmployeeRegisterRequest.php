@@ -23,7 +23,7 @@ class EmployeeRegisterRequest extends FormRequest
         return [
             'firstName' => 'required|max:50|alpha',
             'lastName' => 'required|max:50|alpha',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email|unique:employees,email',
             'password' => 'required|min:8|confirmed',
         ];
     }

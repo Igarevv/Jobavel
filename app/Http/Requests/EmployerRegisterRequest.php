@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class EmployerRegisterRequest extends FormRequest
 {
@@ -21,9 +22,17 @@ class EmployerRegisterRequest extends FormRequest
         }
 
         return [
-            'company' => 'required|max:256',
-            'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
+            'company' => 'required|max:256|unique:employers,company_name',
+            'email' => 'required|email|unique:users,email|unique:employers,contact_email',
+            'password' => ['required', 'confirmed', Password::defaults()],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'company.unique' => 'Company name ":input" has already been taken',
+            'email' => 'Company with that email is already exists',
         ];
     }
 

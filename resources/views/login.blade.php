@@ -10,7 +10,6 @@
                     <div class="col-12 col-md-8 col-lg-6 col-xl-5">
                         <div class="card bg-dark text-white" style="border-radius: 1rem;">
                             <div class="card-body p-5 text-center">
-
                                 <div class="mb-md-5 mt-md-4 pb-5">
                                     <div class="text-center mb-4">
                                         <a href="/" class="navbar-brand d-flex justify-content-center">
@@ -43,6 +42,12 @@
                                         </button>
                                     </form>
                                 </div>
+
+                                @session('register-success')
+                                <div class="alert alert-success fw-bold">
+                                    {{ $value }}
+                                </div>
+                                @endsession
 
                                 <div>
                                     <p class="mb-0">Don't have an account? Sign Up<br>

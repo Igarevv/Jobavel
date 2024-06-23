@@ -19,7 +19,8 @@
                                                 </a>
                                             </div>
                                             <h2 class="h4 text-center">Company Registration</h2>
-                                            <h3 class="fs-6 fw-normal text-secondary text-center m-0">Enter your details to
+                                            <h3 class="fs-6 fw-normal text-secondary text-center m-0">Enter your details
+                                                to
                                                 register</h3>
                                         </div>
                                     </div>
@@ -28,25 +29,31 @@
                                     @csrf
                                     <div class="row gy-3 overflow-hidden">
                                         <x-input.block class="col-12">
-                                            <x-input.index type="text" name="company" id="company" placeholder="Google Inc."
-                                                           label="Company name" value="{{ old('company') }}" required></x-input.index>
+                                            <x-input.index type="text" name="company" id="company"
+                                                           placeholder="Google Inc."
+                                                           label="Company name" value="{{ old('company') }}"
+                                                           required></x-input.index>
                                             @error('company')
                                             <p class="text-danger fst-italic fw-bolder h6">{{ $message }}</p>
                                             @enderror
                                         </x-input.block>
                                         <x-input.block class="col-12">
-                                            <x-input.index type="email" name="email" id="email" placeholder="index@mail.com"
-                                                           label="Company email" value="{{ old('email') }}" required></x-input.index>
+                                            <x-input.index type="email" name="email" id="email"
+                                                           placeholder="index@mail.com"
+                                                           label="Email" value="{{ old('email') }}"
+                                                           required></x-input.index>
                                             @error('email')
                                             <p class="text-danger fst-italic fw-bolder h6">{{ $message }}</p>
                                             @enderror
                                         </x-input.block>
                                         <x-input.block class="col-12">
-                                            <x-input.index type="password" name="password" id="password" placeholder="*******"
+                                            <x-input.index type="password" name="password" id="password"
+                                                           placeholder="*******"
                                                            label="Password" required></x-input.index>
                                         </x-input.block>
                                         <x-input.block class="col-12">
-                                            <x-input.index type="password" name="password_confirmation" id="password_confirmation"
+                                            <x-input.index type="password" name="password_confirmation"
+                                                           id="password_confirmation"
                                                            placeholder="********"
                                                            label="Confirm password" required></x-input.index>
                                             @error('password')
@@ -55,26 +62,35 @@
                                         </x-input.block>
                                         <x-input.block class="col-12">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="true" name="iAgree"
+                                                <input class="form-check-input" type="checkbox" value="true"
+                                                       name="iAgree"
                                                        id="iAgree" required>
                                                 <label class="form-check-label text-secondary" for="iAgree">
-                                                    I agree to the <a href="#!" class="link-primary text-decoration-none">terms
+                                                    I agree to the <a href="#!"
+                                                                      class="link-primary text-decoration-none">terms
                                                         and conditions</a>
                                                 </label>
                                             </div>
                                         </x-input.block>
                                         <x-input.block class="col-12">
                                             <div class="d-grid">
-                                                <button class="btn bsb-btn-xl btn-primary" type="submit">Sign up</button>
+                                                <button class="btn bsb-btn-xl btn-primary" type="submit">Sign up
+                                                </button>
                                             </div>
                                         </x-input.block>
+                                        @session('error')
+                                        <div class="alert alert-danger fw-bold">
+                                            {{ $value }}
+                                        </div>
+                                        @endsession
                                     </div>
                                 </form>
                                 <div class="row">
                                     <div class="col-12">
                                         <hr class="mt-5 mb-4 border-secondary-subtle">
                                         <p class="m-0 text-secondary text-center">Already have an account? <a
-                                                href="{{ route('login.show') }}" class="link-primary text-decoration-none">Sign
+                                                href="{{ route('login.show') }}"
+                                                class="link-primary text-decoration-none">Sign
                                                 in</a></p>
                                     </div>
                                 </div>
