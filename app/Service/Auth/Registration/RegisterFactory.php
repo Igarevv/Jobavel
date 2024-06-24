@@ -6,7 +6,7 @@ namespace App\Service\Auth\Registration;
 
 use App\Contracts\RoleAuthServiceInterface;
 use App\Enums\Role;
-use App\Persistance\Repositories\UserRepository;
+use App\Persistance\Contracts\UserRepositoryInterface;
 use App\Service\Auth\Registration\Employee\EmployeeRegister;
 use App\Service\Auth\Registration\Employer\EmployerRegister;
 use InvalidArgumentException;
@@ -15,7 +15,7 @@ class RegisterFactory
 {
 
     public function __construct(
-        private readonly UserRepository $repository
+        private readonly UserRepositoryInterface $repository
     ) {}
 
     public function make(string $role): RoleAuthServiceInterface

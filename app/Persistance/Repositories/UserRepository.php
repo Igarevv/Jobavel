@@ -6,10 +6,11 @@ namespace App\Persistance\Repositories;
 
 use App\Contracts\RegisterDtoInterface;
 use App\Enums\Role;
+use App\Persistance\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Ramsey\Uuid\Uuid;
 
-class UserRepository
+class UserRepository implements UserRepositoryInterface
 {
 
     protected string $table;

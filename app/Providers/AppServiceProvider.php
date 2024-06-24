@@ -3,19 +3,23 @@
 namespace App\Providers;
 
 use App\Dev;
+use App\Persistance\Contracts\UserRepositoryInterface;
+use App\Persistance\Repositories\UserRepository;
 use App\User;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
-use Ramsey\Uuid\Uuid;
 
 class AppServiceProvider extends ServiceProvider
 {
+
     /**
      * Register any application services.
      */
     public function register(): void
     {
-        
+        $this->app->singleton(
+            UserRepositoryInterface::class,
+            UserRepository::class
+        );
     }
 
     /**
@@ -25,4 +29,5 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
+
 }

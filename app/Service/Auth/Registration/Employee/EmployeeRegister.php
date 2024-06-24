@@ -6,13 +6,13 @@ namespace App\Service\Auth\Registration\Employee;
 
 use App\Contracts\RegisterDtoInterface;
 use App\Contracts\RoleAuthServiceInterface;
-use App\Persistance\Repositories\UserRepository;
+use App\Persistance\Contracts\UserRepositoryInterface;
 
 class EmployeeRegister implements RoleAuthServiceInterface
 {
 
     public function __construct(
-        private readonly UserRepository $repository
+        private readonly UserRepositoryInterface $repository
     ) {}
 
     public function register(RegisterDtoInterface $registerDto): void
