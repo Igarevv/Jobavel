@@ -6,30 +6,43 @@ namespace App\DTO\Auth;
 
 use App\Contracts\RegisterDtoInterface;
 use App\Enums\Role;
-use Ramsey\Uuid\Nonstandard\Uuid;
 
 readonly class RegisterEmployeeDto implements RegisterDtoInterface
 {
 
-    public string $role;
+    private string $role;
 
     public function __construct(
-        public string $firstName,
-        public string $lastName,
-        public string $email,
-        public string $password
+        private string $firstName,
+        private string $lastName,
+        private string $email,
+        private string $password
     ) {
         $this->role = Role::EMPLOYEE->value;
     }
 
-    public function toDatabaseContext(): array
+    public function asDatabaseFields(): array
     {
         return [
             'first_name' => $this->firstName,
             'last_name' => $this->lastName,
             'email' => $this->email,
-            'employee_id' => Uuid::uuid7()->toString(),
         ];
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function getRole(): string
+    {
+        return $this->role;
     }
 
 }

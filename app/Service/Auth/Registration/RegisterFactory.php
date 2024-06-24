@@ -6,7 +6,7 @@ namespace App\Service\Auth\Registration;
 
 use App\Contracts\RoleAuthServiceInterface;
 use App\Enums\Role;
-use App\Persistance\Contracts\UserRepositoryInterface;
+use App\Persistence\Contracts\UserRepositoryInterface;
 use App\Service\Auth\Registration\Employee\EmployeeRegister;
 use App\Service\Auth\Registration\Employer\EmployerRegister;
 use InvalidArgumentException;

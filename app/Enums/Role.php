@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
+use App\Persistence\Models\User;
+use Illuminate\Database\Eloquent\Builder;
+
 enum Role: string
 {
 
@@ -20,11 +23,11 @@ enum Role: string
         };
     }
 
-    public function roleTableName(): ?string
+    public function getModelByRole(User $user): ?Builder
     {
         return match ($this) {
-            self::EMPLOYER => config('dbinfo.names.employer'),
-            self::EMPLOYEE => config('dbinfo.names.employee'),
+            self::EMPLOYER => $user->employer(),
+            self::EMPLOYEE => $user->employee(),
             default => null
         };
     }

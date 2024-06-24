@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Persistance\Contracts;
+namespace App\Persistence\Contracts;
 
 use App\Contracts\RegisterDtoInterface;
 

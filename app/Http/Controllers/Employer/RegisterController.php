@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Employer;
 
-use App\DTO\Auth\RegisterEmployerDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EmployerRegisterRequest;
 use App\Service\Auth\AuthService;
-use App\Service\Auth\PasswordHasher;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -16,8 +14,7 @@ class RegisterController extends Controller
 {
 
     public function __construct(
-        private readonly AuthService $authService,
-        private readonly PasswordHasher $passwordService
+        private readonly AuthService $authService
     ) {}
 
     public function __invoke(EmployerRegisterRequest $request
@@ -26,11 +23,8 @@ class RegisterController extends Controller
             return view('employer.register');
         }
 
-        $data = $request->validated();
-        $employer = new RegisterEmployerDto(
-            companyName: $data['company'],
-            email: $data['email'],
-            password: $this->passwordService->hash($data['password'])
+        $employer = $this->authService->createEmployerRegisterDto(
+            $request->validated()
         );
 
         try {
@@ -40,6 +34,7 @@ class RegisterController extends Controller
                 'Registration completed successfully! You may login now'
             );
         } catch (\Exception $e) {
+            dd($e);
             return redirect()->route('employer.register')->with(
                 'error',
                 'An error occurred while processing the request. Please try again or contact to support'

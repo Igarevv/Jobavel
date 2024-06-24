@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Employee;
 
-use App\DTO\Auth\RegisterEmployeeDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EmployeeRegisterRequest;
 use App\Service\Auth\AuthService;
-use App\Service\Auth\PasswordHasher;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -16,8 +14,7 @@ class RegisterController extends Controller
 {
 
     public function __construct(
-        private readonly AuthService $authService,
-        private readonly PasswordHasher $passwordHasher
+        private readonly AuthService $authService
     ) {}
 
     public function __invoke(EmployeeRegisterRequest $request
@@ -26,12 +23,8 @@ class RegisterController extends Controller
             return view('employee.register');
         }
 
-        $data = $request->validated();
-        $employee = new RegisterEmployeeDto(
-            firstName: $data['firstName'],
-            lastName: $data['lastName'],
-            email: $data['email'],
-            password: $this->passwordHasher->hash($data['password'])
+        $employee = $this->authService->createEmployeeRegisterDto(
+            $request->validated()
         );
 
         try {

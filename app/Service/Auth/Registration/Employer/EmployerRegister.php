@@ -6,7 +6,7 @@ namespace App\Service\Auth\Registration\Employer;
 
 use App\Contracts\RegisterDtoInterface;
 use App\Contracts\RoleAuthServiceInterface;
-use App\Persistance\Contracts\UserRepositoryInterface;
+use App\Persistence\Contracts\UserRepositoryInterface;
 
 class EmployerRegister implements RoleAuthServiceInterface
 {
