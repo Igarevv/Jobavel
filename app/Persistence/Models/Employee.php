@@ -13,10 +13,16 @@ class Employee extends Model
 
     protected $table = 'employees';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'first_name',
         'last_name',
         'user_id',
+    ];
+
+    protected $hidden = [
+        'id',
     ];
 
     protected static function boot(): void

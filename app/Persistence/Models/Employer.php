@@ -21,6 +21,10 @@ class Employer extends Model
         'contact_email',
     ];
 
+    protected $hidden = [
+        'id',
+    ];
+
     protected static function boot(): void
     {
         parent::boot();
