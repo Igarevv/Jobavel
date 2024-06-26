@@ -2,7 +2,6 @@
 
 namespace Database\Factories\Persistence\Models;
 
-use App\Enums\Role;
 use App\Persistence\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -34,20 +33,6 @@ class UserFactory extends Factory
                 'is_confirmed' => false,
                 'email_confirmed_at' => null,
             ];
-        });
-    }
-
-    public function employeeRole(): UserFactory|Factory
-    {
-        return $this->state(function (array $attributes) {
-            return ['role' => Role::EMPLOYEE->value];
-        });
-    }
-
-    public function employerRole(): UserFactory|Factory
-    {
-        return $this->state(function (array $attributes) {
-            return ['role' => Role::EMPLOYER->value];
         });
     }
 

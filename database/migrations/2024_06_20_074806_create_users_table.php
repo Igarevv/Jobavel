@@ -17,7 +17,10 @@ return new class extends Migration {
             $table->primary('id');
             $table->uuid('user_id')->unique();
             $table->string('email')->unique();
-            $table->enum('role', [Role::EMPLOYEE->value, Role::EMPLOYER->value]);
+            $table->enum(
+                'role',
+                [Role::EMPLOYEE->value, Role::EMPLOYER->value]
+            );
             $table->boolean('is_confirmed')->default(false);
             $table->timestamp('email_confirmed_at')->nullable();
             $table->string('password');

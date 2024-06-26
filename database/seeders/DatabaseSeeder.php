@@ -3,9 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Persistence\Models\Employee;
-use App\Persistence\Models\Employer;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,9 +14,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Employee::factory()->count(50)->create();
+        DB::table('users')->truncate(); // optional
 
-        Employer::factory()->count(50)->create();
+        DB::transaction(function () {
+            $this->call([
+                EmployeeSeeder::class,
+                EmployerSeeder::class,
+            ]);
+        });
 
         $this->call([
             TechSkillsSeeder::class,

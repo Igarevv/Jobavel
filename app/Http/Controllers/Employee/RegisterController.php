@@ -34,7 +34,7 @@ class RegisterController extends Controller
                 'Registration completed successfully! You may login now'
             );
         } catch (\Exception $e) {
-            info($e->getMessage().'|'.$e->getLine());
+            info($e->getMessage().'|'.$e->getLine().'|'.$e->getFile());
             return redirect()->route('employee.register')->with(
                 'error',
                 'An error occurred while processing the request. Please try again or contact to support'

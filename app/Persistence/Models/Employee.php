@@ -4,6 +4,7 @@ namespace App\Persistence\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Ramsey\Uuid\Uuid;
 
 class Employee extends Model
@@ -19,11 +20,17 @@ class Employee extends Model
         'first_name',
         'last_name',
         'user_id',
+        'email',
     ];
 
     protected $hidden = [
         'id',
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
     protected static function boot(): void
     {

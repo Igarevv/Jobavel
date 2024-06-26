@@ -3,7 +3,6 @@
 namespace Database\Factories\Persistence\Models;
 
 use App\Persistence\Models\Employee;
-use App\Persistence\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Ramsey\Uuid\Uuid;
 
@@ -17,13 +16,10 @@ class EmployeeFactory extends Factory
 
     public function definition(): array
     {
-        $user = User::factory()->employeeRole()->create();
         return [
             'employee_id' => Uuid::uuid7()->toString(),
-            'user_id' => $user->id,
-            'first_name' => fake()->firstName(),
-            'last_name' => fake()->lastName(),
-            'email' => $user->email,
+            'first_name' => $this->faker->firstName(),
+            'last_name' => $this->faker->lastName(),
         ];
     }
 
