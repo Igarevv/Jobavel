@@ -1,7 +1,7 @@
 <x-layout>
     <x-slot:title>Jobavel</x-slot:title>
 
-    <x-employer.header></x-employer.header>
+    <x-header></x-header>
 
     <x-main>
         <div class="mt-5 background-badge">
@@ -14,8 +14,10 @@
                         <div class="d-flex justify-content-center align-items-center flex-row">
                             <div class="text-center">
                                 <p class="text-white m-2">↓ I'm an Employee</p>
-                                <a href="{{ route('employee.register') }}" class="btn btn-danger mx-2">Start finding job</a>
-                                <a href="{{ route('employer.register') }}" class="btn btn-danger mx-2">Start posting job</a>
+                                <a href="{{ route('employee.register') }}" class="btn btn-danger mx-2">Start finding
+                                    job</a>
+                                <a href="{{ route('employer.register') }}" class="btn btn-danger mx-2">Start posting
+                                    job</a>
                                 <p class="text-white m-2">I'm an Employer ↑</p>
                             </div>
                         </div>

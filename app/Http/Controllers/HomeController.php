@@ -11,19 +11,19 @@ class HomeController extends Controller
 
     public function index(): View
     {
-        $jobInfo = (object) [
+        $jobInfo = (object)[
             'position' => 'Backend Laravel Developer',
-            'company'  => 'Google Inc.',
-            'address'  => 'New York',
-            'salary'   => '$2500',
-            'image'    => '',
-            'skills'   => [
+            'company' => 'Google Inc.',
+            'address' => 'New York',
+            'salary' => '$2500',
+            'image' => '',
+            'skills' => [
                 'Laravel',
                 'PHP',
                 'PostgreSql',
                 'Docker',
-                'Git'
-            ]
+                'Git',
+            ],
         ];
 
         return view('home', ['jobInfo' => $jobInfo]);

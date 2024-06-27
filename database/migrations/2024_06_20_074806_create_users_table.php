@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\Role;
+use App\Persistence\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,11 +19,12 @@ return new class extends Migration {
             $table->string('email')->unique();
             $table->enum(
                 'role',
-                [Role::EMPLOYEE->value, Role::EMPLOYER->value]
+                [User::EMPLOYEE, User::EMPLOYER]
             );
             $table->boolean('is_confirmed')->default(false);
             $table->timestamp('email_confirmed_at')->nullable();
             $table->string('password');
+            $table->rememberToken();
             $table->timestamp('created_at')->useCurrent();
         });
     }

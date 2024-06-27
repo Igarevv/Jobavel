@@ -1,6 +1,6 @@
 <x-layout>
     <x-slot:title>Main</x-slot:title>
-    <x-employer.header/>
+    <x-header></x-header>
 
     <x-main>
         <div class="album py-5 bg-body-tertiary background-logo"
@@ -43,23 +43,29 @@
             <form class="w-75 mx-auto">
                 <x-input.block form="group" class="d-flex justify-content-between col-12">
                     <label class="fw-bold" for="exampleFormControlInput1">Your company logo</label>
-                    <x-button.outline data-bs-toggle="modal" data-bs-target="#changeLogo"  colorType="danger">Change logo</x-button.outline>
+                    <x-button.outline data-bs-toggle="modal" data-bs-target="#changeLogo" colorType="danger">Change
+                        logo
+                    </x-button.outline>
                 </x-input.block>
                 <x-input.block form="group" class="mb-3 col-12">
-                    <x-input.index type="text" class="py-2" name="companyName" id="companyName" value="Adidas Inc." label="Your company name"></x-input.index>
+                    <x-input.index type="text" class="py-2" name="companyName" id="companyName" value="Adidas Inc."
+                                   label="Your company name"></x-input.index>
                 </x-input.block>
                 <x-input.block form="outline" class="mb-3 col-12">
-                    <x-input.textarea id="description" label="Your company description" name="description"></x-input.textarea>
+                    <x-input.textarea id="description" label="Your company description"
+                                      name="description"></x-input.textarea>
                 </x-input.block>
                 <x-input.block form="group" class="mb-3 col-12">
-                    <x-input.index type="email" class="py-2" name="contactEmail" id="contactEmail" value="example@gmail.com" label="Your company contact email"></x-input.index>
+                    <x-input.index type="email" class="py-2" name="contactEmail" id="contactEmail"
+                                   value="example@gmail.com" label="Your company contact email"></x-input.index>
                 </x-input.block>
                 <x-button.default class="float-end" type="submit">Save changes</x-button.default>
             </form>
         </div>
 
         <x-modal.index id="changeLogo">
-            <x-modal.withform title="Change logo" btnActionName="Save changes" actionPath="#" enctype="multipart/form-data">
+            <x-modal.withform title="Change logo" btnActionName="Save changes" actionPath="#"
+                              enctype="multipart/form-data">
                 <x-input.index type="file" id="chooseNewLogo" name="logo" label="Choose logo" required></x-input.index>
                 <div class="d-flex justify-content-center align-items-center mt-3">
                     <x-image.logo id="newLogo" imgColSize="3"></x-image.logo>

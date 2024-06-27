@@ -1,5 +1,7 @@
 <?php
 
+use App\Persistence\Models\User;
+
 return [
 
     /*
@@ -40,6 +42,14 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        User::EMPLOYER => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+        User::EMPLOYER => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
     ],
 
     /*
@@ -62,9 +72,8 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => \App\Persistance\Models\User::class,
+            'model' => User::class,
         ],
-
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',

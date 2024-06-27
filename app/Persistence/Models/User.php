@@ -3,21 +3,29 @@
 namespace App\Persistence\Models;
 
 use App\Enums\Role;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Ramsey\Uuid\Uuid;
 
-class User extends Model
+class User extends Model implements AuthContract
 {
 
     use HasFactory;
+    use Authenticatable;
+
+    public const EMPLOYEE = Role::EMPLOYEE->value;
+
+    public const EMPLOYER = Role::EMPLOYER->value;
 
     protected $table = 'users';
 
     public $timestamps = false;
 
     protected $fillable = [
+        'user_id',
         'email',
         'password',
         'role',
@@ -26,6 +34,7 @@ class User extends Model
     protected $hidden = [
         'password',
         'id',
+        'remember_token',
     ];
 
     public function employee(): HasOne

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\DTO\Auth;
 
 use App\Contracts\RegisterDtoInterface;
-use App\Enums\Role;
+use App\Persistence\Models\User;
 
 readonly class RegisterEmployerDto implements RegisterDtoInterface
 {
@@ -17,7 +17,7 @@ readonly class RegisterEmployerDto implements RegisterDtoInterface
         private string $email,
         private string $password
     ) {
-        $this->role = Role::EMPLOYER->value;
+        $this->role = User::EMPLOYER;
     }
 
     public function asDatabaseFields(): array

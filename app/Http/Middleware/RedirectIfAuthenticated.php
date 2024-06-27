@@ -25,10 +25,15 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return to_route(
-                    Role::tryFrom(ltrim($request->route()?->getPrefix(), '/'))
-                        ?->roleMainPage()
-                );
+                $prefix = ltrim($request->route()?->getPrefix(), '/') ?: 'home';
+
+                if ($prefix !== 'home') {
+                    return to_route(
+                        Role::tryFrom($prefix)?->roleMainPage() ?? 'home'
+                    );
+                }
+
+                return to_route('home');
             }
         }
 
