@@ -25,10 +25,9 @@ class AuthController extends Controller
         $data = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required',
-            'remember' => 'sometimes|boolean',
         ])->validate();
 
-        if (Auth::attempt($data, $data['remember'] ?? false)) {
+        if (Auth::attempt($data, $request->has('remember'))) {
             $request->session()->regenerate();
 
             return redirect()->intended(
@@ -37,10 +36,19 @@ class AuthController extends Controller
         }
 
         return redirect()->back()->withErrors(
-            ['email' => 'User with this credentials not found']
+            ['email' => 'Wrong email or password']
         );
     }
 
-    public function logout() {}
+    public function logout(Request $request): RedirectResponse
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect()->route('home');
+    }
 
 }

@@ -4,11 +4,11 @@
 
     <x-main>
         <div class="album py-5 bg-body-tertiary background-logo"
-             style="background: url({{ asset('/logo/Adidas_Logo.jpg') }}) center center/cover no-repeat;">
+             style="background: url({{ asset('/img/logo/Adidas_Logo.jpg') }}) center center/cover no-repeat;">
             <div class="container">
                 <div class="d-flex align-items-center flex-column">
                     <div class="logo-company-name">
-                        <x-image.logo filename="{{ 'Adidas_Logo.jpg' }}" imgColSize="6"></x-image.logo>
+                        <x-image.logo class="mt-2" filename="{{ 'Adidas_Logo.jpg' }}" imgColSize="6"></x-image.logo>
                         <h2 class="text-center fw-bold red">Adidas Inc.</h2>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
 
         <div class="container" @style(['margin-bottom:6rem'])>
             <h2 class="text-center mb-3">Your company public information</h2>
-            <form class="w-75 mx-auto">
+            <form class="w-75 mx-auto" method="post">
                 <x-input.block form="group" class="d-flex justify-content-between col-12">
                     <label class="fw-bold" for="exampleFormControlInput1">Your company logo</label>
                     <x-button.outline data-bs-toggle="modal" data-bs-target="#changeLogo" colorType="danger">Change

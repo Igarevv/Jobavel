@@ -170,6 +170,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         ClockworkServiceProvider::class,
         \App\Providers\ViewServiceProvider::class,
+        \App\Providers\ValidationServiceProvider::class,
     ])->toArray(),
 
     /*

@@ -41,14 +41,7 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
-        ],
-        User::EMPLOYER => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
-        User::EMPLOYER => [
-            'driver' => 'session',
-            'provider' => 'users',
+            'remember' => 20160,
         ],
     ],
 

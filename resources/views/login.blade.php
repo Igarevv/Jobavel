@@ -48,13 +48,16 @@
                                         </x-input.block>
                                         <x-input.block class="col-12">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="true"
+                                                <input class="form-check-input" type="checkbox" value="1"
                                                        name="remember"
                                                        id="remember">
                                                 <label class="form-check-label text-secondary" for="remember">
                                                     Remember me
                                                 </label>
                                             </div>
+                                            @error('remember')
+                                            <p class="text-danger fst-italic fw-bolder h6">{{ $message }}</p>
+                                            @enderror
                                         </x-input.block>
                                         <x-input.block class="col-12">
                                             <div class="d-grid">

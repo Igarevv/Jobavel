@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\Role;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,9 +20,14 @@ class RoleRedirectionMiddleware
         Closure $next,
         string $role
     ): Response {
-        if (auth()->user()->role !== $role) {
-            return redirect()->back();
+        $currentRole = auth()->user()->role;
+
+        if ($currentRole !== $role) {
+            return redirect()->route(
+                Role::tryFrom($currentRole)?->roleMainPage()
+            );
         }
+
         return $next($request);
     }
 

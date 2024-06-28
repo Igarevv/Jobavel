@@ -25,7 +25,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <form action="#!" method="post">
+                                <form action="" method="post">
                                     @csrf
                                     <div class="row gy-3 overflow-hidden">
                                         <x-input.block class="col-12">
