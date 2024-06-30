@@ -7,6 +7,7 @@ namespace App\Persistence\Repositories;
 use App\Contracts\RegisterDtoInterface as Dto;
 use App\Persistence\Contracts\UserRepositoryInterface;
 use App\Persistence\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
 class UserRepository implements UserRepositoryInterface
@@ -19,16 +20,18 @@ class UserRepository implements UserRepositoryInterface
         $this->table = config('dbinfo.names.user');
     }
 
-    public function save(Dto $userData): void
+    public function save(Dto $userData): User
     {
-        DB::transaction(function () use ($userData) {
+        return DB::transaction(function () use ($userData) {
             $user = $this->saveInUserTable($userData);
 
             $this->saveUserByRole($user, $userData);
+
+            return $user;
         });
     }
 
-    private function saveInUserTable(Dto $userData): User
+    private function saveInUserTable(Dto $userData): User|Builder
     {
         $user = User::query()->create([
             'email' => $userData->getEmail(),

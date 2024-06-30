@@ -14,7 +14,7 @@ class EmployeeSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()
+        User::factory(100)
             ->has(
                 Employee::factory()->state(
                     function (array $attributes, User $user) {

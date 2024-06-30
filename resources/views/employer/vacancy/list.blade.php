@@ -1,7 +1,7 @@
 <x-layout>
     <x-slot:title>{{ 'Adidas Inc.' }} </x-slot:title>
 
-    <x-employer.header/>
+    <x-header></x-header>
 
     <x-main>
         <div class="container mt-5 mb-5">
