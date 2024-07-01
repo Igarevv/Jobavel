@@ -6,10 +6,8 @@ namespace App\Http\Controllers\Employer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EmployerRegisterRequest;
-use App\Mail\ConfirmEmail;
 use App\Service\Auth\AuthService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class RegisterController extends Controller
@@ -30,16 +28,13 @@ class RegisterController extends Controller
         );
 
         try {
-            $user = $this->authService->register($employer);
-
-            Mail::to($user->email)->send(new ConfirmEmail($user));
+            $this->authService->register($employer);
 
             return redirect()->route('login.show')->with(
                 'register-success',
-                'Registration completed successfully! You may login now'
+                'Registration completed successfully! We sent you confirmation email, please check your inbox.'
             );
         } catch (\Exception $e) {
-            info($e->getMessage().'|'.$e->getLine().'|'.$e->getFile());
             return redirect()->route('employer.register')->with(
                 'error',
                 'An error occurred while processing the request. Please try again or contact to support'

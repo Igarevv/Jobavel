@@ -7,8 +7,8 @@ namespace App\Service\Auth;
 use App\Contracts\RegisterDtoInterface;
 use App\DTO\Auth\RegisterEmployeeDto;
 use App\DTO\Auth\RegisterEmployerDto;
-use App\Persistence\Models\User;
 use App\Service\Auth\Registration\AuthFactory;
+use Illuminate\Auth\Events\Registered;
 
 readonly class AuthService
 {
@@ -18,13 +18,15 @@ readonly class AuthService
         private PasswordHasher $passwordHasher
     ) {}
 
-    public function register(RegisterDtoInterface $registerDto): User
+    public function register(RegisterDtoInterface $registerDto): void
     {
         $roleAuthService = $this->registerFactory->makeRegister(
             $registerDto->getRole()
         );
 
-        return $roleAuthService->register($registerDto);
+        $user = $roleAuthService->register($registerDto);
+
+        event(new Registered($user));
     }
 
     public function createEmployerRegisterDto(array $data): RegisterEmployerDto

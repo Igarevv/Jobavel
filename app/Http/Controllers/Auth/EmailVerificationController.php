@@ -6,11 +6,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CustomEmailVerificationRequest;
-use App\Mail\ConfirmEmail;
 use App\Persistence\Models\User;
-use Illuminate\Http\Client\Request;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class EmailVerificationController extends Controller
@@ -27,6 +26,7 @@ class EmailVerificationController extends Controller
         }
 
         $request->fulfill();
+        $user->refresh();
 
         if ($user->is_confirmed) {
             return view('auth.email.success');
@@ -39,7 +39,7 @@ class EmailVerificationController extends Controller
     {
         $user = $request->user();
 
-        Mail::to($user->email)->send(new ConfirmEmail($user));
+        event(new Registered($user));
 
         return back()->with('email-verify-message', 'Verification link sent!');
     }

@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Employer;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class VacancyController extends Controller
 {
 
-    public function list(): View
+    public function index()
     {
         $jobInfo = (object)[
             'position' => 'Backend Laravel Developer',
@@ -25,8 +25,17 @@ class VacancyController extends Controller
                 'Git',
             ],
         ];
-        $user = Auth::getSession()->get('user');
         return view('employer.vacancy.list', ['jobInfo' => $jobInfo]);
+    }
+
+    public function create(): View
+    {
+        return view('employer.vacancy.create');
+    }
+
+    public function store(Request $request)
+    {
+        //
     }
 
 }

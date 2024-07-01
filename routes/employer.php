@@ -19,13 +19,11 @@ Route::prefix('employer')->name('employer.')->group(function () {
         Route::get('/main', [HomeController::class, 'index'])
             ->name('main');
 
-        Route::controller(VacancyController::class)->name('vacancy.')
-            ->group(function () {
-                Route::get('/vacancy', 'list')->name('list');
-                Route::view('/vacancy/create', 'employer.vacancy.create')->name(
-                    'create'
-                );
-            });
+        Route::group(['middleware' => 'verified'], function () {
+            Route::resource('vacancy', VacancyController::class)->only(
+                ['store', 'create', 'index']
+            );
+        })->name('vacancy.');
     });
 
     // Latest

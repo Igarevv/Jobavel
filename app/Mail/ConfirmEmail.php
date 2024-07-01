@@ -27,7 +27,7 @@ class ConfirmEmail extends Mailable
     public function content(): Content
     {
         $verifiedUrl = $this->verificationUrl();
-
+ 
         return new Content(
             markdown: 'auth.email.verify-email',
             with: [

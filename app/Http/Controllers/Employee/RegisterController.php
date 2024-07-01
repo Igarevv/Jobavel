@@ -29,9 +29,10 @@ class RegisterController extends Controller
 
         try {
             $this->authService->register($employee);
+
             return redirect()->route('login.show')->with(
                 'register-success',
-                'Registration completed successfully! You may login now'
+                'Registration completed successfully! We sent you confirmation email, please check your inbox.'
             );
         } catch (\Exception $e) {
             info($e->getMessage().'|'.$e->getLine().'|'.$e->getFile());

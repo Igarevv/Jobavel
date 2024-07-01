@@ -13,32 +13,32 @@
                     </div>
                 </div>
                 <div class="row mt-5 justify-content-center">
-                    <x-card.linkcard href="{{ route('employer.vacancy.list') }}">
+                    <x-card.linkcard href="{{ route('employer.vacancy.index') }}">
                         <h3>Your</h3>
                         <h5>total number of vacancy</h5>
-                        <p>{{ '0' }}</p>
+                        <p>{{ 0 }}</p>
                     </x-card.linkcard>
                     <x-card.linkcard>
                         <h3>Your</h3>
                         <h5>total number of responses for today</h5>
-                        <p> {{ '0' }}</p>
+                        <p> {{ 0 }}</p>
                     </x-card.linkcard>
                     <x-card.linkcard>
                         <h3>Your</h3>
                         <h5>total number of responses for month</h5>
-                        <p> {{ '0' }}</p>
+                        <p> {{ 0 }}</p>
                     </x-card.linkcard>
                     <x-card.linkcard>
                         <h3>Your</h3>
                         <h5>top 3 frequent required skills in vacancy</h5>
-                        <p> {{ 'Git, Laravel, PHP' }}</p>
+                        <p> {{ "Git, Laravel, PHP"}}</p>
                     </x-card.linkcard>
                 </div>
             </div>
             <div class="blur"></div>
         </div>
 
-        <div class="container" @style(['margin-bottom:6rem'])>
+        <div class="container" @style(["margin-bottom:6rem"])>
             <h2 class="text-center mb-3">Your company public information</h2>
             <form class="w-75 mx-auto" method="post">
                 <x-input.block form="group" class="d-flex justify-content-between col-12">
@@ -77,7 +77,7 @@
 
     <x-footer></x-footer>
 
-    @push('change-logo')
+    @push("change-logo")
         <script src="/assets/js/changeLogo.js"></script>
     @endpush
 </x-layout>

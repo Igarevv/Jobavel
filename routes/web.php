@@ -38,19 +38,24 @@ Route::prefix('auth')->name('login.')->group(function () {
  * - Email verification section
  * ---------------------------------
  */
-Route::prefix('/auth/email/verify')->group(function () {
-    Route::view('/show', 'verify-email')->middleware('auth')->name(
-        'verification.notice'
-    );
-    Route::get(
-        '/{user_id}/{hash}',
-        [EmailVerificationController::class, 'verifyEmail']
-    )
-        ->middleware('signed')
-        ->name('verification.verify');
+Route::prefix('/auth/email/verify')->middleware(['unverified', 'auth'])->group(
+    function () {
+        Route::view('/show', 'auth.email.resend-email')->name(
+            'verification.notice'
+        );
+        Route::get(
+            '/{user_id}/{hash}',
+            [EmailVerificationController::class, 'verifyEmail']
+        )
+            ->middleware('signed.email')
+            ->name('verification.verify')
+            ->withoutMiddleware('auth');
 
-    Route::post('/resend', [EmailVerificationController::class, 'resendEmail'])
-        ->middleware(['auth', 'throttle:6,1'])->name('verification.send');
-});
+        Route::post(
+            '/resend',
+            [EmailVerificationController::class, 'resendEmail']
+        )->name('verification.send');
+    }
+);
 
 Route::redirect('/home', '/');

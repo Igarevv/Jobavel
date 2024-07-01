@@ -8,14 +8,6 @@ use Illuminate\Support\Facades\DB;
 class SuccessfulLogin
 {
 
-    public function __construct()
-    {
-        //
-    }
-
-    /**
-     * Handle the event.
-     */
     public function handle(Login $event): void
     {
         $user = DB::table('user_login_data')->where(
