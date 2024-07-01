@@ -7,6 +7,7 @@ namespace App\Service\Auth\Registration\Employee;
 use App\Contracts\RegisterDtoInterface;
 use App\Contracts\RoleAuthServiceInterface;
 use App\Persistence\Contracts\UserRepositoryInterface;
+use App\Persistence\Models\User;
 
 class EmployeeRegister implements RoleAuthServiceInterface
 {
@@ -15,9 +16,9 @@ class EmployeeRegister implements RoleAuthServiceInterface
         private readonly UserRepositoryInterface $repository
     ) {}
 
-    public function register(RegisterDtoInterface $registerDto): void
+    public function register(RegisterDtoInterface $registerDto): User
     {
-        $this->repository->save($registerDto);
+        return $this->repository->save($registerDto);
     }
 
 }

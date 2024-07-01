@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Employer;
 
 use App\Http\Controllers\Controller;
+use App\Persistence\Models\TechSkill;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -30,12 +31,15 @@ class VacancyController extends Controller
 
     public function create(): View
     {
-        return view('employer.vacancy.create');
+        $categories = TechSkill::query()->orderBy('skill_name')
+            ->toBase()
+            ->get();
+        return view('employer.vacancy.create', ['skills' => $categories]);
     }
 
     public function store(Request $request)
     {
-        //
+        dd($request->all());
     }
 
 }

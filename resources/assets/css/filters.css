@@ -1,0 +1,30 @@
+.categories {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    font-size: 12px;
+}
+
+.category-label input[type="checkbox"] {
+    display: none;
+}
+
+.categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.category-label {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.category-label input[type="checkbox"] {
+    display: none;
+}
+
+.category-label input[type="checkbox"]:checked + span {
+    color: #f9322c;
+}

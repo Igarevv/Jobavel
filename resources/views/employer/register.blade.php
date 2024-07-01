@@ -1,4 +1,4 @@
-<x-layout>
+<x-layout class="vh-100">
     <x-slot:title>Register</x-slot:title>
     <x-slot:injectBody>background-auth</x-slot:injectBody>
 

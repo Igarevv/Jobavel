@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->integer('salary')->default(0);
             $table->text('job_description');
             $table->json('job_requirements');
+            $table->json('job_responsibilities');
             $table->integer('response_number')->default(0);
             $table->timestamp('created_at')->useCurrent();
             $table->primary('id');

@@ -1,22 +1,33 @@
-const inputContainer = document.getElementById('createVacancyInput');
+function setupDynamicFields(containerId) {
+    const container = document.getElementById(containerId);
 
-const addBtn = document.querySelector('.add-requirements');
+    function addField() {
+        const group = document.createElement('div');
+        group.classList.add('input-group');
+        group.classList.add('mt-3');
 
-addBtn.addEventListener('click', () => {
-    const group = document.createElement('div');
-    group.classList.add('input-group');
-    group.classList.add('mb-3');
+        group.innerHTML = `
+            <input type="text" class="form-control" name="items[]" required>
+            <button type="button" class="btn btn-danger remove-item">-</button>
+            <button type="button" class="btn btn-primary add-item">+</button>
+        `;
 
-    group.innerHTML = `
-          <input type="text" class="form-control" name="requirements[]" required>
-          <button type="button" style="background-color: red" class="remove-requirements">-</button>
-    `;
+        container.appendChild(group);
 
-    inputContainer.appendChild(group);
-});
+        group.querySelector('.remove-item').addEventListener('click', () => {
+            group.remove();
+        });
 
-inputContainer.addEventListener('click', (e) => {
-    if (e.target.classList.contains('remove-requirements')) {
-        e.target.parentNode.remove();
+        group.querySelector('.add-item').addEventListener('click', () => {
+            addField();
+        });
     }
-});
+
+    container.querySelector('.add-item').addEventListener('click', () => {
+        addField();
+    });
+}
+
+setupDynamicFields('createResponsibilityInput');
+
+setupDynamicFields('createRequirementsInput');

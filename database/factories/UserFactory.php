@@ -22,7 +22,7 @@ class UserFactory extends Factory
             'password' => Hash::make('password1'),
             'user_id' => Uuid::uuid7()->toString(),
             'is_confirmed' => true,
-            'email_confirmed_at' => now(),
+            'email_verified_at' => now(),
         ];
     }
 

@@ -38,7 +38,7 @@ Route::prefix('auth')->name('login.')->group(function () {
  * - Email verification section
  * ---------------------------------
  */
-Route::prefix('/auth/email/verify')->middleware(['unverified', 'auth'])->group(
+Route::prefix('/auth/email/verify')->middleware('auth')->group(
     function () {
         Route::view('/show', 'auth.email.resend-email')->name(
             'verification.notice'

@@ -39,6 +39,10 @@ class EmailVerificationController extends Controller
     {
         $user = $request->user();
 
+        if ($request->user()?->hasVerifiedEmail()) {
+            return redirect()->to('home');
+        }
+
         event(new Registered($user));
 
         return back()->with('email-verify-message', 'Verification link sent!');
