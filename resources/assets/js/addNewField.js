@@ -1,4 +1,4 @@
-function setupDynamicFields(containerId) {
+function setupDynamicFields(containerId, inputName) {
     const container = document.getElementById(containerId);
 
     function addField() {
@@ -7,7 +7,7 @@ function setupDynamicFields(containerId) {
         group.classList.add('mt-3');
 
         group.innerHTML = `
-            <input type="text" class="form-control" name="items[]" required>
+            <input type="text" class="form-control" name="${inputName}[]" required>
             <button type="button" class="btn btn-danger remove-item">-</button>
             <button type="button" class="btn btn-primary add-item">+</button>
         `;
@@ -28,6 +28,6 @@ function setupDynamicFields(containerId) {
     });
 }
 
-setupDynamicFields('createResponsibilityInput');
+setupDynamicFields('createResponsibilityInput', 'responsibilities');
 
-setupDynamicFields('createRequirementsInput');
+setupDynamicFields('createRequirementsInput', 'requirements');

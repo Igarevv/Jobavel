@@ -7,6 +7,7 @@ namespace App\Service\Auth;
 use App\Contracts\RegisterDtoInterface;
 use App\DTO\Auth\RegisterEmployeeDto;
 use App\DTO\Auth\RegisterEmployerDto;
+use App\Persistence\Models\User;
 use App\Service\Auth\Registration\AuthFactory;
 use Illuminate\Auth\Events\Registered;
 
@@ -34,7 +35,8 @@ readonly class AuthService
         return new RegisterEmployerDto(
             companyName: $data['company'],
             email: $data['email'],
-            password: $this->passwordHasher->hash($data['password'])
+            password: $this->passwordHasher->hash($data['password']),
+            role: User::EMPLOYER
         );
     }
 
@@ -44,7 +46,8 @@ readonly class AuthService
             firstName: $data['firstName'],
             lastName: $data['lastName'],
             email: $data['email'],
-            password: $this->passwordHasher->hash($data['password'])
+            password: $this->passwordHasher->hash($data['password']),
+            role: User::EMPLOYEE
         );
     }
 

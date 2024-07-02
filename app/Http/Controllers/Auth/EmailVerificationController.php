@@ -6,7 +6,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CustomEmailVerificationRequest;
-use App\Persistence\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,18 +16,13 @@ class EmailVerificationController extends Controller
 
     public function verifyEmail(CustomEmailVerificationRequest $request
     ): View|RedirectResponse {
-        $user = User::query()
-            ->where('user_id', $request->route('user_id'))
-            ->firstOrFail();
+        $user = $request->fulfill();
 
-        if ($user->hasVerifiedEmail()) {
+        if ($user?->hasVerifiedEmail()) {
             return redirect()->to('home');
         }
 
-        $request->fulfill();
-        $user->refresh();
-
-        if ($user->is_confirmed) {
+        if ($user?->is_confirmed) {
             return view('auth.email.success');
         }
 
@@ -39,7 +33,7 @@ class EmailVerificationController extends Controller
     {
         $user = $request->user();
 
-        if ($request->user()?->hasVerifiedEmail()) {
+        if ($request->user()->hasVerifiedEmail()) {
             return redirect()->to('home');
         }
 

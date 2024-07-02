@@ -27,20 +27,12 @@ class RegisterController extends Controller
             $request->validated()
         );
 
-        try {
-            $this->authService->register($employee);
+        $this->authService->register($employee);
 
-            return redirect()->route('login.show')->with(
-                'register-success',
-                'Registration completed successfully! We sent you confirmation email, please check your inbox.'
-            );
-        } catch (\Exception $e) {
-            info($e->getMessage().'|'.$e->getLine().'|'.$e->getFile());
-            return redirect()->route('employee.register')->with(
-                'error',
-                'An error occurred while processing the request. Please try again or contact to support'
-            );
-        }
+        return redirect()->route('login.show')->with(
+            'register-success',
+            trans('alerts.register.success')
+        );
     }
 
 }

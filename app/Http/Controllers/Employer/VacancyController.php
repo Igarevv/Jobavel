@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Employer;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateVacancyRequest;
 use App\Persistence\Models\TechSkill;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class VacancyController extends Controller
@@ -37,7 +37,7 @@ class VacancyController extends Controller
         return view('employer.vacancy.create', ['skills' => $categories]);
     }
 
-    public function store(Request $request)
+    public function store(CreateVacancyRequest $request)
     {
         dd($request->all());
     }

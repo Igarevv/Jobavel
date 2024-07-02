@@ -5,20 +5,16 @@ declare(strict_types=1);
 namespace App\DTO\Auth;
 
 use App\Contracts\RegisterDtoInterface;
-use App\Persistence\Models\User;
 
 readonly class RegisterEmployerDto implements RegisterDtoInterface
 {
 
-    private string $role;
-
     public function __construct(
         private string $companyName,
         private string $email,
-        private string $password
-    ) {
-        $this->role = User::EMPLOYER;
-    }
+        private string $password,
+        private string $role
+    ) {}
 
     public function asDatabaseFields(): array
     {

@@ -15,11 +15,18 @@
                         <div class="my-5">
                             <h6 class="fw-bold text-decoration-underline">Choose skills that will be required for
                                 vacancy</h6>
-                            <x-categories.list :skills="$skills"></x-categories.list>
+                            <x-categories.list name="skillset" :skills="$skills"></x-categories.list>
+                            @error('skillset')
+                            <p class="text-danger text-center font-monospace fw-bold mt-2 h6">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div class="mb-5">
-                            <x-input.index type="text" label="Job title (ex. Middle Laravel Developer)"
+                            <h6 class="fw-bold text-decoration-underline">Job title (ex. Middle Laravel Developer)</h6>
+                            <x-input.index type="text"
                                            id="jobTitle" name="jobTitle" required></x-input.index>
+                            @error('jobTitle')
+                            <p class="text-danger text-center font-monospace fw-bold mt-2 h6">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div class="mb-5">
                             <h6 class="fw-bold text-decoration-underline">(Optional) Salary in $</h6>
@@ -27,19 +34,31 @@
                                 <span class="input-group-text">$</span>
                                 <x-input.index type="number" name="salary" id="salary" min="0"></x-input.index>
                             </div>
+                            @error('salary')
+                            <p class="text-danger text-center font-monospace fw-bold mt-2 h6">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div class="mb-5">
                             <h6 class="fw-bold text-decoration-underline">About job</h6>
                             <x-input.textarea rows="5" name="description"></x-input.textarea>
+                            @error('description')
+                            <p class="text-danger text-center font-monospace fw-bold mt-2 h6">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div class="mb-5">
                             <x-input.field-add id="createResponsibilityInput" name="responsibilities"
                                                label="Responsibilities (ex. Write clean, efficient and testable code)"></x-input.field-add>
+                            @error('responsibilities')
+                            <p class="text-danger text-center font-monospace fw-bold mt-2 h6">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div class="mb-5">
                             <x-input.field-add id="createRequirementsInput" name="requirements" label="Requirements (ex. Well-knowing
                                 PHP,
                                 basic of docker etc.)"></x-input.field-add>
+                            @error('requirements')
+                            <p class="text-danger text-center font-monospace fw-bold mt-2 h6">{{ $message }}</p>
+                            @enderror
                         </div>
                     </x-input.block>
                     <x-button.default class="float-end mb-5" type="submit">Create vacancy</x-button.default>

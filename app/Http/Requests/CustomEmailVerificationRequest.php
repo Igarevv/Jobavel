@@ -34,13 +34,14 @@ class CustomEmailVerificationRequest extends FormRequest
         return true;
     }
 
-    public function fulfill(): void
+    public function fulfill(): ?User
     {
         if ( ! $this->user->hasVerifiedEmail()) {
             $this->user->markEmailAsVerified();
 
             event(new Verified($this->user));
         }
+        return $this->user;
     }
 
     public function withValidator(Validator $validator): Validator

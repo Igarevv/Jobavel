@@ -20,7 +20,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 /*
  * ---------------------------------
- * - Authentication section
+ * -    Authentication section     -
  * ---------------------------------
  */
 Route::prefix('auth')->name('login.')->group(function () {
@@ -35,14 +35,14 @@ Route::prefix('auth')->name('login.')->group(function () {
 
 /*
  * ---------------------------------
- * - Email verification section
+ * -  Email verification section   -
  * ---------------------------------
  */
 Route::prefix('/auth/email/verify')->middleware('auth')->group(
     function () {
         Route::view('/show', 'auth.email.resend-email')->name(
             'verification.notice'
-        );
+        )->middleware('unverified');
         Route::get(
             '/{user_id}/{hash}',
             [EmailVerificationController::class, 'verifyEmail']

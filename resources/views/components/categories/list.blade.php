@@ -1,7 +1,11 @@
+@props([
+    'name',
+    'skills'
+])
 <div class="categories">
     @foreach($skills as $skill)
         <label class="category-label">
-            <input type="checkbox" name="categories[]" value="{{ $skill->id }}">
+            <input type="checkbox" name="{{ $name }}[]" value="{{ $skill->id }}">
             <span>{{ $skill->skill_name }}</span>
         </label>
     @endforeach

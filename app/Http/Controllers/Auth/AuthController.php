@@ -16,7 +16,10 @@ class AuthController extends Controller
 
     public function index(Request $request): View
     {
-        $request->getSession()->set('previous_url', url()->previous());
+        if (url()->previous() !== route('employer.register')
+            || url()->previous() !== route('employee.register')) {
+            $request->getSession()->set('previous_url', url()->previous());
+        }
 
         return view('login');
     }
@@ -37,7 +40,7 @@ class AuthController extends Controller
         }
 
         return back()->withErrors(
-            ['email' => 'Wrong email or password']
+            ['email' => trans('alerts.login.failed')]
         );
     }
 

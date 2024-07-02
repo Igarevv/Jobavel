@@ -9,16 +9,12 @@ use Symfony\Component\HttpFoundation\Response;
 class RedirectIfEmailVerified
 {
 
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->user()?->hasVerifiedEmail()) {
+        if ($request->user()->hasVerifiedEmail()) {
             return redirect()->to('home');
         }
+
         return $next($request);
     }
 

@@ -79,7 +79,7 @@
                                             </div>
                                         </x-input.block>
                                         @session('error')
-                                        <div class="alert alert-danger fw-bold">
+                                        <div class="alert alert-danger text-center fw-bold">
                                             {{ $value }}
                                         </div>
                                         @endsession

@@ -13,13 +13,6 @@ use Illuminate\Support\Facades\DB;
 class UserRepository implements UserRepositoryInterface
 {
 
-    protected string $table;
-
-    public function __construct()
-    {
-        $this->table = config('dbinfo.names.user');
-    }
-
     public function save(Dto $userData): User
     {
         return DB::transaction(function () use ($userData) {
