@@ -1,5 +1,7 @@
 <?php
 
+use App\Persistence\Models\Employer;
+use App\Persistence\Models\Vacancy;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,25 +17,30 @@ return new class extends Migration {
             $table->bigInteger('id')->unsigned()->generatedAs()->always()->from(
                 1001
             );
-            $table->foreignId('employer_id')->constrained()->cascadeOnDelete();
-            $table->string('job_title');
+            $table->foreignIdFor(Employer::class, 'employer_id')
+                ->constrained()
+                ->cascadeOnDelete();
+            $table->string('title');
             $table->integer('salary')->default(0);
-            $table->text('job_description');
-            $table->json('job_requirements');
-            $table->json('job_responsibilities');
+            $table->text('description');
+            $table->json('requirements');
+            $table->json('responsibilities');
+            $table->json('offers')->nullable();
             $table->integer('response_number')->default(0);
-            $table->timestamp('created_at')->useCurrent();
+            $table->boolean('is_published')->default(false);
             $table->primary('id');
-
-            $table->softDeletes();
         });
 
-        Schema::create('vacancy_tech_skills', function (Blueprint $table) {
-            $table->foreignId('vacancy_id')->constrained()->cascadeOnDelete();
+        Schema::create('tech_skill_vacancy', function (Blueprint $table) {
+            $table->foreignIdFor(Vacancy::class)
+                ->constrained()
+                ->cascadeOnDelete();
             $table->integer('tech_skill_id')->unsigned();
             $table->foreign('tech_skill_id')->references('id')->on(
                 'tech_skills'
             );
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
