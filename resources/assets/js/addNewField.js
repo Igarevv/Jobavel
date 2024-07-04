@@ -14,6 +14,7 @@ function setupDynamicFields(containerId, inputName) {
 
         container.appendChild(group);
 
+        // Attach event listeners to the new buttons
         group.querySelector('.remove-item').addEventListener('click', () => {
             group.remove();
         });
@@ -23,11 +24,22 @@ function setupDynamicFields(containerId, inputName) {
         });
     }
 
-    container.querySelector('.add-item').addEventListener('click', () => {
-        addField();
+    container.querySelectorAll('.add-item').forEach(addButton => {
+        addButton.addEventListener('click', () => {
+            addField();
+        });
+    });
+    
+    container.querySelectorAll('.remove-item').forEach(removeButton => {
+        removeButton.addEventListener('click', (event) => {
+            event.target.closest('.input-group').remove();
+        });
     });
 }
 
 setupDynamicFields('createResponsibilityInput', 'responsibilities');
 
 setupDynamicFields('createRequirementsInput', 'requirements');
+
+setupDynamicFields('createOffersInput', 'offers');
+

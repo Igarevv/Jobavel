@@ -8,4 +8,7 @@ return [
         'success' => 'Registration completed successfully! We sent you confirmation email, please check your inbox.',
         'error' => 'An error occurred while processing the request. Please try again or contact to support.',
     ],
+    'vacancy' => [
+        'added' => 'Vacancy was added successfully. Before publishing, please check your vacancy preview page',
+    ],
 ];

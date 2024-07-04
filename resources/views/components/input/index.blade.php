@@ -13,4 +13,4 @@
 @endisset
 <input id="{{ $id }}" {{ $attributes->class(['form-'.$formType]) }} @isset($value)value="{{ $value }}@endisset"
     {{ $attributes->merge(['type' => 'text']) }}
-    {{ $required ? 'required' : '' }} {{ $hidden ? 'hidden' : '' }}>
+    @required($required) {{ $hidden ? 'hidden' : '' }}>
