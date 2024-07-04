@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Log;
 
@@ -13,10 +14,11 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (InvalidRoleException $e) {
+        $this->reportable(function (ModelNotFoundException $e) {
             Log::error($e->getMessage());
-            return back()->with('error',
-                'Bad developer made some errors: invalid role');
+            return response()->json([
+                'message' => 'Invalid Entity ID specified',
+            ], 404);
         });
     }
 

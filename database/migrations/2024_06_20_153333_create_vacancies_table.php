@@ -14,9 +14,10 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('vacancies', function (Blueprint $table) {
-            $table->bigInteger('id')->unsigned()->generatedAs()->always()->from(
-                1001
-            );
+            $table->bigInteger('id')
+                ->unsigned()
+                ->generatedAs('START WITH 135158')
+                ->always();
             $table->foreignIdFor(Employer::class, 'employer_id')
                 ->constrained()
                 ->cascadeOnDelete();

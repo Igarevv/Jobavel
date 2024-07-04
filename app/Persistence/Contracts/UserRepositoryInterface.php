@@ -10,4 +10,6 @@ interface UserRepositoryInterface
 
     public function save(RegisterDtoInterface $userData): User;
 
+    public function getById(string|int $id): ?User;
+
 }

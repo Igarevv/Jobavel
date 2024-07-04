@@ -24,6 +24,15 @@ class UserRepository implements UserRepositoryInterface
         });
     }
 
+    public function getById(int|string $id): ?User
+    {
+        $columnName = is_numeric($id) ? 'id' : 'user_id';
+
+        return User::query()->where($columnName, $id)->first([
+            'user_id', 'email', 'role', 'is_confirmed', 'created_at',
+        ]);
+    }
+
     private function saveInUserTable(Dto $userData): User|Builder
     {
         $user = User::query()->create([

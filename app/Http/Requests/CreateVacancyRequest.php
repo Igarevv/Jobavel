@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\NullableDynamicFieldRule;
 use App\Rules\TechSkillsExistsRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -23,13 +24,49 @@ class CreateVacancyRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'skillset' => ['required', new TechSkillsExistsRule()],
-            'jobTitle' => ['required', 'string', 'max:255'],
-            'salary' => ['numeric', 'between:1,999999'],
+            'title' => ['required', 'string', 'max:255'],
+            'salary' => ['numeric', 'between:0,999999'],
             'description' => ['required', 'string'],
             'responsibilities.*' => ['required', 'string'],
             'requirements.*' => ['required', 'string'],
+            'offers.*' => ['nullable', 'string'],
+        ];
+
+        if (array_key_exists(1, $this->offers)) {
+            foreach ($this->offers as $key => $offer) {
+                $rules['offers.'.$key] = 'string';
+            }
+        }
+
+        return $rules;
+    }
+
+    public function validated($key = null, $default = null)
+    {
+        $data = parent::validated($key, $default);
+
+        if ($this->offers[0] === null) {
+            $data['offers'] = null;
+        }
+        
+        return $data;
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'responsibilities.*' => 'responsibility',
+            'requirements.*' => 'requirement',
+            'offers' => 'offer',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'offers.*' => 'This field required when other fields is provided',
         ];
     }
 
