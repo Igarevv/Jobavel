@@ -1,5 +1,5 @@
 <x-layout>
-    <x-slot:title>{{ 'Adidas Inc.' }} </x-slot:title>
+    <x-slot:title>{{ session('user.name') }} </x-slot:title>
 
     <x-header></x-header>
 

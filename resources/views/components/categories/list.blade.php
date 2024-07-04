@@ -3,16 +3,18 @@
     'skills'
 ])
 <div class="categories">
-    @foreach($skills as $skill)
+    @forelse($skills as $skill)
         <label class="category-label">
             <input type="checkbox" name="{{ $name }}[]" value="{{ $skill->id }}">
             <span>{{ $skill->skill_name }}</span>
         </label>
-    @endforeach
+    @empty
+        <p class="text-center h6 text-danger fw-bold">Skills set not found, please contact to support</p>
+    @endforelse
 </div>
 @once
-    @push('filters-css')
-        <link href="/assets/css/filters.css" type="text/css" rel="stylesheet">
+    @push('vacancy-css')
+        <link href="/assets/css/vacancy.css" type="text/css" rel="stylesheet">
     @endpush
 @endonce
 

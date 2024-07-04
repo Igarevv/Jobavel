@@ -16,9 +16,10 @@
     <div class="col-sm-4 offset-md-1 py-4">
         <div class="d-flex gap-3">
             <x-header.navli name="My vacancy" color="info">
-                <x-header.li><a href="{{ route('employer.vacancy.index') }}" class="text-light">Show vacancies</a>
+                <x-header.li><a href="{{ route('employer.vacancy.index') }}" class="text-light">Published vacancies</a>
                 </x-header.li>
-                <x-header.li><a href="#" class="text-light">Vacancy table</a></x-header.li>
+                <x-header.li><a href="{{ route('employer.vacancy.unpublished') }}" class="text-light">Unpublished
+                        vacancy</a></x-header.li>
             </x-header.navli>
             <x-header.navli name="Actions" color="danger">
                 <x-header.li><a href="{{ route('employer.vacancy.create') }}" class="text-light">Create new vacancy</a>
