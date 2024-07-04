@@ -3,7 +3,8 @@
 namespace Database\Seeders;
 
 use App\Persistence\Models\Employer;
-use App\Persistence\Models\User;
+use App\Persistence\Models\TechSkill;
+use App\Persistence\Models\Vacancy;
 use Illuminate\Database\Seeder;
 
 class EmployerSeeder extends Seeder
@@ -14,14 +15,16 @@ class EmployerSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(1)
-            ->has(
-                Employer::factory()->state(
-                    function (array $attributes, User $user) {
-                        return ['contact_email' => $user->email];
-                    }
-                )
-            )->state(['role' => 'employer'])->create();
+        $employer = Employer::factory()->create();
+
+        $vacancy = Vacancy::factory(2)->create([
+            'employer_id' => $employer->id,
+        ]);
+
+        foreach ($vacancy as $item) {
+            $randomTechSkills = TechSkill::inRandomOrder()->limit(5)->get();
+            $item->techSkills()->sync($randomTechSkills);
+        }
     }
 
 }

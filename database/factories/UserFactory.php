@@ -19,7 +19,7 @@ class UserFactory extends Factory
     {
         return [
             'email' => fake()->safeEmail(),
-            'password' => Hash::make('password1'),
+            'password' => Hash::make('password'),
             'user_id' => Uuid::uuid7()->toString(),
             'is_confirmed' => true,
             'email_verified_at' => now(),

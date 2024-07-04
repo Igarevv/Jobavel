@@ -39,7 +39,12 @@ return new class extends Migration {
             $table->foreign('tech_skill_id')->references('id')->on(
                 'tech_skills'
             );
-            $table->timestamps();
+            $table->timestamp('created_at')
+                ->default('NOW()')
+                ->nullable();
+            $table->timestamp('updated_at')
+                ->default('NOW()')
+                ->nullable();
             $table->softDeletes();
         });
     }
