@@ -47,3 +47,6 @@ thead {
 .category-label input[type="checkbox"]:checked + span {
     color: #f9322c;
 }
+.align-middle {
+    vertical-align: middle !important;
+}

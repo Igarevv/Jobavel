@@ -9,11 +9,11 @@
                 <div class="d-flex align-items-center flex-column">
                     <div class="logo-company-name">
                         <x-image.logo class="mt-2" filename="{{ 'Adidas_Logo.jpg' }}" imgColSize="6"></x-image.logo>
-                        <h2 class="text-center fw-bold red">Adidas Inc.</h2>
+                        <h2 class="text-center fw-bold red">{{ session('user.name') }}</h2>
                     </div>
                 </div>
                 <div class="row mt-5 justify-content-center">
-                    <x-card.linkcard href="{{ route('employer.vacancy.index') }}">
+                    <x-card.linkcard href="{{ route('employer.vacancy.published') }}">
                         <h3>Your</h3>
                         <h5>total number of vacancy</h5>
                         <p>{{ 0 }}</p>
@@ -48,7 +48,8 @@
                     </x-button.outline>
                 </x-input.block>
                 <x-input.block form="group" class="mb-3 col-12">
-                    <x-input.index type="text" class="py-2" name="companyName" id="companyName" value="Adidas Inc."
+                    <x-input.index type="text" class="py-2" name="companyName" id="companyName"
+                                   value="{{ '' }}"
                                    label="Your company name"></x-input.index>
                 </x-input.block>
                 <x-input.block form="outline" class="mb-3 col-12">

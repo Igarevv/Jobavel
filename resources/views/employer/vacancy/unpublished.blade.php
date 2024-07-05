@@ -1,192 +1,73 @@
 <x-layout>
-    <x-slot:title>{{ session('user.name') }} </x-slot:title>
+    <x-slot:title>{{ session('user.name') ?? config('app.name') }} </x-slot:title>
 
     <x-header></x-header>
+
+    @push('vacancy-css')
+        <link href="/assets/css/vacancy.css" type="text/css" rel="stylesheet">
+    @endpush
 
     <x-main>
         <div class="container mt-5 mb-5">
             <div class="text-center">
                 <h2 class="fw-bold">Your company unpublished vacancies</h2>
-                <h5 class="fw-bold text-muted">Please, before published, make sure that your vacancy is ready to be
+                <h5 class="fw-bold text-muted">Please, before publishing, make sure that your vacancy is ready to be
                     published</h5>
             </div>
-            <section class="intro">
-                <div class="bg-image h-100" style="background-color: #f5f7fa;">
-                    <div class="mask d-flex align-items-center h-100">
-                        <div class="container">
-                            <div class="row justify-content-center">
-                                <div class="col-12">
-                                    <div class="card shadow-2-strong">
-                                        <div class="card-body p-0">
-                                            <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true"
-                                                 style="position: relative; height: 700px">
-                                                <table class="table table-dark mb-0">
-                                                    <thead style="background-color: #393939;">
-                                                    <tr class="text-uppercase text-success">
-                                                        <th scope="col">Class name</th>
-                                                        <th scope="col">Type</th>
-                                                        <th scope="col">Hours</th>
-                                                        <th scope="col">Trainer</th>
-                                                        <th scope="col">Spots</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr>
-                                                        <td>Like a butterflies</td>
-                                                        <td>Boxing</td>
-                                                        <td>9:00 AM - 11:00 AM</td>
-                                                        <td>Aaron Chapman</td>
-                                                        <td>10</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Mind &amp; Body</td>
-                                                        <td>Yoga</td>
-                                                        <td>8:00 AM - 9:00 AM</td>
-                                                        <td>Adam Stewart</td>
-                                                        <td>15</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Crit Cardio</td>
-                                                        <td>Gym</td>
-                                                        <td>9:00 AM - 10:00 AM</td>
-                                                        <td>Aaron Chapman</td>
-                                                        <td>10</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Wheel Pose Full Posture</td>
-                                                        <td>Yoga</td>
-                                                        <td>7:00 AM - 8:30 AM</td>
-                                                        <td>Donna Wilson</td>
-                                                        <td>15</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Playful Dancer's Flow</td>
-                                                        <td>Yoga</td>
-                                                        <td>8:00 AM - 9:00 AM</td>
-                                                        <td>Donna Wilson</td>
-                                                        <td>10</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Zumba Dance</td>
-                                                        <td>Dance</td>
-                                                        <td>5:00 PM - 7:00 PM</td>
-                                                        <td>Donna Wilson</td>
-                                                        <td>20</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Cardio Blast</td>
-                                                        <td>Gym</td>
-                                                        <td>5:00 PM - 7:00 PM</td>
-                                                        <td>Randy Porter</td>
-                                                        <td>10</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Pilates Reformer</td>
-                                                        <td>Gym</td>
-                                                        <td>8:00 AM - 9:00 AM</td>
-                                                        <td>Randy Porter</td>
-                                                        <td>10</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Supple Spine and Shoulders</td>
-                                                        <td>Yoga</td>
-                                                        <td>6:30 AM - 8:00 AM</td>
-                                                        <td>Randy Porter</td>
-                                                        <td>15</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Yoga for Divas</td>
-                                                        <td>Yoga</td>
-                                                        <td>9:00 AM - 11:00 AM</td>
-                                                        <td>Donna Wilson</td>
-                                                        <td>20</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Virtual Cycle</td>
-                                                        <td>Gym</td>
-                                                        <td>8:00 AM - 9:00 AM</td>
-                                                        <td>Randy Porter</td>
-                                                        <td>20</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Like a butterfly</td>
-                                                        <td>Boxing</td>
-                                                        <td>9:00 AM - 11:00 AM</td>
-                                                        <td>Aaron Chapman</td>
-                                                        <td>10</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Mind &amp; Body</td>
-                                                        <td>Yoga</td>
-                                                        <td>8:00 AM - 9:00 AM</td>
-                                                        <td>Adam Stewart</td>
-                                                        <td>15</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Crit Cardio</td>
-                                                        <td>Gym</td>
-                                                        <td>9:00 AM - 10:00 AM</td>
-                                                        <td>Aaron Chapman</td>
-                                                        <td>10</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Wheel Pose Full Posture</td>
-                                                        <td>Yoga</td>
-                                                        <td>7:00 AM - 8:30 AM</td>
-                                                        <td>Donna Wilson</td>
-                                                        <td>15</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Playful Dancer's Flow</td>
-                                                        <td>Yoga</td>
-                                                        <td>8:00 AM - 9:00 AM</td>
-                                                        <td>Donna Wilson</td>
-                                                        <td>10</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Zumba Dance</td>
-                                                        <td>Dance</td>
-                                                        <td>5:00 PM - 7:00 PM</td>
-                                                        <td>Donna Wilson</td>
-                                                        <td>20</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Cardio Blast</td>
-                                                        <td>Gym</td>
-                                                        <td>5:00 PM - 7:00 PM</td>
-                                                        <td>Randy Porter</td>
-                                                        <td>10</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Pilates Reformer</td>
-                                                        <td>Gym</td>
-                                                        <td>8:00 AM - 9:00 AM</td>
-                                                        <td>Randy Porter</td>
-                                                        <td>10</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Supple Spine and Shoulders</td>
-                                                        <td>Yoga</td>
-                                                        <td>6:30 AM - 8:00 AM</td>
-                                                        <td>Randy Porter</td>
-                                                        <td>15</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Yoga for Divas</td>
-                                                        <td>Yoga</td>
-                                                        <td>9:00 AM - 11:00 AM</td>
-                                                        <td>Donna Wilson</td>
-                                                        <td>20</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Virtual Cycle</td>
-                                                        <td>Gym</td>
-                                                        <td>8:00 AM - 9:00 AM</td>
-                                                        <td>Randy Porter</td>
-                                                        <td>20</td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
+            @if(! $vacancies)
+                <div class="d-flex flex-column align-items-center justify-content-center" style="height: 70vh;">
+                    <h1 class="text-danger fw-bold">Vacancies not found</h1>
+                    <p class="text-muted text-sm">Create a new one or check your trashed vacancies</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="{{ route('employer.vacancy.create') }}" class="btn btn-danger">Create new vacancy</a>
+                        <a href="" class="btn btn-danger">View my trash</a>
+                    </div>
+                </div>
+            @else
+                <section class="intro">
+                    <div class="bg-image h-100">
+                        <div class="mask d-flex align-items-center h-100">
+                            <div class="container">
+                                <div class="row justify-content-center">
+                                    <div class="col-12">
+                                        <div class="card shadow-2-strong">
+                                            <div class="card-body p-0">
+                                                <div class="table-responsive table-scroll"
+                                                     data-mdb-perfect-scrollbar="true"
+                                                     style="position: relative; height: 700px">
+                                                    <table class="table table-dark mb-0">
+                                                        <thead style="background-color: #393939;">
+                                                        <tr class="text-uppercase text-success">
+                                                            <th scope="col">No.</th>
+                                                            <th scope="col">Vacancy ID</th>
+                                                            <th scope="col">Title</th>
+                                                            <th scope="col">Salary</th>
+                                                            <th scope="col">Created At</th>
+                                                            <th scope="col"></th>
+                                                            <th scope="col"></th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @foreach($vacancies as $vacancy)
+                                                            <tr class="align-middle">
+                                                                <td>{{ $loop->iteration }}</td>
+                                                                <td>{{ $vacancy->id }}</td>
+                                                                <td>{{ $vacancy->title }}</td>
+                                                                <td>{{ $vacancy->salary }}</td>
+                                                                <td>{{ $vacancy->created_at }}</td>
+                                                                <td class="text-center">
+                                                                    <x-button.outline colorType="light">Show preview
+                                                                    </x-button.outline>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <x-button.outline colorType="success">Publish
+                                                                    </x-button.outline>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -194,16 +75,11 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            @endif
         </div>
     </x-main>
 
     <x-footer></x-footer>
 </x-layout>
 
-@once
-    @push('vacancy-css')
-        <link href="/assets/css/vacancy.css" type="text/css" rel="stylesheet">
-    @endpush
-@endonce

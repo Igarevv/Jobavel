@@ -27,6 +27,7 @@ class Vacancy extends Model
         'requirements' => 'array',
         'responsibilities' => 'array',
         'offers' => 'array',
+        'created_at' => 'datetime',
     ];
 
     public $timestamps = false;
@@ -37,14 +38,19 @@ class Vacancy extends Model
         'requirements', 'responsibilities', 'offers',
     ];
 
-    public function techSkills(): BelongsToMany
+    public function techSkill(): BelongsToMany
     {
         return $this->belongsToMany(TechSkill::class);
     }
 
-    public function employers(): BelongsTo
+    public function employer(): BelongsTo
     {
         return $this->belongsTo(Employer::class, ownerKey: 'id');
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->is_published;
     }
 
 }

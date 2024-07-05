@@ -34,25 +34,17 @@ Route::prefix('employer')->name('employer.')->group(function () {
          * -     Vacancy manipulation      -
          * ---------------------------------
          */
-        Route::name('vacancy.')->group(function () {
-            Route::middleware(['verified'])->group(function () {
-                /*
-                 * ---------------------------------
-                 * -     None resource methods     -
-                 * ---------------------------------
-                 */
-                Route::prefix('/vacancy')->group(function () {
-                    Route::get('/published',
-                        [VacancyController::class, 'published'])
-                        ->name('published');
-                    Route::get('/unpublished',
-                        [VacancyController::class, 'unpublished'])
-                        ->name('unpublished');
-                });
-                
-                Route::resource('vacancy', VacancyController::class)
-                    ->only(['create', 'store']);
+        Route::middleware(['verified'])->group(function () {
+            Route::prefix('vacancy')->name('vacancy.')->group(function () {
+                Route::get('/published',
+                    [VacancyController::class, 'published'])
+                    ->name('published');
+                Route::get('/unpublished',
+                    [VacancyController::class, 'unpublished'])
+                    ->name('unpublished');
             });
+            Route::resource('vacancy', VacancyController::class)
+                ->only(['create', 'store']);
         });
     });
 

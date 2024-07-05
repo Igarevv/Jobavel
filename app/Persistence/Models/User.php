@@ -57,6 +57,13 @@ class User extends Model implements AuthContract, MustVerifyEmail
         return $this->hasOne(Employer::class);
     }
 
+    public function getUserIdByRole(): int
+    {
+        $user = $this->getRole()->getAssociatedDataByRole($this);
+        $this->employer->id;
+        return $user->id;
+    }
+
     public function getRole(): Role
     {
         return Role::tryFrom($this->role);

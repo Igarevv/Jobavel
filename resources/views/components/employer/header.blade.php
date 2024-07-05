@@ -16,7 +16,8 @@
     <div class="col-sm-4 offset-md-1 py-4">
         <div class="d-flex gap-3">
             <x-header.navli name="My vacancy" color="info">
-                <x-header.li><a href="{{ route('employer.vacancy.index') }}" class="text-light">Published vacancies</a>
+                <x-header.li><a href="{{ route('employer.vacancy.published') }}" class="text-light">Published
+                        vacancies</a>
                 </x-header.li>
                 <x-header.li><a href="{{ route('employer.vacancy.unpublished') }}" class="text-light">Unpublished
                         vacancy</a></x-header.li>

@@ -32,7 +32,7 @@ class Employer extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function vacancies(): HasMany
+    public function vacancy(): HasMany
     {
         return $this->hasMany(Vacancy::class);
     }

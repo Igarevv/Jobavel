@@ -7,8 +7,10 @@ namespace App\Http\Controllers\Employer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateVacancyRequest;
 use App\Persistence\Models\TechSkill;
+use App\Persistence\Models\Vacancy;
 use App\Service\Employer\VacancyService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class VacancyController extends Controller
@@ -34,12 +36,19 @@ class VacancyController extends Controller
                 'Git',
             ],
         ];
-        return view('employer.vacancy.list', ['jobInfo' => $jobInfo]);
+        return view('employer.vacancy.published', ['jobInfo' => $jobInfo]);
     }
 
-    public function unpublished()
+    public function unpublished(Request $request): View
     {
-        return view('employer.vacancy.unpublished');
+        $employerId = $request->user()->getUserIdByRole();
+
+        $vacancies = Vacancy::where('employer_id', $employerId)
+            ->where('is_published', false)
+            ->get(['id', 'title', 'salary', 'created_at']);
+
+        return view('employer.vacancy.unpublished',
+            ['vacancies' => $vacancies]);
     }
 
     public function create(): View

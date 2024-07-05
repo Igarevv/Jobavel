@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\View\Components\LogoView;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -26,6 +27,9 @@ class ViewServiceProvider extends ServiceProvider
         Blade::component('image.logo', LogoView::class);
         View::share('currentYear', date('Y'));
 
+        View::composer('*', function ($view) {
+            $view->with('user.role', Session::get('user.role'));
+        });
         Blade::directive('greeting', function () {
             return '<?php
                 $currentHour = now()->hour;

@@ -29,6 +29,7 @@ return new class extends Migration {
             $table->json('offers')->nullable();
             $table->integer('response_number')->default(0);
             $table->boolean('is_published')->default(false);
+            $table->timestamp('created_at')->default('NOW()')->nullable();
             $table->primary('id');
         });
 
@@ -40,9 +41,6 @@ return new class extends Migration {
             $table->foreign('tech_skill_id')->references('id')->on(
                 'tech_skills'
             );
-            $table->timestamp('created_at')
-                ->default('NOW()')
-                ->nullable();
             $table->timestamp('updated_at')
                 ->default('NOW()')
                 ->nullable();

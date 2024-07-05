@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Enums;
 
 use App\Persistence\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 enum Role: string
@@ -28,6 +29,14 @@ enum Role: string
         return match ($this) {
             self::EMPLOYER => $user->employer(),
             self::EMPLOYEE => $user->employee()
+        };
+    }
+
+    public function getAssociatedDataByRole(User $user): Model
+    {
+        return match ($this) {
+            self::EMPLOYER => $user->employer,
+            self::EMPLOYEE => $user->employee
         };
     }
 
