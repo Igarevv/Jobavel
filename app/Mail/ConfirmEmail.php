@@ -2,20 +2,20 @@
 
 namespace App\Mail;
 
-use App\Persistence\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\URL;
 
 class ConfirmEmail extends Mailable
 {
 
     use Queueable, SerializesModels;
 
-    public function __construct(protected User $user) {}
+    public function __construct(protected int $code)
+    {
+    }
 
     public function envelope(): Envelope
     {
@@ -26,12 +26,10 @@ class ConfirmEmail extends Mailable
 
     public function content(): Content
     {
-        $verifiedUrl = $this->verificationUrl();
- 
         return new Content(
             markdown: 'auth.email.verify-email',
             with: [
-                'verificationUrl' => $verifiedUrl,
+                'code' => $this->code,
             ]
         );
     }
@@ -44,14 +42,6 @@ class ConfirmEmail extends Mailable
     public function attachments(): array
     {
         return [];
-    }
-
-    public function verificationUrl(): string
-    {
-        return URL::signedRoute('verification.verify', [
-            'user_id' => $this->user->user_id,
-            'hash' => sha1($this->user->getEmailForVerification()),
-        ]);
     }
 
 }

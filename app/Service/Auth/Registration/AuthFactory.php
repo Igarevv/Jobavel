@@ -11,13 +11,17 @@ use App\Persistence\Models\User;
 use App\Service\Auth\Registration\Employee\EmployeeRegister;
 use App\Service\Auth\Registration\Employer\EmployerRegister;
 
-class AuthFactory
+readonly class AuthFactory
 {
 
     public function __construct(
-        private readonly UserRepositoryInterface $repository
-    ) {}
+        private UserRepositoryInterface $repository
+    ) {
+    }
 
+    /**
+     * @throws InvalidRoleException
+     */
     public function makeRegister(string $role): RoleAuthServiceInterface
     {
         return match ($role) {
