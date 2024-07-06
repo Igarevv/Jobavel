@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Employer;
 
+use App\DTO\Auth\RegisterEmployerDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EmployerRegisterRequest;
 use App\Service\Auth\AuthService;
@@ -15,7 +16,8 @@ class RegisterController extends Controller
 
     public function __construct(
         private readonly AuthService $authService
-    ) {}
+    ) {
+    }
 
     public function __invoke(EmployerRegisterRequest $request
     ): RedirectResponse|View {
@@ -23,9 +25,7 @@ class RegisterController extends Controller
             return view('employer.register');
         }
 
-        $employer = $this->authService->createEmployerRegisterDto(
-            $request->validated()
-        );
+        $employer = RegisterEmployerDto::fromRequest($request);
 
         $this->authService->register($employer);
 

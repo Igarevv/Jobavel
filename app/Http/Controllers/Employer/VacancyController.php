@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Employer;
 
+use App\DTO\VacancyDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateVacancyRequest;
 use App\Persistence\Models\TechSkill;
@@ -18,7 +19,8 @@ class VacancyController extends Controller
 
     public function __construct(
         protected VacancyService $vacancyService
-    ) {}
+    ) {
+    }
 
     public function published()
     {
@@ -61,11 +63,11 @@ class VacancyController extends Controller
 
     public function store(CreateVacancyRequest $request): RedirectResponse
     {
-        $vacancyData = $request->validated();
+        $vacancyDto = VacancyDto::fromRequest($request);
 
-        $vacancyData['employer_id'] = $request->session()->get('user.emp_id');
+        $employerId = $request->session()->get('user.emp_id');
 
-        $this->vacancyService->create($vacancyData);
+        $this->vacancyService->create($employerId, $vacancyDto);
         /*return redirect()
             ->route('employer.vacancy.table')
             ->with('vacancy-added', trans('vacancy.added'));*/

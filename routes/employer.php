@@ -26,8 +26,10 @@ Route::prefix('employer')->name('employer.')->group(function () {
          * -      Employer home page       -
          * ---------------------------------
          */
-        Route::get('/main', [HomeController::class, 'index'])
-            ->name('main');
+        Route::controller(HomeController::class)->group(function () {
+            Route::get('/main', 'index')->name('main');
+            Route::post('/update', 'update')->name('update');
+        });
 
         /*
          * ---------------------------------
