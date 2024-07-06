@@ -12,14 +12,17 @@ use App\Persistence\Repositories\EmployerAccountRepository;
 class AccountRepositoryFactory
 {
 
-    protected string $role = '';
-
+    /**
+     * @throws InvalidRoleException
+     */
     public function make(): AccountRepositoryInterface
     {
-        return match ($this->role) {
+        $role = auth()->user()->role;
+
+        return match ($role) {
             User::EMPLOYER => new EmployerAccountRepository(),
             //User::EMPLOYEE => new EmployeeAccountRepository(),
-            default => throw new InvalidRoleException('Tried to get repository for invalid role '.$this->role)
+            default => throw new InvalidRoleException('Tried to get repository for invalid role '.$role)
         };
     }
 

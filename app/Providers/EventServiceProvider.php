@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\ContactEmailUpdatedEvent;
 use App\Listeners\SendConfirmEmailAfterRegister;
+use App\Listeners\SendVerificationCodeEmail;
 use App\Listeners\SuccessfulLogin;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;
@@ -23,6 +25,9 @@ class EventServiceProvider extends ServiceProvider
         Login::class => [
             SuccessfulLogin::class,
         ],
+        ContactEmailUpdatedEvent::class => [
+            SendVerificationCodeEmail::class
+        ]
     ];
 
     /**
