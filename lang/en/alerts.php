@@ -11,4 +11,8 @@ return [
     'vacancy' => [
         'added' => 'Vacancy was added successfully. Before publishing, please check your vacancy preview page',
     ],
+    'employer-account' => [
+        'updated' => 'Your company data was successfully updated',
+        'email-verified' => 'Your new contact email verified successfully'
+    ]
 ];

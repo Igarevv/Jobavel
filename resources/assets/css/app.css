@@ -143,6 +143,7 @@
     height: auto;
     align-items: center;
     border-radius: 10% / 50%;
+    padding: 1rem 1rem;
 }
 
 @media (max-width: 575.98px) {
@@ -236,6 +237,7 @@
     .maxd-block {
         display: block;
     }
+
     .maxd-inline-block {
         display: inline-block;
     }
@@ -260,6 +262,7 @@
     .navbar-brand {
         margin-bottom: 0;
     }
+
     .logo-greeting {
         flex-direction: column;
         align-items: center;
@@ -270,6 +273,7 @@
     .navbar-brand {
         margin-bottom: 0;
     }
+
     .logo-greeting {
         flex-direction: row;
         align-items: center;

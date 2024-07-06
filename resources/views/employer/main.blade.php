@@ -41,9 +41,19 @@
 
         <div class="container" @style(["margin-bottom:6rem"])>
             <h2 class="text-center mb-3">Your company public information</h2>
-            <form class="w-75 mx-auto" method="post" action="{{ route('employer.update') }}">
+            <form class="w-75 mx-auto" method="post" action="{{ route('employer.account.update') }}">
                 @session('updated-success')
-                <div class="alert alert-success text-center fw-bold">
+                <div class="alert alert-success text-center fw-bold my-2">
+                    {{ $value }}
+                </div>
+                @endsession
+                @session('verification-success')
+                <div class="alert alert-success text-center fw-bold my-2">
+                    {{ $value }}
+                </div>
+                @endsession
+                @session('invalid-code')
+                <div class="alert alert-danger text-center fw-bold my-2">
                     {{ $value }}
                 </div>
                 @endsession
@@ -77,26 +87,27 @@
                     <p class="text-danger">{{ $message }}</p>
                     @enderror
                 </x-input.block>
+                @if(session('frontend.show-button-for-modal'))
+                    <x-button.default class="float-start" type="button" data-bs-toggle="modal" colorType="danger"
+                                      id="showEnterCodeModal"
+                                      data-bs-target="#updatedSuccess">Enter code again
+                    </x-button.default>
+                @endif
                 <x-button.default class="float-end" type="submit">Save changes</x-button.default>
             </form>
         </div>
 
-        @if(session('email-updated-success'))
-            <x-modal.index id="updatedSuccess">
-                <x-modal.withform title="Enter the confirmation code" btnActionName="Save changes" actionPath="#"
-                                  enctype="multipart/form-data">
-                    <x-input.index type="text" id="checkCode" name="code"
-                                   label="We sent to your new contact email code with 6-digits, please enter it here"
-                                   required></x-input.index>
-                </x-modal.withform>
-            </x-modal.index>
-
-            <script>
-                $(document).ready(function () {
-                    $('#updatedSuccess').modal('show');
-                });
-            </script>
-        @endif
+        <x-modal.index id="updatedSuccess">
+            <x-modal.withform title="Enter the confirmation code" btnActionName="Save changes"
+                              actionPath="{{ route('employer.account.verify-contact-email') }}">
+                <x-input.index type="text" id="checkCode" name="code"
+                               label="We sent to your new contact email code with 6-digits, please enter it here"
+                               required></x-input.index>
+                @if(session('frontend.code-expired'))
+                    <p class="text-danger">{{ session('frontend.code-expired') }}</p>
+                @endif
+            </x-modal.withform>
+        </x-modal.index>
 
         <x-modal.index id="changeLogo">
             <x-modal.withform title="Change logo" btnActionName="Save changes" actionPath="#"
@@ -111,6 +122,14 @@
     </x-main>
 
     <x-footer></x-footer>
+
+    @if(session('frontend.email-updated-success') || session('frontend.code-expired'))
+        <script>
+            $(document).ready(function () {
+                $('#updatedSuccess').modal('show');
+            });
+        </script>
+    @endif
 
     <script>
         document.addEventListener("DOMContentLoaded", function (event) {

@@ -8,6 +8,7 @@
 ])
 
 <form action="{{ $actionPath }}" method="{{ $method }}" enctype="{{ $enctype }}">
+    @csrf
     @if($withClose)
         <div class="modal-header">
             <h5 class="modal-title" id="staticBackdropLabel">{{ $title }}</h5>
@@ -21,6 +22,6 @@
         @if($withClose)
             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
         @endif
-        <button type="button" class="btn btn-primary">{{ $btnActionName }}</button>
+        <button type="submit" class="btn btn-primary">{{ $btnActionName }}</button>
     </div>
 </form>
