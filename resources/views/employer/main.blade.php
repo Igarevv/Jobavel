@@ -52,11 +52,6 @@
                     {{ $value }}
                 </div>
                 @endsession
-                @session('invalid-code')
-                <div class="alert alert-danger text-center fw-bold my-2">
-                    {{ $value }}
-                </div>
-                @endsession
                 <x-input.block form="group" class="d-flex justify-content-between col-12">
                     @csrf
                     <label class="fw-bold" for="exampleFormControlInput1">Your company logo</label>
@@ -98,7 +93,7 @@
         </div>
 
         <x-modal.index id="updatedSuccess">
-            <x-modal.withform title="Enter the confirmation code" btnActionName="Save changes"
+            <x-modal.withform title="Enter the confirmation code" btnActionName="Verify contact email"
                               actionPath="{{ route('employer.account.verify-contact-email') }}">
                 <x-input.index type="text" id="checkCode" name="code"
                                label="We sent to your new contact email code with 6-digits, please enter it here"

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Employer\EmployerAccountController;
 use App\Http\Controllers\Employer\HomeController;
 use App\Http\Controllers\Employer\RegisterController;
 use App\Http\Controllers\Employer\VacancyController;
@@ -26,9 +27,16 @@ Route::prefix('employer')->name('employer.')->group(function () {
          * -      Employer home page       -
          * ---------------------------------
          */
-        Route::controller(HomeController::class)->group(function () {
-            Route::get('/main', 'index')->name('main');
-            Route::post('/update', 'update')->name('update');
+        Route::get('/main', [HomeController::class, 'index'])->name('main');
+
+        /*
+         * ---------------------------------
+         * -       Employer account        -
+         * ---------------------------------
+         */
+        Route::controller(EmployerAccountController::class)->name('account.')->group(function () {
+            Route::post('/account/update', 'update')->name('update');
+            Route::post('/account/verify-contact-email', 'verifyContactEmail')->name('verify-contact-email');
         });
 
         /*

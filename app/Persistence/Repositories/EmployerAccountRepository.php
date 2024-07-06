@@ -33,6 +33,10 @@ class EmployerAccountRepository implements AccountRepositoryInterface
         $employer->company_name = $data['name'];
         $employer->company_description = $data['description'];
 
+        if ($employer->isDirty('contact_email')) {
+            $employer->contact_email_verified = false;
+        }
+
         $employer->save();
 
         return $employer;
@@ -42,13 +46,38 @@ class EmployerAccountRepository implements AccountRepositoryInterface
     {
         $code = random_int(100_000, 999_999);
 
-        DB::table('verification_codes')->insert([
-            'user_id' => $userId,
-            'code' => $code,
-            'expires_at' => Carbon::now()->addMinutes(10),
-        ]);
+        DB::transaction(function () use ($code, $userId) {
+            $this->deleteCode($userId);
+
+            DB::table('verification_codes')->insert([
+                'user_id' => $userId,
+                'code' => $code,
+                'expires_at' => Carbon::now()->addMinutes(1),
+            ]);
+        });
 
         return $code;
+    }
+
+    public function setEmployerContactEmailVerified(string|int $userId): void
+    {
+        DB::transaction(function () use ($userId) {
+            $this->deleteCode($userId);
+
+            Employer::query()->where('employer_id', $userId)->update([
+                'contact_email_verified' => true
+            ]);
+        });
+    }
+
+    public function getCodeByUserId(string|int $userId): \stdClass
+    {
+        return DB::table('verification_codes')->where('user_id', $userId)->first();
+    }
+
+    protected function deleteCode(int|string $userId): void
+    {
+        DB::table('verification_codes')->where('user_id', $userId)->delete();
     }
 
 }
