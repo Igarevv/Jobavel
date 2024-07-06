@@ -8,7 +8,8 @@
             <div class="container">
                 <div class="d-flex align-items-center flex-column">
                     <div class="logo-company-name">
-                        <x-image.logo class="mt-2" filename="{{ 'Adidas_Logo.jpg' }}" imgColSize="6"></x-image.logo>
+                        <x-image.logo class="mt-2" filename="{{ $employer->company_logo }}"
+                                      imgColSize="6"></x-image.logo>
                         <h2 class="text-center fw-bold red">{{ session('user.name') }}</h2>
                     </div>
                 </div>
@@ -40,36 +41,69 @@
 
         <div class="container" @style(["margin-bottom:6rem"])>
             <h2 class="text-center mb-3">Your company public information</h2>
-            <form class="w-75 mx-auto" method="post">
+            <form class="w-75 mx-auto" method="post" action="{{ route('employer.update') }}">
+                @session('updated-success')
+                <div class="alert alert-success text-center fw-bold">
+                    {{ $value }}
+                </div>
+                @endsession
                 <x-input.block form="group" class="d-flex justify-content-between col-12">
+                    @csrf
                     <label class="fw-bold" for="exampleFormControlInput1">Your company logo</label>
                     <x-button.outline data-bs-toggle="modal" data-bs-target="#changeLogo" colorType="danger">Change
                         logo
                     </x-button.outline>
                 </x-input.block>
                 <x-input.block form="group" class="mb-3 col-12">
-                    <x-input.index type="text" class="py-2" name="companyName" id="companyName"
-                                   value="{{ '' }}"
+                    <x-input.index type="text" class="py-2" name="name" id="companyName"
+                                   value="{{ old('name') ?? session('user.name') }}"
                                    label="Your company name"></x-input.index>
+                    @error('name')
+                    <p class="text-danger">{{ $message }}</p>
+                    @enderror
                 </x-input.block>
                 <x-input.block form="outline" class="mb-3 col-12">
-                    <x-input.textarea id="description" label="Your company description"
-                                      name="description"></x-input.textarea>
+                    <x-input.textarea id="description" label="Your company description" rows="5"
+                                      name="description">{{ old('description') ?? $employer->company_description }}</x-input.textarea>
+                    @error('description')
+                    <p class="text-danger">{{ $message }}</p>
+                    @enderror
                 </x-input.block>
                 <x-input.block form="group" class="mb-3 col-12">
-                    <x-input.index type="email" class="py-2" name="contactEmail" id="contactEmail"
-                                   value="example@gmail.com" label="Your company contact email"></x-input.index>
+                    <x-input.index type="email" class="py-2" name="email" id="contactEmail"
+                                   value="{{ old('email') ?? $employer->contact_email }}"
+                                   label="Your company contact email"></x-input.index>
+                    @error('email')
+                    <p class="text-danger">{{ $message }}</p>
+                    @enderror
                 </x-input.block>
                 <x-button.default class="float-end" type="submit">Save changes</x-button.default>
             </form>
         </div>
 
+        @if(session('email-updated-success'))
+            <x-modal.index id="updatedSuccess">
+                <x-modal.withform title="Enter the confirmation code" btnActionName="Save changes" actionPath="#"
+                                  enctype="multipart/form-data">
+                    <x-input.index type="text" id="checkCode" name="code"
+                                   label="We sent to your new contact email code with 6-digits, please enter it here"
+                                   required></x-input.index>
+                </x-modal.withform>
+            </x-modal.index>
+
+            <script>
+                $(document).ready(function () {
+                    $('#updatedSuccess').modal('show');
+                });
+            </script>
+        @endif
+
         <x-modal.index id="changeLogo">
             <x-modal.withform title="Change logo" btnActionName="Save changes" actionPath="#"
-                              enctype="multipart/form-data">
+                              enctype="multipart/form-data" withClose>
                 <x-input.index type="file" id="chooseNewLogo" name="logo" label="Choose logo" required></x-input.index>
                 <div class="d-flex justify-content-center align-items-center mt-3">
-                    <x-image.logo id="newLogo" imgColSize="3"></x-image.logo>
+                    <x-image.logo id="newLogo" filename="{{ $employer->company_logo }}" imgColSize="3"></x-image.logo>
                 </div>
                 <p class="text-danger text-center" id="bad-file-extension"></p>
             </x-modal.withform>
@@ -77,6 +111,17 @@
     </x-main>
 
     <x-footer></x-footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+            var scrollpos = localStorage.getItem('scrollpos');
+            if (scrollpos) window.scrollTo(0, scrollpos);
+        });
+
+        window.onbeforeunload = function (e) {
+            localStorage.setItem('scrollpos', window.scrollY);
+        };
+    </script>
 
     @push("change-logo")
         <script src="/assets/js/changeLogo.js"></script>
