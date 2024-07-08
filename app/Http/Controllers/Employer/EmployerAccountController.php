@@ -8,6 +8,7 @@ use App\Exceptions\InvalidVerificationCodeException;
 use App\Exceptions\VerificationCodeTimeExpiredException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateEmployerRequest;
+use App\Service\Account\CodeVerificationService;
 use App\Service\Account\EmployerAccountService;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -15,7 +16,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class EmployerAccountController extends Controller
 {
     public function __construct(
-        protected EmployerAccountService $accountService
+        protected EmployerAccountService $accountService,
+        protected CodeVerificationService $verificationService
     ) {
     }
 
@@ -23,9 +25,9 @@ class EmployerAccountController extends Controller
     {
         $updatedData = $request->validated();
 
-        $this->accountService->update($request->session()->get('user.emp_id'), $updatedData);
+        $this->accountService->update(session('user.emp_id'), $updatedData, $this->verificationService);
 
-        if ($this->accountService->isEmailChangedAfterUpdate()) {
+        if ($this->accountService->isNewContactEmail()) {
             $request->session()->put('frontend.show-button-for-modal', true);
 
             return back()->with('frontend.email-updated-success', true);
@@ -40,10 +42,10 @@ class EmployerAccountController extends Controller
             'code' => 'required|digits:6'
         ]);
 
-        $userId = $request->session()->get('user.emp_id');
+        $userId = session('user.emp_id');
 
         try {
-            $this->accountService->verifyCodeFromRequest((int) $input['code'], $userId);
+            $this->verificationService->verifyCodeFromRequest((int) $input['code'], $userId);
 
             $request->session()->forget('frontend.show-button-for-modal');
         } catch (VerificationCodeTimeExpiredException|InvalidVerificationCodeException $e) {

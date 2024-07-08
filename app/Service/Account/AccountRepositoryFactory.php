@@ -9,17 +9,16 @@ use App\Persistence\Contracts\AccountRepositoryInterface;
 use App\Persistence\Models\User;
 use App\Persistence\Repositories\EmployerAccountRepository;
 
-class AccountRepositoryFactory
+readonly class AccountRepositoryFactory
 {
 
-    /**
-     * @throws InvalidRoleException
-     */
+    public function __construct(private string $role)
+    {
+    }
+
     public function make(): AccountRepositoryInterface
     {
-        $role = auth()->user()->role;
-
-        return match ($role) {
+        return match ($this->role) {
             User::EMPLOYER => new EmployerAccountRepository(),
             //User::EMPLOYEE => new EmployeeAccountRepository(),
             default => throw new InvalidRoleException('Tried to get repository for invalid role '.$role)
