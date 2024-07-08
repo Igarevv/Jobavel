@@ -96,8 +96,9 @@
             <x-modal.withform title="Enter the confirmation code" btnActionName="Verify contact email"
                               actionPath="{{ route('employer.account.verify-contact-email') }}">
                 <x-input.index type="text" id="checkCode" name="code"
-                               label="We sent to your new contact email code with 6-digits, please enter it here"
+                               label="Enter your code from new contact email here"
                                required></x-input.index>
+                <x-button.outline colorType="danger" id="resendCodeBtn" class="mt-2">Resend code</x-button.outline>
                 @if(session('frontend.code-expired'))
                     <p class="text-danger">{{ session('frontend.code-expired') }}</p>
                 @endif
@@ -126,18 +127,9 @@
         </script>
     @endif
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function (event) {
-            var scrollpos = localStorage.getItem('scrollpos');
-            if (scrollpos) window.scrollTo(0, scrollpos);
-        });
-
-        window.onbeforeunload = function (e) {
-            localStorage.setItem('scrollpos', window.scrollY);
-        };
-    </script>
-
     @push("change-logo")
         <script src="/assets/js/changeLogo.js"></script>
     @endpush
+
+    <script src="/assets/js/verificationCode.js"></script>
 </x-layout>
