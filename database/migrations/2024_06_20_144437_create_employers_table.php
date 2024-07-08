@@ -20,7 +20,6 @@ return new class extends Migration {
             $table->string('contact_email')->unique();
             $table->string('company_logo')->default('default_logo.png');
             $table->timestamp('created_at')->useCurrent();
-            $table->boolean('contact_email_verified')->default(true);
             $table->primary('id');
         });
     }
