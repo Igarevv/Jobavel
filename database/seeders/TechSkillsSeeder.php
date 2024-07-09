@@ -13,7 +13,7 @@ class TechSkillsSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('tech_skills')->delete();
+        DB::table('tech_skills')->truncate();
         DB::table('tech_skills')->insert([
             ['skill_name' => 'PHP'],
             ['skill_name' => 'Laravel'],
@@ -75,6 +75,41 @@ class TechSkillsSeeder extends Seeder
             ['skill_name' => 'Blender'],
             ['skill_name' => 'Unreal Engine'],
             ['skill_name' => 'PostgreSQL'],
+            ['skill_name' => 'React'],
+            ['skill_name' => 'Sketch'],
+            ['skill_name' => 'Figma'],
+            ['skill_name' => 'Adobe XD'],
+            ['skill_name' => 'InVision Studio'],
+            ['skill_name' => 'Axure'],
+            ['skill_name' => 'Miro'],
+            ['skill_name' => 'Cisco'],
+            ['skill_name' => 'Cassandra'],
+            ['skill_name' => 'Jenkins'],
+            ['skill_name' => 'Bitbucket'],
+            ['skill_name' => 'PHPUnit'],
+            ['skill_name' => 'Jest'],
+            ['skill_name' => 'PyTest'],
+            ['skill_name' => 'JUnit'],
+            ['skill_name' => 'Drupal'],
+            ['skill_name' => 'Joomla'],
+            ['skill_name' => 'AWS Lambda'],
+            ['skill_name' => 'AWS S3'],
+            ['skill_name' => 'Svelte'],
+            ['skill_name' => 'Tailwind CSS'],
+            ['skill_name' => 'Webpack'],
+            ['skill_name' => 'Mocha'],
+            ['skill_name' => 'Next.js'],
+            ['skill_name' => 'Nuxt.js'],
+            ['skill_name' => 'Playwright'],
+            ['skill_name' => 'Apollo'],
+            ['skill_name' => 'Electron'],
+            ['skill_name' => 'Tauri'],
+            ['skill_name' => 'Maria DB'],
+            ['skill_name' => 'Caddy'],
+            ['skill_name' => 'MS IIS'],
+            ['skill_name' => 'Tomcat'],
+            ['skill_name' => 'Balsamiq'],
+            ['skill_name' => 'Express.js'],
         ]);
     }
 

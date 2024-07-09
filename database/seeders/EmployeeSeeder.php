@@ -13,7 +13,8 @@ class EmployeeSeeder extends Seeder
      */
     public function run(): void
     {
-        $employer = Employee::factory()->create();
+        Employee::query()->truncate();
+        //$employer = Employee::factory()->create();
         /* User::factory(1)
              ->has(
                  Employee::factory()->state(

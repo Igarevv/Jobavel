@@ -3,6 +3,7 @@
 namespace Database\Factories\Persistence\Models;
 
 use App\Persistence\Models\Vacancy;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -26,6 +27,8 @@ class VacancyFactory extends Factory
             'responsibilities' => $this->faker->sentences(5),
             'requirements' => $this->faker->sentences(5),
             'offers' => $this->faker->sentences(4),
+            'location' => $this->faker->country.", ".$this->faker->city,
+            'created_at' => Carbon::now(),
             'salary' => 2500,
             'is_published' => (bool) $this->faker->numberBetween(0, 1),
         ];

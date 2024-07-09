@@ -15,6 +15,8 @@ class EmployerSeeder extends Seeder
      */
     public function run(): void
     {
+        Employer::query()->truncate();
+
         $employer = Employer::factory()->create();
 
         $vacancy = Vacancy::factory(2)->create([
@@ -23,7 +25,7 @@ class EmployerSeeder extends Seeder
 
         foreach ($vacancy as $item) {
             $randomTechSkills = TechSkill::inRandomOrder()->limit(5)->get();
-            $item->techSkills()->sync($randomTechSkills);
+            $item->techSkill()->sync($randomTechSkills);
         }
     }
 
