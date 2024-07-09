@@ -13,7 +13,7 @@ class EmployerAccountRepository implements AccountRepositoryInterface
 
     public function getById(int|string $userId): ?Employer
     {
-        return Employer::byUuid($userId)->first([
+        return Employer::findByUuid($userId, [
             'employer_id', 'contact_email', 'created_at',
             'company_name', 'company_logo', 'company_description'
         ]);
@@ -21,7 +21,7 @@ class EmployerAccountRepository implements AccountRepositoryInterface
 
     public function update(string|int $userId, array $data): Employer
     {
-        $employer = Employer::byUuid($userId)->first();
+        $employer = Employer::findByUuid($userId);
 
         if (! $employer) {
             throw new ModelNotFoundException('Tried to updated unknown user with id'.$userId);

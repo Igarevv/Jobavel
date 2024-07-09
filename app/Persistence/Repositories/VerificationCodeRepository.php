@@ -33,7 +33,7 @@ class VerificationCodeRepository implements VerificationCodeRepositoryInterface
         DB::transaction(function () use ($userId, $email) {
             $this->deleteCode($userId);
 
-            $employer = Employer::byUuid($userId)->first();
+            $employer = Employer::findByUuid($userId);
 
             if (! $employer) {
                 throw new ModelNotFoundException('Try to update contact email on unknown model '.$userId);

@@ -7,7 +7,6 @@ namespace App\Http\Controllers\Employer;
 use App\DTO\VacancyDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateVacancyRequest;
-use App\Persistence\Models\TechSkill;
 use App\Persistence\Models\Vacancy;
 use App\Service\Employer\VacancyService;
 use Illuminate\Http\RedirectResponse;
@@ -46,7 +45,7 @@ class VacancyController extends Controller
         $employerId = $request->user()->getUserIdByRole();
 
         $vacancies = Vacancy::where('employer_id', $employerId)
-            ->where('is_published', false)
+            ->notPublished()
             ->get(['id', 'title', 'salary', 'created_at']);
 
         return view('employer.vacancy.unpublished',
@@ -55,9 +54,10 @@ class VacancyController extends Controller
 
     public function create(): View
     {
-        $categories = TechSkill::query()->orderBy('skill_name')
-            ->toBase()
-            ->get();
+        $categories = $this->vacancyService->getSkillCategories();
+
+        $categories = $categories->chunk(ceil($categories->count() / 3));
+
         return view('employer.vacancy.create', ['skills' => $categories]);
     }
 
@@ -68,9 +68,10 @@ class VacancyController extends Controller
         $employerId = $request->session()->get('user.emp_id');
 
         $this->vacancyService->create($employerId, $vacancyDto);
-        /*return redirect()
-            ->route('employer.vacancy.table')
-            ->with('vacancy-added', trans('vacancy.added'));*/
+
+        return redirect()
+            ->route('employer.vacancy.unpublished')
+            ->with('vacancy-added', trans('vacancy.added'));
     }
 
 }

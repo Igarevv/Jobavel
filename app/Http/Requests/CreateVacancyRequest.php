@@ -29,6 +29,7 @@ class CreateVacancyRequest extends FormRequest
             'title' => ['required', 'string', 'max:255'],
             'salary' => ['numeric', 'between:0,999999'],
             'description' => ['required', 'string'],
+            'location' => ['required', 'string'],
             'responsibilities.*' => ['required', 'string'],
             'requirements.*' => ['required', 'string'],
             'offers.*' => ['nullable', 'string'],
@@ -50,7 +51,7 @@ class CreateVacancyRequest extends FormRequest
         if ($this->offers[0] === null) {
             $data['offers'] = null;
         }
-        
+
         return $data;
     }
 

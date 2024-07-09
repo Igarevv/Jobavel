@@ -2,7 +2,6 @@
 
 namespace App\Persistence\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -38,14 +37,14 @@ class Employer extends Model
         return $this->hasMany(Vacancy::class);
     }
 
-    public function scopeByUuid(Builder $builder, string $uuid): Builder
-    {
-        return $builder->where('employer_id', $uuid);
-    }
-
     public function compareEmails(string $newEmail): bool
     {
         return $this->email === $newEmail;
+    }
+
+    public static function findByUuid(string $uuid, array $columns = ['*']): ?Employer
+    {
+        return static::where('employer_id', $uuid)->first($columns);
     }
 
     protected static function boot(): void

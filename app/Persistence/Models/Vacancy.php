@@ -2,6 +2,7 @@
 
 namespace App\Persistence\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -33,7 +34,7 @@ class Vacancy extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'employer_id',
+        'location',
         'title', 'salary', 'description',
         'requirements', 'responsibilities', 'offers',
     ];
@@ -51,6 +52,16 @@ class Vacancy extends Model
     public function isPublished(): bool
     {
         return $this->is_published;
+    }
+
+    public function scopeNotPublished(Builder $builder): Builder
+    {
+        return $builder->where('is_published', false);
+    }
+
+    public function scopePublished(Builder $builder): Builder
+    {
+        return $builder->where('is_published', true);
     }
 
 }

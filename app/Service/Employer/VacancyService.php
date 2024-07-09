@@ -7,7 +7,11 @@ namespace App\Service\Employer;
 use App\DTO\VacancyDto;
 use App\Persistence\Contracts\VacancyRepositoryInterface;
 use App\Persistence\Models\Employer;
+use App\Persistence\Models\TechSkill;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class VacancyService
 {
@@ -19,25 +23,37 @@ class VacancyService
 
     public function create(string|int $employerId, VacancyDto $vacancyDto): void
     {
-        $employerId = $this->getGenericIdOfEmployer($employerId);
+        $employer = Employer::findByUuid($employerId);
 
-        $vacancyDto->linkEmployerToVacancy($employerId);
-
-        $this->vacancyRepository->createAndSync($vacancyDto);
-    }
-
-    protected function getGenericIdOfEmployer(string $employerUuid): int
-    {
-        $employer_id = Employer::query()
-            ->where('employer_id', $employerUuid)
-            ->pluck('id')
-            ->first();
-
-        if (!$employer_id) {
-            throw new ModelNotFoundException("Employer model with public id: $employerUuid not found");
+        if (! $employer) {
+            throw new ModelNotFoundException('Try to get to create vacancy'.$employerId);
         }
 
-        return $employer_id;
+        $this->vacancyRepository->createAndSync($employer, $vacancyDto);
+    }
+
+    public function getSkillCategories(): Collection
+    {
+        $categories = TechSkill::query()->orderBy('skill_name')
+            ->toBase()
+            ->get();
+
+        $result = [];
+
+        foreach ($categories as $category) {
+            $firstLetter = Str::upper(Str::substr($category->skill_name, 0, 1));
+
+            $skill = new \stdClass();
+            $skill->id = $category->id;
+            $skill->skillName = $category->skill_name;
+
+            if (! Arr::exists($result, $firstLetter)) {
+                $result[$firstLetter] = [];
+            }
+            $result[$firstLetter][] = $skill;
+        }
+
+        return collect($result);
     }
 
 }
