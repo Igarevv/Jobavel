@@ -17,22 +17,14 @@ thead {
     top: 0;
     position: sticky;
 }
-.categories {
+
+.category-label {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    font-size: 12px;
+    align-items: center;
 }
 
 .category-label input[type="checkbox"] {
     display: none;
-}
-
-.categories {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
 }
 
 .category-label {
@@ -47,6 +39,7 @@ thead {
 .category-label input[type="checkbox"]:checked + span {
     color: #f9322c;
 }
+
 .align-middle {
     vertical-align: middle !important;
 }

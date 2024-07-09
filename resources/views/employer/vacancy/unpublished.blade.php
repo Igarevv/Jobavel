@@ -14,7 +14,7 @@
                 <h5 class="fw-bold text-muted">Please, before publishing, make sure that your vacancy is ready to be
                     published</h5>
             </div>
-            @if(! $vacancies)
+            @empty($vacancies)
                 <div class="d-flex flex-column align-items-center justify-content-center" style="height: 70vh;">
                     <h1 class="text-danger fw-bold">Vacancies not found</h1>
                     <p class="text-muted text-sm">Create a new one or check your trashed vacancies</p>
@@ -76,7 +76,7 @@
                         </div>
                     </div>
                 </section>
-            @endif
+            @endempty
         </div>
     </x-main>
 

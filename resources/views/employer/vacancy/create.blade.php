@@ -15,7 +15,7 @@
                         <div class="my-5">
                             <h6 class="fw-bold text-decoration-underline">Choose skills that will be required for
                                 vacancy</h6>
-                            <x-categories.list name="skillset" :skills="$skills"></x-categories.list>
+                            <x-categories.list name="skillset" :skillset="$skills"></x-categories.list>
                             @error('skillset')
                             <p class="text-danger text-center font-monospace fw-bold mt-2 h6">{{ $message }}</p>
                             @enderror
@@ -26,6 +26,16 @@
                                            id="jobTitle" name="title" value="{{ old('title') }}"
                                            required></x-input.index>
                             @error('title')
+                            <p class="text-danger text-center font-monospace fw-bold mt-2 h6">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="mb-5">
+                            <h6 class="fw-bold text-decoration-underline">Location (ex. USA, New Your or Work on
+                                distance)</h6>
+                            <x-input.index type="text"
+                                           id="location" name="location" value="{{ old('location') }}"
+                                           required></x-input.index>
+                            @error('location')
                             <p class="text-danger text-center font-monospace fw-bold mt-2 h6">{{ $message }}</p>
                             @enderror
                         </div>
