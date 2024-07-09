@@ -1,42 +1,63 @@
 document.addEventListener("DOMContentLoaded", function (event) {
-    var scrollpos = localStorage.getItem('scrollpos');
+    const button = document.getElementById('resendCodeBtn');
+    const disableTime = localStorage.getItem('disableTime');
 
-    if (scrollpos) window.scrollTo(0, scrollpos);
+    if (disableTime) {
+        const currentTime = new Date().getTime();
+        const timeDifference = currentTime - disableTime;
 
-    var button = document.getElementById('resendCodeBtn');
-    var timeoutDuration = 60000;
-
-    function showButton() {
-        button.disabled = false;
-    }
-
-    function hideButton() {
-        button.disabled = true;
-        var hideTime = new Date().getTime();
-        localStorage.setItem('hideTime', hideTime);
-        setTimeout(showButton, timeoutDuration);
-    }
-
-    function checkButtonVisibility() {
-        var hideTime = localStorage.getItem('hideTime');
-        if (hideTime) {
-            var currentTime = new Date().getTime();
-            var elapsedTime = currentTime - hideTime;
-            if (elapsedTime >= timeoutDuration) {
-                showButton();
-            } else {
-                setTimeout(showButton, timeoutDuration - elapsedTime);
-            }
+        if (timeDifference < 60000) {
+            button.disabled = true;
+            document.getElementById('message').style.display = 'block';
+            setTimeout(() => {
+                button.disabled = false;
+                document.getElementById('message').style.display = 'none';
+                localStorage.removeItem('disableTime');
+            }, 60000 - timeDifference);
         } else {
-            showButton();
+            localStorage.removeItem('disableTime');
         }
     }
 
-    checkButtonVisibility();
+    function disableButton() {
+        button.disabled = true;
+        document.getElementById('message').style.display = 'block';
+        const disableTime = new Date().getTime();
+        localStorage.setItem('disableTime', disableTime);
 
-    button.addEventListener('click', hideButton);
+        setTimeout(() => {
+            button.disabled = false;
+            document.getElementById('message').style.display = 'none';
+            localStorage.removeItem('disableTime');
+        }, 60000);
+    }
+
+    button.addEventListener('click', () => {
+        const route = button.getAttribute('data-route');
+        const token = button.getAttribute('data-token');
+        console.log(route, token);
+
+        fetch(route, {
+            method: "POST",
+            headers: {
+                'X-CSRF-TOKEN': token,
+            }
+        }).then(response => {
+            
+        });
+
+        disableButton();
+    });
 });
 
 window.onbeforeunload = function (e) {
     localStorage.setItem('scrollpos', window.scrollY);
+};
+
+window.onload = function (e) {
+    const scrollpos = localStorage.getItem('scrollpos');
+    if (scrollpos) {
+        window.scrollTo(0, scrollpos);
+        localStorage.removeItem('scrollpos');
+    }
 };

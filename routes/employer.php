@@ -37,6 +37,7 @@ Route::prefix('employer')->name('employer.')->group(function () {
         Route::controller(EmployerAccountController::class)->name('account.')->group(function () {
             Route::post('/account/update', 'update')->name('update');
             Route::post('/account/verify-contact-email', 'verifyContactEmail')->name('verify-contact-email');
+            Route::post('/account/resend-code', 'resendCode')->name('resend-code');
         });
 
         /*

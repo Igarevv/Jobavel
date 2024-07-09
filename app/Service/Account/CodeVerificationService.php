@@ -6,10 +6,9 @@ namespace App\Service\Account;
 
 use App\Events\ContactEmailUpdatedEvent;
 use App\Exceptions\InvalidVerificationCodeException;
+use App\Exceptions\UnknownUserTryToVerifyCodeException;
 use App\Exceptions\VerificationCodeTimeExpiredException;
 use App\Persistence\Contracts\VerificationCodeRepositoryInterface;
-use App\Persistence\Models\Employer;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CodeVerificationService
 {
@@ -20,21 +19,19 @@ class CodeVerificationService
 
     public function verifyCodeFromRequest(int $code, string|int $user_id): void
     {
-        $employer = Employer::byUuid($user_id)->first();
+        $verificationData = $this->verificationRepository->getCodeByUserId($user_id);
 
-        if (! $employer) {
-            throw new ModelNotFoundException("Try to get model when verify code for user id".$user_id);
+        if (! $verificationData) {
+            throw new UnknownUserTryToVerifyCodeException();
         }
 
-        $codeInDb = $this->verificationRepository->getCodeByUserId($employer->employer_id);
-
-        if (! $codeInDb || now() > $codeInDb->expires_at) {
-            $this->regenerateExpiredCode($employer, $codeInDb->new_contact_email);
+        if (now() > $verificationData->expires_at) {
+            $this->regenerateExpiredCode($user_id, $verificationData->new_contact_email);
         }
 
-        $this->ensureCodesAreSame($code, $codeInDb->code);
+        $this->ensureCodesAreSame($code, $verificationData->code);
 
-        $this->verificationRepository->setNewEmployerContactEmail($employer, $codeInDb->new_contact_email);
+        $this->verificationRepository->setNewEmployerContactEmail($user_id, $verificationData->new_contact_email);
     }
 
     public function sendEmail(string|int $userId, string $email): bool
@@ -51,14 +48,16 @@ class CodeVerificationService
     {
         $verificationData = $this->verificationRepository->getCodeByUserId($userId);
 
-        if ($verificationData) {
-            event(new ContactEmailUpdatedEvent($this->generateCode(), $verificationData->new_contanct_email));
+        if (! $verificationData) {
+            throw new UnknownUserTryToVerifyCodeException();
         }
+
+        event(new ContactEmailUpdatedEvent($this->generateCode(), $verificationData->new_contact_email));
     }
 
-    protected function regenerateExpiredCode(Employer $employer, string $email): void
+    protected function regenerateExpiredCode(string|int $userId, string $email): void
     {
-        $this->sendEmail($employer->employer_id, $email);
+        $this->sendEmail($userId, $email);
 
         throw new VerificationCodeTimeExpiredException('Verification code time expired. New code was sent by email');
     }

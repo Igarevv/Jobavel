@@ -30,7 +30,7 @@ class EmployerAccountController extends Controller
         if ($this->accountService->isNewContactEmail()) {
             $request->session()->put('frontend.show-button-for-modal', true);
 
-            return back()->with('frontend.email-updated-success', true);
+            return back()->with('frontend.email-want-update', true);
         }
 
         return back()->with('updated-success', trans('alerts.employer-account.updated'));
@@ -53,6 +53,15 @@ class EmployerAccountController extends Controller
         }
 
         return back()->with('verification-success', trans('alerts.employer-account.email-verified'));
+    }
+
+    public function resendCode(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $this->verificationService->resendEmail(session('user.emp_id'));
+
+        $request->session()->put('frontend.show-button-for-modal', true);
+
+        return response()->json(['status' => 200]);
     }
 
 }

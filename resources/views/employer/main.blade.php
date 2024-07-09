@@ -98,7 +98,15 @@
                 <x-input.index type="text" id="checkCode" name="code"
                                label="Enter your code from new contact email here"
                                required></x-input.index>
-                <x-button.outline colorType="danger" id="resendCodeBtn" class="mt-2">Resend code</x-button.outline>
+                <div class="d-flex gap-2 align-items-center">
+                    <x-button.outline colorType="danger" id="resendCodeBtn" class="mt-2"
+                                      data-route="{{ route('employer.account.resend-code') }}"
+                                      data-token="{{ csrf_token() }}">Resend code
+                    </x-button.outline>
+                    <p class="text-danger my-0" id="message" @style(['display:none'])>Resending code will be
+                        available in 1
+                        minute</p>
+                </div>
                 @if(session('frontend.code-expired'))
                     <p class="text-danger">{{ session('frontend.code-expired') }}</p>
                 @endif
@@ -119,7 +127,7 @@
 
     <x-footer></x-footer>
 
-    @if(session('frontend.email-updated-success') || session('frontend.code-expired'))
+    @if(session('frontend.email-want-update') || session('frontend.code-expired'))
         <script>
             $(document).ready(function () {
                 $('#updatedSuccess').modal('show');

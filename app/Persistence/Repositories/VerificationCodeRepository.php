@@ -7,6 +7,7 @@ namespace App\Persistence\Repositories;
 use App\Persistence\Contracts\VerificationCodeRepositoryInterface;
 use App\Persistence\Models\Employer;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 class VerificationCodeRepository implements VerificationCodeRepositoryInterface
@@ -20,17 +21,23 @@ class VerificationCodeRepository implements VerificationCodeRepositoryInterface
                 'user_id' => $userId,
                 'code' => $code,
                 'new_contact_email' => $newEmail,
-                'expires_at' => Carbon::now()->addMinutes(1),
+                'expires_at' => Carbon::now()->addMinutes(30),
             ]);
         });
 
         return $code;
     }
 
-    public function setNewEmployerContactEmail(Employer $employer, string $email): void
+    public function setNewEmployerContactEmail(string|int $userId, string $email): void
     {
-        DB::transaction(function () use ($employer, $email) {
-            $this->deleteCode($employer->employer_id);
+        DB::transaction(function () use ($userId, $email) {
+            $this->deleteCode($userId);
+
+            $employer = Employer::byUuid($userId)->first();
+
+            if (! $employer) {
+                throw new ModelNotFoundException('Try to update contact email on unknown model '.$userId);
+            }
 
             $employer->contact_email = $email;
 
