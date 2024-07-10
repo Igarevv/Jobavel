@@ -7,7 +7,7 @@ namespace App\Service\Account;
 use App\Exceptions\InvalidRoleException;
 use App\Persistence\Contracts\AccountRepositoryInterface;
 use App\Persistence\Models\User;
-use App\Persistence\Repositories\EmployerAccountRepository;
+use App\Persistence\Repositories\User\EmployerAccountRepository;
 
 readonly class AccountRepositoryFactory
 {

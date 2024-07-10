@@ -2,7 +2,7 @@
 
 namespace App\Persistence\Contracts;
 
-use App\Contracts\RegisterDtoInterface;
+use App\Contracts\Auth\RegisterDtoInterface;
 use App\Persistence\Models\User;
 
 interface UserRepositoryInterface

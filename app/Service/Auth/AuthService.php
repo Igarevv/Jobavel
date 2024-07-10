@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Auth;
 
-use App\Contracts\RegisterDtoInterface;
+use App\Contracts\Auth\RegisterDtoInterface;
 use App\Service\Auth\Registration\AuthFactory;
 use Illuminate\Auth\Events\Registered;
 

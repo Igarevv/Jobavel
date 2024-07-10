@@ -4,6 +4,7 @@ use App\Http\Controllers\Employer\EmployerAccountController;
 use App\Http\Controllers\Employer\HomeController;
 use App\Http\Controllers\Employer\RegisterController;
 use App\Http\Controllers\Employer\VacancyController;
+use App\Http\Controllers\FileController;
 use App\Persistence\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -34,11 +35,21 @@ Route::prefix('employer')->name('employer.')->group(function () {
          * -       Employer account        -
          * ---------------------------------
          */
+        /*
+         * TODO: MAKE SCHEDULE TO DELETE UNVERIFIED EMAILS
+         */
         Route::controller(EmployerAccountController::class)->name('account.')->group(function () {
             Route::post('/account/update', 'update')->name('update');
             Route::post('/account/verify-contact-email', 'verifyContactEmail')->name('verify-contact-email');
             Route::post('/account/resend-code', 'resendCode')->name('resend-code');
         });
+
+        /*
+         * ---------------------------------
+         * -          ile storage          -
+         * ---------------------------------
+         */
+        Route::post('/logo', [FileController::class, 'uploadLogo'])->name('logo.upload');
 
         /*
          * ---------------------------------

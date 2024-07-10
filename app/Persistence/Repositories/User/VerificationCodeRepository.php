@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Persistence\Repositories;
+namespace App\Persistence\Repositories\User;
 
 use App\Persistence\Contracts\VerificationCodeRepositoryInterface;
 use App\Persistence\Models\Employer;

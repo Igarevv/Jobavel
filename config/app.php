@@ -43,7 +43,7 @@ return [
     |
     */
 
-    'debug' => (bool)env('APP_DEBUG', false),
+    'debug' => (bool) env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -191,5 +191,5 @@ return [
     /*
      * Default logo name
      */
-    'logo' => 'default_logo.png',
+    'default_employer_logo' => 'default_logo.png',
 ];

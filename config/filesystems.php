@@ -36,15 +36,23 @@ return [
             'throw' => false,
         ],
 
-        'public' => [
+        'public_logo' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
+            'root' => storage_path('app/public/logo'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,
         ],
 
-        's3' => [
+        'public_static' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/static'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
+        's3_logo' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
@@ -70,7 +78,22 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app/public'),
+        public_path('logo') => storage_path('app/public/logo'),
+        public_path('static') => storage_path('app/public/static'),
     ],
 
+    /*
+     |--------------------------------------------------------------------------
+     | File storage provider
+     |--------------------------------------------------------------------------
+     |
+     | Here you may specify which provider will be responsible for working
+     | with file system. All operations on files will be carried out depending
+     | on this provide.
+     |
+     | Supported providers: "file", "s3"
+     |
+     */
+
+    'provider' => env('FILE_STORAGE_PROVIDER', 'file')
 ];

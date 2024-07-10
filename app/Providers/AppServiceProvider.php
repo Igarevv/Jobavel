@@ -2,12 +2,15 @@
 
 namespace App\Providers;
 
+use App\Contracts\Storage\LogoStorageInterface;
 use App\Persistence\Contracts\UserRepositoryInterface;
 use App\Persistence\Contracts\VacancyRepositoryInterface;
 use App\Persistence\Contracts\VerificationCodeRepositoryInterface;
-use App\Persistence\Repositories\UserRepository;
+use App\Persistence\Repositories\File\LocalFileStorage;
+use App\Persistence\Repositories\File\S3FileStorage;
+use App\Persistence\Repositories\User\UserRepository;
+use App\Persistence\Repositories\User\VerificationCodeRepository;
 use App\Persistence\Repositories\VacancyRepository;
-use App\Persistence\Repositories\VerificationCodeRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function register(): void
     {
+        $this->bindFileStorage();
     }
 
     /**
@@ -30,4 +34,12 @@ class AppServiceProvider extends ServiceProvider
     {
     }
 
+    protected function bindFileStorage(): void
+    {
+        if (config('filesystems.provider') === 'file') {
+            $this->app->singleton(LogoStorageInterface::class, LocalFileStorage::class);
+        } elseif (config('filesystems.provider') === 's3') {
+            $this->app->singleton(LogoStorageInterface::class, S3FileStorage::class);
+        }
+    }
 }

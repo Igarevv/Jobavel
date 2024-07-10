@@ -25,7 +25,7 @@ class RegisterController extends Controller
             return view('employer.register');
         }
 
-        $employer = RegisterEmployerDto::fromRequest($request);
+        $employer = RegisterEmployerDto::fromRequest($request, config('app.default_employer_logo'));
 
         $this->authService->register($employer);
 
