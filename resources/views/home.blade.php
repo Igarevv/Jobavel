@@ -10,7 +10,7 @@
                     <div class="row py-lg-5">
                         <div class="col-lg-6 col-md-8 mx-auto">
                             <h1 class="fw-light"><strong @style(['color:white'])>Job<span
-                                        class="red">avel</span></strong>
+                                            class="red">avel</span></strong>
                             </h1>
                             <p class="lead text-light">Find or post developers jobs</p>
                             <div class="d-flex justify-content-center align-items-center flex-row">
@@ -32,7 +32,7 @@
             <div class="container">
                 <div class="row py-lg-5">
                     <div class="col-lg-6 col-md-4 order-md-last">
-                        <img src="{{ asset('/img/default/home-picture-1.jpg') }}" alt="Image" class="img-fluid">
+                        <img src="{{ asset('static/home-picture-1.jpg') }}" alt="Image" class="img-fluid">
                     </div>
                     <div class="col-lg-6 col-md-8 order-md-first">
                         <h2 class="fw-bold">Who we are?</h2>
@@ -56,7 +56,7 @@
             <div class="container">
                 <div class="row py-lg-5">
                     <div class="col-lg-6 col-md-4 order-md-first">
-                        <img src="{{ asset('/img/default/home-picture-1.jpg') }}" alt="Image" class="img-fluid">
+                        <img src="{{ asset('static/home-picture-1.jpg') }}" alt="Image" class="img-fluid">
                     </div>
                     <div class="col-lg-6 col-md-8 order-md-last">
                         <h2 class="fw-bold">Why you should choose us?</h2>
@@ -79,19 +79,19 @@
         <h2 class="text-center my-5">These companies leave their vacancies with us</h2>
         <div class="row justify-content-around background-greeting">
             <div class="col-2 d-flex justify-content-center my-3">
-                <x-image.logo filename="{{ 'Adidas_Logo.jpg' }}" imgColSize="4"></x-image.logo>
+                <x-image.logo url="{{ null }}" imgColSize="4"></x-image.logo>
             </div>
             <div class="col-2 d-flex justify-content-center">
-                <x-image.logo filename="{{ 'Adidas_Logo.jpg' }}" imgColSize="4"></x-image.logo>
+                <x-image.logo url="{{ null }}" imgColSize="4"></x-image.logo>
             </div>
             <div class="col-2 d-flex justify-content-center">
-                <x-image.logo filename="{{ 'Adidas_Logo.jpg' }}" imgColSize="4"></x-image.logo>
+                <x-image.logo url="{{ null }}" imgColSize="4"></x-image.logo>
             </div>
             <div class="col-2 d-flex justify-content-center">
-                <x-image.logo filename="{{ 'Adidas_Logo.jpg' }}" imgColSize="4"></x-image.logo>
+                <x-image.logo url="{{ null }}" imgColSize="4"></x-image.logo>
             </div>
             <div class="col-2 d-flex justify-content-center">
-                <x-image.logo filename="{{ 'Adidas_Logo.jpg' }}" imgColSize="4"></x-image.logo>
+                <x-image.logo url="{{ null }}" imgColSize="4"></x-image.logo>
             </div>
         </div>
         <div class="album py-5 bg-body-tertiary">

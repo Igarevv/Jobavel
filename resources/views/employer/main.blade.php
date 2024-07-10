@@ -4,11 +4,11 @@
 
     <x-main>
         <div class="album py-5 bg-body-tertiary background-logo"
-             style="background: url({{ asset('/img/logo/Adidas_Logo.jpg') }}) center center/cover no-repeat;">
+             style="background: url({{ $logo }}) center center/cover no-repeat;">
             <div class="container">
                 <div class="d-flex align-items-center flex-column">
                     <div class="logo-company-name">
-                        <x-image.logo class="mt-2" filename="{{ $employer->company_logo }}"
+                        <x-image.logo class="mt-2" url="{{ $logo }}"
                                       imgColSize="6"></x-image.logo>
                         <h2 class="text-center fw-bold red">{{ session('user.name') }}</h2>
                     </div>
@@ -59,6 +59,19 @@
                         logo
                     </x-button.outline>
                 </x-input.block>
+
+                @error('logo')
+                <p class="text-danger">{{ $message }}</p>
+                @enderror
+
+                @session('logo-success')
+                <p class="text-danger">{{ $value }}</p>
+                @endsession
+
+                @session('logo-error')
+                <p class="text-danger">{{ $value }}</p>
+                @endsession
+
                 <x-input.block form="group" class="mb-3 col-12">
                     <x-input.index type="text" class="py-2" name="name" id="companyName"
                                    value="{{ old('name') ?? session('user.name') }}"
@@ -114,11 +127,12 @@
         </x-modal.index>
 
         <x-modal.index id="changeLogo">
-            <x-modal.withform title="Change logo" btnActionName="Save changes" actionPath="#"
+            <x-modal.withform title="Change logo" btnActionName="Save changes"
+                              actionPath="{{ route('employer.logo.upload') }}"
                               enctype="multipart/form-data" withClose>
                 <x-input.index type="file" id="chooseNewLogo" name="logo" label="Choose logo" required></x-input.index>
                 <div class="d-flex justify-content-center align-items-center mt-3">
-                    <x-image.logo id="newLogo" filename="{{ $employer->company_logo }}" imgColSize="3"></x-image.logo>
+                    <x-image.logo id="newLogo" url="{{ $logo }}" imgColSize="3"></x-image.logo>
                 </div>
                 <p class="text-danger text-center" id="bad-file-extension"></p>
             </x-modal.withform>
