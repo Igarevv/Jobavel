@@ -37,7 +37,7 @@ class LogoStorageService
         if ($result) {
             $employer->save();
 
-            if ($oldImage !== config('app.default_employer_logo')) {
+            if ($oldImage && $oldImage !== config('app.default_employer_logo')) {
                 $this->logoStorage->delete($oldImage);
             }
 
@@ -51,19 +51,25 @@ class LogoStorageService
         return false;
     }
 
-    public function getImageUrlByImageId(string $imageId, string $default): false|string
+    public function getImageUrlByImageId(?string $imageId, string $default): false|string
     {
         $logoUrl = Cache::get('logo-url-'.$imageId);
 
-        if ($logoUrl === null) {
+        if ($logoUrl !== null) {
+            return $logoUrl;
+        }
+
+        if ($imageId !== null) {
             $logoUrl = $this->logoStorage->get($imageId);
 
             if (! $logoUrl) {
                 $logoUrl = $this->logoStorage->get($default);
             }
-
-            Cache::put('logo-url-'.$imageId, $logoUrl, now()->addHour());
+        } else {
+            $logoUrl = $this->logoStorage->get($default);
         }
+
+        Cache::put('logo-url-'.$imageId, $logoUrl, now()->addHour());
 
         return $logoUrl;
     }

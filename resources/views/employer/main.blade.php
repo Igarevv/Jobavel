@@ -10,7 +10,7 @@
                     <div class="logo-company-name">
                         <x-image.logo class="mt-2" url="{{ $logo }}"
                                       imgColSize="6"></x-image.logo>
-                        <h2 class="text-center fw-bold red">{{ session('user.name') }}</h2>
+                        <h2 class="text-center fw-bold text-dark">{{ session('user.name') }}</h2>
                     </div>
                 </div>
                 <div class="row mt-5 justify-content-center">

@@ -32,7 +32,8 @@
                 <p class="fs-4 text-start">Hello!</p>
                 <p class="text-start text-secondary">Please click the button below to verify your email address.</p>
                 <div class="text-center my-5">
-                    <a href="{{ $verificationUrl }}" class="btn btn-dark btn-lg text-white">Confirm email address</a>
+                    <a href="{{ $verificationUrl }}" class="btn btn-dark btn-lg text-white">Confirm
+                        email address</a>
                 </div>
                 <p class="text-start text-secondary">If you did not create an account, no further action is
                     required.</p>
