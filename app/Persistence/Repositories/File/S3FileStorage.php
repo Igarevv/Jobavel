@@ -15,9 +15,9 @@ class S3FileStorage implements LogoStorageInterface
 
     public function upload(UploadedFile $file): bool|string
     {
-        $path = 'employer-logo/'.$file->hashName();
+        $path = 'employer-logo/';
 
-        return Storage::disk($this->disk)->put($path, $file);
+        return Storage::disk($this->disk)->putFile($path, $file);
     }
 
     public function get(string $imageId): string|false
@@ -33,6 +33,6 @@ class S3FileStorage implements LogoStorageInterface
 
     public function delete(string $imageId): bool
     {
-        // TODO: Implement delete() method.
+        return Storage::disk($this->disk)->delete('employer-logo/'.$imageId);
     }
 }

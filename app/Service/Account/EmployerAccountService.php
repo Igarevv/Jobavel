@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Account;
 
+use App\Persistence\Models\Employer;
 use App\Persistence\Models\User;
 
 class EmployerAccountService extends AccountService
@@ -16,15 +17,17 @@ class EmployerAccountService extends AccountService
         parent::__construct(new AccountRepositoryFactory(User::EMPLOYER));
     }
 
-    public function update(string|int $userOd, array $newData, CodeVerificationService $verificationService): void
+    public function update(string|int $userId, array $newData, CodeVerificationService $verificationService): Employer
     {
-        $employer = $this->getRepository()->update($userOd, $newData);
+        $employer = $this->getRepository()->update($userId, $newData);
 
         if (! $employer->compareEmails($newData['email'])) {
-            $verificationService->sendEmail($userOd, $newData['email']);
+            $verificationService->sendEmail($userId, $newData['email']);
 
             $this->isEmailChanged = true;
         }
+
+        return $employer;
     }
 
     public function isNewContactEmail(): bool

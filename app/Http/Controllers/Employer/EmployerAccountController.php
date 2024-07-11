@@ -25,7 +25,9 @@ class EmployerAccountController extends Controller
     {
         $updatedData = $request->validated();
 
-        $this->accountService->update(session('user.emp_id'), $updatedData, $this->verificationService);
+        $employer = $this->accountService->update(session('user.emp_id'), $updatedData, $this->verificationService);
+
+        $request->session()->put('user.name', $employer->company_name);
 
         if ($this->accountService->isNewContactEmail()) {
             $request->session()->put('frontend.show-button-for-modal', true);

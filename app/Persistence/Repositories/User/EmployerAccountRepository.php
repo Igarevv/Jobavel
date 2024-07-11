@@ -27,10 +27,10 @@ class EmployerAccountRepository implements AccountRepositoryInterface
             throw new ModelNotFoundException('Tried to updated unknown user with id'.$userId);
         }
 
-        $employer->company_name = $data['name'];
-        $employer->company_description = $data['description'];
-
-        $employer->save();
+        $employer->update([
+            'company_name' => $data['name'],
+            'company_description' => $data['description']
+        ]);
 
         return $employer;
     }

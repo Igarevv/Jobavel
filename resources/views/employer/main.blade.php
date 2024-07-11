@@ -42,16 +42,29 @@
         <div class="container" @style(["margin-bottom:6rem"])>
             <h2 class="text-center mb-3">Your company public information</h2>
             <form class="w-75 mx-auto" method="post" action="{{ route('employer.account.update') }}">
+
                 @session('updated-success')
                 <div class="alert alert-success text-center fw-bold my-2">
                     {{ $value }}
                 </div>
                 @endsession
+
                 @session('verification-success')
                 <div class="alert alert-success text-center fw-bold my-2">
                     {{ $value }}
                 </div>
                 @endsession
+
+                @error('logo')
+                <div class="alert alert-danger text-center fw-bold my-2">
+                    {{ $message }}
+                </div>
+                @enderror
+
+                @session('logo-success')
+                <p class="alert alert-success text-center fw-bold my-2">{{ $value }}</p>
+                @endsession
+
                 <x-input.block form="group" class="d-flex justify-content-between col-12">
                     @csrf
                     <label class="fw-bold" for="exampleFormControlInput1">Your company logo</label>
@@ -59,14 +72,6 @@
                         logo
                     </x-button.outline>
                 </x-input.block>
-
-                @error('logo')
-                <p class="text-danger">{{ $message }}</p>
-                @enderror
-
-                @session('logo-success')
-                <p class="text-danger">{{ $value }}</p>
-                @endsession
 
                 @session('logo-error')
                 <p class="text-danger">{{ $value }}</p>

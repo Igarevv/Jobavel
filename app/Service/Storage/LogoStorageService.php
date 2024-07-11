@@ -8,6 +8,7 @@ use App\Contracts\Storage\LogoStorageInterface;
 use App\Persistence\Models\Employer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Cache;
 
 class LogoStorageService
 {
@@ -40,35 +41,28 @@ class LogoStorageService
                 $this->logoStorage->delete($oldImage);
             }
 
+            Cache::forget('logo-url'.$oldImage);
+
+            Cache::put('logo-url'.$newFileName, $this->logoStorage->get($newFileName), now()->addHour());
+
             return true;
         }
 
         return false;
     }
 
-    public function getImageUrlByUserId(string $userId, string $default): false|string
-    {
-        $employerLogoId = Employer::byUuid($userId)->value('company_logo');
-
-        if (! $employerLogoId) {
-            return $this->logoStorage->get($default);
-        }
-
-        $logoUrl = $this->logoStorage->get($employerLogoId);
-
-        if (! $logoUrl) {
-            return $this->logoStorage->get($default);
-        }
-
-        return $logoUrl;
-    }
-
     public function getImageUrlByImageId(string $imageId, string $default): false|string
     {
-        $logoUrl = $this->logoStorage->get($imageId);
+        $logoUrl = Cache::get('logo-url-'.$imageId);
 
-        if (! $logoUrl) {
-            return $this->logoStorage->get($default);
+        if ($logoUrl === null) {
+            $logoUrl = $this->logoStorage->get($imageId);
+
+            if (! $logoUrl) {
+                $logoUrl = $this->logoStorage->get($default);
+            }
+
+            Cache::put('logo-url-'.$imageId, $logoUrl, now()->addHour());
         }
 
         return $logoUrl;
