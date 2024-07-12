@@ -8,6 +8,8 @@ use App\DTO\VacancyDto;
 use App\Persistence\Contracts\VacancyRepositoryInterface;
 use App\Persistence\Models\Employer;
 use App\Persistence\Models\TechSkill;
+use App\Persistence\Models\Vacancy;
+use App\Service\Storage\LogoStorageService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -17,7 +19,8 @@ class VacancyService
 {
 
     public function __construct(
-        protected VacancyRepositoryInterface $vacancyRepository
+        protected VacancyRepositoryInterface $vacancyRepository,
+        protected LogoStorageService $storageService,
     ) {
     }
 
@@ -54,6 +57,33 @@ class VacancyService
         }
 
         return collect($result);
+    }
+
+    public function getVacancy(Vacancy|int $vacancy): VacancyDto
+    {
+        if (is_numeric($vacancy)) {
+            $vacancy = $this->vacancyRepository->getVacancyById($vacancy);
+
+            if (! $vacancy) {
+                throw new ModelNotFoundException('Vacancy not found');
+            }
+
+            return VacancyDto::fromDatabase($vacancy);
+        }
+
+        return VacancyDto::fromDatabase($vacancy);
+    }
+
+    public function getEmployerRelatedToVacancy(Vacancy $vacancy): object
+    {
+        $companyLogoUrl = $this->storageService->getImageUrlByImageId($vacancy->employer->company_logo);
+
+        return (object) [
+            'company' => $vacancy->employer->company_name,
+            'description' => $vacancy->employer->company_description,
+            'logo' => $companyLogoUrl,
+            'email' => $vacancy->employer->contact_email
+        ];
     }
 
 }

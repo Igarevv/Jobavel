@@ -43,3 +43,15 @@ thead {
 .align-middle {
     vertical-align: middle !important;
 }
+
+.vacancy-ul {
+    list-style: none;
+}
+
+.vacancy-ul li::before {
+    content: "•";
+    color: red;
+    font-weight: bold;
+    display: inline-block;
+    width: 15px;
+}

@@ -25,7 +25,7 @@ class HomeController extends Controller
             ->get('user.emp_id'));
 
         $logo = $this->storageService
-            ->getImageUrlByImageId($employer->company_logo, config('app.default_employer_logo'));
+            ->getImageUrlByImageId($employer->company_logo);
 
         return view('employer.main', [
             'employer' => $employer,

@@ -21,6 +21,18 @@ class VacancyController extends Controller
     ) {
     }
 
+    public function show(Vacancy $vacancy): View
+    {
+        $vacancyData = $this->vacancyService->getVacancy($vacancy);
+
+        $employer = $this->vacancyService->getEmployerRelatedToVacancy($vacancy);
+
+        return view('employer.vacancy.show', [
+            'vacancy' => $vacancyData,
+            'employer' => $employer,
+        ]);
+    }
+
     public function published()
     {
         $jobInfo = (object) [

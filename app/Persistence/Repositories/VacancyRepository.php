@@ -8,7 +8,6 @@ use App\DTO\VacancyDto;
 use App\Persistence\Contracts\VacancyRepositoryInterface;
 use App\Persistence\Models\Employer;
 use App\Persistence\Models\Vacancy;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class VacancyRepository implements VacancyRepositoryInterface
@@ -24,7 +23,6 @@ class VacancyRepository implements VacancyRepositoryInterface
             'requirements' => $vacancyDto->requirements,
             'location' => $vacancyDto->location,
             'responsibilities' => $vacancyDto->responsibilities,
-            'created_at' => Carbon::now(),
         ]);
 
         DB::transaction(function () use ($employer, $vacancyDto, $vacancy) {
@@ -36,4 +34,8 @@ class VacancyRepository implements VacancyRepositoryInterface
         });
     }
 
+    public function getVacancyById(int $id, array $columns = ['*']): ?Vacancy
+    {
+        return Vacancy::with(['employer', 'techSkill'])->find($id, $columns);
+    }
 }

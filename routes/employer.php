@@ -8,6 +8,10 @@ use App\Http\Controllers\FileController;
 use App\Persistence\Models\User;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/vacancies/{vacancy}', [VacancyController::class, 'show'])
+    ->whereNumber('vacancy')
+    ->name('vacancy.show');
+
 Route::prefix('employer')->name('employer.')->group(function () {
     $role = User::EMPLOYER;
 

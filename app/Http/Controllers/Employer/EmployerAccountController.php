@@ -24,7 +24,7 @@ class EmployerAccountController extends Controller
     public function update(UpdateEmployerRequest $request): RedirectResponse
     {
         $updatedData = $request->validated();
-
+        
         $employer = $this->accountService->update(session('user.emp_id'), $updatedData, $this->verificationService);
 
         $request->session()->put('user.name', $employer->company_name);

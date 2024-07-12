@@ -7,7 +7,7 @@
         <div class="container mt-5 mb-5">
             <div class="text-center">
                 <h5 class="fw-light">company</h5>
-                <h1 class="red text-decoration-underline fw-bold fw-italic">{{ 'Adidas Inc.' }}</h1>
+                <h1 class="red text-decoration-underline fw-bold fw-italic">{{ session('user.name') }}</h1>
                 <h4 class="fw-light">Total number of vacancy</h4>
                 <h5 class="fw-normal mb-5">{{ 0 }}</h5>
             </div>

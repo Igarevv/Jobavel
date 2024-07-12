@@ -2,6 +2,7 @@
 
 namespace App\Persistence\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,11 +14,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string title
  * @property int $salary
  * @property string $description
+ * @property string $location
  * @property array $requirements,
  * @property array $responsibilities
  * @property array $offers
  * @property bool $is_published
  * @property int $response_number
+ * @property Carbon $created_at
  */
 class Vacancy extends Model
 {
@@ -46,7 +49,16 @@ class Vacancy extends Model
 
     public function employer(): BelongsTo
     {
-        return $this->belongsTo(Employer::class, ownerKey: 'id');
+        return $this->belongsTo(Employer::class)
+            ->select(['id', 'company_name', 'company_description', 'company_logo', 'contact_email']);
+    }
+
+    public function techSkillsAsArray(): array
+    {
+        return $this->techSkill()
+            ->toBase()
+            ->get(['id', 'skill_name'])
+            ->toArray();
     }
 
     public function isPublished(): bool
@@ -62,6 +74,17 @@ class Vacancy extends Model
     public function scopePublished(Builder $builder): Builder
     {
         return $builder->where('is_published', true);
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function (Vacancy $vacancy) {
+            if (! $vacancy->created_at) {
+                $vacancy->created_at = now();
+            }
+        });
     }
 
 }

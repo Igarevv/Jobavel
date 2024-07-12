@@ -3,10 +3,6 @@
 
     <x-header></x-header>
 
-    @push('vacancy-css')
-        <link href="/assets/css/vacancy.css" type="text/css" rel="stylesheet">
-    @endpush
-
     <x-main>
         <div class="container mt-5 mb-5">
             <div class="text-center">
@@ -56,8 +52,8 @@
                                                                 <td>{{ $vacancy->salary }}</td>
                                                                 <td>{{ $vacancy->created_at }}</td>
                                                                 <td class="text-center">
-                                                                    <x-button.outline colorType="light">Show preview
-                                                                    </x-button.outline>
+                                                                    <a href="{{ route('vacancy.show', ['vacancy' => $vacancy->id]) }}"
+                                                                       class="btn btn-outline-light">Show Preview</a>
                                                                 </td>
                                                                 <td class="text-center">
                                                                     <x-button.outline colorType="success">Publish
@@ -79,7 +75,11 @@
             @endempty
         </div>
     </x-main>
-
+    @once
+        @push('vacancy-css')
+            <link href="/assets/css/vacancy.css" type="text/css" rel="stylesheet">
+        @endpush
+    @endonce
     <x-footer></x-footer>
 </x-layout>
 
