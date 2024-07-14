@@ -56,7 +56,7 @@
             <div class="container">
                 <div class="row py-lg-5">
                     <div class="col-lg-6 col-md-4 order-md-first">
-                        <img src="{{ asset('static/home-picture-1.jpg') }}" alt="Image" class="img-fluid">
+                        <img src="{{ asset('static/home-picture-2.jpg') }}" alt="Image" class="img-fluid">
                     </div>
                     <div class="col-lg-6 col-md-8 order-md-last">
                         <h2 class="fw-bold">Why you should choose us?</h2>
