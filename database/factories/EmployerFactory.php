@@ -18,6 +18,8 @@ class EmployerFactory extends Factory
     public function definition(): array
     {
         $user = User::factory()->state(['role' => User::EMPLOYER])->create();
+        $user->assignRole(User::EMPLOYER);
+
         return [
             'user_id' => $user->id,
             'company_name' => $this->faker->company(),

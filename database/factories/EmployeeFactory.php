@@ -18,6 +18,8 @@ class EmployeeFactory extends Factory
     public function definition(): array
     {
         $user = User::factory()->state(['role' => User::EMPLOYEE])->create();
+        $user->assignRole(User::EMPLOYER);
+
         return [
             'user_id' => $user->id,
             'employee_id' => Uuid::uuid7()->toString(),
