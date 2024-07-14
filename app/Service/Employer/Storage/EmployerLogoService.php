@@ -2,19 +2,20 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Storage;
+namespace App\Service\Employer\Storage;
 
 use App\Contracts\Storage\LogoStorageInterface;
 use App\Persistence\Models\Employer;
+use Illuminate\Cache\Repository as CacheRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Cache;
 
-class LogoStorageService
+class EmployerLogoService
 {
 
     public function __construct(
-        protected LogoStorageInterface $logoStorage
+        protected LogoStorageInterface $logoStorage,
+        protected CacheRepository $cache
     ) {
     }
 
@@ -32,18 +33,16 @@ class LogoStorageService
 
         $employer->company_logo = $newFileName;
 
-        $result = $this->logoStorage->upload($file);
-
-        if ($result) {
+        if ($this->logoStorage->upload($file)) {
             $employer->save();
 
             if ($oldImage && $oldImage !== config('app.default_employer_logo')) {
                 $this->logoStorage->delete($oldImage);
             }
 
-            Cache::forget('logo-url'.$oldImage);
+            $this->cache->forget('logo-url'.$oldImage);
 
-            Cache::put('logo-url'.$newFileName, $this->logoStorage->get($newFileName), now()->addHour());
+            $this->cache->put('logo-url'.$newFileName, $this->logoStorage->get($newFileName), now()->addHour());
 
             return true;
         }
@@ -53,7 +52,7 @@ class LogoStorageService
 
     public function getImageUrlByImageId(?string $imageId, ?string $default = null): false|string
     {
-        $logoUrl = Cache::get('logo-url-'.$imageId);
+        $logoUrl = $this->cache->get('logo-url'.$imageId);
 
         if ($logoUrl !== null) {
             return $logoUrl;
@@ -63,20 +62,20 @@ class LogoStorageService
             $logoUrl = $this->logoStorage->get($imageId);
 
             if (! $logoUrl) {
-                $logoUrl = $this->logoStorage->get($default ?? $this->logoByDefault());
+                $logoUrl = $this->logoStorage->get($default ?: $this->logoByDefault());
             }
         } else {
-            $logoUrl = $this->logoStorage->get($default ?? $this->logoByDefault());
+            $logoUrl = $this->logoStorage->get($default ?: $this->logoByDefault());
         }
 
-        Cache::put('logo-url-'.$imageId, $logoUrl, now()->addHour());
+        $this->cache->put('logo-url'.$imageId, $logoUrl, now()->addHour());
 
         return $logoUrl;
     }
 
     protected function logoByDefault()
     {
-        return config('app.default_employer_logos');
+        return config('app.default_employer_logo');
     }
 
 }

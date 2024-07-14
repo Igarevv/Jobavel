@@ -7,7 +7,7 @@ namespace App\Service\Account;
 use App\Persistence\Models\Employer;
 use App\Persistence\Models\User;
 
-class EmployerAccountService extends AccountService
+final class EmployerAccountService extends AccountService
 {
 
     private bool $isEmailChanged = false;

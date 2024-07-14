@@ -23,6 +23,8 @@ class VacancyController extends Controller
 
     public function show(Vacancy $vacancy): View
     {
+        $this->authorize('view', $vacancy);
+
         $vacancyData = $this->vacancyService->getVacancy($vacancy);
 
         $employer = $this->vacancyService->getEmployerRelatedToVacancy($vacancy);
@@ -30,6 +32,7 @@ class VacancyController extends Controller
         return view('employer.vacancy.show', [
             'vacancy' => $vacancyData,
             'employer' => $employer,
+            'vacancyModel' => $vacancy
         ]);
     }
 
@@ -54,9 +57,7 @@ class VacancyController extends Controller
 
     public function unpublished(Request $request): View
     {
-        $employerId = $request->user()->getUserIdByRole();
-
-        $vacancies = Vacancy::where('employer_id', $employerId)
+        $vacancies = Vacancy::where('employer_id', $request->user()->employer->id)
             ->notPublished()
             ->get(['id', 'title', 'salary', 'created_at']);
 
@@ -66,6 +67,8 @@ class VacancyController extends Controller
 
     public function create(): View
     {
+        $this->authorize('create', Vacancy::class);
+
         $categories = $this->vacancyService->getSkillCategories();
 
         $categories = $categories->chunk(ceil($categories->count() / 3));
@@ -75,6 +78,8 @@ class VacancyController extends Controller
 
     public function store(CreateVacancyRequest $request): RedirectResponse
     {
+        $this->authorize('create', Vacancy::class);
+
         $vacancyDto = VacancyDto::fromRequest($request);
 
         $employerId = $request->session()->get('user.emp_id');

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 class LocalFileStorage implements LogoStorageInterface
 {
 
-    public function upload(UploadedFile $file): bool|string
+    public function upload(UploadedFile $file): false|string
     {
         return Storage::putFile('public/logo', $file);
     }

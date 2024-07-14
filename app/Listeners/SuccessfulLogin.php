@@ -3,24 +3,20 @@
 namespace App\Listeners;
 
 use Illuminate\Auth\Events\Login;
-use Illuminate\Support\Facades\DB;
 
 class SuccessfulLogin
 {
 
     public function handle(Login $event): void
     {
-        $user = DB::table('user_login_data')->where(
-            'email',
-            $event->user->email
-        )->first();
+        $user = $event->user->getRelationByUserRole()->first();
 
         session([
             'user' => [
-                'account_id' => $user->account_id,
-                'emp_id' => $user->user_id,
-                'name' => $user->name,
-                'role' => $user->role,
+                'account_id' => $event->user->user_id,
+                'emp_id' => $user->getEmpId(),
+                'name' => $user->getFullName(),
+                'role' => $event->user->getRole(),
             ],
         ]);
     }

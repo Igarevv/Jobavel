@@ -13,7 +13,7 @@ class S3FileStorage implements LogoStorageInterface
 
     private string $disk = 's3_logo';
 
-    public function upload(UploadedFile $file): bool|string
+    public function upload(UploadedFile $file): false|string
     {
         $path = 'employer-logo/';
 

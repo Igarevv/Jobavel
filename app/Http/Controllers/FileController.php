@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Service\Storage\LogoStorageService;
+use App\Service\Employer\Storage\EmployerLogoService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -13,7 +13,7 @@ use Illuminate\Validation\Rules\File;
 class FileController extends Controller
 {
     public function __construct(
-        protected LogoStorageService $logoStorageService
+        protected EmployerLogoService $logoStorageService
     ) {
     }
 

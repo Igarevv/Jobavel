@@ -18,6 +18,8 @@ class UserRepository implements UserRepositoryInterface
         return DB::transaction(function () use ($userData) {
             $user = $this->saveInUserTable($userData);
 
+            $user->assignRole($userData->getRole());
+
             $this->saveUserByRole($user, $userData);
 
             return $user;
@@ -46,7 +48,7 @@ class UserRepository implements UserRepositoryInterface
 
     private function saveUserByRole(User $user, RegisterDtoInterface $userData): void
     {
-        $modelByRole = $user->getRole()->getAssociatedModelByRole($user);
+        $modelByRole = $user->getRelationByUserRole();
 
         $modelByRole->create(array_merge($userData->asDatabaseFields(), [
             'user_id' => $user->id,

@@ -9,7 +9,7 @@ use App\Persistence\Contracts\VacancyRepositoryInterface;
 use App\Persistence\Models\Employer;
 use App\Persistence\Models\TechSkill;
 use App\Persistence\Models\Vacancy;
-use App\Service\Storage\LogoStorageService;
+use App\Service\Employer\Storage\EmployerLogoService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -20,7 +20,7 @@ class VacancyService
 
     public function __construct(
         protected VacancyRepositoryInterface $vacancyRepository,
-        protected LogoStorageService $storageService,
+        protected EmployerLogoService $storageService,
     ) {
     }
 

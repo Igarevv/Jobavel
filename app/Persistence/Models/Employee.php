@@ -32,12 +32,22 @@ class Employee extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function getEmpId(): string
+    {
+        return $this->employee_id;
+    }
+
+    public function getFullName(): string
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
+
     protected static function boot(): void
     {
         parent::boot();
 
         static::creating(function (Employee $employee) {
-            if ( ! $employee->employee_id) {
+            if (! $employee->employee_id) {
                 $employee->employee_id = Uuid::uuid7()->toString();
             }
         });

@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Employer;
 
 use App\Http\Controllers\Controller;
 use App\Service\Account\EmployerAccountService;
-use App\Service\Storage\LogoStorageService;
+use App\Service\Employer\Storage\EmployerLogoService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -15,7 +15,7 @@ class HomeController extends Controller
 
     public function __construct(
         protected EmployerAccountService $accountService,
-        protected LogoStorageService $storageService
+        protected EmployerLogoService $storageService
     ) {
     }
 

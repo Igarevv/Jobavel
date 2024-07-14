@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-use App\Persistence\Models\User;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-
 enum Role: string
 {
 
@@ -21,22 +17,6 @@ enum Role: string
             self::EMPLOYER => self::EMPLOYER->value.'.main',
             self::EMPLOYEE => self::EMPLOYEE->value.'.main',
             default => 'home'
-        };
-    }
-
-    public function getAssociatedModelByRole(User $user): HasOne
-    {
-        return match ($this) {
-            self::EMPLOYER => $user->employer(),
-            self::EMPLOYEE => $user->employee()
-        };
-    }
-
-    public function getAssociatedDataByRole(User $user): Model
-    {
-        return match ($this) {
-            self::EMPLOYER => $user->employer,
-            self::EMPLOYEE => $user->employee
         };
     }
 

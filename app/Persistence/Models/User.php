@@ -3,23 +3,27 @@
 namespace App\Persistence\Models;
 
 use App\Enums\Role;
+use App\Exceptions\InvalidRoleException;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\MustVerifyEmail as Mailer;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthContract;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 use Ramsey\Uuid\Uuid;
+use Spatie\Permission\Traits\HasRoles;
 
-class User extends Model implements AuthContract, MustVerifyEmail
+class User extends Model implements AuthContract, MustVerifyEmail, AuthorizableContract
 {
 
     use Mailer;
     use HasFactory;
     use Authenticatable;
-    use Notifiable;
+    use HasRoles;
+    use Authorizable;
 
     public const EMPLOYEE = Role::EMPLOYEE->value;
 
@@ -57,16 +61,9 @@ class User extends Model implements AuthContract, MustVerifyEmail
         return $this->hasOne(Employer::class);
     }
 
-    public function getUserIdByRole(): int
+    public function getRole(): string
     {
-        $user = $this->getRole()->getAssociatedDataByRole($this);
-        $this->employer->id;
-        return $user->id;
-    }
-
-    public function getRole(): Role
-    {
-        return Role::tryFrom($this->role);
+        return $this->getRoleNames()->first();
     }
 
     public function markEmailAsVerified(): void
@@ -86,12 +83,30 @@ class User extends Model implements AuthContract, MustVerifyEmail
         return $this->user_id;
     }
 
+    public function getRelationByUserRole(): HasOne
+    {
+        return match ($this->getRole()) {
+            self::EMPLOYER => $this->employer(),
+            self::EMPLOYEE => $this->employee(),
+            default => throw new InvalidRoleException('Invalid role')
+        };
+    }
+
+    public function getRelationDataByUserRole(): Model
+    {
+        return match ($this->getRole()) {
+            self::EMPLOYER => $this->employer,
+            self::EMPLOYEE => $this->employee,
+            default => throw new InvalidRoleException('Invalid role')
+        };
+    }
+
     protected static function boot(): void
     {
         parent::boot();
 
         static::creating(function (User $user) {
-            if ( ! $user->user_id) {
+            if (! $user->user_id) {
                 $user->user_id = Uuid::uuid7()->toString();
             }
         });

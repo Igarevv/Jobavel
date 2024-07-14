@@ -7,7 +7,7 @@ use Illuminate\Http\UploadedFile;
 interface LogoStorageInterface
 {
 
-    public function upload(UploadedFile $file): bool|string;
+    public function upload(UploadedFile $file): false|string;
 
     public function get(string $imageId): string|false;
 

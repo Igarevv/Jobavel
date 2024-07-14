@@ -48,6 +48,16 @@ class Employer extends Model
         return $builder->where('employer_id', $uuid);
     }
 
+    public function getEmpId(): string
+    {
+        return $this->employer_id;
+    }
+
+    public function getFullName(): string
+    {
+        return $this->company_name;
+    }
+
     public static function findByUuid(string $uuid, array $columns = ['*']): ?Employer
     {
         return static::where('employer_id', $uuid)->first($columns);
