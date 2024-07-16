@@ -1,3 +1,6 @@
+@pushonce('vacancy-css')
+    <link href="/assets/css/vacancy.css" type="text/css" rel="stylesheet">
+@endpushonce
 <div class="container pt-2" @style(['font-size:12px'])>
     @forelse($skillSet as $chunk)
         <div class="row justify-content-around gx-1">
@@ -22,8 +25,4 @@
         <p class="text-center h6 text-danger fw-bold">Skills set not found, please contact to support</p>
     @endforelse
 </div>
-@once
-    @push('vacancy-css')
-        <link href="/assets/css/vacancy.css" type="text/css" rel="stylesheet">
-    @endpush
-@endonce
+

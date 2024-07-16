@@ -19,7 +19,7 @@ class CategoriesView extends Component
 
     public function isChecked(int $skillId, array $skillFromSession = []): bool
     {
-        return in_array($skillId, $skillFromSession) || in_array($skillId, $this->existingSkills?->ids);
+        return in_array($skillId, $skillFromSession) || in_array($skillId, $this->existingSkills?->ids ?? []);
     }
 
     public function render(): View|Closure|string

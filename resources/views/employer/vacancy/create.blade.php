@@ -61,21 +61,21 @@
                             @enderror
                         </div>
                         <div class="mb-5">
-                            <x-input.field-add id="createResponsibilityInput" name="responsibilities"
+                            <x-input.field.add id="createResponsibilityInput" name="responsibilities"
                                                required value="{{ old('responsibilities')[0] ?? '' }}"
-                                               label="Responsibilities (ex. Write clean, efficient and testable code)"></x-input.field-add>
-                            <x-input.nested-field-error name="responsibilities"></x-input.nested-field-error>
+                                               label="Responsibilities (ex. Write clean, efficient and testable code)"></x-input.field.add>
+                            <x-input.field.nested-error name="responsibilities"></x-input.field.nested-error>
                         </div>
                         <div class="mb-5">
-                            <x-input.field-add id="createRequirementsInput" name="requirements" required label="Requirements (ex. Well-knowing
+                            <x-input.field.add id="createRequirementsInput" name="requirements" required label="Requirements (ex. Well-knowing
                                 PHP,
-                                basic of docker etc.)" value="{{ old('requirements')[0] ?? '' }}"></x-input.field-add>
-                            <x-input.nested-field-error name="requirements"></x-input.nested-field-error>
+                                basic of docker etc.)" value="{{ old('requirements')[0] ?? '' }}"></x-input.field.add>
+                            <x-input.field.nested-error name="requirements"></x-input.field.nested-error>
                         </div>
                         <div class="mb-5">
-                            <x-input.field-add id="createOffersInput" name="offers" value="{{ old('offers')[0] ?? '' }}"
-                                               label="Job offers(ex. Medical insurance...) (Optional. You may leave it as empty field)"></x-input.field-add>
-                            <x-input.nested-field-error name="offers"></x-input.nested-field-error>
+                            <x-input.field.add id="createOffersInput" name="offers" value="{{ old('offers')[0] ?? '' }}"
+                                               label="Job offers(ex. Medical insurance...) (Optional. You may leave it as empty field)"></x-input.field.add>
+                            <x-input.field.nested-error name="offers"></x-input.field.nested-error>
                         </div>
                     </x-input.block>
                     <x-button.default class="float-end mb-5" type="submit">Create vacancy</x-button.default>

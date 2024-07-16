@@ -5,9 +5,9 @@
 
     <x-main>
         <div class="container mt-3 mb-3">
-            <h5 class="text-center fw-light">Create new vacancy for</h5>
+            <h5 class="text-center fw-light">Edit data for your</h5>
             <h1 class="text-center fw-bold text-danger red">{{ session('user.name') }}</h1>
-            <h5 class="text-center fw-light">company</h5>
+            <h5 class="text-center fw-light">company vacancy</h5>
             <div class="w-75 mx-auto">
                 <form action="{{ route('employer.vacancy.store') }}" method="POST">
                     @csrf
@@ -15,8 +15,10 @@
                         <div class="my-5">
                             <h6 class="fw-bold text-decoration-underline">Choose skills that will be required for
                                 vacancy</h6>
-                            <p>Your current skills in
-                                vacancy: {{ implode(', ', $existingSkills->names }}</p>
+                            <h6 class="mt-3">Your current skills in
+                                vacancy: <span @style(['text-decoration: underline', 'text-decoration-color: red'])
+                                               class="fw-bold">{{ implode(', ', $existingSkills->names) }}</span>
+                            </h6>
                             <x-categories.list name="skillset" :skillSet="$skills"
                                                :existingSkills="$existingSkills"></x-categories.list>
                             @error('skillset')
@@ -60,28 +62,29 @@
                         <div class="mb-5">
                             <h6 class="fw-bold text-decoration-underline">About job</h6>
                             <x-input.textarea rows="5" name="description"
-                                              required>{{ old('description') ?? $vacancy->description }}</x-input.textarea>
+                                              required>{{ old('description') ?? str($vacancy->description)->squish() }}</x-input.textarea>
                             @error('description')
                             <p class="text-danger text-center font-monospace fw-bold mt-2 h6">{{ $message }}</p>
                             @enderror
                         </div>
-                        {{--<div class="mb-5">
-                            <x-input.field-add id="createResponsibilityInput" name="responsibilities"
-                                               required value="{{ old('responsibilities')[0] ?? '' }}"
-                                               label="Responsibilities (ex. Write clean, efficient and testable code)"></x-input.field-add>
-                            <x-input.nested-field-error name="responsibilities"></x-input.nested-field-error>
+                        <div class="mb-5">
+                            <x-input.field.show id="createResponsibilityInput" name="responsibilities"
+                                                required
+                                                :value="$vacancy->responsibilities"
+                                                label="Responsibilities (ex. Write clean, efficient and testable code)"></x-input.field.show>
+                            <x-input.field.nested-error name="responsibilities"></x-input.field.nested-error>
                         </div>
                         <div class="mb-5">
-                            <x-input.field-add id="createRequirementsInput" name="requirements" required label="Requirements (ex. Well-knowing
+                            <x-input.field.show id="createRequirementsInput" name="requirements" required label="Requirements (ex. Well-knowing
                                 PHP,
-                                basic of docker etc.)" value="{{ old('requirements')[0] ?? '' }}"></x-input.field-add>
-                            <x-input.nested-field-error name="requirements"></x-input.nested-field-error>
+                                basic of docker etc.)" :value="$vacancy->requirements"></x-input.field.show>
+                            <x-input.field.nested-error name="requirements"></x-input.field.nested-error>
                         </div>
                         <div class="mb-5">
-                            <x-input.field-add id="createOffersInput" name="offers" value="{{ old('offers')[0] ?? '' }}"
-                                               label="Job offers(ex. Medical insurance...) (Optional. You may leave it as empty field)"></x-input.field-add>
-                            <x-input.nested-field-error name="offers"></x-input.nested-field-error>
-                        </div>--}}
+                            <x-input.field.show id="createOffersInput" name="offers" :value="$vacancy->offers"
+                                                label="Job offers(ex. Medical insurance...) (Optional. You may leave it as empty field)"></x-input.field.show>
+                            <x-input.field.nested-error name="offers"></x-input.field.nested-error>
+                        </div>
                     </x-input.block>
                     <x-button.default class="float-end mb-5" type="submit">Create vacancy</x-button.default>
                 </form>

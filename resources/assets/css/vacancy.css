@@ -21,15 +21,11 @@ thead {
 .category-label {
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 .category-label input[type="checkbox"] {
     display: none;
-}
-
-.category-label {
-    display: inline-block;
-    cursor: pointer;
 }
 
 .category-label input[type="checkbox"] {
