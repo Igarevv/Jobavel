@@ -2,6 +2,7 @@
 
 namespace App\Persistence\Models;
 
+use App\Service\Cache\Cache;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,10 +23,12 @@ class Employer extends Model
         'user_id',
         'company_name',
         'contact_email',
+        'company_description'
     ];
 
     protected $hidden = [
         'id',
+        'user_id'
     ];
 
     public function user(): BelongsTo
@@ -38,14 +41,14 @@ class Employer extends Model
         return $this->hasMany(Vacancy::class);
     }
 
-    public function compareEmails(string $newEmail): bool
-    {
-        return $this->contact_email === $newEmail;
-    }
-
     public function scopeByUuid(Builder $builder, string $uuid): Builder
     {
         return $builder->where('employer_id', $uuid);
+    }
+
+    public function compareEmails(string $newEmail): bool
+    {
+        return $this->contact_email === $newEmail;
     }
 
     public function getEmpId(): string
@@ -71,6 +74,10 @@ class Employer extends Model
             if (! $employer->employer_id) {
                 $employer->employer_id = Uuid::uuid7()->toString();
             }
+        });
+
+        static::saved(function (Employer $employer) {
+            Cache::forgetKey('vacancy-employer', $employer->employer_id);
         });
     }
 

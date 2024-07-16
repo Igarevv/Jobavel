@@ -21,18 +21,36 @@ class VacancyController extends Controller
     ) {
     }
 
-    public function show(Vacancy $vacancy): View
+    public function show(int $vacancy): View
+    {
+        $vacancyModel = $this->vacancyService->getVacancy($vacancy);
+
+        $this->authorize('view', $vacancyModel);
+
+        $employer = $this->vacancyService->getEmployerRelatedToVacancy($vacancyModel);
+
+        return view('employer.vacancy.show', [
+            'vacancy' => $vacancyModel,
+            'employer' => $employer,
+            'skillSet' => $vacancyModel->techSkillAsBaseArray()
+        ]);
+    }
+
+    public function showEdit(Vacancy $vacancy): View
     {
         $this->authorize('view', $vacancy);
 
-        $vacancyData = $this->vacancyService->getVacancy($vacancy);
+        $categories = $this->vacancyService->getSkillCategories();
 
-        $employer = $this->vacancyService->getEmployerRelatedToVacancy($vacancy);
+        $existingSkills = (object) [
+            'ids' => $vacancy->techSkill->pluck('id')->toArray(),
+            'names' => $vacancy->techSkill->pluck('names')->toArray()
+        ];
 
-        return view('employer.vacancy.show', [
-            'vacancy' => $vacancyData,
-            'employer' => $employer,
-            'vacancyModel' => $vacancy
+        return view('employer.vacancy.edit', [
+            'vacancy' => $vacancy,
+            'existingSkills' => $existingSkills,
+            'skills' => $categories->toArray()
         ]);
     }
 
@@ -71,9 +89,7 @@ class VacancyController extends Controller
 
         $categories = $this->vacancyService->getSkillCategories();
 
-        $categories = $categories->chunk(ceil($categories->count() / 3));
-
-        return view('employer.vacancy.create', ['skills' => $categories]);
+        return view('employer.vacancy.create', ['skills' => $categories->toArray()]);
     }
 
     public function store(CreateVacancyRequest $request): RedirectResponse

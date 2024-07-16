@@ -2,6 +2,7 @@
 
 namespace App\Persistence\Models;
 
+use App\Service\Cache\Cache;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -32,6 +33,8 @@ class Vacancy extends Model
         'responsibilities' => 'array',
         'offers' => 'array',
         'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
     ];
 
     public $timestamps = false;
@@ -49,21 +52,7 @@ class Vacancy extends Model
 
     public function employer(): BelongsTo
     {
-        return $this->belongsTo(Employer::class)
-            ->select(['id', 'company_name', 'company_description', 'company_logo', 'contact_email']);
-    }
-
-    public function techSkillsAsArray(): array
-    {
-        return $this->techSkill()
-            ->toBase()
-            ->get(['id', 'skill_name'])
-            ->toArray();
-    }
-
-    public function isPublished(): bool
-    {
-        return $this->is_published;
+        return $this->belongsTo(Employer::class);
     }
 
     public function scopeNotPublished(Builder $builder): Builder
@@ -76,6 +65,21 @@ class Vacancy extends Model
         return $builder->where('is_published', true);
     }
 
+    public function techSkillAsBaseArray(): array
+    {
+        return $this->techSkill->map(function ($skill) {
+            return (object) [
+                'id' => $skill->id,
+                'skillName' => $skill->skill_name
+            ];
+        })->toArray();
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->is_published;
+    }
+
     protected static function boot(): void
     {
         parent::boot();
@@ -84,6 +88,10 @@ class Vacancy extends Model
             if (! $vacancy->created_at) {
                 $vacancy->created_at = now();
             }
+        });
+
+        static::saved(function (Vacancy $vacancy) {
+            Cache::forgetKey('vacancy', $vacancy->id);
         });
     }
 

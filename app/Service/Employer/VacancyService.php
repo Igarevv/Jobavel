@@ -9,6 +9,7 @@ use App\Persistence\Contracts\VacancyRepositoryInterface;
 use App\Persistence\Models\Employer;
 use App\Persistence\Models\TechSkill;
 use App\Persistence\Models\Vacancy;
+use App\Service\Cache\Cache;
 use App\Service\Employer\Storage\EmployerLogoService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
@@ -21,6 +22,7 @@ class VacancyService
     public function __construct(
         protected VacancyRepositoryInterface $vacancyRepository,
         protected EmployerLogoService $storageService,
+        protected Cache $cache
     ) {
     }
 
@@ -56,34 +58,36 @@ class VacancyService
             $result[$firstLetter][] = $skill;
         }
 
-        return collect($result);
+        $categories = collect($result);
+
+        return $categories->chunk(ceil($categories->count() / 3));
     }
 
-    public function getVacancy(Vacancy|int $vacancy): VacancyDto
+    public function getVacancy(int $vacancy): Vacancy
     {
-        if (is_numeric($vacancy)) {
-            $vacancy = $this->vacancyRepository->getVacancyById($vacancy);
+        $cacheKey = $this->cache->getCacheKey('vacancy', $vacancy);
 
-            if (! $vacancy) {
-                throw new ModelNotFoundException('Vacancy not found');
-            }
-
-            return VacancyDto::fromDatabase($vacancy);
-        }
-
-        return VacancyDto::fromDatabase($vacancy);
+        return $this->cache->repository()->remember($cacheKey, 60 * 60 * 24, function () use ($vacancy) {
+            return $this->vacancyRepository->getVacancyById($vacancy);
+        });
     }
 
     public function getEmployerRelatedToVacancy(Vacancy $vacancy): object
     {
-        $companyLogoUrl = $this->storageService->getImageUrlByImageId($vacancy->employer->company_logo);
+        $cacheKey = $this->cache->getCacheKey('vacancy-employer', $vacancy->id);
 
-        return (object) [
-            'company' => $vacancy->employer->company_name,
-            'description' => $vacancy->employer->company_description,
-            'logo' => $companyLogoUrl,
-            'email' => $vacancy->employer->contact_email
-        ];
+        return $this->cache->repository()->remember($cacheKey, 60 * 60 * 24, function () use ($vacancy) {
+            $employer = $vacancy->employer;
+
+            $companyLogoUrl = $this->storageService->getImageUrlByImageId($employer->company_logo);
+
+            return (object) [
+                'company' => $employer->company_name,
+                'description' => $employer->company_description,
+                'logo' => $companyLogoUrl,
+                'email' => $employer->contact_email
+            ];
+        });
     }
 
 }

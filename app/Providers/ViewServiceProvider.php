@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\View\Components\CategoriesView;
 use App\View\Components\LogoView;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Session;
@@ -25,6 +26,8 @@ class ViewServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Blade::component('image.logo', LogoView::class);
+        Blade::component('categories.list', CategoriesView::class);
+
         View::share('currentYear', date('Y'));
 
         View::composer('*', function ($view) {
