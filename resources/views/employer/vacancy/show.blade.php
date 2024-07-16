@@ -15,10 +15,10 @@
                             <header class="flex-grow-1 ms-3">
                                 <h1 class="fw-bolder mb-1">{{ $vacancy->title }}</h1>
                                 <div class="text-muted fst-italic mb-2">
-                                    Posted {{ $vacancy->createdAt->diffForHumans() }}
+                                    Posted {{ $vacancy->created_at->diffForHumans() }}
                                 </div>
-                                @foreach($vacancy->skillSet as $skill)
-                                    <span class="badge small bg-dark text-light">{{ $skill->skill_name }}</span>
+                                @foreach($skillSet as $skill)
+                                    <span class="badge small bg-dark text-light">{{ $skill->skillName }}</span>
                                 @endforeach
                                 <p class="fw-bold mt-2">{{ $employer->company }}</span></p>
                             </header>
@@ -121,11 +121,11 @@
                     <div class="card mb-4">
                         <div class="card-header">Search another vacancies by this categories</div>
                         <div class="card-body d-flex justify-content-center gap-3 flex-wrap">
-                            @foreach($vacancy->skillSet as $skill)
+                            @foreach($skillSet as $skill)
                                 <ul class="list-unstyled mb-0">
                                     <li><a href="#!">
                                             <span
-                                                    class="badge small bg-dark text-light">{{ $skill->skill_name }}
+                                                    class="badge small bg-dark text-light">{{ $skill->skillName }}
                                             </span>
                                         </a>
                                     </li>
@@ -133,11 +133,13 @@
                             @endforeach
                         </div>
                     </div>
-                    @can(['edit', 'delete', 'publish'], $vacancyModel)
+                    @can(['edit', 'delete', 'publish'], $vacancy)
                         <div class="card mb-4">
                             <div class="card-header">Actions for you</div>
                             <div class="card-body d-flex justify-content-between align-items-center gap-3">
-                                <x-button.outline colorType="primary">Edit vacancy</x-button.outline>
+                                <a href="{{ route('vacancies.show.edit', ['vacancy' => $vacancy->id]) }}"
+                                   class="btn btn-outline-primary">Edit
+                                    vacancy</a>
                                 <x-button.outline colorType="danger">Delete vacancy</x-button.outline>
                                 <x-button.outline colorType="success">Publish vacancy</x-button.outline>
                             </div>

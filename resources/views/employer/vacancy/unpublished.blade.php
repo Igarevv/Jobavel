@@ -52,7 +52,7 @@
                                                                 <td>{{ $vacancy->salary }}</td>
                                                                 <td>{{ $vacancy->created_at }}</td>
                                                                 <td class="text-center">
-                                                                    <a href="{{ route('vacancy.show', ['vacancy' => $vacancy->id]) }}"
+                                                                    <a href="{{ route('vacancies.show', ['vacancy' => $vacancy->id]) }}"
                                                                        class="btn btn-outline-light">Show Preview</a>
                                                                 </td>
                                                                 <td class="text-center">
