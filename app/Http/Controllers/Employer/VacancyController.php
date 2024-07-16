@@ -44,7 +44,7 @@ class VacancyController extends Controller
 
         $existingSkills = (object) [
             'ids' => $vacancy->techSkill->pluck('id')->toArray(),
-            'names' => $vacancy->techSkill->pluck('names')->toArray()
+            'names' => $vacancy->techSkill->pluck('skill_name')->toArray(),
         ];
 
         return view('employer.vacancy.edit', [

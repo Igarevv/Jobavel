@@ -2,6 +2,7 @@
 
 namespace App\Persistence\Models;
 
+use App\Service\Cache\Cache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -20,4 +21,12 @@ class TechSkill extends Model
         return $this->belongsToMany(Vacancy::class);
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saved(function (TechSkill $skill) {
+            Cache::forgetKey('skills');
+        });
+    }
 }

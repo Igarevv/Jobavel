@@ -39,55 +39,59 @@ class VacancyService
 
     public function getSkillCategories(): Collection
     {
-        $categories = TechSkill::query()->orderBy('skill_name')
-            ->toBase()
-            ->get();
+        $cacheKey = $this->cache->getCacheKey('skills');
 
-        $result = [];
+        return $this->cache->repository()->remember($cacheKey, $this->cache->secondsInYear(), function () {
+            $categories = TechSkill::query()->orderBy('skill_name')
+                ->toBase()
+                ->get();
 
-        foreach ($categories as $category) {
-            $firstLetter = Str::upper(Str::substr($category->skill_name, 0, 1));
+            $result = [];
 
-            $skill = new \stdClass();
-            $skill->id = $category->id;
-            $skill->skillName = $category->skill_name;
+            foreach ($categories as $category) {
+                $firstLetter = Str::upper(Str::substr($category->skill_name, 0, 1));
 
-            if (! Arr::exists($result, $firstLetter)) {
-                $result[$firstLetter] = [];
+                $skill = new \stdClass();
+                $skill->id = $category->id;
+                $skill->skillName = $category->skill_name;
+
+                if (! Arr::exists($result, $firstLetter)) {
+                    $result[$firstLetter] = [];
+                }
+                $result[$firstLetter][] = $skill;
             }
-            $result[$firstLetter][] = $skill;
-        }
 
-        $categories = collect($result);
-
-        return $categories->chunk(ceil($categories->count() / 3));
+            return collect($result)->chunk(ceil(count($result) / 3));
+        });
     }
 
     public function getVacancy(int $vacancy): Vacancy
     {
         $cacheKey = $this->cache->getCacheKey('vacancy', $vacancy);
 
-        return $this->cache->repository()->remember($cacheKey, 60 * 60 * 24, function () use ($vacancy) {
-            return $this->vacancyRepository->getVacancyById($vacancy);
-        });
+        return $this->cache->repository()->remember($cacheKey, $this->cache->secondsInMonth(),
+            function () use ($vacancy) {
+                return $this->vacancyRepository->getVacancyById($vacancy);
+            });
     }
 
     public function getEmployerRelatedToVacancy(Vacancy $vacancy): object
     {
         $cacheKey = $this->cache->getCacheKey('vacancy-employer', $vacancy->id);
 
-        return $this->cache->repository()->remember($cacheKey, 60 * 60 * 24, function () use ($vacancy) {
-            $employer = $vacancy->employer;
+        return $this->cache->repository()->remember($cacheKey, $this->cache->secondsInMonth(),
+            function () use ($vacancy) {
+                $employer = $vacancy->employer;
 
-            $companyLogoUrl = $this->storageService->getImageUrlByImageId($employer->company_logo);
+                $companyLogoUrl = $this->storageService->getImageUrlByImageId($employer->company_logo);
 
-            return (object) [
-                'company' => $employer->company_name,
-                'description' => $employer->company_description,
-                'logo' => $companyLogoUrl,
-                'email' => $employer->contact_email
-            ];
-        });
+                return (object) [
+                    'company' => $employer->company_name,
+                    'description' => $employer->company_description,
+                    'logo' => $companyLogoUrl,
+                    'email' => $employer->contact_email
+                ];
+            });
     }
 
 }

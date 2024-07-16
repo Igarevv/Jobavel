@@ -119,6 +119,7 @@ return [
 
     'keys' => [
         'vacancy' => 'vkey-%s',
-        'vacancy-employer' => 'v_emp_key-%s'
+        'vacancy-employer' => 'v_emp_key-%s',
+        'skills' => 's-set-all'
     ]
 ];
