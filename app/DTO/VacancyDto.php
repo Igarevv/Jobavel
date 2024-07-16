@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DTO;
 
-use App\Http\Requests\CreateVacancyRequest;
+use App\Http\Requests\VacancyRequest;
 use Carbon\Carbon;
 
 readonly class VacancyDto
@@ -25,7 +25,7 @@ readonly class VacancyDto
     ) {
     }
 
-    public static function fromRequest(CreateVacancyRequest $request): static
+    public static function fromRequest(VacancyRequest $request): static
     {
         $input = $request->validated();
 

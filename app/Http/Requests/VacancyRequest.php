@@ -6,7 +6,7 @@ use App\Rules\NullableDynamicFieldRule;
 use App\Rules\TechSkillsExistsRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateVacancyRequest extends FormRequest
+class VacancyRequest extends FormRequest
 {
 
     /**

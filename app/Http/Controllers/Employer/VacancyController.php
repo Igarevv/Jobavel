@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Employer;
 
 use App\DTO\VacancyDto;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateVacancyRequest;
+use App\Http\Requests\VacancyRequest;
 use App\Persistence\Models\Vacancy;
 use App\Service\Employer\VacancyService;
 use Illuminate\Http\RedirectResponse;
@@ -54,7 +54,12 @@ class VacancyController extends Controller
         ]);
     }
 
-    public function published()
+    public function edit(VacancyRequest $request)
+    {
+        dd($request->validated());
+    }
+
+    /*public function published()
     {
         $jobInfo = (object) [
             'position' => 'Backend Laravel Developer',
@@ -71,7 +76,7 @@ class VacancyController extends Controller
             ],
         ];
         return view('employer.vacancy.published', ['jobInfo' => $jobInfo]);
-    }
+    }*/
 
     public function unpublished(Request $request): View
     {
@@ -92,7 +97,7 @@ class VacancyController extends Controller
         return view('employer.vacancy.create', ['skills' => $categories->toArray()]);
     }
 
-    public function store(CreateVacancyRequest $request): RedirectResponse
+    public function store(VacancyRequest $request): RedirectResponse
     {
         $this->authorize('create', Vacancy::class);
 

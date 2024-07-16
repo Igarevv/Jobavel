@@ -9,7 +9,7 @@
             <h1 class="text-center fw-bold text-danger red">{{ session('user.name') }}</h1>
             <h5 class="text-center fw-light">company vacancy</h5>
             <div class="w-75 mx-auto">
-                <form action="{{ route('employer.vacancy.store') }}" method="POST">
+                <form action="{{ route('vacancies.edit') }}" method="POST">
                     @csrf
                     <x-input.block id="createVacancyInput">
                         <div class="my-5">
@@ -68,25 +68,24 @@
                             @enderror
                         </div>
                         <div class="mb-5">
-                            <x-input.field.show id="createResponsibilityInput" name="responsibilities"
-                                                required
-                                                :value="$vacancy->responsibilities"
-                                                label="Responsibilities (ex. Write clean, efficient and testable code)"></x-input.field.show>
-                            <x-input.field.nested-error name="responsibilities"></x-input.field.nested-error>
+                            <x-input.dynamic.field id="createResponsibilityInput" name="responsibilities"
+                                                   required
+                                                   :value="old('responsibilities') ?? $vacancy->responsibilities"
+                                                   label="Responsibilities (ex. Write clean, efficient and testable code)"></x-input.dynamic.field>
                         </div>
                         <div class="mb-5">
-                            <x-input.field.show id="createRequirementsInput" name="requirements" required label="Requirements (ex. Well-knowing
+                            <x-input.dynamic.field id="createRequirementsInput" name="requirements" required label="Requirements (ex. Well-knowing
                                 PHP,
-                                basic of docker etc.)" :value="$vacancy->requirements"></x-input.field.show>
-                            <x-input.field.nested-error name="requirements"></x-input.field.nested-error>
+                                basic of docker etc.)"
+                                                   :value="old('requirements') ?? $vacancy->requirements"></x-input.dynamic.field>
                         </div>
                         <div class="mb-5">
-                            <x-input.field.show id="createOffersInput" name="offers" :value="$vacancy->offers"
-                                                label="Job offers(ex. Medical insurance...) (Optional. You may leave it as empty field)"></x-input.field.show>
-                            <x-input.field.nested-error name="offers"></x-input.field.nested-error>
+                            <x-input.dynamic.field id="createOffersInput" name="offers"
+                                                   :value="old('offers') ?? $vacancy->offers"
+                                                   label="Job offers(ex. Medical insurance...) (Optional. You may leave it as empty field)"></x-input.dynamic.field>
                         </div>
                     </x-input.block>
-                    <x-button.default class="float-end mb-5" type="submit">Create vacancy</x-button.default>
+                    <x-button.default class="float-end mb-5" type="submit">Save changes</x-button.default>
                 </form>
             </div>
         </div>

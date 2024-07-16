@@ -10,13 +10,16 @@
 <div id="{{ $id }}">
     <div class="input-group">
         <x-input.index type="text" name="{{ $name }}[]" id="{{ $id }}"
-                       required="{{ $required }}" value="{{ $value[0] }}"></x-input.index>
+                       required="{{ $required }}" value="{{ $value[0] ?? '' }}"></x-input.index>
         <button type="button" class="btn btn-primary add-item"
                 data-target="{{ $id }}">+
         </button>
     </div>
+    @error($name.'.0')
+    <p class="text-danger text-center font-monospace fw-bold mt-2 h6"> {{ $errors->first($name.'.*') }}</p>
+    @enderror
 
-    @foreach($value as $item)
+    @foreach($value as $key => $item)
         @if($loop->first)
             @continue
         @endif
@@ -26,5 +29,12 @@
             <button type="button" class="btn btn-danger remove-item">-</button>
             <button type="button" class="btn btn-primary add-item">+</button>
         </div>
+        @if($errors->has("{$name}.{$key}"))
+            <div class="text-danger">
+                @foreach($errors->get("{$name}.{$key}") as $error)
+                    <p class="text-danger text-center font-monospace fw-bold mt-2 h6">{{ $error }}</p>
+                @endforeach
+            </div>
+        @endif
     @endforeach
 </div>
