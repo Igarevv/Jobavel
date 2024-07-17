@@ -3,27 +3,19 @@
 use App\Http\Controllers\Employer\EmployerAccountController;
 use App\Http\Controllers\Employer\HomeController;
 use App\Http\Controllers\Employer\RegisterController;
-use App\Http\Controllers\Employer\VacancyController;
+use App\Http\Controllers\Employer\VacancyManipulationController;
+use App\Http\Controllers\Employer\VacancyViewController;
 use App\Http\Controllers\FileController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('vacancies')->name('vacancies.')->whereNumber('vacancy')->group(function () {
     /*
      * ---------------------------------
-     * -         Show vacancy          -
+     * -      Vacancy show view        -
      * ---------------------------------
      */
 
-    Route::get('/{vacancy}', [VacancyController::class, 'show'])->name('show');
-
-    /*
-     * ---------------------------------
-     * -         Edit vacancy          -
-     * ---------------------------------
-     */
-
-    Route::get('/{vacancy}/edit', [VacancyController::class, 'showEdit'])->name('show.edit');
-    Route::post('/{vacancy}/edit', [VacancyController::class, 'edit'])->name('edit');
+    Route::get('/{vacancy}', [VacancyViewController::class, 'show'])->name('show');
 });
 
 Route::name('employer.')->group(function () {
@@ -73,23 +65,31 @@ Route::name('employer.')->group(function () {
 
             Route::post('/logo', [FileController::class, 'uploadLogo'])->name('logo.upload');
 
-            /*
-            * ---------------------------------
-            * -     Vacancy manipulation      -
-            * ---------------------------------
-            */
-
             Route::middleware(['verified'])->group(function () {
-                Route::prefix('vacancy')->name('vacancy.')->group(function () {
-                    Route::get('/published',
-                        [VacancyController::class, 'published'])
-                        ->name('published');
-                    Route::get('/unpublished',
-                        [VacancyController::class, 'unpublished'])
-                        ->name('unpublished');
-                });
-                Route::resource('vacancy', VacancyController::class)
-                    ->only(['create', 'store']);
+                /*
+                * ---------------------------------
+                * -      Vacancy show view        -
+                * ---------------------------------
+                */
+
+                Route::controller(VacancyViewController::class)->prefix('vacancy')
+                    ->name('vacancy.')
+                    ->group(function () {
+                        Route::get('/published', 'published')->name('published');
+                        Route::get('/unpublished', 'unpublished')->name('unpublished');
+                        Route::get('/{vacancy}/edit', 'showEdit')->whereNumber('vacancy')
+                            ->name('show.edit');
+                        Route::get('/create', 'create')->name('create');
+                    });
+
+                /*
+                * ---------------------------------
+                * -     Vacancy manipulation      -
+                * ---------------------------------
+                */
+
+                Route::resource('vacancy', VacancyManipulationController::class)
+                    ->only(['destroy', 'store', 'update']);
             });
         });
     });

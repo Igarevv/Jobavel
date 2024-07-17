@@ -19,8 +19,9 @@
                     {{ $value }}
                 </div>
                 @endsession
-                <form action="{{ route('vacancies.edit', ['vacancy' => $vacancy->id]) }}" method="POST">
+                <form action="{{ route('employer.vacancy.update', ['vacancy' => $vacancy->id]) }}" method="POST">
                     @csrf
+                    @method('PUT')
                     <x-input.block id="createVacancyInput">
                         <div class="my-5">
                             <h6 class="fw-bold text-decoration-underline">Choose skills that will be required for

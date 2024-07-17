@@ -137,7 +137,7 @@
                         <div class="card mb-4">
                             <div class="card-header">Actions for you</div>
                             <div class="card-body d-flex justify-content-between align-items-center gap-3">
-                                <a href="{{ route('vacancies.show.edit', ['vacancy' => $vacancy->id]) }}"
+                                <a href="{{ route('employer.vacancy.show.edit', ['vacancy' => $vacancy->id]) }}"
                                    class="btn btn-outline-primary">Edit
                                     vacancy</a>
                                 <x-button.outline colorType="danger">Delete vacancy</x-button.outline>
