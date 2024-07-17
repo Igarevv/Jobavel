@@ -11,4 +11,6 @@ interface VerificationCodeRepositoryInterface
     public function setNewEmployerContactEmail(string|int $userId, string $email): void;
 
     public function getCodeByUserId(string|int $userId): ?\stdClass;
+
+    public function updateCodeForResendingAction(int $code, string|int $userId);
 }

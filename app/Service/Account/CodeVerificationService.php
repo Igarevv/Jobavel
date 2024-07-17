@@ -46,13 +46,17 @@ class CodeVerificationService
 
     public function resendEmail(string|int $userId): void
     {
+        $newCode = $this->generateCode();
+
+        $this->verificationRepository->updateCodeForResendingAction($newCode, $userId);
+
         $verificationData = $this->verificationRepository->getCodeByUserId($userId);
 
-        if (! $verificationData) {
+        if (! $verificationData || $verificationData->code !== $newCode) {
             throw new UnknownUserTryToVerifyCodeException();
         }
 
-        event(new ContactEmailUpdatedEvent($this->generateCode(), $verificationData->new_contact_email));
+        event(new ContactEmailUpdatedEvent($newCode, $verificationData->new_contact_email));
     }
 
     protected function regenerateExpiredCode(string|int $userId, string $email): void

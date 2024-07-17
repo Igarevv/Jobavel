@@ -2,12 +2,9 @@
 
 namespace App\Providers;
 
-use App\Events\ContactEmailUpdatedEvent;
-use App\Listeners\SendConfirmEmailAfterRegister;
-use App\Listeners\SendVerificationCodeEmail;
+use App\Listeners\AuthEventSubscriber;
 use App\Listeners\SuccessfulLogin;
 use Illuminate\Auth\Events\Login;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -19,15 +16,13 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-        Registered::class => [
-            SendConfirmEmailAfterRegister::class,
-        ],
         Login::class => [
             SuccessfulLogin::class,
         ],
-        ContactEmailUpdatedEvent::class => [
-            SendVerificationCodeEmail::class
-        ]
+    ];
+
+    protected $subscribe = [
+        AuthEventSubscriber::class
     ];
 
     /**

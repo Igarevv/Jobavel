@@ -54,4 +54,13 @@ class VerificationCodeRepository implements VerificationCodeRepositoryInterface
     {
         DB::table('verification_codes')->where('user_id', $userId)->delete();
     }
+
+    public function updateCodeForResendingAction(int $code, int|string $userId): void
+    {
+        DB::table('verification_codes')->where('user_id', $userId)
+            ->update([
+                'code' => $code,
+                'expires_at' => Carbon::now()->addMinutes(30),
+            ]);
+    }
 }
