@@ -21,11 +21,13 @@ class VacancyManipulationController extends Controller
 
     public function update(int $vacancy, VacancyRequest $request): RedirectResponse
     {
+        $existedVacancy = $this->vacancyService->getVacancy($vacancy);
+
+        $this->authorize('edit', $existedVacancy);
+
         $vacancyDto = VacancyDto::fromRequest($request);
 
-        $vacancyDto->connectId($vacancy);
-
-        $this->vacancyService->update($vacancyDto);
+        $this->vacancyService->update($existedVacancy, $vacancyDto);
 
         return redirect()->route('vacancies.show', ['vacancy' => $vacancy])
             ->with('edit-success', trans('alerts.vacancy.edited'));
@@ -46,26 +48,53 @@ class VacancyManipulationController extends Controller
             ->with('vacancy-added', trans('alerts.vacancy.added'));
     }
 
-    public function destroy()
+    public function destroy(Vacancy $vacancy): RedirectResponse
     {
-    }
-}
+        $this->authorize('delete', $vacancy);
+        
+        $vacancy->delete();
 
-/*public function published()
+        if ($vacancy->isPublished()) {
+            $vacancy->unpublish();
+        }
+
+        return redirect()->route('employer.vacancy.unpublished')
+            ->with('vacancy-trashed', trans('alerts.vacancy.trashed'));
+    }
+
+    public function restore(Vacancy $vacancy): RedirectResponse
     {
-        $jobInfo = (object) [
-            'position' => 'Backend Laravel Developer',
-            'company' => 'Google Inc.',
-            'address' => 'New York',
-            'salary' => '$2500',
-            'image' => 'Adidas_Logo.jpg',
-            'skills' => [
-                'Laravel',
-                'PHP',
-                'PostgreSql',
-                'Docker',
-                'Git',
-            ],
-        ];
-        return view('employer.vacancy.published', ['jobInfo' => $jobInfo]);
-    }*/
+        $vacancy->restore();
+
+        return redirect()->route('employer.vacancy.unpublished')
+            ->with('vacancy-restored', trans('alerts.vacancy.restored'));
+    }
+
+    public function deleteForever(Vacancy $vacancy): RedirectResponse
+    {
+        $this->authorize('delete', $vacancy);
+
+        $vacancy->forceDelete();
+
+        return back()->with('vacancy-deleted', trans('alerts.vacancy.deleted'));
+    }
+
+    public function publish(Vacancy $vacancy): RedirectResponse
+    {
+        $this->authorize('publish', $vacancy);
+
+        $vacancy->publish();
+
+        return redirect()->route('vacancies.show', ['vacancy' => $vacancy->id]);
+    }
+
+    public function unpublish(Vacancy $vacancy): RedirectResponse
+    {
+        $this->authorize('publish', $vacancy);
+
+        $vacancy->unpublish();
+
+        return redirect()->route('vacancies.show', ['vacancy' => $vacancy->id]);
+    }
+
+}

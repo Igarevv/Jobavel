@@ -37,13 +37,9 @@ class VacancyService
         $this->vacancyRepository->createAndSync($employer, $vacancyDto);
     }
 
-    public function update(VacancyDto $vacancyDto): void
+    public function update(Vacancy $vacancy, VacancyDto $vacancyDto): void
     {
-        if (! $vacancyDto->getVacancyId()) {
-            throw new \InvalidArgumentException('Vacancy id not provided');
-        }
-
-        $this->vacancyRepository->updateWithSkills($vacancyDto);
+        $this->vacancyRepository->updateWithSkills($vacancy, $vacancyDto);
     }
 
     public function getSkillCategories(): Collection

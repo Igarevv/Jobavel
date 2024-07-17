@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int employer_id
@@ -28,6 +29,7 @@ class Vacancy extends Model
 {
 
     use HasFactory;
+    use SoftDeletes;
 
     protected $casts = [
         'requirements' => 'array',
@@ -78,11 +80,26 @@ class Vacancy extends Model
         return $this->is_published;
     }
 
+    public function publish(): void
+    {
+        $this->is_published = true;
+
+        $this->save();
+    }
+
+    public function unpublish(): void
+    {
+        $this->is_published = false;
+
+        $this->save();
+    }
+
     protected function offers(): Attribute
     {
-        return Attribute::get(function ($value) {
-            return json_decode($value, true) ?: null;
-        });
+        return Attribute::make(
+            get: fn($value) => json_decode($value, true) ?: null,
+            set: fn($value) => json_encode($value) ?? []
+        );
     }
 
     protected static function boot(): void
@@ -96,6 +113,10 @@ class Vacancy extends Model
         });
 
         static::saved(function (Vacancy $vacancy) {
+            Cache::forgetKey('vacancy', $vacancy->id);
+        });
+
+        static::deleted(function (Vacancy $vacancy) {
             Cache::forgetKey('vacancy', $vacancy->id);
         });
     }

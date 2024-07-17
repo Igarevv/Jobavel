@@ -21,12 +21,17 @@ class VacancyPolicy
         return $this->checkPermission($user, $vacancy, 'vacancy-edit');
     }
 
-    public function view(?User $user, Vacancy $vacancy): Response
+    public function viewAny(?User $user, Vacancy $vacancy): Response
     {
         if ($vacancy->is_published) {
             return Response::allow();
         }
 
+        return $this->checkPermission($user, $vacancy, 'vacancy-view');
+    }
+
+    public function view(?User $user, Vacancy $vacancy): Response
+    {
         return $this->checkPermission($user, $vacancy, 'vacancy-view');
     }
 

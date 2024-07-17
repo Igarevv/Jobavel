@@ -22,7 +22,7 @@ class VacancyViewController extends Controller
     {
         $vacancyModel = $this->vacancyService->getVacancy($vacancy);
 
-        $this->authorize('view', $vacancyModel);
+        $this->authorize('viewAny', $vacancyModel);
 
         $employer = $this->vacancyService->getEmployerRelatedToVacancy($vacancyModel, session('user.emp_id'));
 
@@ -31,34 +31,6 @@ class VacancyViewController extends Controller
             'employer' => $employer,
             'skillSet' => $vacancyModel->techSkillAsBaseArray()
         ]);
-    }
-
-    public function showEdit(Vacancy $vacancy): View
-    {
-        $this->authorize('view', $vacancy);
-
-        $categories = $this->vacancyService->getSkillCategories();
-
-        $existingSkills = (object) [
-            'ids' => $vacancy->techSkill->pluck('id')->toArray(),
-            'names' => $vacancy->techSkill->pluck('skill_name')->toArray(),
-        ];
-
-        return view('employer.vacancy.edit', [
-            'vacancy' => $vacancy,
-            'existingSkills' => $existingSkills,
-            'skills' => $categories->toArray()
-        ]);
-    }
-
-    public function unpublished(Request $request): View
-    {
-        $vacancies = Vacancy::where('employer_id', $request->user()->employer->id)
-            ->notPublished()
-            ->get(['id', 'title', 'salary', 'created_at', 'updated_at']);
-
-        return view('employer.vacancy.unpublished',
-            ['vacancies' => $vacancies]);
     }
 
     public function create(): View
@@ -70,4 +42,62 @@ class VacancyViewController extends Controller
         return view('employer.vacancy.create', ['skills' => $categories->toArray()]);
     }
 
+    public function showEdit(int $vacancy): View
+    {
+        $existingVacancy = $this->vacancyService->getVacancy($vacancy);
+
+        $this->authorize('edit', $existingVacancy);
+
+        $categories = $this->vacancyService->getSkillCategories();
+
+        $existingSkills = (object) [
+            'ids' => $existingVacancy->techSkill->pluck('id')->toArray(),
+            'names' => $existingVacancy->techSkill->pluck('skill_name')->toArray(),
+        ];
+
+        return view('employer.vacancy.edit', [
+            'vacancy' => $existingVacancy,
+            'existingSkills' => $existingSkills,
+            'skills' => $categories->toArray()
+        ]);
+    }
+
+    public function unpublished(Request $request): View
+    {
+        $vacancies = Vacancy::query()->where('employer_id', $request->user()->employer->id)
+            ->notPublished()
+            ->paginate(5, ['id', 'title', 'salary', 'created_at', 'updated_at']);
+
+        return view('employer.vacancy.unpublished',
+            ['vacancies' => $vacancies]);
+    }
+
+    public function viewTrashed(Request $request): View
+    {
+        $vacancies = Vacancy::onlyTrashed()
+            ->where('employer_id', $request->user()->employer->id)
+            ->paginate(5, ['id', 'title', 'salary', 'created_at', 'deleted_at']);
+
+        return view('employer.vacancy.trashed', ['vacancies' => $vacancies]);
+    }
+
+
+    /*public function published()
+    {
+        $jobInfo = (object) [
+            'position' => 'Backend Laravel Developer',
+            'company' => 'Google Inc.',
+            'address' => 'New York',
+            'salary' => '$2500',
+            'image' => 'Adidas_Logo.jpg',
+            'skills' => [
+                'Laravel',
+                'PHP',
+                'PostgreSql',
+                'Docker',
+                'Git',
+            ],
+        ];
+        return view('employer.vacancy.published', ['jobInfo' => $jobInfo]);
+    }*/
 }

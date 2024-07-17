@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\View\Components\CategoriesView;
 use App\View\Components\LogoView;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
@@ -25,6 +26,8 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Paginator::useBootstrapFive();
+        
         Blade::component('image.logo', LogoView::class);
         Blade::component('categories.list', CategoriesView::class);
 

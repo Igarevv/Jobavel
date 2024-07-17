@@ -40,22 +40,20 @@ class VacancyRepository implements VacancyRepositoryInterface
         return Vacancy::with(['techSkill'])->findOrFail($id, $columns);
     }
 
-    public function updateWithSkills(VacancyDto $vacancyDto): void
+    public function updateWithSkills(Vacancy $vacancy, VacancyDto $newData): void
     {
-        $vacancy = $this->getVacancyById($vacancyDto->getVacancyId());
-
         try {
-            $result = $vacancy->update([
-                'title' => $vacancyDto->title,
-                'description' => $vacancyDto->description,
-                'responsibilities' => $vacancyDto->responsibilities,
-                'requirements' => $vacancyDto->requirements,
-                'offers' => $vacancyDto->offers,
-                'salary' => $vacancyDto->salary,
-                'location' => $vacancyDto->location,
+            $vacancy->update([
+                'title' => $newData->title,
+                'description' => $newData->description,
+                'responsibilities' => $newData->responsibilities,
+                'requirements' => $newData->requirements,
+                'offers' => $newData->offers,
+                'salary' => $newData->salary,
+                'location' => $newData->location,
             ]);
 
-            $vacancy->techSkill()->sync($vacancyDto->skillSet);
+            $vacancy->techSkill()->sync($newData->skillSet);
         } catch (\Throwable $e) {
             throw new VacancyUpdateException($e->getMessage(), $e->getCode());
         }

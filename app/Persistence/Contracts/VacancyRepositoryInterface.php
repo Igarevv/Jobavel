@@ -13,6 +13,6 @@ interface VacancyRepositoryInterface
 
     public function getVacancyById(int $id): Vacancy;
 
-    public function updateWithSkills(VacancyDto $vacancyDto): void;
+    public function updateWithSkills(Vacancy $vacancy, VacancyDto $newData): void;
 
 }

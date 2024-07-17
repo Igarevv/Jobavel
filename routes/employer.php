@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('vacancies')->name('vacancies.')->whereNumber('vacancy')->group(function () {
     /*
      * ---------------------------------
-     * -      Vacancy show view        -
+     * -      Vacancy public view      -
      * ---------------------------------
      */
 
@@ -80,6 +80,7 @@ Route::name('employer.')->group(function () {
                         Route::get('/{vacancy}/edit', 'showEdit')->whereNumber('vacancy')
                             ->name('show.edit');
                         Route::get('/create', 'create')->name('create');
+                        Route::get('/trashed', 'viewTrashed')->name('trashed');
                     });
 
                 /*
@@ -90,6 +91,21 @@ Route::name('employer.')->group(function () {
 
                 Route::resource('vacancy', VacancyManipulationController::class)
                     ->only(['destroy', 'store', 'update']);
+
+                Route::controller(VacancyManipulationController::class)->prefix('vacancy')
+                    ->name('vacancy.')
+                    ->group(function () {
+                        Route::post('/publish/{vacancy}', 'publish')->name('publish');
+
+                        Route::post('/unpublish/{vacancy}', 'unpublish')->name('unpublish');
+
+                        Route::delete('/delete/{vacancy}/forever',
+                            'deleteForever')->name('delete-forever')->withTrashed();
+
+                        Route::post('/restore/{vacancy}', 'restore')->name('restore')->withTrashed();
+                    })->whereNumber('vacancy');
+
+                Route::post('/');
             });
         });
     });
