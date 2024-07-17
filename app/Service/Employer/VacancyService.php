@@ -37,6 +37,15 @@ class VacancyService
         $this->vacancyRepository->createAndSync($employer, $vacancyDto);
     }
 
+    public function update(VacancyDto $vacancyDto): void
+    {
+        if (! $vacancyDto->getVacancyId()) {
+            throw new \InvalidArgumentException('Vacancy id not provided');
+        }
+
+        $this->vacancyRepository->updateWithSkills($vacancyDto);
+    }
+
     public function getSkillCategories(): Collection
     {
         $cacheKey = $this->cache->getCacheKey('skills');
@@ -75,9 +84,9 @@ class VacancyService
             });
     }
 
-    public function getEmployerRelatedToVacancy(Vacancy $vacancy): object
+    public function getEmployerRelatedToVacancy(Vacancy $vacancy, string $employerId): object
     {
-        $cacheKey = $this->cache->getCacheKey('vacancy-employer', $vacancy->id);
+        $cacheKey = $this->cache->getCacheKey('vacancy-employer', $employerId);
 
         return $this->cache->repository()->remember($cacheKey, $this->cache->secondsInMonth(),
             function () use ($vacancy) {

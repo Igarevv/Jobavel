@@ -5,6 +5,7 @@ namespace App\Persistence\Models;
 use App\Service\Cache\Cache;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $location
  * @property array $requirements,
  * @property array $responsibilities
- * @property array $offers
+ * @property array|null $offers
  * @property bool $is_published
  * @property int $response_number
  * @property Carbon $created_at
@@ -31,13 +32,10 @@ class Vacancy extends Model
     protected $casts = [
         'requirements' => 'array',
         'responsibilities' => 'array',
-        'offers' => 'array',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
     ];
-
-    public $timestamps = false;
 
     protected $fillable = [
         'location',
@@ -78,6 +76,13 @@ class Vacancy extends Model
     public function isPublished(): bool
     {
         return $this->is_published;
+    }
+
+    protected function offers(): Attribute
+    {
+        return Attribute::get(function ($value) {
+            return json_decode($value, true) ?: null;
+        });
     }
 
     protected static function boot(): void

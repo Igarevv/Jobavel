@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Persistence\Repositories;
 
 use App\DTO\VacancyDto;
+use App\Exceptions\VacancyUpdateException;
 use App\Persistence\Contracts\VacancyRepositoryInterface;
 use App\Persistence\Models\Employer;
 use App\Persistence\Models\Vacancy;
@@ -36,6 +37,27 @@ class VacancyRepository implements VacancyRepositoryInterface
 
     public function getVacancyById(int $id, array $columns = ['*']): Vacancy
     {
-        return Vacancy::with(['employer', 'techSkill'])->findOrFail($id, $columns);
+        return Vacancy::with(['techSkill'])->findOrFail($id, $columns);
+    }
+
+    public function updateWithSkills(VacancyDto $vacancyDto): void
+    {
+        $vacancy = $this->getVacancyById($vacancyDto->getVacancyId());
+
+        try {
+            $result = $vacancy->update([
+                'title' => $vacancyDto->title,
+                'description' => $vacancyDto->description,
+                'responsibilities' => $vacancyDto->responsibilities,
+                'requirements' => $vacancyDto->requirements,
+                'offers' => $vacancyDto->offers,
+                'salary' => $vacancyDto->salary,
+                'location' => $vacancyDto->location,
+            ]);
+
+            $vacancy->techSkill()->sync($vacancyDto->skillSet);
+        } catch (\Throwable $e) {
+            throw new VacancyUpdateException($e->getMessage(), $e->getCode());
+        }
     }
 }

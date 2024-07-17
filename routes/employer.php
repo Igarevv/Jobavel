@@ -23,7 +23,7 @@ Route::prefix('vacancies')->name('vacancies.')->whereNumber('vacancy')->group(fu
      */
 
     Route::get('/{vacancy}/edit', [VacancyController::class, 'showEdit'])->name('show.edit');
-    Route::post('/edit', [VacancyController::class, 'edit'])->name('edit');
+    Route::post('/{vacancy}/edit', [VacancyController::class, 'edit'])->name('edit');
 });
 
 Route::name('employer.')->group(function () {

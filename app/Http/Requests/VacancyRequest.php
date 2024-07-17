@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Rules\NullableDynamicFieldRule;
 use App\Rules\TechSkillsExistsRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Arr;
 
 class VacancyRequest extends FormRequest
 {
@@ -52,6 +53,10 @@ class VacancyRequest extends FormRequest
             $data['offers'] = null;
         }
 
+        $data['skillset'] = Arr::map($this->skillset, function ($skillId) {
+            return (int) $skillId;
+        });
+        
         return $data;
     }
 

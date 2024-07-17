@@ -7,20 +7,20 @@ namespace App\DTO;
 use App\Http\Requests\VacancyRequest;
 use Carbon\Carbon;
 
-readonly class VacancyDto
+class VacancyDto
 {
 
     public function __construct(
-        public string $title,
-        public string $description,
-        public array $responsibilities,
-        public array $requirements,
-        public array $skillSet,
-        public string $location,
-        public array $offers = [],
-        public int $salary = 0,
+        public readonly string $title,
+        public readonly string $description,
+        public readonly array $responsibilities,
+        public readonly array $requirements,
+        public readonly array $skillSet,
+        public readonly string $location,
+        public readonly array $offers = [],
+        public readonly int $salary = 0,
         public ?Carbon $createdAt = null,
-        public ?int $id = null,
+        private ?int $id = null,
         public ?int $responses = 0
     ) {
     }
@@ -39,6 +39,16 @@ readonly class VacancyDto
             offers: $input['offers'] ?? [],
             salary: (int) ($input['salary'] ?? 0)
         );
+    }
+
+    public function connectId(int $vacancyId): void
+    {
+        $this->id = $vacancyId;
+    }
+
+    public function getVacancyId(): ?int
+    {
+        return $this->id;
     }
 
 }

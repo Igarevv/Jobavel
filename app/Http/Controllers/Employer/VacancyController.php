@@ -27,7 +27,7 @@ class VacancyController extends Controller
 
         $this->authorize('view', $vacancyModel);
 
-        $employer = $this->vacancyService->getEmployerRelatedToVacancy($vacancyModel);
+        $employer = $this->vacancyService->getEmployerRelatedToVacancy($vacancyModel, session('user.emp_id'));
 
         return view('employer.vacancy.show', [
             'vacancy' => $vacancyModel,
@@ -54,9 +54,16 @@ class VacancyController extends Controller
         ]);
     }
 
-    public function edit(VacancyRequest $request)
+    public function edit(int $vacancy, VacancyRequest $request): RedirectResponse
     {
-        dd($request->validated());
+        $vacancyDto = VacancyDto::fromRequest($request);
+
+        $vacancyDto->connectId($vacancy);
+
+        $this->vacancyService->update($vacancyDto);
+
+        return redirect()->route('vacancies.show', ['vacancy' => $vacancy])
+            ->with('edit-success', trans('alerts.vacancy.edited'));
     }
 
     /*public function published()
@@ -82,7 +89,7 @@ class VacancyController extends Controller
     {
         $vacancies = Vacancy::where('employer_id', $request->user()->employer->id)
             ->notPublished()
-            ->get(['id', 'title', 'salary', 'created_at']);
+            ->get(['id', 'title', 'salary', 'created_at', 'updated_at']);
 
         return view('employer.vacancy.unpublished',
             ['vacancies' => $vacancies]);
@@ -109,7 +116,7 @@ class VacancyController extends Controller
 
         return redirect()
             ->route('employer.vacancy.unpublished')
-            ->with('vacancy-added', trans('vacancy.added'));
+            ->with('vacancy-added', trans('alerts.vacancy.added'));
     }
 
 }

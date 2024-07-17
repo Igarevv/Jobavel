@@ -3,6 +3,7 @@
 namespace App\Persistence\Models;
 
 use App\Service\Cache\Cache;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +11,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Ramsey\Uuid\Uuid;
 
+/**
+ * @property string $company_name,
+ * @property string $employer_id,
+ * @property string $company_description,
+ * @property string $company_logo,
+ * @property Carbon $created_at
+ * @property string $contact_email
+ */
 class Employer extends Model
 {
 

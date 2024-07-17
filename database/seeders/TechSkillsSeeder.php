@@ -23,7 +23,7 @@ class TechSkillsSeeder extends Seeder
             ['skill_name' => 'Flask'],
             ['skill_name' => 'Docker'],
             ['skill_name' => 'Java'],
-            ['skill_name' => 'Spring'],
+            ['skill_name' => 'Spring Framework'],
             ['skill_name' => 'Symfony'],
             ['skill_name' => 'Node.js'],
             ['skill_name' => 'JavaScript'],
@@ -110,6 +110,9 @@ class TechSkillsSeeder extends Seeder
             ['skill_name' => 'Tomcat'],
             ['skill_name' => 'Balsamiq'],
             ['skill_name' => 'Express.js'],
+            ['skill_name' => 'Maven'],
+            ['skill_name' => 'Gradle'],
+            ['skill_name' => 'REST'],
         ]);
     }
 
