@@ -22,13 +22,15 @@
                 </x-header.li>
                 <x-header.li><a href="{{ route('employer.vacancy.unpublished') }}"
                                 class="text-light link-secondary">Unpublished
-                        vacancy</a></x-header.li>
+                        vacancies</a></x-header.li>
+                <x-header.li><a href="{{ route('employer.vacancy.trashed') }}"
+                                class="text-light link-secondary">Trashed
+                        vacancies</a></x-header.li>
             </x-header.navli>
             <x-header.navli name="Actions" color="danger">
                 <x-header.li><a href="{{ route('employer.vacancy.create') }}"
                                 class="text-light link-secondary">Create new vacancy</a>
                 </x-header.li>
-                <x-header.li><a href="#" class="text-light link-secondary">Edit vacancies</a></x-header.li>
             </x-header.navli>
         </div>
     </div>

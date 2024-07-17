@@ -10,7 +10,10 @@ return [
     ],
     'vacancy' => [
         'added' => 'Vacancy was added successfully. Before publishing, please check your vacancy preview page',
-        'edited' => 'Vacancy was successfully edit.'
+        'edited' => 'Vacancy was successfully edit.',
+        'trashed' => 'Vacancy was successfully moved to trash.',
+        'restored' => 'Vacancy was successfully restored and mark as unpublished.',
+        'deleted' => 'Vacancy was successfully deleted.',
     ],
     'employer-account' => [
         'updated' => 'Your company data was successfully updated',

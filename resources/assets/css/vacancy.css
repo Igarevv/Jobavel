@@ -5,17 +5,18 @@ table th {
     overflow: hidden;
 }
 
+thead th,
+tbody th {
+    color: #fff;
+}
+
+tbody td {
+    font-weight: 500;
+    color: rgba(255, 255, 255, .65);
+}
+
 .card {
     border-radius: .5rem;
-}
-
-.table-scroll {
-    border-radius: .5rem;
-}
-
-thead {
-    top: 0;
-    position: sticky;
 }
 
 .category-label {

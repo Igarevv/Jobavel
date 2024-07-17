@@ -140,8 +140,27 @@
                                 <a href="{{ route('employer.vacancy.show.edit', ['vacancy' => $vacancy->id]) }}"
                                    class="btn btn-outline-primary">Edit
                                     vacancy</a>
-                                <x-button.outline colorType="danger">Delete vacancy</x-button.outline>
-                                <x-button.outline colorType="success">Publish vacancy</x-button.outline>
+                                <form action="{{ route('employer.vacancy.destroy', ['vacancy' => $vacancy->id]) }}"
+                                      method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-button.outline colorType="danger" type="submit">Move to trash</x-button.outline>
+                                </form>
+                                @if($vacancy->isPublished())
+                                    <form action="{{ route('employer.vacancy.unpublish', ['vacancy' => $vacancy->id]) }}"
+                                          method="POST">
+                                        @csrf
+                                        <x-button.outline colorType="warning" type="submit">Hide vacancy
+                                        </x-button.outline>
+                                    </form>
+                                @else
+                                    <form action="{{ route('employer.vacancy.publish', ['vacancy' => $vacancy->id]) }}"
+                                          method="POST">
+                                        @csrf
+                                        <x-button.outline colorType="success" type="submit">Publish vacancy
+                                        </x-button.outline>
+                                    </form>
+                                @endif
                             </div>
                         </div>
                         @session('edit-success')

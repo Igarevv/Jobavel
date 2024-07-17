@@ -6,21 +6,10 @@
     <x-main @style(['flex:1'])>
         <div class="container mt-5 mb-5">
             <div class="text-center">
-                <h2 class="fw-bold">Your company unpublished vacancies</h2>
-                <h5 class="fw-bold text-muted">Please, before publishing, make sure that your vacancy is ready to be
-                    published</h5>
+                <h2 class="fw-bold">Your trashed vacancies</h2>
+                <h5 class="fw-bold text-muted">Here you can restore or permanently delete your vacancy</h5>
             </div>
-            @session('vacancy-added')
-            <div class="alert text-center alert-success fw-bold">
-                {{ $value }}
-            </div>
-            @endsession
-            @session('vacancy-trashed')
-            <div class="alert text-center alert-success fw-bold">
-                {{ $value }}
-            </div>
-            @endsession
-            @session('vacancy-restored')
+            @session('vacancy-deleted')
             <div class="alert text-center alert-success fw-bold">
                 {{ $value }}
             </div>
@@ -28,10 +17,9 @@
             @if($vacancies->isEmpty())
                 <div class="d-flex flex-column align-items-center justify-content-center" style="height: 70vh;">
                     <h1 class="text-danger fw-bold">Vacancies not found</h1>
-                    <p class="text-muted text-sm">Create a new one or check your trashed vacancies</p>
+                    <p class="text-muted text-sm">Your trash is empty!</p>
                     <div class="d-flex justify-content-center gap-3">
-                        <a href="{{ route('employer.vacancy.create') }}" class="btn btn-danger">Create new vacancy</a>
-                        <a href="{{ route('employer.vacancy.trashed') }}" class="btn btn-danger">View my trash</a>
+                        <a href="{{ route('employer.main') }}" class="btn btn-danger">Back to home</a>
                     </div>
                 </div>
             @else
@@ -60,23 +48,28 @@
                                                         <tbody>
                                                         @foreach($vacancies as $vacancy)
                                                             <tr class="align-middle">
-                                                                <td>{{ $loop->iteration + ($vacancies->currentPage() - 1) * $vacancies->perPage() }}</td>
+                                                                <td>{{ $loop->iteration }}</td>
                                                                 <td>{{ $vacancy->id }}</td>
                                                                 <td>{{ $vacancy->title }}</td>
                                                                 <td>{{ $vacancy->salary }}</td>
                                                                 <td>{{ $vacancy->created_at }}</td>
                                                                 <td>{{ $vacancy->updated_at ?? "Not updated yet"}}</td>
                                                                 <td class="text-center">
-                                                                    <a href="{{ route('vacancies.show', ['vacancy' => $vacancy->id]) }}"
-                                                                       class="btn btn-outline-secondary">Show
-                                                                        Preview</a>
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    <form action="{{ route('employer.vacancy.publish', ['vacancy' => $vacancy->id]) }}"
+                                                                    <form action="{{ route('employer.vacancy.restore', ['vacancy' => $vacancy->id]) }}"
                                                                           method="POST">
                                                                         @csrf
-                                                                        <x-button.outline colorType="success"
-                                                                                          type="submit">Publish
+                                                                        <x-button.outline colorType="light"
+                                                                                          type="submit">Restore
+                                                                        </x-button.outline>
+                                                                    </form>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <form action="{{ route('employer.vacancy.delete-forever', ['vacancy' => $vacancy->id]) }}"
+                                                                          method="POST">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                        <x-button.outline colorType="danger"
+                                                                                          type="submit">Delete forever
                                                                         </x-button.outline>
                                                                     </form>
                                                                 </td>
