@@ -103,7 +103,7 @@
                                         <li class="fs-6 mb-2">{{ $offer }}</li>
                                     @endforeach
                                 </ul>
-                            @endisset
+                            @endempty
 
                             <div class="d-flex align-items-center mb-3">
                                 <svg class="float-start me-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -144,6 +144,11 @@
                                 <x-button.outline colorType="success">Publish vacancy</x-button.outline>
                             </div>
                         </div>
+                        @session('edit-success')
+                        <div class="alert alert-success text-center fw-bold">
+                            {{ $value }}
+                        </div>
+                        @endsession
                     @else
                         <div class="card mb-4">
                             <div class="card-header">Apply for a vacancy</div>

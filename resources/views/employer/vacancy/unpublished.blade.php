@@ -20,6 +20,11 @@
                     </div>
                 </div>
             @else
+                @session('vacancy-added')
+                <div class="alert text-center alert-success fw-bold">
+                    {{ $value }}
+                </div>
+                @endsession
                 <section class="intro">
                     <div class="bg-image h-100">
                         <div class="mask d-flex align-items-center h-100">
@@ -39,6 +44,7 @@
                                                             <th scope="col">Title</th>
                                                             <th scope="col">Salary</th>
                                                             <th scope="col">Created At</th>
+                                                            <th scope="col">Updated At</th>
                                                             <th scope="col"></th>
                                                             <th scope="col"></th>
                                                         </tr>
@@ -51,6 +57,7 @@
                                                                 <td>{{ $vacancy->title }}</td>
                                                                 <td>{{ $vacancy->salary }}</td>
                                                                 <td>{{ $vacancy->created_at }}</td>
+                                                                <td>{{ $vacancy->updated_at ?? "Not updated yet"}}</td>
                                                                 <td class="text-center">
                                                                     <a href="{{ route('vacancies.show', ['vacancy' => $vacancy->id]) }}"
                                                                        class="btn btn-outline-light">Show Preview</a>

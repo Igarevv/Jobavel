@@ -10,6 +10,7 @@ return [
     ],
     'vacancy' => [
         'added' => 'Vacancy was added successfully. Before publishing, please check your vacancy preview page',
+        'edited' => 'Vacancy was successfully edit.'
     ],
     'employer-account' => [
         'updated' => 'Your company data was successfully updated',

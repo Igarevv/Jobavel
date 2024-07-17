@@ -8,8 +8,18 @@
             <h5 class="text-center fw-light">Edit data for your</h5>
             <h1 class="text-center fw-bold text-danger red">{{ session('user.name') }}</h1>
             <h5 class="text-center fw-light">company vacancy</h5>
+            @session('edit-errors')
+            <div class="alert text-center alert-danger fw-bold">
+                {{ $value }}
+            </div>
+            @endsession
             <div class="w-75 mx-auto">
-                <form action="{{ route('vacancies.edit') }}" method="POST">
+                @session('edit-errors')
+                <div class="alert text-center alert-danger fw-bold">
+                    {{ $value }}
+                </div>
+                @endsession
+                <form action="{{ route('vacancies.edit', ['vacancy' => $vacancy->id]) }}" method="POST">
                     @csrf
                     <x-input.block id="createVacancyInput">
                         <div class="my-5">
