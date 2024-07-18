@@ -202,7 +202,7 @@
 
 .scrollable-list {
     background-color: #212529;
-    max-height: 25%;
+    max-height: 10%;
     overflow-y: auto;
     padding-left: 1rem;
 }
@@ -278,4 +278,12 @@
         flex-direction: row;
         align-items: center;
     }
+}
+
+.btn-outline-success {
+    color: #14cb14;
+}
+
+.btn-outline-success:hover {
+    background-color: #14cb14;
 }

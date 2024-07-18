@@ -150,7 +150,7 @@
                                     <form action="{{ route('employer.vacancy.unpublish', ['vacancy' => $vacancy->id]) }}"
                                           method="POST">
                                         @csrf
-                                        <x-button.outline colorType="warning" type="submit">Hide vacancy
+                                        <x-button.outline colorType="warning" type="submit">Unpublish vacancy
                                         </x-button.outline>
                                     </form>
                                 @else

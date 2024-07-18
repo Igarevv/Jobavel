@@ -68,7 +68,7 @@
                                                                 <td>{{ $vacancy->updated_at ?? "Not updated yet"}}</td>
                                                                 <td class="text-center">
                                                                     <a href="{{ route('vacancies.show', ['vacancy' => $vacancy->id]) }}"
-                                                                       class="btn btn-outline-secondary">Show
+                                                                       class="btn btn-outline-light">Show
                                                                         Preview</a>
                                                                 </td>
                                                                 <td class="text-center">
