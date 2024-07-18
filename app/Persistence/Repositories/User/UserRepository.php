@@ -37,13 +37,11 @@ class UserRepository implements UserRepositoryInterface
 
     private function saveInUserTable(RegisterDtoInterface $userData): User|Builder
     {
-        $user = User::query()->create([
+        return User::query()->create([
             'email' => $userData->getEmail(),
             'password' => $userData->getPassword(),
             'role' => $userData->getRole(),
         ]);
-
-        return $user;
     }
 
     private function saveUserByRole(User $user, RegisterDtoInterface $userData): void

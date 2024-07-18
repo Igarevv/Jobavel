@@ -9,6 +9,7 @@ use App\Exceptions\VacancyUpdateException;
 use App\Persistence\Contracts\VacancyRepositoryInterface;
 use App\Persistence\Models\Employer;
 use App\Persistence\Models\Vacancy;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class VacancyRepository implements VacancyRepositoryInterface
@@ -58,4 +59,15 @@ class VacancyRepository implements VacancyRepositoryInterface
             throw new VacancyUpdateException($e->getMessage(), $e->getCode());
         }
     }
+
+    public function getAllPublished(int $employerId): LengthAwarePaginator
+    {
+        return Vacancy::with([
+                'techSkill' => function ($query) {
+                    $query->select(['id', 'skill_name']);
+                },
+            ]
+        )->published($employerId)->paginate(3, ['title', 'location', 'id', 'salary', 'employer_id']);
+    }
+
 }

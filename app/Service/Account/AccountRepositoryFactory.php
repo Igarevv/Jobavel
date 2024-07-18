@@ -21,7 +21,7 @@ readonly class AccountRepositoryFactory
         return match ($this->role) {
             User::EMPLOYER => new EmployerAccountRepository(),
             //User::EMPLOYEE => new EmployeeAccountRepository(),
-            default => throw new InvalidRoleException('Tried to get repository for invalid role '.$role)
+            default => throw new InvalidRoleException('Tried to get repository for invalid role '.$this->role)
         };
     }
 

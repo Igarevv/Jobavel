@@ -10,7 +10,8 @@ use Illuminate\Queue\SerializesModels;
 
 class VerificationCodeEmail extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public function __construct(protected int $code)
     {

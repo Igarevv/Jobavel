@@ -70,9 +70,9 @@ class Employer extends Model
         return $this->company_name;
     }
 
-    public static function findByUuid(string $uuid, array $columns = ['*']): ?Employer
+    public static function findByUuid(string $uuid, array $columns = ['*']): Employer
     {
-        return static::where('employer_id', $uuid)->first($columns);
+        return static::where('employer_id', $uuid)->firstOrFail($columns);
     }
 
     protected static function boot(): void

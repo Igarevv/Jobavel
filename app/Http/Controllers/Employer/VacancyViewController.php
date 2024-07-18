@@ -6,7 +6,8 @@ namespace App\Http\Controllers\Employer;
 
 use App\Http\Controllers\Controller;
 use App\Persistence\Models\Vacancy;
-use App\Service\Employer\VacancyService;
+use App\Service\Employer\Vacancy\TechSkillService;
+use App\Service\Employer\Vacancy\VacancyService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -33,22 +34,22 @@ class VacancyViewController extends Controller
         ]);
     }
 
-    public function create(): View
+    public function create(TechSkillService $skillService): View
     {
         $this->authorize('create', Vacancy::class);
 
-        $categories = $this->vacancyService->getSkillCategories();
+        $categories = $skillService->getSkillCategories();
 
         return view('employer.vacancy.create', ['skills' => $categories->toArray()]);
     }
 
-    public function showEdit(int $vacancy): View
+    public function showEdit(int $vacancy, TechSkillService $skillService): View
     {
         $existingVacancy = $this->vacancyService->getVacancy($vacancy);
 
         $this->authorize('edit', $existingVacancy);
 
-        $categories = $this->vacancyService->getSkillCategories();
+        $categories = $skillService->getSkillCategories();
 
         $existingSkills = (object) [
             'ids' => $existingVacancy->techSkill->pluck('id')->toArray(),
@@ -64,8 +65,7 @@ class VacancyViewController extends Controller
 
     public function unpublished(Request $request): View
     {
-        $vacancies = Vacancy::query()->where('employer_id', $request->user()->employer->id)
-            ->notPublished()
+        $vacancies = Vacancy::query()->notPublished($request->user()->employer->id)
             ->paginate(5, ['id', 'title', 'salary', 'created_at', 'updated_at']);
 
         return view('employer.vacancy.unpublished',
@@ -82,22 +82,16 @@ class VacancyViewController extends Controller
     }
 
 
-    /*public function published()
+    public function published(TechSkillService $skillService): View
     {
-        $jobInfo = (object) [
-            'position' => 'Backend Laravel Developer',
-            'company' => 'Google Inc.',
-            'address' => 'New York',
-            'salary' => '$2500',
-            'image' => 'Adidas_Logo.jpg',
-            'skills' => [
-                'Laravel',
-                'PHP',
-                'PostgreSql',
-                'Docker',
-                'Git',
-            ],
-        ];
-        return view('employer.vacancy.published', ['jobInfo' => $jobInfo]);
-    }*/
+        $vacancies = $this->vacancyService->getPublishedVacancies(
+            employerId: session('user.emp_id'),
+        );
+
+        return view('employer.vacancy.published', [
+            'vacancies' => $vacancies,
+            'skills' => $skillService->getSkillCategories()
+        ]);
+    }
+
 }

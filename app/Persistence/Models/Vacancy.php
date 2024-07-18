@@ -13,7 +13,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @property int employer_id
+ * @mixin Builder
+ * @method static static with($relations)
+ * @method static Builder|static query()
+ * @property-read  int employer_id
  * @property string title
  * @property int $salary
  * @property string $description
@@ -24,6 +27,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property bool $is_published
  * @property int $response_number
  * @property Carbon $created_at
+ * @method Builder|static notPublished(int $employerId)
+ * @method Builder|static published(int $employerId)
  */
 class Vacancy extends Model
 {
@@ -45,6 +50,10 @@ class Vacancy extends Model
         'requirements', 'responsibilities', 'offers',
     ];
 
+    protected $hidden = [
+        'employer_id'
+    ];
+
     public function techSkill(): BelongsToMany
     {
         return $this->belongsToMany(TechSkill::class);
@@ -52,17 +61,17 @@ class Vacancy extends Model
 
     public function employer(): BelongsTo
     {
-        return $this->belongsTo(Employer::class);
+        return $this->belongsTo(Employer::class, 'employer_id');
     }
 
-    public function scopeNotPublished(Builder $builder): Builder
+    public function scopeNotPublished(Builder $builder, int $employerId): Builder
     {
-        return $builder->where('is_published', false);
+        return $builder->where('employer_id', $employerId)->where('is_published', false);
     }
 
-    public function scopePublished(Builder $builder): Builder
+    public function scopePublished(Builder $builder, int $employerId): Builder
     {
-        return $builder->where('is_published', true);
+        return $builder->where('employer_id', $employerId)->where('is_published', true);
     }
 
     public function techSkillAsBaseArray(): array
@@ -114,10 +123,12 @@ class Vacancy extends Model
 
         static::saved(function (Vacancy $vacancy) {
             Cache::forgetKey('vacancy', $vacancy->id);
+            Cache::forgetKey('vacancies-published', $vacancy->employer()->first()->employer_id);
         });
 
         static::deleted(function (Vacancy $vacancy) {
             Cache::forgetKey('vacancy', $vacancy->id);
+            Cache::forgetKey('vacancies-published', $vacancy->employer()->first()->employer_id);
         });
     }
 

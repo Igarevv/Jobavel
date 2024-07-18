@@ -8,7 +8,7 @@ use App\Persistence\Contracts\AccountRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class AccountService
+abstract class AccountService
 {
     protected AccountRepositoryInterface $accountRepository;
 

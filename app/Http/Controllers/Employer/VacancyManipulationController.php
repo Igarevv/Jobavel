@@ -8,7 +8,7 @@ use App\DTO\VacancyDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\VacancyRequest;
 use App\Persistence\Models\Vacancy;
-use App\Service\Employer\VacancyService;
+use App\Service\Employer\Vacancy\VacancyService;
 use Illuminate\Http\RedirectResponse;
 
 class VacancyManipulationController extends Controller
@@ -51,7 +51,7 @@ class VacancyManipulationController extends Controller
     public function destroy(Vacancy $vacancy): RedirectResponse
     {
         $this->authorize('delete', $vacancy);
-        
+
         $vacancy->delete();
 
         if ($vacancy->isPublished()) {
@@ -85,7 +85,7 @@ class VacancyManipulationController extends Controller
 
         $vacancy->publish();
 
-        return redirect()->route('vacancies.show', ['vacancy' => $vacancy->id]);
+        return redirect()->route('employer.vacancy.published', ['vacancy' => $vacancy->id]);
     }
 
     public function unpublish(Vacancy $vacancy): RedirectResponse
@@ -94,7 +94,7 @@ class VacancyManipulationController extends Controller
 
         $vacancy->unpublish();
 
-        return redirect()->route('vacancies.show', ['vacancy' => $vacancy->id]);
+        return redirect()->route('employer.vacancy.unpublished', ['vacancy' => $vacancy->id]);
     }
 
 }

@@ -2,19 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Employer;
+namespace App\Service\Employer\Vacancy;
 
 use App\DTO\VacancyDto;
 use App\Persistence\Contracts\VacancyRepositoryInterface;
 use App\Persistence\Models\Employer;
-use App\Persistence\Models\TechSkill;
 use App\Persistence\Models\Vacancy;
 use App\Service\Cache\Cache;
 use App\Service\Employer\Storage\EmployerLogoService;
+use Carbon\CarbonInterval;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 
 class VacancyService
 {
@@ -42,39 +40,11 @@ class VacancyService
         $this->vacancyRepository->updateWithSkills($vacancy, $vacancyDto);
     }
 
-    public function getSkillCategories(): Collection
-    {
-        $cacheKey = $this->cache->getCacheKey('skills');
-
-        return $this->cache->repository()->remember($cacheKey, $this->cache->secondsInYear(), function () {
-            $categories = TechSkill::query()->orderBy('skill_name')
-                ->toBase()
-                ->get();
-
-            $result = [];
-
-            foreach ($categories as $category) {
-                $firstLetter = Str::upper(Str::substr($category->skill_name, 0, 1));
-
-                $skill = new \stdClass();
-                $skill->id = $category->id;
-                $skill->skillName = $category->skill_name;
-
-                if (! Arr::exists($result, $firstLetter)) {
-                    $result[$firstLetter] = [];
-                }
-                $result[$firstLetter][] = $skill;
-            }
-
-            return collect($result)->chunk(ceil(count($result) / 3));
-        });
-    }
-
     public function getVacancy(int $vacancy): Vacancy
     {
         $cacheKey = $this->cache->getCacheKey('vacancy', $vacancy);
 
-        return $this->cache->repository()->remember($cacheKey, $this->cache->secondsInMonth(),
+        return $this->cache->repository()->remember($cacheKey, CarbonInterval::month()->totalSeconds,
             function () use ($vacancy) {
                 return $this->vacancyRepository->getVacancyById($vacancy);
             });
@@ -84,7 +54,7 @@ class VacancyService
     {
         $cacheKey = $this->cache->getCacheKey('vacancy-employer', $employerId);
 
-        return $this->cache->repository()->remember($cacheKey, $this->cache->secondsInMonth(),
+        return $this->cache->repository()->remember($cacheKey, CarbonInterval::month()->totalSeconds,
             function () use ($vacancy) {
                 $employer = $vacancy->employer;
 
@@ -97,6 +67,22 @@ class VacancyService
                     'email' => $employer->contact_email
                 ];
             });
+    }
+
+    public function getPublishedVacancies(string $employerId): LengthAwarePaginator
+    {
+        $employer = Employer::findByUuid($employerId, ['id', 'company_logo', 'company_name']);
+
+        $vacancies = $this->vacancyRepository->getAllPublished($employer->id);
+
+        $employer->company_logo = $this->storageService->getImageUrlByImageId($employer->company_logo);
+
+        foreach ($vacancies as $vacancy) {
+            $vacancy->employer = $employer;
+            $vacancy->skills = $vacancy->techSkillAsBaseArray();
+        }
+
+        return $vacancies;
     }
 
 }

@@ -11,6 +11,9 @@ use App\Persistence\Repositories\File\S3FileStorage;
 use App\Persistence\Repositories\User\UserRepository;
 use App\Persistence\Repositories\User\VerificationCodeRepository;
 use App\Persistence\Repositories\VacancyRepository;
+use App\Service\Cache\Cache;
+use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,6 +28,12 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->bindFileStorage();
+
+        $this->app->singleton(Cache::class, function (Application $app) {
+            $cacheRepository = $app->make(Repository::class);
+
+            return new Cache($cacheRepository);
+        });
     }
 
     /**
