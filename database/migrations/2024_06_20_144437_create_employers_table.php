@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string('company_name')->unique();
             $table->text('company_description')->nullable();
             $table->string('contact_email')->unique();
+            $table->string('company_type')->nullable();
             $table->string('company_logo')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->primary('id');

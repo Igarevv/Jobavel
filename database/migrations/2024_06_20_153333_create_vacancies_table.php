@@ -25,6 +25,9 @@ return new class extends Migration {
             $table->integer('salary')->default(0);
             $table->text('description');
             $table->string('location');
+            $table->string('employment_type');
+            $table->string('experience_time', 32);
+            $table->boolean('consider_without_experience')->default(false);
             $table->json('requirements');
             $table->json('responsibilities');
             $table->json('offers')->nullable();

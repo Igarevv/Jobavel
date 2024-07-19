@@ -59,6 +59,8 @@ class EmployerSeeder extends Seeder
                         'Dynamic and supportive work environment.'
                     ]),
                     'location' => 'USA, Los Angeles',
+                    'employment_type' => 'remote',
+                    'experience_time' => 1,
                     'created_at' => now(),
                     'salary' => fake()->numberBetween(900, 3500),
                     'is_published' => (bool) fake()->numberBetween(0, 1),
@@ -90,6 +92,8 @@ class EmployerSeeder extends Seeder
                         'Remote work flexibility.',
                         'Exciting projects and learning opportunities.'
                     ]),
+                    'employment_type' => 'remote',
+                    'experience_time' => 1,
                     'location' => 'USA, New York',
                     'created_at' => now(),
                     'salary' => fake()->numberBetween(900, 3500),
@@ -122,6 +126,8 @@ class EmployerSeeder extends Seeder
                     ]),
                     'location' => 'Ukraine, Odesa',
                     'created_at' => now(),
+                    'employment_type' => 'remote',
+                    'experience_time' => 3,
                     'salary' => fake()->numberBetween(900, 3500),
                     'is_published' => (bool) fake()->numberBetween(0, 1),
                     'employer_id' => $employer1->id

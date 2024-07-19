@@ -25,6 +25,7 @@ class EmployerFactory extends Factory
             'company_name' => $this->faker->company(),
             'company_description' => $this->faker->text(),
             'employer_id' => Uuid::uuid7()->toString(),
+            'company_type' => 'product',
             // by default email is same as registration, but can be changed to another
             'contact_email' => $user->email,
             'company_logo' => 'default_logo.png',
