@@ -5,6 +5,7 @@ namespace App\Persistence\Models;
 use App\Service\Cache\Cache;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -32,7 +33,8 @@ class Employer extends Model
         'user_id',
         'company_name',
         'contact_email',
-        'company_description'
+        'company_description',
+        'company_type'
     ];
 
     protected $hidden = [
@@ -68,6 +70,13 @@ class Employer extends Model
     public function getFullName(): string
     {
         return $this->company_name;
+    }
+
+    public function companyType(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => ucfirst($value)
+        );
     }
 
     public static function findByUuid(string $uuid, array $columns = ['*']): Employer

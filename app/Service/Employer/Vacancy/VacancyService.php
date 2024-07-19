@@ -50,9 +50,9 @@ class VacancyService
             });
     }
 
-    public function getEmployerRelatedToVacancy(Vacancy $vacancy, string $employerId): object
+    public function getEmployerRelatedToVacancy(Vacancy $vacancy, ?string $employerId): object
     {
-        $cacheKey = $this->cache->getCacheKey('vacancy-employer', $employerId);
+        $cacheKey = $this->cache->getCacheKey('vacancy-employer', $employerId ?: $vacancy->employer->employer_id);
 
         return $this->cache->repository()->remember($cacheKey, CarbonInterval::month()->totalSeconds,
             function () use ($vacancy) {
@@ -64,7 +64,8 @@ class VacancyService
                     'company' => $employer->company_name,
                     'description' => $employer->company_description,
                     'logo' => $companyLogoUrl,
-                    'email' => $employer->contact_email
+                    'email' => $employer->contact_email,
+                    'type' => $employer->company_type
                 ];
             });
     }

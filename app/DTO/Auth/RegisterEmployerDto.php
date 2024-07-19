@@ -17,7 +17,8 @@ readonly class RegisterEmployerDto implements RegisterDtoInterface
         private string $email,
         private string $password,
         private string $role,
-        private string $companyLogo
+        private string $companyLogo,
+        private string $companyType
     ) {
     }
 
@@ -27,6 +28,7 @@ readonly class RegisterEmployerDto implements RegisterDtoInterface
             'contact_email' => $this->email,
             'company_name' => $this->companyName,
             'company_logo' => $this->companyLogo,
+            'company_type' => $this->companyType
         ];
     }
 
@@ -39,7 +41,8 @@ readonly class RegisterEmployerDto implements RegisterDtoInterface
             email: $data['email'],
             password: Hash::make($data['password'], ['rounds' => 12]),
             role: User::EMPLOYER,
-            companyLogo: $defaultLogo
+            companyLogo: $defaultLogo,
+            companyType: $data['type']
         );
     }
 

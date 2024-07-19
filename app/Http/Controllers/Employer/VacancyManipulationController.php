@@ -10,6 +10,7 @@ use App\Http\Requests\VacancyRequest;
 use App\Persistence\Models\Vacancy;
 use App\Service\Employer\Vacancy\VacancyService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Str;
 
 class VacancyManipulationController extends Controller
 {
@@ -36,7 +37,7 @@ class VacancyManipulationController extends Controller
     public function store(VacancyRequest $request): RedirectResponse
     {
         $this->authorize('create', Vacancy::class);
-
+        
         $vacancyDto = VacancyDto::fromRequest($request);
 
         $employerId = $request->session()->get('user.emp_id');
@@ -82,6 +83,10 @@ class VacancyManipulationController extends Controller
     public function publish(Vacancy $vacancy): RedirectResponse
     {
         $this->authorize('publish', $vacancy);
+
+        if (Str::of($vacancy->employer->company_description)->isEmpty()) {
+            return back()->with('errors', trans('alerts.employer.empty-description'));
+        }
 
         $vacancy->publish();
 

@@ -2,10 +2,12 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\VacancyEnum;
 use App\Rules\NullableDynamicFieldRule;
 use App\Rules\TechSkillsExistsRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
+use Illuminate\Validation\Rule;
 
 class VacancyRequest extends FormRequest
 {
@@ -34,6 +36,13 @@ class VacancyRequest extends FormRequest
             'responsibilities.*' => ['required', 'string'],
             'requirements.*' => ['required', 'string'],
             'offers.*' => ['nullable', 'string'],
+            'experience' => ['required', 'numeric'],
+            'employment' => [
+                'required', Rule::enum(VacancyEnum::class)->only([
+                    VacancyEnum::EMPLOYMENT_OFFICE, VacancyEnum::EMPLOYMENT_REMOTE, VacancyEnum::EMPLOYMENT_PART_TIME
+                ])
+            ],
+            'consider' => ['nullable', 'boolean']
         ];
 
         if (array_key_exists(1, $this->offers)) {
@@ -53,10 +62,18 @@ class VacancyRequest extends FormRequest
             $data['offers'] = null;
         }
 
+        $data['consider'] = (bool) $this->consider;
+        
         $data['skillset'] = Arr::map($this->skillset, function ($skillId) {
             return (int) $skillId;
         });
-        
+
+        $vacancyEnum = VacancyEnum::tryFrom($this->employment);
+
+        $data['employment'] = $vacancyEnum->value;
+
+        $data['experience'] = $vacancyEnum->experienceFromInt((float) $this->experience);
+
         return $data;
     }
 

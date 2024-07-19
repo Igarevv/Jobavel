@@ -2,6 +2,7 @@
 
 namespace App\Persistence\Models;
 
+use App\Enums\VacancyEnum;
 use App\Service\Cache\Cache;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -27,6 +28,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property bool $is_published
  * @property int $response_number
  * @property Carbon $created_at
+ * @property bool $consider_without_experience,
+ * @property string $employment_type,
+ * @property string $experience_time
  * @method Builder|static notPublished(int $employerId)
  * @method Builder|static published(int $employerId)
  */
@@ -45,9 +49,10 @@ class Vacancy extends Model
     ];
 
     protected $fillable = [
-        'location',
+        'location', 'employment_type', 'experience_time',
         'title', 'salary', 'description',
         'requirements', 'responsibilities', 'offers',
+        'consider_without_experience'
     ];
 
     protected $hidden = [
@@ -103,11 +108,23 @@ class Vacancy extends Model
         $this->save();
     }
 
+    public function experienceFromString(): ?int
+    {
+        return VacancyEnum::tryFrom($this->experience_time)?->experienceFromString();
+    }
+
     protected function offers(): Attribute
     {
         return Attribute::make(
             get: fn($value) => json_decode($value, true) ?: null,
             set: fn($value) => json_encode($value) ?? []
+        );
+    }
+
+    protected function employmentType(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => ucfirst($value)
         );
     }
 

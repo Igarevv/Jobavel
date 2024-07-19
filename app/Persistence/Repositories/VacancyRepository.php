@@ -25,6 +25,9 @@ class VacancyRepository implements VacancyRepositoryInterface
             'requirements' => $vacancyDto->requirements,
             'location' => $vacancyDto->location,
             'responsibilities' => $vacancyDto->responsibilities,
+            'experience_time' => $vacancyDto->experienceTime,
+            'employment_type' => $vacancyDto->employmentType,
+            'consider_without_experience' => $vacancyDto->considerWithoutExp
         ]);
 
         DB::transaction(function () use ($employer, $vacancyDto, $vacancy) {
@@ -52,6 +55,8 @@ class VacancyRepository implements VacancyRepositoryInterface
                 'offers' => $newData->offers,
                 'salary' => $newData->salary,
                 'location' => $newData->location,
+                'experience_time' => $newData->experienceTime,
+                'employment_type' => $newData->employmentType
             ]);
 
             $vacancy->techSkill()->sync($newData->skillSet);

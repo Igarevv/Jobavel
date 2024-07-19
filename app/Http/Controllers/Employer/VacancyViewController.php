@@ -19,6 +19,9 @@ class VacancyViewController extends Controller
     ) {
     }
 
+    /**
+     * TODO: сессия пустая
+     */
     public function show(int $vacancy): View
     {
         $vacancyModel = $this->vacancyService->getVacancy($vacancy);
@@ -27,10 +30,15 @@ class VacancyViewController extends Controller
 
         $employer = $this->vacancyService->getEmployerRelatedToVacancy($vacancyModel, session('user.emp_id'));
 
+        $skills = $vacancyModel->techSkillAsBaseArray();
+
+        $techSkillInRow = implode(' / ', array_map(fn($skill) => $skill->skillName, $skills));
+
         return view('employer.vacancy.show', [
             'vacancy' => $vacancyModel,
             'employer' => $employer,
-            'skillSet' => $vacancyModel->techSkillAsBaseArray()
+            'skillSet' => $skills,
+            'skillSetRow' => $techSkillInRow
         ]);
     }
 

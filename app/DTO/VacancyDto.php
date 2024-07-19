@@ -17,6 +17,9 @@ class VacancyDto
         public readonly array $requirements,
         public readonly array $skillSet,
         public readonly string $location,
+        public readonly string $experienceTime,
+        public readonly string $employmentType,
+        public readonly bool $considerWithoutExp = false,
         public readonly array $offers = [],
         public readonly int $salary = 0,
         public ?Carbon $createdAt = null,
@@ -36,8 +39,10 @@ class VacancyDto
             requirements: $input['requirements'],
             skillSet: $input['skillset'],
             location: $input['location'],
-            offers: $input['offers'] ?? [],
-            salary: (int) ($input['salary'] ?? 0)
+            experienceTime: $input['experience'],
+            employmentType: $input['employment'],
+            considerWithoutExp: $input['consider'],
+            offers: $input['offers'] ?? [], salary: (int) ($input['salary'] ?? 0)
         );
     }
 
