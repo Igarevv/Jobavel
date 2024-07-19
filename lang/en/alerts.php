@@ -15,6 +15,9 @@ return [
         'restored' => 'Vacancy was successfully restored and mark as unpublished.',
         'deleted' => 'Vacancy was successfully deleted.',
     ],
+    'employer' => [
+        'empty-description' => 'You must fill your company description'
+    ],
     'employer-account' => [
         'updated' => 'Your company data was successfully updated',
         'email-verified' => 'Your new contact email verified successfully'

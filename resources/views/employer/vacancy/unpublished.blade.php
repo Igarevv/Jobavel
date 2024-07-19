@@ -25,6 +25,11 @@
                 {{ $value }}
             </div>
             @endsession
+            @session('errors')
+            <div class="alert text-center alert-danger fw-bold">
+                {{ $value }}
+            </div>
+            @endsession
             @if($vacancies->isEmpty())
                 <div class="d-flex flex-column align-items-center justify-content-center" style="height: 70vh;">
                     <h1 class="text-danger fw-bold">Vacancies not found</h1>

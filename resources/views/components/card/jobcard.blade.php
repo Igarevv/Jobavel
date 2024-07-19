@@ -6,7 +6,7 @@
                 <div class="d-flex justify-content-between">
                     <h5 class="card-title text-start">{{ $vacancy->title }}</h5>
                     @isset($vacancy->salary)
-                        <h5 class="card-title fw-bold text-end money">{{ $vacancy->salary }}</h5>
+                        <h5 class="card-title fw-bold text-end money">{{ $vacancy->salary ?: '' }}</h5>
                     @endisset
                 </div>
                 <h6 class="card-title fw-bolder">{{ $vacancy->employer->company_name }}</h6>

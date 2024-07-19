@@ -20,7 +20,6 @@
                                 @foreach($skillSet as $skill)
                                     <span class="badge small bg-dark text-light">{{ $skill->skillName }}</span>
                                 @endforeach
-                                <p class="fw-bold mt-2">{{ $employer->company }}</span></p>
                             </header>
                         </div>
                         <section class="mb-5">
@@ -34,7 +33,9 @@
                                     <path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 6 6 0 0 1 3.13-1.567"/>
                                 </svg>
                                 @if($vacancy->salary === 0)
-                                    <h5 class="fw-bold fst-italic mb-0">Salary: negotiated salary</h5>
+                                    <h5 class="fw-bold fst-italic mb-0">Salary:
+                                        <span class="text-warning"> negotiated salary</span>
+                                    </h5>
                                 @else
                                     <h5 class="fw-bold fst-italic mb-0">Salary: <span
                                                 class="text-success">${{ $vacancy->salary }}</span></h5>
@@ -104,83 +105,128 @@
                                     @endforeach
                                 </ul>
                             @endempty
-
-                            <div class="d-flex align-items-center mb-3">
-                                <svg class="float-start me-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                     width="18" height="18">
-                                    <path fill="none" d="M0 0h24v24H0z"/>
-                                    <path d="M12 2C8.14 2 5 5.14 5 9c0 3.86 5 11 7 13.25C14 20 19 12.86 19 9c0-3.86-3.14-7-7-7zm0 11.5c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
-                                </svg>
-                                <h5 class="fw-bold fst-italic mb-0">Location: {{ $vacancy->location }}</h5>
-                            </div>
                         </section>
 
                     </article>
                 </div>
                 <div class="col-lg-4">
-                    <div class="card mb-4">
-                        <div class="card-header">Search another vacancies by this categories</div>
-                        <div class="card-body d-flex justify-content-center gap-3 flex-wrap">
-                            @foreach($skillSet as $skill)
-                                <ul class="list-unstyled mb-0">
-                                    <li><a href="#!">
+                    <div class="d-flex flex-column align-items-center gap-3">
+                        <div class="card w-75 border border-dark rounded mb-4">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title text-center fw-bold">Click to show more</h5>
+                                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                                    @foreach($skillSet as $skill)
+                                        <ul class="list-unstyled mb-0">
+                                            <li><a href="#!">
                                             <span
                                                     class="badge small bg-dark text-light">{{ $skill->skillName }}
                                             </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            @endforeach
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    @endforeach
+                                </div>
+                            </div>
                         </div>
+                        <div class="card w-75 border border-dark rounded mb-4">
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    @if($vacancy->experienceFromString() === 0)
+                                        <p class="fw-bold">We are looking for employee without experience</p>
+                                    @else
+                                        <h6 class="fw-bold mb-0">From {{ $vacancy->experience_time }} experience</h6>
+                                        @if($vacancy->consider_without_experience)
+                                            <p class="text-muted text-14" @style(['font-size:12px'])>We also consider a
+                                                candidate without
+                                                experience</p>
+                                        @endif
+                                    @endif
+                                </div>
+                                <p class="fw-bold">{{ $vacancy->employment_type }} job</p>
+                                <div class="d-flex align-items-center mb-3">
+                                    <h6 class="mb-0 fw-bold text-14">{{ $skillSetRow }}</h6>
+                                </div>
+                                <div class="d-flex align-items-center mb-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
+                                         class="float-start me-2" viewBox="0 0 16 16">
+                                        <path d="M4 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
+                                        <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1zm11 0H3v14h3v-2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V15h3z"/>
+                                    </svg>
+                                    <h6 class="text-muted mb-0 text-14">Company: <span
+                                                class="fw-bold">{{ $employer->company }}</span></h6>
+                                </div>
+                                <div class="d-flex align-items-center mb-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
+                                         class="float-start me-2" viewBox="0 0 16 16">
+                                        <path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
+                                        <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2"/>
+                                        <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z"/>
+                                    </svg>
+                                    <h5 class="text-muted mb-0 text-14">Company type: {{ $employer->type }}</h5>
+                                </div>
+                                <div class="d-flex align-items-center mb-3">
+                                    <svg class="float-start me-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                         width="14" height="14">
+                                        <path fill="none" d="M0 0h24v24H0z"/>
+                                        <path d="M12 2C8.14 2 5 5.14 5 9c0 3.86 5 11 7 13.25C14 20 19 12.86 19 9c0-3.86-3.14-7-7-7zm0 11.5c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
+                                    </svg>
+                                    <h5 class="text-muted mb-0 text-14">Location: {{ $vacancy->location }}</h5>
+                                </div>
+                                <div>
+                                    <span class="fw-bolder text-14">Number of applies:</span>
+                                    <div>
+                                        <span>{{ $vacancy->response_number }}</span>
+                                        <x-button.outline class="float-end" colorType="danger">Apply
+                                        </x-button.outline>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @can(['edit', 'delete', 'publish'], $vacancy)
+                            <div class="card w-75 border border-dark rounded mb-4">
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title text-center fw-bold">Actions for you</h5>
+                                    <div class="d-flex justify-content-between align-items-center gap-3">
+                                        <a href="{{ route('employer.vacancy.show.edit', ['vacancy' => $vacancy->id]) }}"
+                                           class="btn btn-outline-primary">Edit
+                                            vacancy</a>
+                                        <form action="{{ route('employer.vacancy.destroy', ['vacancy' => $vacancy->id]) }}"
+                                              method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <x-button.outline colorType="danger" type="submit">Move to trash
+                                            </x-button.outline>
+                                        </form>
+                                        @if($vacancy->isPublished())
+                                            <form action="{{ route('employer.vacancy.unpublish', ['vacancy' => $vacancy->id]) }}"
+                                                  method="POST">
+                                                @csrf
+                                                <x-button.outline colorType="warning" type="submit">Unpublish vacancy
+                                                </x-button.outline>
+                                            </form>
+                                        @else
+                                            <form action="{{ route('employer.vacancy.publish', ['vacancy' => $vacancy->id]) }}"
+                                                  method="POST">
+                                                @csrf
+                                                <x-button.outline colorType="success" type="submit">Publish vacancy
+                                                </x-button.outline>
+                                            </form>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            @session('edit-success')
+                            <div class="alert alert-success text-center fw-bold">
+                                {{ $value }}
+                            </div>
+                            @endsession
+                            @session('errors')
+                            <div class="alert text-center alert-danger fw-bold">
+                                {{ $value }}
+                            </div>
+                            @endsession
+                        @endcan
                     </div>
-                    @can(['edit', 'delete', 'publish'], $vacancy)
-                        <div class="card mb-4">
-                            <div class="card-header">Actions for you</div>
-                            <div class="card-body d-flex justify-content-between align-items-center gap-3">
-                                <a href="{{ route('employer.vacancy.show.edit', ['vacancy' => $vacancy->id]) }}"
-                                   class="btn btn-outline-primary">Edit
-                                    vacancy</a>
-                                <form action="{{ route('employer.vacancy.destroy', ['vacancy' => $vacancy->id]) }}"
-                                      method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <x-button.outline colorType="danger" type="submit">Move to trash</x-button.outline>
-                                </form>
-                                @if($vacancy->isPublished())
-                                    <form action="{{ route('employer.vacancy.unpublish', ['vacancy' => $vacancy->id]) }}"
-                                          method="POST">
-                                        @csrf
-                                        <x-button.outline colorType="warning" type="submit">Unpublish vacancy
-                                        </x-button.outline>
-                                    </form>
-                                @else
-                                    <form action="{{ route('employer.vacancy.publish', ['vacancy' => $vacancy->id]) }}"
-                                          method="POST">
-                                        @csrf
-                                        <x-button.outline colorType="success" type="submit">Publish vacancy
-                                        </x-button.outline>
-                                    </form>
-                                @endif
-                            </div>
-                        </div>
-                        @session('edit-success')
-                        <div class="alert alert-success text-center fw-bold">
-                            {{ $value }}
-                        </div>
-                        @endsession
-                    @else
-                        <div class="card mb-4">
-                            <div class="card-header">Apply for a vacancy</div>
-                            <div class="card-body d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="fw-bolder">Number of applies: {{ $vacancy->responses }}</span>
-                                </div>
-                                <div>
-                                    <x-button.outline colorType="danger">Apply</x-button.outline>
-                                </div>
-                            </div>
-                        </div>
-                    @endcan
                 </div>
             </div>
         </div>

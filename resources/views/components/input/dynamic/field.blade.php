@@ -23,18 +23,20 @@
         @if($loop->first)
             @continue
         @endif
-        <div class="input-group mt-3">
-            <input type="text" class="form-control" name="{{ $name }}[]"
-                   required="{{ $required }}" value="{{ $item }}">
-            <button type="button" class="btn btn-danger remove-item">-</button>
-            <button type="button" class="btn btn-primary add-item">+</button>
-        </div>
-        @if($errors->has("{$name}.{$key}"))
-            <div class="text-danger">
-                @foreach($errors->get("{$name}.{$key}") as $error)
-                    <p class="text-danger text-center font-monospace fw-bold mt-2 h6">{{ $error }}</p>
-                @endforeach
+        <div class="d-flex flex-column group">
+            <div class="input-group mt-3">
+                <input type="text" class="form-control" name="{{ $name }}[]"
+                       required="{{ $required }}" value="{{ $item }}">
+                <button type="button" class="btn btn-danger remove-item">-</button>
+                <button type="button" class="btn btn-primary add-item">+</button>
             </div>
-        @endif
+            @if($errors->has("{$name}.{$key}"))
+                <div class="text-danger">
+                    @foreach($errors->get("{$name}.{$key}") as $error)
+                        <p class="text-danger text-center font-monospace fw-bold mt-2 h6 flash-{{ $name }}">{{ $error }}</p>
+                    @endforeach
+                </div>
+            @endif
+        </div>
     @endforeach
 </div>

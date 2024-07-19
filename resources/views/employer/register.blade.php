@@ -1,3 +1,4 @@
+@php use App\Enums\EmployerEnum; @endphp
 <x-layout class="vh-100">
     <x-slot:title>Register</x-slot:title>
     <x-slot:injectBody>background-auth</x-slot:injectBody>
@@ -15,7 +16,7 @@
                                             <div class="text-center mb-4">
                                                 <a href="/" class="navbar-brand d-flex justify-content-center">
                                                     <strong
-                                                        class="h4">Job<span class="red">avel</span></strong>
+                                                            class="h4">Job<span class="red">avel</span></strong>
                                                 </a>
                                             </div>
                                             <h2 class="h4 text-center">Company Registration</h2>
@@ -46,6 +47,30 @@
                                             <p class="text-danger fst-italic fw-bolder h6">{{ $message }}</p>
                                             @enderror
                                         </x-input.block>
+                                        <div сlass="col-12">
+                                            <h6 class="fw-bold">Company type</h6>
+                                            <select class="form-select" required name="type">
+                                                <option value="{{ EmployerEnum::COMPANY_TYPE_PRODUCT->value }}"
+                                                        {{ old('type') === EmployerEnum::COMPANY_TYPE_PRODUCT->value ? 'selected' : '' }}>
+                                                    Product
+                                                </option>
+                                                <option value="{{ EmployerEnum::COMPANY_TYPE_OUTSOURCE->value }}"
+                                                        {{ old('type') === EmployerEnum::COMPANY_TYPE_OUTSOURCE->value ? 'selected' : '' }}>
+                                                    Outsource
+                                                </option>
+                                                <option value="{{ EmployerEnum::COMPANY_TYPE_AGENCY->value }}"
+                                                        {{ old('type') === EmployerEnum::COMPANY_TYPE_AGENCY->value ? 'selected' : '' }}>
+                                                    Agency
+                                                </option>
+                                                <option value="{{ EmployerEnum::COMPANY_TYPE_OUTSTAFF->value }}"
+                                                        {{ old('type') === EmployerEnum::COMPANY_TYPE_OUTSTAFF->value ? 'selected' : '' }}>
+                                                    Outstaff
+                                                </option>
+                                            </select>
+                                            @error('type')
+                                            <p class="text-danger fst-italic fw-bolder h6">{{ $message }}</p>
+                                            @enderror
+                                        </div>
                                         <x-input.block class="col-12">
                                             <x-input.index type="password" name="password" id="password"
                                                            placeholder="*******"
@@ -89,8 +114,8 @@
                                     <div class="col-12">
                                         <hr class="mt-5 mb-4 border-secondary-subtle">
                                         <p class="m-0 text-secondary text-center">Already have an account? <a
-                                                href="{{ route('login.show') }}"
-                                                class="link-primary text-decoration-none">Sign
+                                                    href="{{ route('login.show') }}"
+                                                    class="link-primary text-decoration-none">Sign
                                                 in</a></p>
                                     </div>
                                 </div>

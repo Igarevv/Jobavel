@@ -2,24 +2,26 @@ function setupDynamicFields(containerId, inputName) {
     const container = document.getElementById(containerId);
 
     function addField() {
-        const group = document.createElement('div');
-        group.classList.add('input-group');
-        group.classList.add('mt-3');
+        const baseGroup = document.createElement('div');
+        baseGroup.classList.add('d-flex', 'flex-column', 'group');
 
-        group.innerHTML = `
+        const inputGroup = document.createElement('div');
+        inputGroup.classList.add('input-group', 'mt-3');
+
+        inputGroup.innerHTML = `
             <input type="text" class="form-control" name="${inputName}[]" required>
             <button type="button" class="btn btn-danger remove-item">-</button>
             <button type="button" class="btn btn-primary add-item">+</button>
         `;
+        baseGroup.appendChild(inputGroup);
 
-        container.appendChild(group);
+        container.appendChild(baseGroup);
 
-        // Attach event listeners to the new buttons
-        group.querySelector('.remove-item').addEventListener('click', () => {
-            group.remove();
+        inputGroup.querySelector('.remove-item').addEventListener('click', () => {
+            baseGroup.remove();
         });
 
-        group.querySelector('.add-item').addEventListener('click', () => {
+        inputGroup.querySelector('.add-item').addEventListener('click', () => {
             addField();
         });
     }
@@ -29,17 +31,14 @@ function setupDynamicFields(containerId, inputName) {
             addField();
         });
     });
-    
+
     container.querySelectorAll('.remove-item').forEach(removeButton => {
         removeButton.addEventListener('click', (event) => {
-            event.target.closest('.input-group').remove();
+            event.target.closest('.group').remove();
         });
     });
 }
 
 setupDynamicFields('createResponsibilityInput', 'responsibilities');
-
 setupDynamicFields('createRequirementsInput', 'requirements');
-
 setupDynamicFields('createOffersInput', 'offers');
-
