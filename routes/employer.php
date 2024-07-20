@@ -32,8 +32,8 @@ Route::name('employer.')->group(function () {
 
     Route::group(['middleware' => ['auth', 'role:employer']], function () {
         Route::prefix('employer')->group(function () {
-            Route::redirect('/', '/main');
-
+            Route::redirect('/', '/employer/main');
+            
             /*
              * ---------------------------------
              * -      Employer home page       -
@@ -104,8 +104,6 @@ Route::name('employer.')->group(function () {
 
                         Route::post('/restore/{vacancy}', 'restore')->name('restore')->withTrashed();
                     })->whereNumber('vacancy');
-
-                Route::post('/');
             });
         });
     });

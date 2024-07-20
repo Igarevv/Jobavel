@@ -1,7 +1,8 @@
 <div class="col-md-6 job-card">
     <div class="card">
         <div class="card-body d-flex align-items-center gap-3">
-            <x-image.logo url="{{ $vacancy->employer->company_logo }}" imgColSize="2"></x-image.logo>
+            <x-image.logo url="{{ $vacancy->employer->company_logo }}"
+                          imgColSize="2"></x-image.logo>
             <div class="w-100">
                 <div class="d-flex justify-content-between">
                     <h5 class="card-title text-start">{{ $vacancy->title }}</h5>

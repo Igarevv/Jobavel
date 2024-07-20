@@ -56,3 +56,31 @@ tbody td {
 .text-14 {
     font-size: 14px;
 }
+
+@media only screen and (max-width: 600px) {
+    .transform-card {
+        display: flex;
+        flex-direction: column;
+        font-size: 12px;
+        gap: 0 !important;
+    }
+
+    .transform-card-logo {
+        flex: 0 0 auto;
+        width: 16%;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .transform-card {
+        display: flex;
+        flex-direction: column;
+        font-size: 12px;
+        gap: 0 !important;
+    }
+
+    .transform-card-logo {
+        flex: 0 0 auto;
+        width: 35%;
+    }
+}

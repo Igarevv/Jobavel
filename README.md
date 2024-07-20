@@ -1,6 +1,7 @@
 ***In development***
 
 ## Jobavel-application
+
 ** app name is not registered, and just using locally
 
 This application is my first study application wrote on [Laravel](https://laravel.com) framework.
@@ -11,7 +12,8 @@ This is CRUD application
 
 - Separate registration for employers and employees
 - Email verification handled by queues and [Mailtrup](https://mailtrap.io)
-- Roles and Permissions policies using [Spatie Permissions](https://spatie.be/docs/laravel-permission/v6/introduction) library
+- Roles and Permissions policies using [Spatie Permissions](https://spatie.be/docs/laravel-permission/v6/introduction)
+  library
 - CRUD functionality for vacancy with trash using soft deletes
 - Upload employer logo via [AWS S3](https://aws.amazon.com/s3/) storage and also via local storage
 - Simple frontend
@@ -20,6 +22,7 @@ This is CRUD application
 ### ***Project requirements:***
 
 .env file with variables:
+
 - **Database (PostgreSQL)**
     - DB_CONNECTION
     - DB_HOST
@@ -32,9 +35,9 @@ This is CRUD application
     - REDIS_HOST
     - REDIS_PASSWORD
     - REDIS_PORT
--  **Mail**
+- **Mail**
     - Use variables that provides Mailtrap
--  **AWS**
+- **AWS**
     - AWS_ACCESS_KEY_ID
     - AWS_SECRET_ACCESS_KEY
     - AWS_DEFAULT_REGION
@@ -48,8 +51,10 @@ To switch from local storage to S3 or vice versa, define in .env FILE_STORAGE_PR
 
 ### To run app:
 
-To create symbolic link for storage use command:
+To create symbolic link for local storage use command:
+
 ````
 php artisan storage:link
 ````
+
 ### to be continued

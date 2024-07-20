@@ -38,17 +38,19 @@
                         <h4 class="text-center fw-bold">List of your vacancies</h4>
                         <div class="d-flex flex-column align-items-center">
                             @foreach($vacancies as $vacancy)
-                                <div class="d-flex align-items-center justify-content-center gap-5">
+                                <div class="d-flex align-items-center justify-content-center gap-5 transform-card">
                                     <x-card.jobcard :vacancy="$vacancy"></x-card.jobcard>
-                                    <a href="{{ route('employer.vacancy.show.edit', ['vacancy' => $vacancy->id]) }}"
-                                       class="btn btn-outline-primary">Edit</a>
-                                    <form action="{{ route('employer.vacancy.unpublish', ['vacancy' => $vacancy->id]) }}"
-                                          method="POST">
-                                        @csrf
-                                        <x-button.outline colorType="danger"
-                                                          type="submit">Unpublish
-                                        </x-button.outline>
-                                    </form>
+                                    <div class="d-flex flex-row gap-3">
+                                        <a href="{{ route('employer.vacancy.show.edit', ['vacancy' => $vacancy->id]) }}"
+                                           class="btn btn-outline-primary">Edit</a>
+                                        <form action="{{ route('employer.vacancy.unpublish', ['vacancy' => $vacancy->id]) }}"
+                                              method="POST">
+                                            @csrf
+                                            <x-button.outline colorType="danger"
+                                                              type="submit">Unpublish
+                                            </x-button.outline>
+                                        </form>
+                                    </div>
                                 </div>
                             @endforeach
                         </div>
@@ -60,6 +62,10 @@
             @endif
         </div>
     </x-main>
-
+    @once
+        @push('vacancy-css')
+            <link href="/assets/css/vacancy.css" type="text/css" rel="stylesheet">
+        @endpush
+    @endonce
     <x-footer></x-footer>
 </x-layout>
