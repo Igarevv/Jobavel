@@ -2,29 +2,25 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\VacancyEnum;
-use App\Rules\NullableDynamicFieldRule;
+use App\Contracts\Request\AfterValidationInterface;
+use App\Enums\Vacancy\EmploymentEnum;
+use App\Enums\Vacancy\ExperienceEnum;
 use App\Rules\TechSkillsExistsRule;
+use App\Traits\AfterValidation;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
 
-class VacancyRequest extends FormRequest
+class VacancyRequest extends FormRequest implements AfterValidationInterface
 {
 
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+    use AfterValidation;
+
     public function authorize(): bool
     {
         return $this->user()->can('vacancy-create');
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         $rules = [
@@ -38,8 +34,11 @@ class VacancyRequest extends FormRequest
             'offers.*' => ['nullable', 'string'],
             'experience' => ['required', 'numeric'],
             'employment' => [
-                'required', Rule::enum(VacancyEnum::class)->only([
-                    VacancyEnum::EMPLOYMENT_OFFICE, VacancyEnum::EMPLOYMENT_REMOTE, VacancyEnum::EMPLOYMENT_PART_TIME
+                'required', Rule::enum(EmploymentEnum::class)->only([
+                    EmploymentEnum::EMPLOYMENT_OFFICE,
+                    EmploymentEnum::EMPLOYMENT_REMOTE,
+                    EmploymentEnum::EMPLOYMENT_PART_TIME,
+                    EmploymentEnum::EMPLOYMENT_MIXED
                 ])
             ],
             'consider' => ['nullable', 'boolean']
@@ -54,27 +53,12 @@ class VacancyRequest extends FormRequest
         return $rules;
     }
 
-    public function validated($key = null, $default = null)
+    public function makeCastAndMutatorsAfterValidation(array &$data): void
     {
-        $data = parent::validated($key, $default);
-
-        if ($this->offers[0] === null) {
-            $data['offers'] = null;
-        }
-
-        $data['consider'] = (bool) $this->consider;
-        
-        $data['skillset'] = Arr::map($this->skillset, function ($skillId) {
-            return (int) $skillId;
-        });
-
-        $vacancyEnum = VacancyEnum::tryFrom($this->employment);
-
-        $data['employment'] = $vacancyEnum->value;
-
-        $data['experience'] = $vacancyEnum->experienceFromInt((float) $this->experience);
-
-        return $data;
+        $this->castFirstOfferToNullIfItIsEmpty($data);
+        $this->castConsiderToBool($data);
+        $this->castSkillsIdsToInt($data);
+        $this->mapExperienceToString($data);
     }
 
     public function attributes(): array
@@ -91,6 +75,36 @@ class VacancyRequest extends FormRequest
         return [
             'offers.*' => 'This field required when other fields is provided',
         ];
+    }
+
+    private function castConsiderToBool(array &$data): void
+    {
+        if ($this->has('consider')) {
+            $data['consider'] = (bool) $this->consider;
+        }
+    }
+
+    private function castSkillsIdsToInt(array &$data): void
+    {
+        if ($this->has('skillset')) {
+            $data['skillset'] = Arr::map($this->skillset, function ($skillId) {
+                return (int) $skillId;
+            });
+        }
+    }
+
+    private function mapExperienceToString(array &$data): void
+    {
+        if ($this->has('experience')) {
+            $data['experience'] = ExperienceEnum::experienceToString((float) $this->experience);
+        }
+    }
+
+    private function castFirstOfferToNullIfItIsEmpty(array &$data): void
+    {
+        if ($this->offers[0] === null) {
+            $data['offers'] = null;
+        }
     }
 
 }

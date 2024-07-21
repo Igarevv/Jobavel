@@ -24,7 +24,7 @@ class EmployerAccountController extends Controller
     public function update(UpdateEmployerRequest $request): RedirectResponse
     {
         $updatedData = $request->validated();
-        
+
         $employer = $this->accountService->update(session('user.emp_id'), $updatedData, $this->verificationService);
 
         $request->session()->put('user.name', $employer->company_name);
@@ -44,10 +44,8 @@ class EmployerAccountController extends Controller
             'code' => 'required|digits:6'
         ]);
 
-        $userId = session('user.emp_id');
-
         try {
-            $this->verificationService->verifyCodeFromRequest((int) $input['code'], $userId);
+            $this->verificationService->verifyCodeFromRequest((int) $input['code'], session('user.emp_id'));
 
             $request->session()->forget('frontend.show-button-for-modal');
         } catch (VerificationCodeTimeExpiredException|InvalidVerificationCodeException $e) {

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\View\Components\CategoriesView;
 use App\View\Components\LogoView;
+use App\View\Components\SkillsFilterView;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Session;
@@ -27,15 +28,17 @@ class ViewServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useBootstrapFive();
-        
+
         Blade::component('image.logo', LogoView::class);
         Blade::component('categories.list', CategoriesView::class);
+        Blade::component('categories.skills-filter', SkillsFilterView::class);
 
         View::share('currentYear', date('Y'));
 
         View::composer('*', function ($view) {
             $view->with('user.role', Session::get('user.role'));
         });
+
         Blade::directive('greeting', function () {
             return '<?php
                 $currentHour = now()->hour;

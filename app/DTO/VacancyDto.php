@@ -42,7 +42,8 @@ class VacancyDto
             experienceTime: $input['experience'],
             employmentType: $input['employment'],
             considerWithoutExp: $input['consider'],
-            offers: $input['offers'] ?? [], salary: (int) ($input['salary'] ?? 0)
+            offers: $input['offers'] ?? [],
+            salary: (int) ($input['salary'] ?? 0)
         );
     }
 

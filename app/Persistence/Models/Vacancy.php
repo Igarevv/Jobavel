@@ -2,7 +2,7 @@
 
 namespace App\Persistence\Models;
 
-use App\Enums\VacancyEnum;
+use App\Enums\Vacancy\ExperienceEnum;
 use App\Service\Cache\Cache;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -110,7 +110,7 @@ class Vacancy extends Model
 
     public function experienceFromString(): ?int
     {
-        return VacancyEnum::tryFrom($this->experience_time)?->experienceFromString();
+        return ExperienceEnum::tryFrom($this->experience_time)?->experienceFromString();
     }
 
     protected function offers(): Attribute

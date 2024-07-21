@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Employer\Vacancy;
+namespace App\View\ViewModels;
 
 use App\Persistence\Models\TechSkill;
+use App\Persistence\Models\Vacancy;
 use App\Service\Cache\Cache;
 use Carbon\CarbonInterval;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
-class TechSkillService
+class SkillsViewModel
 {
-    public function __construct(
-        protected Cache $cache
-    ) {
+    public function __construct(private Cache $cache)
+    {
     }
 
-    public function getSkillCategories(): Collection
+    public function allSkills(): Collection
     {
         $cacheKey = $this->cache->getCacheKey('skills');
 
@@ -45,4 +45,18 @@ class TechSkillService
             return collect($result)->chunk(ceil(count($result) / 3));
         });
     }
+
+    public function skillsAsRow(array $skills): string
+    {
+        return implode(' / ', array_map(fn($skill) => $skill->skillName, $skills));
+    }
+
+    public function pluckExistingSkillsFromVacancy(Vacancy $vacancy): object
+    {
+        return (object) [
+            'ids' => $vacancy->pluck('id')->toArray(),
+            'names' => $vacancy->pluck('skill_name')->toArray(),
+        ];
+    }
+
 }

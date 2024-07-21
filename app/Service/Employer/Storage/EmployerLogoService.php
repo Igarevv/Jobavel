@@ -7,7 +7,6 @@ namespace App\Service\Employer\Storage;
 use App\Contracts\Storage\LogoStorageInterface;
 use App\Persistence\Models\Employer;
 use App\Service\Cache\Cache;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\UploadedFile;
 
 class EmployerLogoService
@@ -25,30 +24,24 @@ class EmployerLogoService
 
         $employer = Employer::findByUuid($userId);
 
-        if (! $employer) {
-            throw new ModelNotFoundException('Try to get employer to upload file: '.$userId);
+        if (! $this->logoStorage->upload($file)) {
+            return false;
         }
 
-        $oldImage = $employer->company_logo;
+        $this->cache->repository()->forget('logo-url-'.$employer->company_logo);
+
+        if ($employer->company_logo && $employer->company_logo !== $this->logoByDefault()) {
+            $this->logoStorage->delete($employer->company_logo);
+        }
 
         $employer->company_logo = $newFileName;
 
-        if ($this->logoStorage->upload($file)) {
-            $employer->save();
+        $employer->save();
 
-            if ($oldImage && $oldImage !== config('app.default_employer_logo')) {
-                $this->logoStorage->delete($oldImage);
-            }
+        $this->cache->repository()->put('logo-url-'.$newFileName, $this->logoStorage->get($newFileName),
+            now()->addHour());
 
-            $this->cache->repository()->forget('logo-url-'.$oldImage);
-
-            $this->cache->repository()->put('logo-url-'.$newFileName, $this->logoStorage->get($newFileName),
-                now()->addHour());
-
-            return true;
-        }
-
-        return false;
+        return true;
     }
 
     public function getImageUrlByImageId(?string $imageId, ?string $default = null): false|string

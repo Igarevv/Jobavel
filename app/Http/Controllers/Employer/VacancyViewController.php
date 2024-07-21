@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Employer;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\VacancyFilterRequest;
 use App\Persistence\Models\Vacancy;
-use App\Service\Employer\Vacancy\TechSkillService;
-use App\Service\Employer\Vacancy\VacancyService;
+use App\View\ViewModels\SkillsViewModel;
+use App\View\ViewModels\VacancyViewModel;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -15,59 +16,47 @@ class VacancyViewController extends Controller
 {
 
     public function __construct(
-        protected VacancyService $vacancyService
+        protected VacancyViewModel $viewModel
     ) {
     }
 
-    /**
-     * TODO: сессия пустая
-     */
-    public function show(int $vacancy): View
+    public function show(int $vacancy, SkillsViewModel $viewModel): View
     {
-        $vacancyModel = $this->vacancyService->getVacancy($vacancy);
+        $vacancyModel = $this->viewModel->vacancy($vacancy);
 
         $this->authorize('viewAny', $vacancyModel);
 
-        $employer = $this->vacancyService->getEmployerRelatedToVacancy($vacancyModel, session('user.emp_id'));
+        $employer = $this->viewModel->vacancyEmployerData($vacancyModel, session('user.emp_id'));
 
         $skills = $vacancyModel->techSkillAsBaseArray();
-
-        $techSkillInRow = implode(' / ', array_map(fn($skill) => $skill->skillName, $skills));
 
         return view('employer.vacancy.show', [
             'vacancy' => $vacancyModel,
             'employer' => $employer,
             'skillSet' => $skills,
-            'skillSetRow' => $techSkillInRow
+            'skillSetRow' => $viewModel->skillsAsRow($skills)
         ]);
     }
 
-    public function create(TechSkillService $skillService): View
+    public function create(SkillsViewModel $skillService): View
     {
         $this->authorize('create', Vacancy::class);
 
-        $categories = $skillService->getSkillCategories();
+        $categories = $skillService->allSkills();
 
         return view('employer.vacancy.create', ['skills' => $categories->toArray()]);
     }
 
-    public function showEdit(int $vacancy, TechSkillService $skillService): View
+    public function showEdit(int $vacancy, SkillsViewModel $viewModel): View
     {
-        $existingVacancy = $this->vacancyService->getVacancy($vacancy);
+        $existingVacancy = $this->viewModel->vacancy($vacancy);
 
         $this->authorize('edit', $existingVacancy);
 
-        $categories = $skillService->getSkillCategories();
-
-        $existingSkills = (object) [
-            'ids' => $existingVacancy->techSkill->pluck('id')->toArray(),
-            'names' => $existingVacancy->techSkill->pluck('skill_name')->toArray(),
-        ];
-
         return view('employer.vacancy.edit', [
             'vacancy' => $existingVacancy,
-            'existingSkills' => $existingSkills,
-            'skills' => $categories->toArray()
+            'existingSkills' => $viewModel->pluckExistingSkillsFromVacancy($existingVacancy),
+            'skills' => $viewModel->allSkills()->toArray()
         ]);
     }
 
@@ -90,15 +79,16 @@ class VacancyViewController extends Controller
     }
 
 
-    public function published(TechSkillService $skillService): View
+    public function published(VacancyFilterRequest $request, SkillsViewModel $skillService): View
     {
-        $vacancies = $this->vacancyService->getPublishedVacancies(
+        dd($request->validated());
+        $vacancies = $this->viewModel->publishedVacancies(
             employerId: session('user.emp_id'),
         );
 
         return view('employer.vacancy.published', [
             'vacancies' => $vacancies,
-            'skills' => $skillService->getSkillCategories()
+            'skills' => $skillService->allSkills()->toArray()
         ]);
     }
 

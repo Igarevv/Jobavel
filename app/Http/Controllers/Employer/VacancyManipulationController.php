@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\VacancyRequest;
 use App\Persistence\Models\Vacancy;
 use App\Service\Employer\Vacancy\VacancyService;
+use App\View\ViewModels\VacancyViewModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Str;
 
@@ -20,9 +21,9 @@ class VacancyManipulationController extends Controller
     ) {
     }
 
-    public function update(int $vacancy, VacancyRequest $request): RedirectResponse
+    public function update(int $vacancy, VacancyRequest $request, VacancyViewModel $viewModel): RedirectResponse
     {
-        $existedVacancy = $this->vacancyService->getVacancy($vacancy);
+        $existedVacancy = $viewModel->vacancy($vacancy);
 
         $this->authorize('edit', $existedVacancy);
 
@@ -37,12 +38,10 @@ class VacancyManipulationController extends Controller
     public function store(VacancyRequest $request): RedirectResponse
     {
         $this->authorize('create', Vacancy::class);
-        
+
         $vacancyDto = VacancyDto::fromRequest($request);
 
-        $employerId = $request->session()->get('user.emp_id');
-
-        $this->vacancyService->create($employerId, $vacancyDto);
+        $this->vacancyService->create(session('user.emp_id'), $vacancyDto);
 
         return redirect()
             ->route('employer.vacancy.unpublished')
