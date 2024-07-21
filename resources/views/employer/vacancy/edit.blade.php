@@ -1,4 +1,4 @@
-@php use App\Enums\VacancyEnum; @endphp
+@php use App\Enums\Vacancy\EmploymentEnum; @endphp
 <x-layout class="d-flex flex-column min-vh-100">
     <x-slot:title>{{ session('user.name') }}</x-slot:title>
 
@@ -73,17 +73,21 @@
                             <div>
                                 <h6 class="fw-bold text-decoration-underline">Employment type</h6>
                                 <select class="form-select" required name="employment">
-                                    <option value="{{ VacancyEnum::EMPLOYMENT_OFFICE->value }}"
-                                            {{ $vacancy->employment_type === VacancyEnum::EMPLOYMENT_OFFICE->value ? 'selected' : '' }}>
+                                    <option value="{{ EmploymentEnum::EMPLOYMENT_OFFICE->value }}"
+                                            @selected($vacancy->employment_type === EmploymentEnum::EMPLOYMENT_OFFICE->value)>
                                         Office
                                     </option>
-                                    <option value="{{ VacancyEnum::EMPLOYMENT_REMOTE->value }}"
-                                            {{ $vacancy->employment_type === VacancyEnum::EMPLOYMENT_REMOTE->value ? 'selected' : '' }}>
+                                    <option value="{{ EmploymentEnum::EMPLOYMENT_REMOTE->value }}"
+                                            @selected($vacancy->employment_type === EmploymentEnum::EMPLOYMENT_REMOTE->value)>
                                         Remote
                                     </option>
-                                    <option value="{{ VacancyEnum::EMPLOYMENT_PART_TIME->value }}"
-                                            {{ $vacancy->employment_type === VacancyEnum::EMPLOYMENT_PART_TIME->value ? 'selected' : '' }}>
+                                    <option value="{{ EmploymentEnum::EMPLOYMENT_PART_TIME->value }}"
+                                            @selected($vacancy->employment_type === EmploymentEnum::EMPLOYMENT_PART_TIME->value)>
                                         Part-time
+                                    </option>
+                                    <option value="{{ EmploymentEnum::EMPLOYMENT_MIXED->value }}"
+                                            @selected($vacancy->employment_type === EmploymentEnum::EMPLOYMENT_MIXED->value)>
+                                        Office / remote
                                     </option>
                                 </select>
                                 @error('employment')
@@ -93,19 +97,19 @@
                             <div>
                                 <h6 class="fw-bold text-decoration-underline">Experience time</h6>
                                 <select class="form-select" required name="experience">
-                                    <option value="0" {{ ($vacancy->experienceFromString() === 0 ? 'selected' : '') }}>
+                                    <option value="0" @selected($vacancy->experienceFromString() === 0 ? 'selected' : '')>
                                         Without experience
                                     </option>
-                                    <option value="1" {{ ($vacancy->experienceFromString() >= 1 && $vacancy->experienceFromString() < 3 ? 'selected' : '') }}>
+                                    <option value="1" @selected($vacancy->experienceFromString() >= 1 && $vacancy->experienceFromString() < 3)>
                                         1+ year
                                     </option>
-                                    <option value="3" {{ ($vacancy->experienceFromString() >= 3 && $vacancy->experienceFromString() < 5 ? 'selected' : '') }}>
+                                    <option value="3" @selected($vacancy->experienceFromString() >= 3 && $vacancy->experienceFromString() < 5)>
                                         3+ years
                                     </option>
-                                    <option value="5" {{ ($vacancy->experienceFromString() >= 5 && $vacancy->experienceFromString() < 10 ? 'selected' : '') }}>
+                                    <option value="5" @selected($vacancy->experienceFromString() >= 5 && $vacancy->experienceFromString() < 10)>
                                         5+ years
                                     </option>
-                                    <option value="10" {{ ($vacancy->experienceFromString() >= 10 ? 'selected' : '') }}>
+                                    <option value="10" @selected($vacancy->experienceFromString() >= 10)>
                                         10+ years
                                     </option>
                                 </select>

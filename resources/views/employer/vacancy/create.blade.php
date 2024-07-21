@@ -1,4 +1,4 @@
-@php use App\Enums\VacancyEnum; @endphp
+@php use App\Enums\Vacancy\EmploymentEnum; @endphp
 <x-layout class="d-flex flex-column min-vh-100">
     <x-slot:title>{{ session('user.name') }} </x-slot:title>
 
@@ -54,17 +54,21 @@
                             <div>
                                 <h6 class="fw-bold text-decoration-underline">Employment type</h6>
                                 <select class="form-select" required name="employment">
-                                    <option value="{{ VacancyEnum::EMPLOYMENT_OFFICE->value }}"
-                                            {{ old('employment') === VacancyEnum::EMPLOYMENT_OFFICE->value ? 'selected' : ''}}>
+                                    <option value="{{ EmploymentEnum::EMPLOYMENT_OFFICE->value }}"
+                                            @selected(old('employment') === EmploymentEnum::EMPLOYMENT_OFFICE->value ? 'selected' : '')>
                                         Office
                                     </option>
-                                    <option value="{{ VacancyEnum::EMPLOYMENT_REMOTE->value }}"
-                                            {{ old('employment') === VacancyEnum::EMPLOYMENT_REMOTE->value ? 'selected' : ''}}>
+                                    <option value="{{ EmploymentEnum::EMPLOYMENT_REMOTE->value }}"
+                                            @selected(old('employment') === EmploymentEnum::EMPLOYMENT_REMOTE->value ? 'selected' : '')>
                                         Remote
                                     </option>
-                                    <option value="{{ VacancyEnum::EMPLOYMENT_PART_TIME->value }}"
-                                            {{ old('employment') === VacancyEnum::EMPLOYMENT_PART_TIME->value ? 'selected' : ''}}>
+                                    <option value="{{ EmploymentEnum::EMPLOYMENT_PART_TIME->value }}"
+                                            @selected(old('employment') === EmploymentEnum::EMPLOYMENT_PART_TIME->value ? 'selected' : '')>
                                         Part-time
+                                    </option>
+                                    <option value="{{ EmploymentEnum::EMPLOYMENT_MIXED->value }}"
+                                            @selected(old('employment') === EmploymentEnum::EMPLOYMENT_MIXED->value ? 'selected' : '')>
+                                        Office / remote
                                     </option>
                                 </select>
                                 @error('employment')
@@ -74,19 +78,19 @@
                             <div>
                                 <h6 class="fw-bold text-decoration-underline">Experience time</h6>
                                 <select class="form-select" required name="experience">
-                                    <option value="0" {{ old('experience') === 0 ? 'selected' : ''}}>
+                                    <option value="0" @selected(old('experience') === 0)>
                                         Without experience
                                     </option>
-                                    <option value="1" {{ old('experience') >= 1 && old('experience') < 3 ? 'selected' : ''}}>
+                                    <option value="1" @selected(old('experience') >= 1 && old('experience') < 3)>
                                         1+ year
                                     </option>
-                                    <option value="3" {{ old('experience') >= 3 && old('experience') < 5 ? 'selected' : ''}}>
+                                    <option value="3" @selected(old('experience') >= 3 && old('experience') < 5)>
                                         3+ years
                                     </option>
-                                    <option value="5" {{ old('experience') >= 5 && old('experience') < 10 ? 'selected' : ''}}>
+                                    <option value="5" @selected(old('experience') >= 5 && old('experience') < 10)>
                                         5+ years
                                     </option>
-                                    <option value="10" {{ old('experience') >= 10 ? 'selected' : ''}}>10+ years</option>
+                                    <option value="10" @selected(old('experience') >= 10)></option>
                                 </select>
 
                                 <div class="form-check">
