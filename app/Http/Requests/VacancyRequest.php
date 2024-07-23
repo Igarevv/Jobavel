@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use App\Contracts\Request\AfterValidationInterface;
 use App\Enums\Vacancy\EmploymentEnum;
-use App\Enums\Vacancy\ExperienceEnum;
 use App\Rules\TechSkillsExistsRule;
 use App\Traits\AfterValidation;
 use Illuminate\Foundation\Http\FormRequest;
@@ -58,7 +57,7 @@ class VacancyRequest extends FormRequest implements AfterValidationInterface
         $this->castFirstOfferToNullIfItIsEmpty($data);
         $this->castConsiderToBool($data);
         $this->castSkillsIdsToInt($data);
-        $this->mapExperienceToString($data);
+        $this->castExperienceToInt($data);
     }
 
     public function attributes(): array
@@ -79,9 +78,7 @@ class VacancyRequest extends FormRequest implements AfterValidationInterface
 
     private function castConsiderToBool(array &$data): void
     {
-        if ($this->has('consider')) {
-            $data['consider'] = (bool) $this->consider;
-        }
+        $data['consider'] = (bool) $this->consider;
     }
 
     private function castSkillsIdsToInt(array &$data): void
@@ -93,10 +90,10 @@ class VacancyRequest extends FormRequest implements AfterValidationInterface
         }
     }
 
-    private function mapExperienceToString(array &$data): void
+    private function castExperienceToInt(array &$data): void
     {
         if ($this->has('experience')) {
-            $data['experience'] = ExperienceEnum::experienceToString((float) $this->experience);
+            $data['experience'] = (int) $this->experience;
         }
     }
 

@@ -19,6 +19,7 @@ use Ramsey\Uuid\Uuid;
  * @property string $company_logo,
  * @property Carbon $created_at
  * @property string $contact_email
+ * @method static Employer|static findOrFail($id, $columns = ['*'])
  */
 class Employer extends Model
 {
@@ -34,7 +35,8 @@ class Employer extends Model
         'company_name',
         'contact_email',
         'company_description',
-        'company_type'
+        'company_type',
+        'company_logo'
     ];
 
     protected $hidden = [
@@ -92,10 +94,14 @@ class Employer extends Model
             if (! $employer->employer_id) {
                 $employer->employer_id = Uuid::uuid7()->toString();
             }
+            if (! $employer->company_logo) {
+                $employer->company_logo = config('app.default_employer_logo');
+            }
         });
 
         static::saved(function (Employer $employer) {
             Cache::forgetKey('vacancy-employer', $employer->employer_id);
+            Cache::forgetKey('logo', $employer->company_logo);
         });
     }
 

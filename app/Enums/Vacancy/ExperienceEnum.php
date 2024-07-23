@@ -21,7 +21,7 @@ enum ExperienceEnum: string
             $years >= 0 && $years < 3 => self::EXPERIENCE_1->value,
             $years >= 3 && $years < 5 => self::EXPERIENCE_3->value,
             $years >= 5 && $years < 10 => self::EXPERIENCE_5->value,
-            $years >= 10 => self::EXPERIENCE_10
+            $years >= 10 => self::EXPERIENCE_10->value
         };
     }
 
@@ -35,4 +35,5 @@ enum ExperienceEnum: string
             self::EXPERIENCE_10 => 10,
         };
     }
+
 }

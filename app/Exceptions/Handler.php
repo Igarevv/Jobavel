@@ -4,14 +4,20 @@ namespace App\Exceptions;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
 
-    /**
-     * Register the exception handling callbacks for the application.
-     */
+    protected $dontReport = [
+        HttpException::class,
+    ];
+
     public function register(): void
     {
         $this->reportable(function (ModelNotFoundException $e) {
@@ -22,4 +28,17 @@ class Handler extends ExceptionHandler
         });
     }
 
+    public function render(
+        $request,
+        Throwable $e
+    ): Response|JsonResponse|RedirectResponse|\Symfony\Component\HttpFoundation\Response {
+        if ($this->isHttpException($e) && $e->getStatusCode() === 400) {
+            return response()->view('errors.400', [
+                'message' => $e->getMessage(),
+                'url' => $e->getFallbackUrl()
+            ], 400);
+        }
+
+        return parent::render($request, $e);
+    }
 }

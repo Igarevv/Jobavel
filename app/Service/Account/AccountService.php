@@ -6,7 +6,6 @@ namespace App\Service\Account;
 
 use App\Persistence\Contracts\AccountRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 abstract class AccountService
 {
@@ -18,15 +17,9 @@ abstract class AccountService
         $this->accountRepository = $this->factory->make();
     }
 
-    public function getUseById(string|int $id): Model
+    public function getEmpUserById(string|int $id): Model
     {
-        $model = $this->getRepository()->getById($id);
-
-        if (! $model) {
-            throw new ModelNotFoundException("Model with public id: $id not found");
-        }
-
-        return $model;
+        return $this->accountRepository->getById($id);
     }
 
     protected function getRepository(): AccountRepositoryInterface

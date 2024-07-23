@@ -4,29 +4,22 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\View\ViewModels\VacancyViewModel;
 use Illuminate\Contracts\View\View;
 
 class HomeController extends Controller
 {
 
+    public function __construct(
+        private VacancyViewModel $viewModel
+    ) {
+    }
+
     public function index(): View
     {
-        $jobInfo = (object)[
-            'position' => 'Backend Laravel Developer',
-            'company' => 'Google Inc.',
-            'address' => 'New York',
-            'salary' => '$2500',
-            'image' => '',
-            'skills' => [
-                'Laravel',
-                'PHP',
-                'PostgreSql',
-                'Docker',
-                'Git',
-            ],
-        ];
+        $vacancies = $this->viewModel->getLatestPublishedVacancies(4);
 
-        return view('home', ['jobInfo' => $jobInfo]);
+        return view('home', ['vacancies' => $vacancies]);
     }
 
 }

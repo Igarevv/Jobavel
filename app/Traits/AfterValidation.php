@@ -14,7 +14,7 @@ trait AfterValidation
         });
     }
 
-    private function processAfterValidation(Validator $validator): void
+    protected function processAfterValidation(Validator $validator): void
     {
         $data = $validator->getData();
 

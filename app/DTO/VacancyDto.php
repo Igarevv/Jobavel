@@ -17,7 +17,7 @@ class VacancyDto
         public readonly array $requirements,
         public readonly array $skillSet,
         public readonly string $location,
-        public readonly string $experienceTime,
+        public readonly int $experienceTime,
         public readonly string $employmentType,
         public readonly bool $considerWithoutExp = false,
         public readonly array $offers = [],

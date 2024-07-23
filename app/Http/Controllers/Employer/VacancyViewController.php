@@ -6,9 +6,11 @@ namespace App\Http\Controllers\Employer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\VacancyFilterRequest;
+use App\Persistence\Filters\Manual\Vacancy\VacancyFilter;
 use App\Persistence\Models\Vacancy;
 use App\View\ViewModels\SkillsViewModel;
 use App\View\ViewModels\VacancyViewModel;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -26,9 +28,9 @@ class VacancyViewController extends Controller
 
         $this->authorize('viewAny', $vacancyModel);
 
-        $employer = $this->viewModel->vacancyEmployerData($vacancyModel, session('user.emp_id'));
+        $employer = $this->viewModel->vacancyEmployerData($vacancyModel);
 
-        $skills = $vacancyModel->techSkillAsBaseArray();
+        $skills = collect($vacancyModel->techSkillAsBaseArray());
 
         return view('employer.vacancy.show', [
             'vacancy' => $vacancyModel,
@@ -62,7 +64,8 @@ class VacancyViewController extends Controller
 
     public function unpublished(Request $request): View
     {
-        $vacancies = Vacancy::query()->notPublished($request->user()->employer->id)
+        $vacancies = Vacancy::query()->notPublished()
+            ->where('employer_id', $request->user()->employer->id)
             ->paginate(5, ['id', 'title', 'salary', 'created_at', 'updated_at']);
 
         return view('employer.vacancy.unpublished',
@@ -79,10 +82,12 @@ class VacancyViewController extends Controller
     }
 
 
-    public function published(VacancyFilterRequest $request, SkillsViewModel $skillService): View
+    public function published(VacancyFilterRequest $request, SkillsViewModel $skillService, Application $app): View
     {
-        dd($request->validated());
-        $vacancies = $this->viewModel->publishedVacancies(
+        $filter = $app->make(VacancyFilter::class, ['queryParams' => $request->validated()]);
+
+        $vacancies = $this->viewModel->publishedManualFilteredVacancies(
+            filter: $filter,
             employerId: session('user.emp_id'),
         );
 

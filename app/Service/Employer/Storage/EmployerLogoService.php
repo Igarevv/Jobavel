@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Service\Employer\Storage;
 
 use App\Contracts\Storage\LogoStorageInterface;
+use App\Jobs\CheckEmployerLogoExisting;
 use App\Persistence\Models\Employer;
+use App\Persistence\Repositories\User\EmployerAccountRepository;
 use App\Service\Cache\Cache;
 use Illuminate\Http\UploadedFile;
 
@@ -14,7 +16,8 @@ class EmployerLogoService
 
     public function __construct(
         protected LogoStorageInterface $logoStorage,
-        protected Cache $cache
+        protected Cache $cache,
+        protected EmployerAccountRepository $employerAccountRepository
     ) {
     }
 
@@ -22,47 +25,52 @@ class EmployerLogoService
     {
         $newFileName = $file->hashName();
 
-        $employer = Employer::findByUuid($userId);
+        $employer = $this->employerAccountRepository->getById($userId, ['id', 'company_logo']);
 
         if (! $this->logoStorage->upload($file)) {
             return false;
         }
 
-        $this->cache->repository()->forget('logo-url-'.$employer->company_logo);
-
         if ($employer->company_logo && $employer->company_logo !== $this->logoByDefault()) {
             $this->logoStorage->delete($employer->company_logo);
         }
 
-        $employer->company_logo = $newFileName;
-
-        $employer->save();
-
-        $this->cache->repository()->put('logo-url-'.$newFileName, $this->logoStorage->get($newFileName),
-            now()->addHour());
+        $this->employerAccountRepository->update($employer, ['logo' => $newFileName]);
 
         return true;
     }
 
-    public function getImageUrlByImageId(?string $imageId, ?string $default = null): false|string
+    public function getImageUrlByImageId(string $employerId, string $imageId, ?string $default = null): string
     {
-        $logoUrl = $this->cache->repository()->get('logo-url-'.$imageId);
+        $logoUrl = $this->fetchUrl($imageId, $default);
 
-        if ($logoUrl !== null) {
-            return $logoUrl;
-        }
+        $employer = $this->employerAccountRepository->getById($employerId, ['id']);
 
-        if ($imageId !== null) {
-            $logoUrl = $this->logoStorage->get($imageId);
+        CheckEmployerLogoExisting::dispatchAfterResponse(
+            $this->logoStorage, $employer
+        );
 
-            if (! $logoUrl) {
-                $logoUrl = $this->logoStorage->get($default ?: $this->logoByDefault());
-            }
-        } else {
+        return $logoUrl;
+    }
+
+    public function getImageUrlByEmployer(Employer $employer, ?string $default = null): string
+    {
+        $logoUrl = $this->fetchUrl($employer->company_logo, $default);
+
+        CheckEmployerLogoExisting::dispatchAfterResponse(
+            $this->logoStorage, $employer
+        );
+
+        return $logoUrl;
+    }
+
+    protected function fetchUrl(string $imageId, ?string $default = null): false|string
+    {
+        $logoUrl = $this->logoStorage->get($imageId);
+
+        if (! $logoUrl) {
             $logoUrl = $this->logoStorage->get($default ?: $this->logoByDefault());
         }
-
-        $this->cache->repository()->put('logo-url-'.$imageId, $logoUrl, now()->addHour());
 
         return $logoUrl;
     }

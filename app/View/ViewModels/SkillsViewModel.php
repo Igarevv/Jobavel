@@ -46,16 +46,18 @@ class SkillsViewModel
         });
     }
 
-    public function skillsAsRow(array $skills): string
+    public function skillsAsRow(Collection $skills): string
     {
-        return implode(' / ', array_map(fn($skill) => $skill->skillName, $skills));
+        return $skills->implode(function (\stdClass $skill) {
+            return $skill->skillName;
+        }, ' / ');
     }
 
     public function pluckExistingSkillsFromVacancy(Vacancy $vacancy): object
     {
         return (object) [
-            'ids' => $vacancy->pluck('id')->toArray(),
-            'names' => $vacancy->pluck('skill_name')->toArray(),
+            'ids' => $vacancy->techSkill->pluck('id')->toArray(),
+            'names' => $vacancy->techSkill->pluck('skill_name')->toArray(),
         ];
     }
 

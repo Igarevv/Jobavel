@@ -89,7 +89,7 @@ class VacancyManipulationController extends Controller
 
         $vacancy->publish();
 
-        return redirect()->route('employer.vacancy.published', ['vacancy' => $vacancy->id]);
+        return redirect()->route('employer.vacancy.published');
     }
 
     public function unpublish(Vacancy $vacancy): RedirectResponse

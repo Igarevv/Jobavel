@@ -3,8 +3,11 @@
 namespace App\Persistence\Models;
 
 use App\Enums\Vacancy\ExperienceEnum;
-use App\Service\Cache\Cache;
+use App\Observers\VacancyObserver;
+use App\Persistence\Filters\Manual\FilterInterface;
+use App\Persistence\Filters\Pipeline\PipelineFilterInterface;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -31,9 +34,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property bool $consider_without_experience,
  * @property string $employment_type,
  * @property string $experience_time
- * @method Builder|static notPublished(int $employerId)
- * @method Builder|static published(int $employerId)
+ * @method Builder|static notPublished()
+ * @method Builder|static published()
+ * @method Builder|static filter(FilterInterface $filter)
  */
+#[ObservedBy(VacancyObserver::class)]
 class Vacancy extends Model
 {
 
@@ -69,14 +74,26 @@ class Vacancy extends Model
         return $this->belongsTo(Employer::class, 'employer_id');
     }
 
-    public function scopeNotPublished(Builder $builder, int $employerId): Builder
+    public function scopeNotPublished(Builder $builder): Builder
     {
-        return $builder->where('employer_id', $employerId)->where('is_published', false);
+        return $builder->where('is_published', false);
     }
 
-    public function scopePublished(Builder $builder, int $employerId): Builder
+    public function scopePublished(Builder $builder): Builder
     {
-        return $builder->where('employer_id', $employerId)->where('is_published', true);
+        return $builder->where('is_published', true);
+    }
+
+    public function scopeFilter(Builder $builder, FilterInterface $filter): Builder
+    {
+        $filter->apply($builder);
+
+        return $builder;
+    }
+
+    public function scopePipelineFilter(Builder $builder, PipelineFilterInterface $filter): Builder
+    {
+        return $filter->process($builder);
     }
 
     public function techSkillAsBaseArray(): array
@@ -121,32 +138,18 @@ class Vacancy extends Model
         );
     }
 
+    protected function experienceTime(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => ExperienceEnum::experienceToString((float) $value),
+        );
+    }
+
     protected function employmentType(): Attribute
     {
         return Attribute::make(
             get: fn(string $value) => ucfirst($value)
         );
-    }
-
-    protected static function boot(): void
-    {
-        parent::boot();
-
-        static::creating(function (Vacancy $vacancy) {
-            if (! $vacancy->created_at) {
-                $vacancy->created_at = now();
-            }
-        });
-
-        static::saved(function (Vacancy $vacancy) {
-            Cache::forgetKey('vacancy', $vacancy->id);
-            Cache::forgetKey('vacancies-published', $vacancy->employer()->first()->employer_id);
-        });
-
-        static::deleted(function (Vacancy $vacancy) {
-            Cache::forgetKey('vacancy', $vacancy->id);
-            Cache::forgetKey('vacancies-published', $vacancy->employer()->first()->employer_id);
-        });
     }
 
 }

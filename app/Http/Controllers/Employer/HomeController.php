@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Employer;
 
 use App\Http\Controllers\Controller;
+use App\Persistence\Models\Employer;
 use App\Service\Account\EmployerAccountService;
 use App\Service\Employer\Storage\EmployerLogoService;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -19,13 +19,12 @@ class HomeController extends Controller
     ) {
     }
 
-    public function index(Request $request): View
+    public function index(): View
     {
-        $employer = $this->accountService->getUseById($request->session()
-            ->get('user.emp_id'));
+        /**@var Employer $employer */
+        $employer = $this->accountService->getEmpUserById(session('user.emp_id'));
 
-        $logo = $this->storageService
-            ->getImageUrlByImageId($employer->company_logo);
+        $logo = $this->storageService->getImageUrlByEmployer($employer);
 
         return view('employer.main', [
             'employer' => $employer,
