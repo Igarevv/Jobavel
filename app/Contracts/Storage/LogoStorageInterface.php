@@ -13,4 +13,5 @@ interface LogoStorageInterface
 
     public function delete(string $imageId): bool;
 
+    public function isExists(string $imageId): bool;
 }

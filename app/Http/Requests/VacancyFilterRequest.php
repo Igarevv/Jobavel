@@ -6,9 +6,10 @@ namespace App\Http\Requests;
 
 use App\Contracts\Request\AfterValidationInterface;
 use App\Enums\Vacancy\EmploymentEnum;
-use App\Enums\Vacancy\ExperienceEnum;
+use App\Exceptions\FormDefaultDataModifiedException;
 use App\Rules\TechSkillsExistsRule;
 use App\Traits\AfterValidation;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -21,7 +22,7 @@ class VacancyFilterRequest extends FormRequest implements AfterValidationInterfa
     {
         return [
             'skills' => ['nullable', new TechSkillsExistsRule()],
-            'experience' => ['nullable', Rule::in(['1', '3', '5', '10'])],
+            'experience' => ['nullable', Rule::in(['0', '1', '3', '5', '10'])],
             'employment' => [
                 'nullable', Rule::enum(EmploymentEnum::class)->only([
                     EmploymentEnum::EMPLOYMENT_OFFICE,
@@ -31,14 +32,55 @@ class VacancyFilterRequest extends FormRequest implements AfterValidationInterfa
                 ])
             ],
             'salary' => ['nullable', 'numeric', 'min:1'],
-            'location' => ['nullable', 'string']
+            'location' => ['nullable', 'string'],
+            'consider' => ['nullable', 'boolean']
         ];
     }
 
-    private function mapExperienceToEnum(array &$data): void
+    protected function failedValidation(Validator $validator): void
+    {
+        throw new FormDefaultDataModifiedException(
+            statusCode: 400,
+            fallbackUrl: route('employer.vacancy.published'),
+            message: $validator->errors()->first()
+        );
+    }
+
+    public function makeCastAndMutatorsAfterValidation(array &$data): void
+    {
+        $this->mapExperienceWithConsiderInArray($data);
+        $this->castSalaryToInt($data);
+        $this->castSkillsIdsToInt($data);
+    }
+
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('skills') && is_string($this->skills)) {
+            $this->merge(['skills' => explode(',', $this->skills)]);
+        }
+    }
+
+    private function mapExperienceWithConsiderInArray(array &$data): void
     {
         if ($this->has('experience')) {
-            $data['experience'] = ExperienceEnum::experienceToString((float) $this->experience);
+            $data['experience'] = (int) $this->experience;
+        }
+
+        if ($this->has('consider')) {
+            $data['consider'] = (bool) $this->consider;
+        }
+
+        if ($this->has('experience') && $this->has('consider')) {
+            $experience = $data['experience'];
+
+            $consider = $data['consider'];
+
+            unset($data['experience'], $data['consider']);
+
+            $data['experience'] = [
+                'years' => $experience,
+                'consider' => $consider
+            ];
         }
     }
 
@@ -49,9 +91,11 @@ class VacancyFilterRequest extends FormRequest implements AfterValidationInterfa
         }
     }
 
-    public function makeCastAndMutatorsAfterValidation(array &$data): void
+    private function castSkillsIdsToInt(array &$data): void
     {
-        $this->mapExperienceToEnum($data);
-        $this->castSalaryToInt($data);
+        if ($this->has('skills')) {
+            $data['skills'] = array_map(fn($skillId) => (int) $skillId, $this->skills);
+        }
     }
+
 }
