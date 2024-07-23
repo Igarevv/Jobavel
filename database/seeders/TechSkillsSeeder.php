@@ -33,7 +33,7 @@ class TechSkillsSeeder extends Seeder
             ['skill_name' => 'Ruby on Rails'],
             ['skill_name' => 'Kotlin'],
             ['skill_name' => 'Rust'],
-            ['skill_name' => 'C++'],
+            ['skill_name' => 'C/C++'],
             ['skill_name' => 'C#'],
             ['skill_name' => 'ASP.NET'],
             ['skill_name' => 'Flutter'],
@@ -103,6 +103,7 @@ class TechSkillsSeeder extends Seeder
             ['skill_name' => 'Playwright'],
             ['skill_name' => 'Apollo'],
             ['skill_name' => 'Electron'],
+            ['skill_name' => 'SQL'],
             ['skill_name' => 'Tauri'],
             ['skill_name' => 'Maria DB'],
             ['skill_name' => 'Caddy'],
@@ -113,6 +114,7 @@ class TechSkillsSeeder extends Seeder
             ['skill_name' => 'Maven'],
             ['skill_name' => 'Gradle'],
             ['skill_name' => 'REST'],
+            ['skill_name' => 'Entity Framework'],
         ]);
     }
 

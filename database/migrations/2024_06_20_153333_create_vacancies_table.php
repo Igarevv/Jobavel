@@ -26,7 +26,7 @@ return new class extends Migration {
             $table->text('description');
             $table->string('location');
             $table->string('employment_type');
-            $table->string('experience_time', 32);
+            $table->smallInteger('experience_time');
             $table->boolean('consider_without_experience')->default(false);
             $table->json('requirements');
             $table->json('responsibilities');
