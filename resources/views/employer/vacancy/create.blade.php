@@ -90,7 +90,9 @@
                                     <option value="5" @selected(old('experience') >= 5 && old('experience') < 10)>
                                         5+ years
                                     </option>
-                                    <option value="10" @selected(old('experience') >= 10)></option>
+                                    <option value="10" @selected(old('experience') >= 10)>
+                                        10+ years
+                                    </option>
                                 </select>
 
                                 <div class="form-check">

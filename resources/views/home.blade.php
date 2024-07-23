@@ -96,7 +96,7 @@
         </div>
         <div class="album py-5 bg-body-tertiary">
             <div class="container">
-                <h2 class="text-center fw-bold text-decoration-underline">The most popular vacancies</h2>
+                <h2 class="text-center fw-bold text-decoration-underline">The latest published vacancies</h2>
                 <form action="" method="post">
                     @csrf
                     <div class="row my-4">
@@ -109,15 +109,16 @@
                     </div>
                 </form>
                 <div class="row">
-                    <x-card.jobcard :jobInfo="$jobInfo"></x-card.jobcard>
-                    <x-card.jobcard :jobInfo="$jobInfo"></x-card.jobcard>
-                    <x-card.jobcard :jobInfo="$jobInfo"></x-card.jobcard>
-                    <x-card.jobcard :jobInfo="$jobInfo"></x-card.jobcard>
+                    @foreach($vacancies as $vacancy)
+                        <x-card.jobcard :vacancy="$vacancy"></x-card.jobcard>
+                    @endforeach
                 </div>
             </div>
         </div>
     </x-main>
 
     <x-footer></x-footer>
+
+    <script src="/assets/js/hideShowSkills.js"></script>
 </x-layout>
 

@@ -1,20 +1,38 @@
 <div class="col-md-6 job-card">
     <div class="card">
         <div class="card-body d-flex align-items-center gap-3">
-            <x-image.logo url="{{ $vacancy->employer->company_logo }}"
-                          imgColSize="2"></x-image.logo>
+            <x-image.logo url="{{ $vacancy->employer->company_logo }}" imgColSize="2"></x-image.logo>
             <div class="w-100">
                 <div class="d-flex justify-content-between">
                     <h5 class="card-title text-start">{{ $vacancy->title }}</h5>
                     @isset($vacancy->salary)
-                        <h5 class="card-title fw-bold text-end money">{{ $vacancy->salary ?: '' }}</h5>
+                        <h5 class="card-title fw-bold text-end money">{{ $vacancy->salary ? '$'.$vacancy->salary : ''}}</h5>
                     @endisset
                 </div>
                 <h6 class="card-title fw-bolder">{{ $vacancy->employer->company_name }}</h6>
                 <div class="mb-2">
-                    @foreach($vacancy->skills as $skill)
+                    @php
+                        $shownSkills = $vacancy->skills->take(5);
+                        $hiddenSkills = $vacancy->skills->slice(5);
+                    @endphp
+                    @foreach($shownSkills as $skill)
                         <span class="badge small bg-dark text-light">{{ $skill->skillName }}</span>
                     @endforeach
+                    <div class="d-none hidden-skills">
+                        @foreach($hiddenSkills as $skill)
+                            <span class="badge small bg-dark text-light">{{ $skill->skillName }}</span>
+                        @endforeach
+                        <button class="hide-wheel mt-2 text-decoration-underline d-none"
+                                @style(['background:none','border:none','font-size:12px'])>
+                            Hide
+                        </button>
+                    </div>
+                    @if($hiddenSkills->isNotEmpty())
+                        <button class="show-more mt-2 text-decoration-underline"
+                                @style(['background:none','border:none','font-size:12px'])>
+                            More...
+                        </button>
+                    @endif
                 </div>
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
