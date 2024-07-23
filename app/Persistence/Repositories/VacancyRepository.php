@@ -7,9 +7,11 @@ namespace App\Persistence\Repositories;
 use App\DTO\VacancyDto;
 use App\Exceptions\VacancyUpdateException;
 use App\Persistence\Contracts\VacancyRepositoryInterface;
+use App\Persistence\Filters\Manual\FilterInterface;
 use App\Persistence\Models\Employer;
 use App\Persistence\Models\Vacancy;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 class VacancyRepository implements VacancyRepositoryInterface
@@ -41,7 +43,7 @@ class VacancyRepository implements VacancyRepositoryInterface
 
     public function getVacancyById(int $id, array $columns = ['*']): Vacancy
     {
-        return Vacancy::with(['techSkill'])->findOrFail($id, $columns);
+        return Vacancy::with(['techSkill:id,skill_name'])->findOrFail($id, $columns);
     }
 
     public function updateWithSkills(Vacancy $vacancy, VacancyDto $newData): void
@@ -65,14 +67,21 @@ class VacancyRepository implements VacancyRepositoryInterface
         }
     }
 
-    public function getAllPublished(int $employerId): LengthAwarePaginator
+    public function getPublishedFiltered(FilterInterface $filter, int $employerId): LengthAwarePaginator
     {
-        return Vacancy::with([
-                'techSkill' => function ($query) {
-                    $query->select(['id', 'skill_name']);
-                },
-            ]
-        )->published($employerId)->paginate(3, ['title', 'location', 'id', 'salary', 'employer_id']);
+        return Vacancy::with('techSkill:id,skill_name')
+            ->where('employer_id', $employerId)
+            ->published()->filter($filter)->paginate(3,
+                ['title', 'location', 'id', 'salary', 'employer_id']);
+    }
+
+    public function getLatestPublished(int $number): Collection
+    {
+        return Vacancy::with(['techSkill:id,skill_name', 'employer:id,employer_id,company_name,company_logo'])
+            ->published()
+            ->latest()
+            ->take($number)
+            ->get(['id', 'title', 'employer_id', 'location']);
     }
 
 }

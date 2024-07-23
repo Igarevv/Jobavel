@@ -6,33 +6,57 @@ namespace App\Persistence\Repositories\User;
 
 use App\Persistence\Contracts\AccountRepositoryInterface;
 use App\Persistence\Models\Employer;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Model;
 
 class EmployerAccountRepository implements AccountRepositoryInterface
 {
 
-    public function getById(int|string $userId): ?Employer
-    {
-        return Employer::findByUuid($userId, [
-            'employer_id', 'contact_email', 'created_at',
-            'company_name', 'company_logo', 'company_description'
-        ]);
-    }
+    protected array $mappedFields = [
+        'name' => 'company_name',
+        'description' => 'company_description',
+        'logo' => 'company_logo',
+        'type' => 'company_type'
+    ];
 
-    public function update(string|int $userId, array $data): Employer
+    public function getById(int|string $userId, ?array $columns = []): Employer
     {
-        $employer = Employer::findByUuid($userId);
-
-        if (! $employer) {
-            throw new ModelNotFoundException('Tried to updated unknown user with id'.$userId);
+        if (! $columns) {
+            $columns = [
+                'id', 'employer_id', 'contact_email', 'created_at',
+                'company_name', 'company_logo', 'company_description'
+            ];
         }
 
-        $employer->update([
-            'company_name' => $data['name'],
-            'company_description' => $data['description']
-        ]);
+        return is_string($userId) ? Employer::findByUuid($userId, $columns)
+            : Employer::findOrFail($userId, $columns);
+    }
+
+    public function update(string|int|Model $model, array $data): Employer
+    {
+        if ($model instanceof Employer) {
+            $employer = $model;
+        } else {
+            $employer = $this->getById($model, ['id', 'contact_email']);
+        }
+
+        $transformedData = $this->transformData($data);
+
+        $employer->update($transformedData);
 
         return $employer;
+    }
+
+    protected function transformData(array $data): array
+    {
+        $transformedData = [];
+
+        foreach ($data as $key => $value) {
+            if (array_key_exists($key, $this->mappedFields)) {
+                $transformedData[$this->mappedFields[$key]] = $value;
+            }
+        }
+
+        return $transformedData;
     }
 
 }

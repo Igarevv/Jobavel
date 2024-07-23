@@ -3,9 +3,11 @@
 namespace App\Persistence\Contracts;
 
 use App\DTO\VacancyDto;
+use App\Persistence\Filters\Manual\FilterInterface;
 use App\Persistence\Models\Employer;
 use App\Persistence\Models\Vacancy;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 
 interface VacancyRepositoryInterface
 {
@@ -16,5 +18,7 @@ interface VacancyRepositoryInterface
 
     public function updateWithSkills(Vacancy $vacancy, VacancyDto $newData): void;
 
-    public function getAllPublished(int $employerId): LengthAwarePaginator;
+    public function getPublishedFiltered(FilterInterface $filter, int $employerId): LengthAwarePaginator;
+
+    public function getLatestPublished(int $number): Collection;
 }

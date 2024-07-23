@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Storage;
 class LocalFileStorage implements LogoStorageInterface
 {
 
+    private string $disk = 'public_logo';
+
     public function upload(UploadedFile $file): false|string
     {
         return Storage::putFile('public/logo', $file);
@@ -18,10 +20,6 @@ class LocalFileStorage implements LogoStorageInterface
 
     public function get(string $imageId): string|false
     {
-        if (! Storage::disk('public_logo')->exists($imageId)) {
-            return false;
-        }
-
         $url = Storage::disk('public_logo')->url($imageId);
 
         return asset($url);
@@ -29,6 +27,12 @@ class LocalFileStorage implements LogoStorageInterface
 
     public function delete(string $imageId): bool
     {
-        return Storage::disk('public_logo')->delete($imageId);
+        return Storage::disk($this->disk)->delete($imageId);
     }
+
+    public function isExists(string $imageId): bool
+    {
+        return Storage::disk($this->disk)->exists($imageId);
+    }
+
 }

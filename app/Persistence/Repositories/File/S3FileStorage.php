@@ -24,10 +24,6 @@ class S3FileStorage implements LogoStorageInterface
     {
         $path = 'employer-logo/'.$imageId;
 
-        if (! Storage::disk($this->disk)->exists($path)) {
-            return false;
-        }
-
         return Storage::disk($this->disk)->url($path);
     }
 
@@ -35,4 +31,10 @@ class S3FileStorage implements LogoStorageInterface
     {
         return Storage::disk($this->disk)->delete('employer-logo/'.$imageId);
     }
+
+    public function isExists(string $imageId): bool
+    {
+        return Storage::disk($this->disk)->exists('employer-logo/'.$imageId);
+    }
+
 }
