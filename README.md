@@ -19,7 +19,7 @@ This is CRUD application
 - Simple frontend
 - Caching with [Redis](https://redis.io/)
 
-### ***Project requirements:***
+## Configuration:
 
 .env file with variables:
 
@@ -49,7 +49,7 @@ This is CRUD application
 
 To switch from local storage to S3 or vice versa, define in .env FILE_STORAGE_PROVIDER.
 
-### To run app:
+## Installation:
 
 To create symbolic link for local storage use command:
 
