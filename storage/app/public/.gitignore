@@ -1,0 +1,7 @@
+*
+!logo/
+!static/
+!logo/default_logo.png
+!static/home-picture-2.jpg
+!static/home-picture-1.jpg
+!.gitignore
