@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\RateLimitedWithRedis;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class CheckEmployerLogoExisting implements ShouldQueue
 {
@@ -28,7 +29,9 @@ class CheckEmployerLogoExisting implements ShouldQueue
     {
         if (! $this->logoStorage->isExists($this->employer->company_logo)) {
             $this->employer->update(['company_logo' => config('app.default_employer_logo')]);
+            Log::info('image-updated');
         }
+        Log::info('process job');
     }
 
     public function middleware(): array

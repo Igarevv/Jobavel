@@ -177,9 +177,9 @@
                                     <span class="fw-bolder text-14">Number of applies:</span>
                                     <div>
                                         <span>{{ $vacancy->response_number }}</span>
-                                        @if(auth()->user()->employer->id !== $vacancy->employer_id && auth()->user()->role !== User::EMPLOYER)
-                                            <x-button.outline class="float-end" colorType="danger">Apply
-                                            </x-button.outline>
+                                        @if(! auth()->user()?->role || auth()->user()->role !== User::EMPLOYER)
+                                            <x-button.default class="float-end" colorType="danger">Apply
+                                            </x-button.default>
                                         @endif
                                     </div>
                                 </div>

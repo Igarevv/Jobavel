@@ -34,6 +34,18 @@ class VacancyViewModel
             });
     }
 
+    public function getRandomEmployerLogos(int $count): array
+    {
+        $employerLogo = Employer::query()->has('vacancy')
+            ->inRandomOrder()->take($count)->get(['id', 'company_logo']);
+
+        return $employerLogo->map(function (Employer $employer) {
+            return (object) [
+                'url' => $this->storageService->getImageUrlByEmployer($employer)
+            ];
+        })->toArray();
+    }
+
     public function vacancyEmployerData(Vacancy $vacancy): object
     {
         $employer = $vacancy->employer;

@@ -64,7 +64,7 @@ class Vacancy extends Model
         'employer_id'
     ];
 
-    public function techSkill(): BelongsToMany
+    public function techSkills(): BelongsToMany
     {
         return $this->belongsToMany(TechSkill::class);
     }
@@ -98,7 +98,7 @@ class Vacancy extends Model
 
     public function techSkillAsBaseArray(): array
     {
-        return $this->techSkill->map(function ($skill) {
+        return $this->techSkills->map(function ($skill) {
             return (object) [
                 'id' => $skill->id,
                 'skillName' => $skill->skill_name

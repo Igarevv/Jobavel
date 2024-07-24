@@ -36,14 +36,14 @@ class VacancyRepository implements VacancyRepositoryInterface
             $vacancy = $employer->vacancy()->save($vacancy);
 
             if ($vacancy) {
-                $vacancy->techSkill()->sync($vacancyDto->skillSet);
+                $vacancy->techSkills()->sync($vacancyDto->skillSet);
             }
         });
     }
 
     public function getVacancyById(int $id, array $columns = ['*']): Vacancy
     {
-        return Vacancy::with(['techSkill:id,skill_name'])->findOrFail($id, $columns);
+        return Vacancy::with(['techSkills:id,skill_name'])->findOrFail($id, $columns);
     }
 
     public function updateWithSkills(Vacancy $vacancy, VacancyDto $newData): void
@@ -61,7 +61,7 @@ class VacancyRepository implements VacancyRepositoryInterface
                 'employment_type' => $newData->employmentType
             ]);
 
-            $vacancy->techSkill()->sync($newData->skillSet);
+            $vacancy->techSkills()->sync($newData->skillSet);
         } catch (\Throwable $e) {
             throw new VacancyUpdateException($e->getMessage(), $e->getCode());
         }
@@ -69,7 +69,7 @@ class VacancyRepository implements VacancyRepositoryInterface
 
     public function getPublishedFiltered(FilterInterface $filter, int $employerId): LengthAwarePaginator
     {
-        return Vacancy::with('techSkill:id,skill_name')
+        return Vacancy::with('techSkills:id,skill_name')
             ->where('employer_id', $employerId)
             ->published()->filter($filter)->paginate(3,
                 ['title', 'location', 'id', 'salary', 'employer_id']);
@@ -77,7 +77,7 @@ class VacancyRepository implements VacancyRepositoryInterface
 
     public function getLatestPublished(int $number): Collection
     {
-        return Vacancy::with(['techSkill:id,skill_name', 'employer:id,employer_id,company_name,company_logo'])
+        return Vacancy::with(['techSkills:id,skill_name', 'employer:id,employer_id,company_name,company_logo'])
             ->published()
             ->latest()
             ->take($number)

@@ -113,7 +113,7 @@
                                 </div>
                             </div>
                         @else
-                            <h4 class="text-center fw-bold">List of your vacancies</h4>
+                            <h4 class="text-center fw-bold">List of your published vacancies</h4>
                             @foreach($vacancies as $vacancy)
                                 <div class="d-flex align-items-center justify-content-center gap-5 transform-card">
                                     <x-card.jobcard :vacancy="$vacancy"></x-card.jobcard>

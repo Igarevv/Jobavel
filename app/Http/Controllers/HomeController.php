@@ -19,7 +19,9 @@ class HomeController extends Controller
     {
         $vacancies = $this->viewModel->getLatestPublishedVacancies(4);
 
-        return view('home', ['vacancies' => $vacancies]);
+        $employersLogo = $this->viewModel->getRandomEmployerLogos(4);
+
+        return view('home', ['vacancies' => $vacancies, 'logos' => $employersLogo]);
     }
 
 }

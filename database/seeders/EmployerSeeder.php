@@ -20,7 +20,7 @@ class EmployerSeeder extends Seeder
 
         foreach ($vacancy as $item) {
             $randomTechSkills = TechSkill::inRandomOrder()->limit(5)->get();
-            $item->techSkill()->sync($randomTechSkills);
+            $item->techSkills()->sync($randomTechSkills);
         }
     }
 

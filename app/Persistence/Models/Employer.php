@@ -64,7 +64,7 @@ class Employer extends Model
         return $this->contact_email === $newEmail;
     }
 
-    public function getEmpId(): string
+    public function getEmpId(): ?string
     {
         return $this->employer_id;
     }

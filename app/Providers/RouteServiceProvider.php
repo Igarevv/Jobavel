@@ -22,7 +22,8 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('redis-job-limiter', function (object $job) {
-            return Limit::perMinute(1)->by($job->employer->employer_id);
+            $id = $job->employer->employer_id ?: $job->employer->id;
+            return Limit::perMinute(2)->by($id);
         });
 
         $this->routes(function () {

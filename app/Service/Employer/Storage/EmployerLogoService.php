@@ -40,9 +40,9 @@ class EmployerLogoService
         return true;
     }
 
-    public function getImageUrlByImageId(string $employerId, string $imageId, ?string $default = null): string
+    public function getImageUrlByImageId(string $employerId, string $imageId): string
     {
-        $logoUrl = $this->fetchUrl($imageId, $default);
+        $logoUrl = $this->logoStorage->get($imageId);
 
         $employer = $this->employerAccountRepository->getById($employerId, ['id']);
 
@@ -53,24 +53,13 @@ class EmployerLogoService
         return $logoUrl;
     }
 
-    public function getImageUrlByEmployer(Employer $employer, ?string $default = null): string
+    public function getImageUrlByEmployer(Employer $employer): string
     {
-        $logoUrl = $this->fetchUrl($employer->company_logo, $default);
+        $logoUrl = $this->logoStorage->get($employer->company_logo);
 
         CheckEmployerLogoExisting::dispatchAfterResponse(
             $this->logoStorage, $employer
         );
-
-        return $logoUrl;
-    }
-
-    protected function fetchUrl(string $imageId, ?string $default = null): false|string
-    {
-        $logoUrl = $this->logoStorage->get($imageId);
-
-        if (! $logoUrl) {
-            $logoUrl = $this->logoStorage->get($default ?: $this->logoByDefault());
-        }
 
         return $logoUrl;
     }

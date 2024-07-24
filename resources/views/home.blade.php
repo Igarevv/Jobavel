@@ -77,22 +77,12 @@
             </div>
         </section>
         <h2 class="text-center my-5">These companies leave their vacancies with us</h2>
-        <div class="row justify-content-around background-greeting">
-            <div class="col-2 d-flex justify-content-center my-3">
-                <x-image.logo url="{{ null }}" imgColSize="4"></x-image.logo>
-            </div>
-            <div class="col-2 d-flex justify-content-center">
-                <x-image.logo url="{{ null }}" imgColSize="4"></x-image.logo>
-            </div>
-            <div class="col-2 d-flex justify-content-center">
-                <x-image.logo url="{{ null }}" imgColSize="4"></x-image.logo>
-            </div>
-            <div class="col-2 d-flex justify-content-center">
-                <x-image.logo url="{{ null }}" imgColSize="4"></x-image.logo>
-            </div>
-            <div class="col-2 d-flex justify-content-center">
-                <x-image.logo url="{{ null }}" imgColSize="4"></x-image.logo>
-            </div>
+        <div class="row justify-content-center background-greeting">
+            @foreach($logos as $logo)
+                <div class="col-2 d-flex justify-content-center my-3">
+                    <x-image.logo url="{{ $logo->url }}" imgColSize="4"></x-image.logo>
+                </div>
+            @endforeach
         </div>
         <div class="album py-5 bg-body-tertiary">
             <div class="container">

@@ -8,7 +8,6 @@ use App\Persistence\Models\TechSkill;
 use App\Persistence\Models\Vacancy;
 use App\Service\Cache\Cache;
 use Carbon\CarbonInterval;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
@@ -27,22 +26,18 @@ class SkillsViewModel
                 ->toBase()
                 ->get();
 
-            $result = [];
+            $result = $categories->mapToGroups(function (object $techSkill) {
+                $firstLetter = Str::upper(Str::substr($techSkill->skill_name, 0, 1));
 
-            foreach ($categories as $category) {
-                $firstLetter = Str::upper(Str::substr($category->skill_name, 0, 1));
+                $skill = (object) [
+                    'id' => $techSkill->id,
+                    'skillName' => $techSkill->skill_name
+                ];
 
-                $skill = new \stdClass();
-                $skill->id = $category->id;
-                $skill->skillName = $category->skill_name;
+                return [$firstLetter => $skill];
+            });
 
-                if (! Arr::exists($result, $firstLetter)) {
-                    $result[$firstLetter] = [];
-                }
-                $result[$firstLetter][] = $skill;
-            }
-
-            return collect($result)->chunk(ceil(count($result) / 3));
+            return $result->chunk(ceil($result->count() / 3));
         });
     }
 
