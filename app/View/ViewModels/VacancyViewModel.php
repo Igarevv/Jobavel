@@ -64,7 +64,7 @@ class VacancyViewModel
 
         foreach ($vacancies as $vacancy) {
             $vacancy->employer = $employer;
-            $vacancy->skills = $vacancy->techSkillAsBaseArray();
+            $vacancy->skills = collect($vacancy->techSkillAsBaseArray());
         }
 
         return $vacancies;

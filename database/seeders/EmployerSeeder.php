@@ -42,7 +42,7 @@ class EmployerSeeder extends Seeder
                         'Optimize application performance.',
                         'Write clean, maintainable code.',
                         'Collaborate with team members on project requirements.'
-                    ]),
+                    ], JSON_THROW_ON_ERROR),
                     'requirements' => json_encode([
                         'Solid understanding of PHP and Laravel framework.',
                         'Knowledge of MySQL or other relational databases.',
@@ -51,13 +51,13 @@ class EmployerSeeder extends Seeder
                         'Good problem-solving skills.',
                         'Strong attention to detail.',
                         'Excellent communication skills.'
-                    ]),
+                    ], JSON_THROW_ON_ERROR),
                     'offers' => json_encode([
                         'Opportunity for professional growth and career development.',
                         'Competitive salary based on experience.',
                         'Flexible working hours and remote work options.',
                         'Dynamic and supportive work environment.'
-                    ]),
+                    ], JSON_THROW_ON_ERROR),
                     'location' => 'USA, Los Angeles',
                     'employment_type' => 'remote',
                     'experience_time' => 1,
@@ -76,7 +76,7 @@ class EmployerSeeder extends Seeder
                         'Troubleshoot and debug applications to optimize performance.',
                         'Write clean, scalable code using Python best practices.',
                         'Integrate user-facing elements with server-side logic.'
-                    ]),
+                    ], JSON_THROW_ON_ERROR),
                     'requirements' => json_encode([
                         'Proficiency in Python programming language.',
                         'Experience with Django framework and ORM.',
@@ -85,13 +85,13 @@ class EmployerSeeder extends Seeder
                         'Strong problem-solving skills and analytical thinking.',
                         'Ability to work effectively in a team environment.',
                         'Excellent verbal and written communication skills.'
-                    ]),
+                    ], JSON_THROW_ON_ERROR),
                     'offers' => json_encode([
                         'Growth opportunities in a supportive work environment.',
                         'Competitive salary and benefits package.',
                         'Remote work flexibility.',
                         'Exciting projects and learning opportunities.'
-                    ]),
+                    ], JSON_THROW_ON_ERROR),
                     'employment_type' => 'remote',
                     'experience_time' => 1,
                     'location' => 'USA, New York',
@@ -108,7 +108,7 @@ class EmployerSeeder extends Seeder
                         'Collaborate with team members to define project requirements and timelines.',
                         'Optimize application performance for scalability and reliability.',
                         'Implement unit tests and ensure code quality.'
-                    ]),
+                    ], JSON_THROW_ON_ERROR),
                     'requirements' => json_encode([
                         'Proficiency in Go programming language.',
                         'Experience with RESTful APIs and microservices architecture.',
@@ -117,20 +117,53 @@ class EmployerSeeder extends Seeder
                         'Familiarity with version control systems (e.g., Git).',
                         'Ability to work independently and in a team setting.',
                         'Good communication skills and a proactive attitude.'
-                    ]),
+                    ], JSON_THROW_ON_ERROR),
                     'offers' => json_encode([
                         'Career growth opportunities and skill development.',
                         'Competitive salary based on experience and skills.',
                         'Flexible work arrangements, including remote options.',
                         'Innovative and collaborative work environment.'
-                    ]),
-                    'location' => 'Ukraine, Odesa',
+                    ], JSON_THROW_ON_ERROR),
+                    'location' => 'USA, Las Vegas',
                     'created_at' => now(),
                     'employment_type' => 'remote',
                     'experience_time' => 3,
                     'salary' => fake()->numberBetween(900, 3500),
                     'is_published' => (bool) fake()->numberBetween(0, 1),
                     'employer_id' => $employer1->id
+                ], [
+                    'title' => 'Senior Java Developer',
+                    'description' => 'We are looking for a Junior Java Developer to join our team and assist in building scalable Java applications. You will work on backend development projects using Java language, contributing to the architecture and implementation of robust and high-performance systems.',
+                    'responsibilities' => json_encode([
+                        'Design and develop backend services and APIs using Java language.',
+                        'Write clean, efficient, and maintainable code.',
+                        'Collaborate with team members to define project requirements and timelines.',
+                        'Optimize application performance for scalability and reliability.',
+                        'Implement unit tests and ensure code quality.'
+                    ], JSON_THROW_ON_ERROR),
+                    'requirements' => json_encode([
+                        'Proficiency in Java programming language.',
+                        'Experience with RESTful APIs and microservices architecture.',
+                        'Knowledge of relational and NoSQL databases.',
+                        'Understanding of concurrency and parallelism in Java.',
+                        'Experience with Spring Framework',
+                        'Familiarity with version control systems (e.g., Git).',
+                        'Ability to work independently and in a team setting.',
+                        'Good communication skills and a proactive attitude.'
+                    ], JSON_THROW_ON_ERROR),
+                    'offers' => json_encode([
+                        'Career growth opportunities and skill development.',
+                        'Competitive salary based on experience and skills.',
+                        'Flexible work arrangements, including remote options.',
+                        'Innovative and collaborative work environment.'
+                    ], JSON_THROW_ON_ERROR),
+                    'location' => 'USA, Washington',
+                    'created_at' => now(),
+                    'employment_type' => 'remote',
+                    'experience_time' => 5,
+                    'salary' => fake()->numberBetween(900, 3500),
+                    'is_published' => (bool) fake()->numberBetween(0, 1),
+                    'employer_id' => $employer2->id
                 ]
             ]
         );
