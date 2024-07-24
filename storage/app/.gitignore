@@ -1,6 +1,3 @@
 *
 !public/
-!public/logo/default_logo.png
-!public/static/home-picture-2.jpg
-!public/static/home-picture-1.jpg
 !.gitignore
