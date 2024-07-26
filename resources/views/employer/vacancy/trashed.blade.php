@@ -43,6 +43,7 @@
                                                             <th scope="col">UPDATED AT</th>
                                                             <th scope="col"></th>
                                                             <th scope="col"></th>
+                                                            <th scope="col"></th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
@@ -55,10 +56,14 @@
                                                                 <td>{{ $vacancy->created_at }}</td>
                                                                 <td>{{ $vacancy->updated_at ?? "Not updated yet"}}</td>
                                                                 <td class="text-center">
+                                                                    <a class="btn btn-outline-light"
+                                                                       href="{{ route('employer.vacancy.trashed.preview', ['vacancy' => $vacancy->id]) }}">Show</a>
+                                                                </td>
+                                                                <td class="text-center">
                                                                     <form action="{{ route('employer.vacancy.restore', ['vacancy' => $vacancy->id]) }}"
                                                                           method="POST">
                                                                         @csrf
-                                                                        <x-button.outline colorType="light"
+                                                                        <x-button.outline colorType="success"
                                                                                           type="submit">Restore
                                                                         </x-button.outline>
                                                                     </form>

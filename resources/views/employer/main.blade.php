@@ -17,7 +17,7 @@
                     <x-card.linkcard href="{{ route('employer.vacancy.published') }}">
                         <h3>Your</h3>
                         <h5>total number of vacancy</h5>
-                        <p>{{ 0 }}</p>
+                        <p class="fw-bold">{{ $statistics->totalVacancies }}</p>
                     </x-card.linkcard>
                     <x-card.linkcard>
                         <h3>Your</h3>
@@ -29,11 +29,21 @@
                         <h5>total number of responses for month</h5>
                         <p> {{ 0 }}</p>
                     </x-card.linkcard>
-                    <x-card.linkcard>
-                        <h3>Your</h3>
-                        <h5>top 3 frequent required skills in vacancy</h5>
-                        <p> {{ "Git, Laravel, PHP"}}</p>
-                    </x-card.linkcard>
+                    @isset($statistics->skills)
+                        <x-card.linkcard
+                                href="{{ route('employer.vacancy.published', ['skills' => $statistics->skills->ids]) }}">
+                            <h3>Your</h3>
+                            <h5>top 3 frequent required skills in vacancy</h5>
+                            <p class="fw-bold">{{ $statistics->skills->names }}</p>
+                        </x-card.linkcard>
+                    @else
+                        <x-card.linkcard
+                                href="{{ route('employer.vacancy.create') }}">
+                            <h3>Your</h3>
+                            <h5>top 3 frequent required skills in vacancy</h5>
+                            <p>not found :( <span class="text-muted">Maybe you do not have vacancies?</span></p>
+                        </x-card.linkcard>
+                    @endisset
                 </div>
             </div>
             <div class="blur"></div>
