@@ -50,9 +50,6 @@ Route::name('employer.')->group(function () {
             */
 
             Route::controller(EmployerAccountController::class)->name('account.')->group(function () {
-                /*
-                * TODO: MAKE SCHEDULE TO DELETE UNVERIFIED EMAILS
-                */
                 Route::post('/account/update', 'update')->name('update');
 
                 Route::post('/account/verify-contact-email', 'verifyContactEmail')->name('verify-contact-email');
@@ -88,7 +85,7 @@ Route::name('employer.')->group(function () {
                         Route::get('/create', 'create')->name('create');
 
                         Route::get('/trashed', 'viewTrashed')->name('trashed');
-                        
+
                         Route::get('/trashed/{vacancy}', 'showTrashedPreview')
                             ->name('trashed.preview')
                             ->whereNumber('vacancy')

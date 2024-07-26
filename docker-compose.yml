@@ -1,0 +1,104 @@
+version: '3.8'
+
+networks:
+  jobavel:
+
+services:
+  app:
+    container_name: nginx
+    build:
+      context: ./docker
+      dockerfile: nginx.Dockerfile
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/var/www/jobavel:delegated
+    networks:
+      - jobavel
+    depends_on:
+      - postgres
+      - php
+      - redis
+
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DATABASE: ${DB_DATABASE}
+      POSTGRES_USERNAME: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./docker/db:/docker-entrypoint-initdb.d
+    env_file:
+      - .env
+    healthcheck:
+      test: [ "CMD-SHELL", "is_ready" ]
+      timeout: 5s
+      retries: 10
+    networks:
+      - jobavel
+
+  redis:
+    container_name: redis
+    image: redis
+    restart: unless-stopped
+    ports:
+      - "16354:6379"
+    volumes:
+      - redis:/data
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    networks:
+      - jobavel
+
+  php:
+    container_name: php
+    build:
+      context: ./docker
+      dockerfile: php.Dockerfile
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+    ports:
+      - "9000:9000"
+    volumes:
+      - .:/var/www/jobavel
+    networks:
+      - jobavel
+
+  composer:
+    build:
+      context: ./docker
+      dockerfile: php.Dockerfile
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+    volumes:
+      - ./src:/var/www/jobavel
+    depends_on:
+      - php
+    entrypoint: [ 'composer', '--ignore-platform-reqs' ]
+    networks:
+      - jobavel
+
+  cron:
+    container_name: cron
+    build:
+      context: ./docker
+      dockerfile: cron.Dockerfile
+    volumes:
+      - .:/var/www/jobavel
+    networks:
+      - jobavel
+
+volumes:
+  postgres:
+  redis:
