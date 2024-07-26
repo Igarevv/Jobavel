@@ -18,7 +18,9 @@ interface VacancyRepositoryInterface
 
     public function updateWithSkills(Vacancy $vacancy, VacancyDto $newData): void;
 
-    public function getPublishedFiltered(FilterInterface $filter, int $employerId): LengthAwarePaginator;
+    public function getFilteredVacancies(FilterInterface $filter, ?int $paginatePerPage = null): LengthAwarePaginator;
+
+    public function getFilteredVacanciesForEmployer(FilterInterface $filter, int $employerId): LengthAwarePaginator;
 
     public function getLatestPublished(int $number): Collection;
 }

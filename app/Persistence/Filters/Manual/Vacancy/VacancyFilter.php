@@ -71,7 +71,7 @@ class VacancyFilter extends BaseFilter
 
     protected function filterBySkills(Builder $builder, int ...$skills): void
     {
-        $builder->whereHas('techSkill', function (Builder $builder) use ($skills) {
+        $builder->whereHas('techSkills', function (Builder $builder) use ($skills) {
             $builder->whereIn('tech_skill_id', $skills);
         });
     }

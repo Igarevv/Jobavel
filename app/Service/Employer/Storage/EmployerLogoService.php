@@ -7,8 +7,7 @@ namespace App\Service\Employer\Storage;
 use App\Contracts\Storage\LogoStorageInterface;
 use App\Jobs\CheckEmployerLogoExisting;
 use App\Persistence\Models\Employer;
-use App\Persistence\Repositories\User\EmployerAccountRepository;
-use App\Service\Cache\Cache;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
 
 class EmployerLogoService
@@ -16,17 +15,11 @@ class EmployerLogoService
 
     public function __construct(
         protected LogoStorageInterface $logoStorage,
-        protected Cache $cache,
-        protected EmployerAccountRepository $employerAccountRepository
     ) {
     }
 
-    public function upload(UploadedFile $file, string $userId): bool
+    public function upload(UploadedFile $file, Employer $employer): bool
     {
-        $newFileName = $file->hashName();
-
-        $employer = $this->employerAccountRepository->getById($userId, ['id', 'company_logo']);
-
         if (! $this->logoStorage->upload($file)) {
             return false;
         }
@@ -35,22 +28,18 @@ class EmployerLogoService
             $this->logoStorage->delete($employer->company_logo);
         }
 
-        $this->employerAccountRepository->update($employer, ['logo' => $newFileName]);
+        $employer->update(['company_logo' => $file->hashName()]);
 
         return true;
     }
 
-    public function getImageUrlByImageId(string $employerId, string $imageId): string
+    public function fetchEmployerLogoInArray(Collection $employers): array
     {
-        $logoUrl = $this->logoStorage->get($imageId);
-
-        $employer = $this->employerAccountRepository->getById($employerId, ['id']);
-
-        CheckEmployerLogoExisting::dispatchAfterResponse(
-            $this->logoStorage, $employer
-        );
-
-        return $logoUrl;
+        return $employers->map(function (Employer $employer) {
+            return (object) [
+                'url' => $this->getImageUrlByEmployer($employer)
+            ];
+        })->toArray();
     }
 
     public function getImageUrlByEmployer(Employer $employer): string

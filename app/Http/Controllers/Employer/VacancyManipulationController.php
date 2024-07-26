@@ -76,7 +76,7 @@ class VacancyManipulationController extends Controller
 
         $vacancy->forceDelete();
 
-        return back()->with('vacancy-deleted', trans('alerts.vacancy.deleted'));
+        return redirect()->route('employer.vacancy.trashed')->with('vacancy-deleted', trans('alerts.vacancy.deleted'));
     }
 
     public function publish(Vacancy $vacancy): RedirectResponse

@@ -22,11 +22,11 @@ class SkillsViewModel
         $cacheKey = $this->cache->getCacheKey('skills');
 
         return $this->cache->repository()->remember($cacheKey, CarbonInterval::year()->totalSeconds, function () {
-            $categories = TechSkill::query()->orderBy('skill_name')
-                ->toBase()
-                ->get();
+            $categories = TechSkill::query()->toBase()->get();
 
-            $result = $categories->mapToGroups(function (object $techSkill) {
+            $sorted = $categories->sortBy('skill_name');
+
+            $result = $sorted->mapToGroups(function (object $techSkill) {
                 $firstLetter = Str::upper(Str::substr($techSkill->skill_name, 0, 1));
 
                 $skill = (object) [
@@ -51,8 +51,8 @@ class SkillsViewModel
     public function pluckExistingSkillsFromVacancy(Vacancy $vacancy): object
     {
         return (object) [
-            'ids' => $vacancy->techSkill->pluck('id')->toArray(),
-            'names' => $vacancy->techSkill->pluck('skill_name')->toArray(),
+            'ids' => $vacancy->techSkills->pluck('id')->toArray(),
+            'names' => $vacancy->techSkills->pluck('skill_name')->toArray(),
         ];
     }
 

@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->uuid('user_id');
             $table->integer('code');
             $table->string('new_contact_email');
+            $table->timestamp('created_at');
             $table->timestamp('expires_at');
         });
     }

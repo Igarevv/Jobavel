@@ -6,29 +6,31 @@ namespace App\Http\Controllers\Employer;
 
 use App\Http\Controllers\Controller;
 use App\Persistence\Models\Employer;
-use App\Service\Account\EmployerAccountService;
 use App\Service\Employer\Storage\EmployerLogoService;
+use App\View\ViewModels\EmployerViewModel;
 use Illuminate\View\View;
 
 class HomeController extends Controller
 {
 
     public function __construct(
-        protected EmployerAccountService $accountService,
-        protected EmployerLogoService $storageService
+        protected EmployerLogoService $employerLogoService,
+        protected EmployerViewModel $employerViewModel
     ) {
     }
 
     public function index(): View
     {
-        /**@var Employer $employer */
-        $employer = $this->accountService->getEmpUserById(session('user.emp_id'));
+        $employer = Employer::findByUuid(session('user.emp_id'));
 
-        $logo = $this->storageService->getImageUrlByEmployer($employer);
+        $statistics = $this->employerViewModel->prepareStatistics($employer);
+
+        $logo = $this->employerLogoService->getImageUrlByEmployer($employer);
 
         return view('employer.main', [
             'employer' => $employer,
-            'logo' => $logo
+            'logo' => $logo,
+            'statistics' => $statistics
         ]);
     }
 

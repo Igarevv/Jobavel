@@ -11,6 +11,7 @@ use App\Persistence\Filters\Manual\FilterInterface;
 use App\Persistence\Models\Employer;
 use App\Persistence\Models\Vacancy;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -58,7 +59,8 @@ class VacancyRepository implements VacancyRepositoryInterface
                 'salary' => $newData->salary,
                 'location' => $newData->location,
                 'experience_time' => $newData->experienceTime,
-                'employment_type' => $newData->employmentType
+                'employment_type' => $newData->employmentType,
+                'consider_without_experience' => $newData->considerWithoutExp
             ]);
 
             $vacancy->techSkills()->sync($newData->skillSet);
@@ -67,7 +69,17 @@ class VacancyRepository implements VacancyRepositoryInterface
         }
     }
 
-    public function getPublishedFiltered(FilterInterface $filter, int $employerId): LengthAwarePaginator
+    public function getFilteredVacancies(FilterInterface $filter, ?int $paginatePerPage = null): LengthAwarePaginator
+    {
+        return $this->getFiltered($filter)->when($paginatePerPage,
+            function (Builder $builder) use ($paginatePerPage) {
+                $builder->paginate($paginatePerPage, ['title', 'location', 'id', 'salary', 'employer_id']);
+            }, function (Builder $builder) {
+                $builder->get(['title', 'location', 'id', 'salary', 'employer_id']);
+            });
+    }
+
+    public function getFilteredVacanciesForEmployer(FilterInterface $filter, int $employerId): LengthAwarePaginator
     {
         return Vacancy::with('techSkills:id,skill_name')
             ->where('employer_id', $employerId)
@@ -84,4 +96,9 @@ class VacancyRepository implements VacancyRepositoryInterface
             ->get(['id', 'title', 'employer_id', 'location']);
     }
 
+    protected function getFiltered(FilterInterface $filter): Builder|Vacancy
+    {
+        return Vacancy::with('techSkills:id,skill_name')
+            ->published()->filter($filter);
+    }
 }

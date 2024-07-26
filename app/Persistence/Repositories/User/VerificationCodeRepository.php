@@ -20,7 +20,8 @@ class VerificationCodeRepository implements VerificationCodeRepositoryInterface
                 'user_id' => $userId,
                 'code' => $code,
                 'new_contact_email' => $newEmail,
-                'expires_at' => Carbon::now()->addMinutes(30),
+                'expires_at' => Carbon::now()->addMinutes(10),
+                'created_at' => Carbon::now(),
             ]);
         });
 

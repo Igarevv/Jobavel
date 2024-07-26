@@ -3,9 +3,10 @@
 use App\Http\Controllers\Employer\EmployerAccountController;
 use App\Http\Controllers\Employer\HomeController;
 use App\Http\Controllers\Employer\RegisterController;
+use App\Http\Controllers\Employer\VacancyEmployerViewController;
 use App\Http\Controllers\Employer\VacancyManipulationController;
-use App\Http\Controllers\Employer\VacancyViewController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\VacancyController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('vacancies')->name('vacancies.')->whereNumber('vacancy')->group(function () {
@@ -15,7 +16,7 @@ Route::prefix('vacancies')->name('vacancies.')->whereNumber('vacancy')->group(fu
      * ---------------------------------
      */
 
-    Route::get('/{vacancy}', [VacancyViewController::class, 'show'])->name('show');
+    Route::get('/{vacancy}', [VacancyController::class, 'show'])->name('show');
 });
 
 Route::name('employer.')->group(function () {
@@ -33,7 +34,7 @@ Route::name('employer.')->group(function () {
     Route::group(['middleware' => ['auth', 'role:employer']], function () {
         Route::prefix('employer')->group(function () {
             Route::redirect('/', '/employer/main');
-            
+
             /*
              * ---------------------------------
              * -      Employer home page       -
@@ -53,7 +54,9 @@ Route::name('employer.')->group(function () {
                 * TODO: MAKE SCHEDULE TO DELETE UNVERIFIED EMAILS
                 */
                 Route::post('/account/update', 'update')->name('update');
+
                 Route::post('/account/verify-contact-email', 'verifyContactEmail')->name('verify-contact-email');
+
                 Route::post('/account/resend-code', 'resendCode')->name('resend-code');
             });
 
@@ -72,15 +75,24 @@ Route::name('employer.')->group(function () {
                 * ---------------------------------
                 */
 
-                Route::controller(VacancyViewController::class)->prefix('vacancy')
+                Route::controller(VacancyEmployerViewController::class)->prefix('vacancy')
                     ->name('vacancy.')
                     ->group(function () {
-                        Route::get('/published', 'published')->name('published');
+                        Route::get('/published', 'publishedForEmployer')->name('published');
+
                         Route::get('/unpublished', 'unpublished')->name('unpublished');
+
                         Route::get('/{vacancy}/edit', 'showEdit')->whereNumber('vacancy')
                             ->name('show.edit');
+
                         Route::get('/create', 'create')->name('create');
+
                         Route::get('/trashed', 'viewTrashed')->name('trashed');
+                        
+                        Route::get('/trashed/{vacancy}', 'showTrashedPreview')
+                            ->name('trashed.preview')
+                            ->whereNumber('vacancy')
+                            ->withTrashed();
                     });
 
                 /*

@@ -17,7 +17,7 @@ class SkillsFilter implements PipeFilterInterface
         $param = $pipeline->queryParams[$this->getParamKey()] ?? null;
 
         $pipeline->builder->when($param, function (Builder $builder) use ($param) {
-            $builder->whereHas('techSkill', function (Builder $builder) use ($param) {
+            $builder->whereHas('techSkills', function (Builder $builder) use ($param) {
                 $builder->whereIn('tech_skill_id', $param);
             });
         });

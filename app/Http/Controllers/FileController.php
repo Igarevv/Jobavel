@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Persistence\Models\Employer;
 use App\Service\Employer\Storage\EmployerLogoService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -25,7 +26,9 @@ class FileController extends Controller
 
         $file = $request->file('logo');
 
-        if ($this->logoStorageService->upload($file, session('user.emp_id'))) {
+        $employer = Employer::findByUuid(session('user.emp_id'));
+
+        if ($this->logoStorageService->upload($file, $employer)) {
             return back()->with('logo-success', 'Your company logo updated successfully');
         }
 

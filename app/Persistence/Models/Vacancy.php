@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
 /**
  * @mixin Builder
@@ -34,6 +35,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property bool $consider_without_experience,
  * @property string $employment_type,
  * @property string $experience_time
+ * @property Carbon $published_at
  * @method Builder|static notPublished()
  * @method Builder|static published()
  * @method Builder|static filter(FilterInterface $filter)
@@ -51,6 +53,7 @@ class Vacancy extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
+        'published_at' => 'datetime',
     ];
 
     protected $fillable = [
@@ -67,6 +70,11 @@ class Vacancy extends Model
     public function techSkills(): BelongsToMany
     {
         return $this->belongsToMany(TechSkill::class);
+    }
+
+    public function techSkill(): BelongsTo
+    {
+        return $this->belongsTo(TechSkill::class);
     }
 
     public function employer(): BelongsTo
@@ -96,14 +104,14 @@ class Vacancy extends Model
         return $filter->process($builder);
     }
 
-    public function techSkillAsBaseArray(): array
+    public function techSkillsAsArrayOfBase(): Collection
     {
         return $this->techSkills->map(function ($skill) {
             return (object) [
                 'id' => $skill->id,
                 'skillName' => $skill->skill_name
             ];
-        })->toArray();
+        });
     }
 
     public function isPublished(): bool
@@ -115,12 +123,16 @@ class Vacancy extends Model
     {
         $this->is_published = true;
 
+        $this->published_at = now();
+
         $this->save();
     }
 
     public function unpublish(): void
     {
         $this->is_published = false;
+
+        $this->published_at = null;
 
         $this->save();
     }

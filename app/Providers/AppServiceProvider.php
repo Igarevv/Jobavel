@@ -3,11 +3,13 @@
 namespace App\Providers;
 
 use App\Contracts\Storage\LogoStorageInterface;
+use App\Persistence\Contracts\EmployerAccountRepositoryInterface;
 use App\Persistence\Contracts\UserRepositoryInterface;
 use App\Persistence\Contracts\VacancyRepositoryInterface;
 use App\Persistence\Contracts\VerificationCodeRepositoryInterface;
 use App\Persistence\Repositories\File\LocalFileStorage;
 use App\Persistence\Repositories\File\S3FileStorage;
+use App\Persistence\Repositories\User\EmployerAccountRepository;
 use App\Persistence\Repositories\User\UserRepository;
 use App\Persistence\Repositories\User\VerificationCodeRepository;
 use App\Persistence\Repositories\VacancyRepository;
@@ -22,7 +24,8 @@ class AppServiceProvider extends ServiceProvider
     public $singletons = [
         UserRepositoryInterface::class => UserRepository::class,
         VacancyRepositoryInterface::class => VacancyRepository::class,
-        VerificationCodeRepositoryInterface::class => VerificationCodeRepository::class
+        VerificationCodeRepositoryInterface::class => VerificationCodeRepository::class,
+        EmployerAccountRepositoryInterface::class => EmployerAccountRepository::class
     ];
 
     public function register(): void

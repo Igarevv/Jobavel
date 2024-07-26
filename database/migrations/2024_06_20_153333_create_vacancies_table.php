@@ -34,6 +34,7 @@ return new class extends Migration {
             $table->integer('response_number')->default(0);
             $table->boolean('is_published')->default(false);
             $table->timestamps();
+            $table->timestamp('published_at')->nullable();
             $table->primary('id');
             $table->softDeletes();
         });

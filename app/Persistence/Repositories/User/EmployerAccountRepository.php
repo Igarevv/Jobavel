@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Persistence\Repositories\User;
 
-use App\Persistence\Contracts\AccountRepositoryInterface;
+use App\Persistence\Contracts\EmployerAccountRepositoryInterface;
 use App\Persistence\Models\Employer;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
-class EmployerAccountRepository implements AccountRepositoryInterface
+class EmployerAccountRepository implements EmployerAccountRepositoryInterface
 {
 
     protected array $mappedFields = [
@@ -18,15 +19,8 @@ class EmployerAccountRepository implements AccountRepositoryInterface
         'type' => 'company_type'
     ];
 
-    public function getById(int|string $userId, ?array $columns = []): Employer
+    public function getById(int|string $userId, ?array $columns = ['*']): Employer
     {
-        if (! $columns) {
-            $columns = [
-                'id', 'employer_id', 'contact_email', 'created_at',
-                'company_name', 'company_logo', 'company_description'
-            ];
-        }
-
         return is_string($userId) ? Employer::findByUuid($userId, $columns)
             : Employer::findOrFail($userId, $columns);
     }
@@ -44,6 +38,12 @@ class EmployerAccountRepository implements AccountRepositoryInterface
         $employer->update($transformedData);
 
         return $employer;
+    }
+
+    public function takeRandomEmployerLogos(int $count): Collection
+    {
+        return Employer::query()->has('vacancy')
+            ->inRandomOrder()->take($count)->get(['id', 'company_logo']);
     }
 
     protected function transformData(array $data): array

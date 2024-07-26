@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Support\Collection;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -52,6 +54,22 @@ class Employer extends Model
     public function vacancy(): HasMany
     {
         return $this->hasMany(Vacancy::class);
+    }
+
+    public function techSkills(): HasManyThrough
+    {
+        return $this->hasManyThrough(VacancySkills::class, Vacancy::class, 'employer_id', 'vacancy_id');
+    }
+
+    public function topFrequentlySelectedSkills(int $limit): Collection
+    {
+        return $this->techSkills()
+            ->selectRaw('count(vacancy_id) as total, ts.skill_name, ts.id, count(vacancies.id) as vacancy')
+            ->join('tech_skills as ts', 'tech_skill_id', '=', 'ts.id')
+            ->groupBy('employer_id', 'ts.id')
+            ->orderByDesc('total')
+            ->take($limit)
+            ->get();
     }
 
     public function scopeByUuid(Builder $builder, string $uuid): Builder
