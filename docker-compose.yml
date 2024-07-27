@@ -7,7 +7,7 @@ services:
   app:
     container_name: nginx
     build:
-      context: ./docker
+      context: .docker/nginx
       dockerfile: nginx.Dockerfile
       args:
         - UID=${UID:-1000}
@@ -28,14 +28,14 @@ services:
     image: postgres:latest
     restart: always
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
-      POSTGRES_DATABASE: ${DB_DATABASE}
-      POSTGRES_USERNAME: ${DB_USERNAME}
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - postgres:/var/lib/postgresql/data
-      - ./docker/db:/docker-entrypoint-initdb.d
+      - ./.docker/db/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     env_file:
       - .env
     healthcheck:
@@ -48,9 +48,9 @@ services:
   redis:
     container_name: redis
     image: redis
-    restart: unless-stopped
+    restart: always
     ports:
-      - "16354:6379"
+      - "6379:6379"
     volumes:
       - redis:/data
     environment:
@@ -62,7 +62,7 @@ services:
   php:
     container_name: php
     build:
-      context: ./docker
+      context: .docker/php
       dockerfile: php.Dockerfile
       args:
         - UID=${UID:-1000}
@@ -73,10 +73,12 @@ services:
       - .:/var/www/jobavel
     networks:
       - jobavel
+    depends_on:
+      - redis
 
   composer:
     build:
-      context: ./docker
+      context: .docker/php
       dockerfile: php.Dockerfile
       args:
         - UID=${UID:-1000}
@@ -89,11 +91,11 @@ services:
     networks:
       - jobavel
 
-  cron:
-    container_name: cron
+  supervisor:
     build:
-      context: ./docker
-      dockerfile: cron.Dockerfile
+      context: .docker/php
+      dockerfile: supervisor.Dockerfile
+    container_name: supervisor
     volumes:
       - .:/var/www/jobavel
     networks:

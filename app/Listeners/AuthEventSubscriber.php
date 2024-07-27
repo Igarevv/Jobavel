@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Mail;
 class AuthEventSubscriber implements ShouldQueue
 {
 
-    public $queue = 'listeners';
+    public $queue = 'high';
 
     public function handleEmployerUpdateContactEmail(ContactEmailUpdatedEvent $event): void
     {

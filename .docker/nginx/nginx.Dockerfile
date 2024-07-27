@@ -12,7 +12,7 @@ RUN sed -i "s/user  nginx/user laravel/g" /etc/nginx/nginx.conf
 
 RUN rm /etc/nginx/conf.d/default.conf
 
-COPY ./nginx/jobavel.conf /etc/nginx/conf.d/
+COPY jobavel.conf /etc/nginx/conf.d/
 
 RUN mkdir -p /var/www/jobavel
 
