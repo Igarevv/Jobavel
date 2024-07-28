@@ -17,6 +17,7 @@ This is CRUD application
 - CRUD functionality for vacancy with trash using soft deletes
 - Upload employer logo via [AWS S3](https://aws.amazon.com/s3/) storage and also via local storage
 - Simple frontend
+- Filtering
 - Caching with [Redis](https://redis.io/)
 
 ## Configuration:
@@ -51,10 +52,40 @@ To switch from local storage to S3 or vice versa, define in .env FILE_STORAGE_PR
 
 ## Installation:
 
-To create symbolic link for local storage use command:
+Project use Docker
+
+Start docker
+
+````
+docker-compose up --build -d
+````
+
+Then, run composer
+
+````
+docker-compose exec php composer install
+````
+
+Run migration
+
+````
+docker-compose exec php php artisan migrate:fresh --seed
+````
+
+Create symbolic link for local storage use command:
 
 ````
 php artisan storage:link
 ````
 
-### to be continued
+Cache routes, views, configs
+
+````
+docker-compose exec php php artisan route:cache
+````
+````
+docker-compose exec php php artisan config:cache
+````
+````
+docker-compose exec php php artisan view:cache
+````

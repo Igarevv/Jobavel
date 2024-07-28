@@ -19,6 +19,7 @@ class HomeController extends Controller
 
     public function index(): View
     {
+        phpinfo();
         $vacancies = $this->viewModel->getLatestPublishedVacancies(4);
 
         $vacancies = $this->vacancyService->overrideSkillsAndEmployerLogos($vacancies);
