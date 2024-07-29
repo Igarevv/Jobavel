@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Bad request</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    <link nonce="{{ csp_nonce() }}" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <style>
+    <style nonce="{{ csp_nonce() }}">
         /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
         html {
             line-height: 1.15;
@@ -509,9 +510,13 @@
                 justify-content: center;
             }
         }
+
+        .font-14 {
+            font-size: 14px;
+        }
     </style>
 
-    <style>
+    <style nonce="{{ csp_nonce() }}">
         body {
             font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
         }
@@ -528,7 +533,7 @@
                 Bad request
             </div>
         </div>
-        <div class="ml-4 text-lg text-gray-500 uppercase tracking-wider text-muted" @style(['font-size:14px'])>
+        <div class="ml-4 text-lg text-gray-500 uppercase tracking-wider text-muted font-14">
             {{ $message }}
         </div>
         <div>

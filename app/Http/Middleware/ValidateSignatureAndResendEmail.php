@@ -8,7 +8,7 @@ use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Illuminate\Support\Facades\URL;
 use Symfony\Component\HttpFoundation\Response;
 
-class ValidateSignatureAndResendEmail
+final class ValidateSignatureAndResendEmail
 {
 
     public function handle(
@@ -16,7 +16,7 @@ class ValidateSignatureAndResendEmail
         Closure $next,
         string $relative = null
     ): Response {
-        if ( ! URL::hasCorrectSignature($request, $relative !== 'relative')) {
+        if (! URL::hasCorrectSignature($request, $relative !== 'relative')) {
             throw new InvalidSignatureException();
         }
 

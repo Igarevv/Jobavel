@@ -28,8 +28,8 @@
                             <h6 class="fw-bold text-decoration-underline">Choose skills that will be required for
                                 vacancy</h6>
                             <h6 class="mt-3">Your current skills in
-                                vacancy: <span @style(['text-decoration: underline', 'text-decoration-color: red'])
-                                               class="fw-bold">{{ implode(', ', $existingSkills->names) }}</span>
+                                vacancy: <span
+                                        class="fw-bold text-decoration-underline link-danger">{{ implode(', ', $existingSkills->names) }}</span>
                             </h6>
                             <x-categories.list name="skillset" :skillSet="$skills"
                                                :existingSkills="$existingSkills"></x-categories.list>
@@ -161,5 +161,5 @@
 
     <x-footer></x-footer>
 
-    <script src="/assets/js/addNewField.js"></script>
+    <script nonce="{{ csp_nonce() }}" src="/assets/js/addNewField.js"></script>
 </x-layout>

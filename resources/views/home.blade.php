@@ -9,7 +9,7 @@
                 <section class="py-5 text-center container">
                     <div class="row py-lg-5">
                         <div class="col-lg-6 col-md-8 mx-auto">
-                            <h1 class="fw-light"><strong @style(['color:white'])>Job<span
+                            <h1 class="fw-light"><strong class="text-white">Job<span
                                             class="red">avel</span></strong>
                             </h1>
                             <p class="lead text-light">Find or post developers jobs</p>
@@ -109,6 +109,6 @@
 
     <x-footer></x-footer>
 
-    <script src="/assets/js/hideShowSkills.js"></script>
+    <script nonce="{{ csp_nonce() }}" src="/assets/js/hideShowSkills.js"></script>
 </x-layout>
 

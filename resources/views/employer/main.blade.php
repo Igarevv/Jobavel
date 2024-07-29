@@ -3,8 +3,8 @@
     <x-header></x-header>
 
     <x-main>
-        <div class="album py-5 bg-body-tertiary background-logo"
-             style="background: url({{ $logo }}) center center/cover no-repeat;">
+        <div class="album py-5 bg-body-tertiary background-logo" id="background-image-block"
+             data-image-url="{{ $logo }}">
             <div class="container">
                 <div class="d-flex align-items-center flex-column">
                     <div class="logo-company-name">
@@ -49,7 +49,7 @@
             <div class="blur"></div>
         </div>
 
-        <div class="container" @style(["margin-bottom:6rem"])>
+        <div class="container mb-6rem">
             <h2 class="text-center mb-3">Your company public information</h2>
             <form class="w-75 mx-auto" method="post" action="{{ route('employer.account.update') }}">
 
@@ -131,7 +131,7 @@
                                       data-route="{{ route('employer.account.resend-code') }}"
                                       data-token="{{ csrf_token() }}">Resend code
                     </x-button.outline>
-                    <p class="text-danger my-0" id="message" @style(['display:none'])>Resending code will be
+                    <p class="text-danger my-0 d-none" id="message">Resending code will be
                         available in 1
                         minute</p>
                 </div>
@@ -165,8 +165,16 @@
     @endif
 
     @push("change-logo")
-        <script src="/assets/js/changeLogo.js"></script>
+        <script nonce="{{ csp_nonce() }}" src="/assets/js/changeLogo.js"></script>
     @endpush
 
-    <script src="/assets/js/verificationCode.js"></script>
+    <script nonce="{{ csp_nonce() }}">
+        document.addEventListener('DOMContentLoaded', function () {
+            const imageBlock = document.getElementById('background-image-block');
+            const url = imageBlock.getAttribute('data-image-url');
+            imageBlock.style.background = 'url(' + url + ') center center / cover no-repeat';
+        });
+    </script>
+
+    <script nonce="{{ csp_nonce() }}" src="/assets/js/verificationCode.js"></script>
 </x-layout>

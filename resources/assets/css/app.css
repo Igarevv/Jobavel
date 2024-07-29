@@ -287,3 +287,60 @@
 .btn-outline-success:hover {
     background-color: #14cb14;
 }
+
+.background-white-darker {
+    background-color: #e9ecef;
+}
+
+.font-12 {
+    font-size: 12px;
+}
+
+.btn-no-style {
+    background: none;
+    border: none;
+}
+
+.link-card-background {
+    background-color: #fff1f1;
+}
+
+.mh-90 {
+    max-height: 90px;
+}
+
+.vh-50 {
+    height: 50vh;
+}
+
+.vh-70 {
+    height: 70vh;
+}
+
+.text-white {
+    color: white;
+}
+
+.border-published {
+    border: 5px solid #212529;
+}
+
+.mh-75vh {
+    max-height: 75vh;
+}
+
+.dark-gray {
+    background-color: #212529;;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.shadow-table {
+    box-shadow: 10px 5px 5px red;
+}
+
+.mb-6rem {
+    margin-bottom: 6rem
+}

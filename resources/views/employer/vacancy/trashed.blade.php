@@ -3,7 +3,7 @@
 
     <x-header></x-header>
 
-    <x-main @style(['flex:1'])>
+    <x-main class="flex-1">
         <div class="container mt-5 mb-5">
             <div class="text-center">
                 <h2 class="fw-bold">Your trashed vacancies</h2>
@@ -15,7 +15,7 @@
             </div>
             @endsession
             @if($vacancies->isEmpty())
-                <div class="d-flex flex-column align-items-center justify-content-center" style="height: 70vh;">
+                <div class="d-flex flex-column align-items-center justify-content-center vh-70">
                     <h1 class="text-danger fw-bold">Vacancies not found</h1>
                     <p class="text-muted text-sm">Your trash is empty!</p>
                     <div class="d-flex justify-content-center gap-3">
@@ -23,13 +23,13 @@
                     </div>
                 </div>
             @else
-                <section class="intro" @style(['height:70vh'])>
+                <section class="intro vh-70">
                     <div class="h-100">
                         <div class="d-flex align-items-center h-100">
                             <div class="container">
                                 <div class="row justify-content-center">
                                     <div class="col-12">
-                                        <div class="card bg-dark" @style(['box-shadow: 10px 5px 5px red;'])>
+                                        <div class="card bg-dark shadow-table">
                                             <div class="card-body">
                                                 <div class="table-responsive">
                                                     <table class="table table-dark table-borderless mb-0">
@@ -99,7 +99,7 @@
     </x-main>
     @once
         @push('vacancy-css')
-            <link href="/assets/css/vacancy.css" type="text/css" rel="stylesheet">
+            <link nonce="{{ csp_nonce() }}" href="/assets/css/vacancy.css" type="text/css" rel="stylesheet">
         @endpush
     @endonce
     <x-footer></x-footer>

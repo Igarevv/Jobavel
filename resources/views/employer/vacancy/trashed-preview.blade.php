@@ -12,7 +12,8 @@
                     <article>
                         <div class="d-flex align-items-center mb-4">
                             <div class="col-md-2">
-                                <img src="{{ $employer->logo }}" class="img-fluid" alt="{{ $employer->company }}">
+                                <img src="{{ $employer->logo }}" class="img-fluid"
+                                     alt="{{ $employer->company }}">
                             </div>
                             <header class="flex-grow-1 ms-3">
                                 <h1 class="fw-bolder mb-1">{{ $vacancy->title }}</h1>
@@ -138,7 +139,7 @@
                                     @else
                                         <h6 class="fw-bold mb-0">From {{ $vacancy->experience_time }} experience</h6>
                                         @if($vacancy->consider_without_experience)
-                                            <p class="text-muted text-14" @style(['font-size:12px'])>We also consider a
+                                            <p class="text-muted text-14 font-12">We also consider a
                                                 candidate without
                                                 experience</p>
                                         @endif
@@ -210,7 +211,7 @@
     </x-main>
     @once
         @push('vacancy-css')
-            <link href="/assets/css/vacancy.css" type="text/css" rel="stylesheet">
+            <link nonce="{{ csp_nonce() }}" href="/assets/css/vacancy.css" type="text/css" rel="stylesheet">
         @endpush
     @endonce
     <x-footer></x-footer>

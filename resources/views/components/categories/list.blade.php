@@ -1,13 +1,13 @@
 @pushonce('vacancy-css')
-    <link href="/assets/css/vacancy.css" type="text/css" rel="stylesheet">
+    <link nonce="{{ csp_nonce() }}" href="/assets/css/vacancy.css" type="text/css" rel="stylesheet">
 @endpushonce
-<div class="container pt-2" @style(['font-size:12px'])>
+<div class="container pt-2 font-12">
     @forelse($skillSet as $chunk)
         <div class="row justify-content-around gx-1">
             @foreach($chunk as $key => $skills)
                 <div class="col col-lg-1">
                     <span class="fw-bold">{{ $key }}</span>
-                    <ul class="list-unstyled overflow-auto" @style(['max-height:90px'])>
+                    <ul class="list-unstyled overflow-auto mh-90">
                         @foreach($skills as $skill)
                             <li>
                                 <label class="category-label" for="{{ $skill->id }}">

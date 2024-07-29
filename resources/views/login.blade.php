@@ -3,7 +3,7 @@
     <x-slot:injectBody>background-auth</x-slot:injectBody>
 
     <x-main>
-        <section class="form-smaller" @style(['height:100vh'])>
+        <section class="form-smaller vh-100">
             <div class="container w-100">
                 <div class="row justify-content-center">
                     <div class="col-12 col-md-9 col-lg-7 col-xl-6 col-xxl-5">
@@ -15,7 +15,7 @@
                                             <div class="text-center mb-4">
                                                 <a href="/" class="navbar-brand d-flex justify-content-center">
                                                     <strong
-                                                        class="h4">Job<span class="red">avel</span></strong>
+                                                            class="h4">Job<span class="red">avel</span></strong>
                                                 </a>
                                             </div>
                                             <h2 class="h4 text-center">Log in</h2>
@@ -29,7 +29,7 @@
                                     @csrf
                                     <div class="row gy-3 overflow-hidden">
                                         <x-input.block class="col-12">
-                                            <x-input.index type="email" name="email" id="email"
+                                            <x-input.index type="a" name="email" id="email"
                                                            placeholder="example@gmail.com"
                                                            label="Email" value="{{ old('email') }}"
                                                            required></x-input.index>

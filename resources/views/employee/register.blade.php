@@ -2,7 +2,7 @@
     <x-slot:title>Register</x-slot:title>
     <x-slot:injectBody>background-auth</x-slot:injectBody>
 
-    <section class="form-smaller" @style(['height:100vh'])>
+    <section class="form-smaller vh-100">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-9 col-lg-7 col-xl-6 col-xxl-5">
@@ -14,7 +14,7 @@
                                         <div class="text-center mb-4">
                                             <a href="/" class="navbar-brand d-flex justify-content-center">
                                                 <strong
-                                                    class="h4">Job<span class="red">avel</span></strong>
+                                                        class="h4">Job<span class="red">avel</span></strong>
                                             </a>
                                         </div>
                                         <h2 class="h4 text-center">Employee Registration</h2>
@@ -90,7 +90,8 @@
                                 <div class="col-12">
                                     <hr class="mt-5 mb-4 border-secondary-subtle">
                                     <p class="m-0 text-secondary text-center">Already have an account? <a
-                                            href="{{ route('login.show') }}" class="link-primary text-decoration-none">Sign
+                                                href="{{ route('login.show') }}"
+                                                class="link-primary text-decoration-none">Sign
                                             in</a></p>
                                 </div>
                             </div>

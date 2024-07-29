@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const value = e.target.value;
         salaryOutput.textContent = `$${value}`;
         rangeInput.value = value;
+        salaryOutput.value = '$' + this.value;
     });
 
     salaryOutput.textContent = `$${rangeInput.value}`;

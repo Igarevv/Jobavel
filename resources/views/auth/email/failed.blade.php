@@ -1,5 +1,5 @@
 <x-auth.layout
-    @style(['background-color: #e9ecef']) class="d-flex justify-content-center align-items-center vh-100">
+        class="d-flex justify-content-center align-items-center vh-100 background-white-darker">
     <x-auth.base-block>
         <div class="text-center d-flex justify-content-center mb-4 fs-3">
             <a href="{{ config('app.url') }}" class="text-dark navbar-brand">

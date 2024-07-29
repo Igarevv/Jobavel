@@ -4,7 +4,7 @@
     <x-slot:injectBody>background-auth</x-slot:injectBody>
 
     <x-main>
-        <section class="form-smaller" @style(['height:100vh'])>
+        <section class="form-smaller vh-100">
             <div class="container w-100">
                 <div class="row justify-content-center">
                     <div class="col-12 col-md-9 col-lg-7 col-xl-6 col-xxl-5">

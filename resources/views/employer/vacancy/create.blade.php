@@ -143,5 +143,5 @@
 
     <x-footer></x-footer>
 
-    <script src="/assets/js/addNewField.js"></script>
+    <script nonce="{{ csp_nonce() }}" src="/assets/js/addNewField.js"></script>
 </x-layout>

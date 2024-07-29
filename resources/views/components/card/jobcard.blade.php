@@ -22,14 +22,12 @@
                         @foreach($hiddenSkills as $skill)
                             <span class="badge small bg-dark text-light">{{ $skill->skillName }}</span>
                         @endforeach
-                        <button class="hide-wheel mt-2 text-decoration-underline d-none"
-                                @style(['background:none','border:none','font-size:12px'])>
+                        <button class="hide-wheel mt-2 text-decoration-underline d-none btn-no-style font-12">
                             Hide
                         </button>
                     </div>
                     @if($hiddenSkills->isNotEmpty())
-                        <button class="show-more mt-2 text-decoration-underline"
-                                @style(['background:none','border:none','font-size:12px'])>
+                        <button class="show-more mt-2 text-decoration-underline btn-no-style font-12">
                             More...
                         </button>
                     @endif

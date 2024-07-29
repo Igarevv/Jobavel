@@ -13,11 +13,11 @@
                 <h5 class="fw-normal mb-5">{{ $vacancies->total() }}</h5>
             </div>
 
-            <div class="row" style="border: 5px solid #212529;">
-                <form data-url="{{ route('employer.vacancy.published') }}" class="col-md-3 filter-column"
-                      style="max-height:75vh;" id="filterForm">
-                    <div class="d-flex flex-column h-75" style="overflow-y: scroll;">
-                        <div class="sticky-top" style="background-color:#212529;">
+            <div class="row border-published">
+                <form data-url="{{ route('employer.vacancy.published') }}" class="col-md-3 filter-column mh-75vh"
+                      id="filterForm">
+                    <div class="d-flex flex-column h-75 overflow-scroll">
+                        <div class="sticky-top dark-gray">
                             <h4 class="text-center fw-bold">Filters</h4>
                         </div>
                         <div class="mb-3">
@@ -28,11 +28,12 @@
                         <div class="mb-3">
                             <h6 class="fw-bold text-decoration-underline fst-italic">By experience</h6>
                             <div class="text-14 ps-1">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="flexCheckChecked"
                                            value="1" name="consider">
-                                    <label class="form-check-label" for="flexSwitchCheckDefault">Consider without
-                                        experience</label>
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                        Consider without experience
+                                    </label>
                                 </div>
                                 <x-input.radio name="experience" label="Without experience"
                                                value="0"></x-input.radio>
@@ -72,8 +73,7 @@
                                 <div class="d-flex flex-row gap-2">
                                     <input type="range" name="salary" min="0" max="{{ $vacancies->max('salary') }}"
                                            value="{{ old('salary', 0) }}"
-                                           class="form-range" id="rangeInput"
-                                           oninput="this.nextElementSibling.value = '$'+this.value">
+                                           class="form-range" id="rangeInput">
                                     <output id="salaryOutput"></output>
                                 </div>
                                 <div>
@@ -98,11 +98,10 @@
                         <x-button.outline type="submit" colorType="danger">Apply filters</x-button.outline>
                     </div>
                 </form>
-                <div class="col-md-9 content-column" @style(['max-height:75vh'])>
+                <div class="col-md-9 content-column mh-75vh">
                     <div class="d-flex flex-column align-items-center">
                         @if($vacancies->isEmpty())
-                            <div class="d-flex flex-column align-items-center justify-content-center"
-                                 style="height: 70vh;">
+                            <div class="d-flex flex-column align-items-center justify-content-center vh-70">
                                 <h1 class="text-danger fw-bold">Vacancies not found</h1>
                                 <p class="text-muted text-sm">Create a new one or check your trashed vacancies</p>
                                 <div class="d-flex justify-content-center gap-3">
@@ -140,11 +139,11 @@
     </x-main>
     @once
         @push('vacancy-css')
-            <link href="/assets/css/vacancy.css" type="text/css" rel="stylesheet">
+            <link nonce="{{ csp_nonce() }}" href="/assets/css/vacancy.css" type="text/css" rel="stylesheet">
         @endpush
     @endonce
 
-    <script src="/assets/js/filter.js"></script>
-    <script src="/assets/js/hideShowSkills.js"></script>
+    <script nonce="{{ csp_nonce() }}" src="/assets/js/filter.js"></script>
+    <script nonce="{{ csp_nonce() }}" src="/assets/js/hideShowSkills.js"></script>
     <x-footer></x-footer>
 </x-layout>

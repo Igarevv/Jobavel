@@ -1,4 +1,4 @@
-<div class="overflow-auto w-50" @style(['height:50vh'])>
+<div class="overflow-auto w-50 vh-50">
     <ul class="list-unstyled text-14 ps-1">
         @foreach($skillSet as $chunk)
             @foreach($chunk as $key => $skills)

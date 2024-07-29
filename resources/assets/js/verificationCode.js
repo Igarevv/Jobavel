@@ -8,10 +8,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
         if (timeDifference < 60000) {
             button.disabled = true;
-            document.getElementById('message').style.display = 'block';
+            document.getElementById('message').classList.replace('d-none', 'd-block');
             setTimeout(() => {
                 button.disabled = false;
-                document.getElementById('message').style.display = 'none';
+                document.getElementById('message').classList.replace('d-block', 'd-none');
                 localStorage.removeItem('disableTime');
             }, 60000 - timeDifference);
         } else {
@@ -21,13 +21,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     function disableButton() {
         button.disabled = true;
-        document.getElementById('message').style.display = 'block';
+        document.getElementById('message').classList.replace('d-none', 'd-block');
         const disableTime = new Date().getTime();
         localStorage.setItem('disableTime', disableTime);
 
         setTimeout(() => {
             button.disabled = false;
-            document.getElementById('message').style.display = 'none';
+            document.getElementById('message').classList.replace('d-block', 'd-none');
             localStorage.removeItem('disableTime');
         }, 60000);
     }
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 'X-CSRF-TOKEN': token,
             }
         }).then(response => {
-            
+
         });
 
         disableButton();
