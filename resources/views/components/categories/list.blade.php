@@ -10,7 +10,7 @@
                     <ul class="list-unstyled overflow-auto mh-90">
                         @foreach($skills as $skill)
                             <li>
-                                <label class="category-label" for="{{ $skill->id }}">
+                                <label class="category-label-column" for="{{ $skill->id }}">
                                     <input type="checkbox" name="{{ $name }}[]" value="{{ $skill->id }}"
                                            id="{{ $skill->id }}" @checked($isChecked($skill->id, old($name, [])))>
                                     <span>{{ $skill->skillName }}</span>

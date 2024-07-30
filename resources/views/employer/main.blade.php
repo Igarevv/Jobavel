@@ -51,73 +51,89 @@
 
         <div class="container mb-6rem">
             <h2 class="text-center mb-3">Your company public information</h2>
-            <form class="w-75 mx-auto" method="post" action="{{ route('employer.account.update') }}">
+            <div class="w-75 mx-auto">
+                <form method="post" action="{{ route('employer.account.update') }}">
 
-                @session('updated-success')
-                <div class="alert alert-success text-center fw-bold my-2">
-                    {{ $value }}
-                </div>
-                @endsession
+                    @session('updated-success')
+                    <div class="alert alert-success text-center fw-bold my-2">
+                        {{ $value }}
+                    </div>
+                    @endsession
 
-                @session('verification-success')
-                <div class="alert alert-success text-center fw-bold my-2">
-                    {{ $value }}
-                </div>
-                @endsession
+                    @session('nothing-updated')
+                    <div class="alert alert-success text-center fw-bold my-2">
+                        {{ $value }}
+                    </div>
+                    @endsession
 
-                @error('logo')
-                <div class="alert alert-danger text-center fw-bold my-2">
-                    {{ $message }}
-                </div>
-                @enderror
+                    @session('verification-success')
+                    <div class="alert alert-success text-center fw-bold my-2">
+                        {{ $value }}
+                    </div>
+                    @endsession
 
-                @session('logo-success')
-                <p class="alert alert-success text-center fw-bold my-2">{{ $value }}</p>
-                @endsession
-
-                <x-input.block form="group" class="d-flex justify-content-between col-12">
-                    @csrf
-                    <label class="fw-bold" for="exampleFormControlInput1">Your company logo</label>
-                    <x-button.outline data-bs-toggle="modal" data-bs-target="#changeLogo" colorType="danger">Change
-                        logo
-                    </x-button.outline>
-                </x-input.block>
-
-                @session('logo-error')
-                <p class="text-danger">{{ $value }}</p>
-                @endsession
-
-                <x-input.block form="group" class="mb-3 col-12">
-                    <x-input.index type="text" class="py-2" name="name" id="companyName"
-                                   value="{{ old('name') ?? session('user.name') }}"
-                                   label="Your company name"></x-input.index>
-                    @error('name')
-                    <p class="text-danger">{{ $message }}</p>
+                    @error('logo')
+                    <div class="alert alert-danger text-center fw-bold my-2">
+                        {{ $message }}
+                    </div>
                     @enderror
-                </x-input.block>
-                <x-input.block form="outline" class="mb-3 col-12">
-                    <x-input.textarea id="description" label="Your company description" rows="5"
-                                      name="description">{{ old('description') ?? $employer->company_description }}</x-input.textarea>
-                    @error('description')
-                    <p class="text-danger">{{ $message }}</p>
-                    @enderror
-                </x-input.block>
-                <x-input.block form="group" class="mb-3 col-12">
-                    <x-input.index type="email" class="py-2" name="email" id="contactEmail"
-                                   value="{{ old('email') ?? $employer->contact_email }}"
-                                   label="Your company contact email"></x-input.index>
-                    @error('email')
-                    <p class="text-danger">{{ $message }}</p>
-                    @enderror
-                </x-input.block>
-                @if(session('frontend.show-button-for-modal'))
-                    <x-button.default class="float-start" type="button" data-bs-toggle="modal" colorType="danger"
-                                      id="showEnterCodeModal"
-                                      data-bs-target="#updatedSuccess">Enter code again
-                    </x-button.default>
+
+                    @session('logo-success')
+                    <p class="alert alert-success text-center fw-bold my-2">{{ $value }}</p>
+                    @endsession
+
+                    <x-input.block form="group" class="d-flex justify-content-between col-12">
+                        @csrf
+                        <label class="fw-bold" for="exampleFormControlInput1">Your company logo</label>
+                        <x-button.outline data-bs-toggle="modal" data-bs-target="#changeLogo" colorType="danger">Change
+                            logo
+                        </x-button.outline>
+                    </x-input.block>
+
+                    @session('logo-error')
+                    <p class="text-danger">{{ $value }}</p>
+                    @endsession
+
+                    <x-input.block form="group" class="mb-3 col-12">
+                        <x-input.index type="text" class="py-2" name="name" id="companyName"
+                                       value="{{ old('name') ?? session('user.name') }}"
+                                       label="Your company name"></x-input.index>
+                        @error('name')
+                        <p class="text-danger">{{ $message }}</p>
+                        @enderror
+                    </x-input.block>
+                    <x-input.block form="outline" class="mb-3 col-12">
+                        <x-input.textarea id="description" label="Your company description" rows="5"
+                                          name="description">{{ old('description') ?? $employer->company_description }}</x-input.textarea>
+                        @error('description')
+                        <p class="text-danger">{{ $message }}</p>
+                        @enderror
+                    </x-input.block>
+                    <x-input.block form="group" class="mb-3 col-12">
+                        <x-input.index type="email" class="py-2" name="email" id="contactEmail"
+                                       value="{{ old('email') ?? $employer->contact_email }}"
+                                       label="Your company contact email"></x-input.index>
+                        @error('email')
+                        <p class="text-danger">{{ $message }}</p>
+                        @enderror
+                    </x-input.block>
+                    <x-button.default class="float-end" type="submit">Save changes</x-button.default>
+                </form>
+                @if(session('frontend.show-buttons-for-modal'))
+                    <div class="d-flex gap-3">
+                        <x-button.default class="float-start" type="button" data-bs-toggle="modal" colorType="danger"
+                                          id="showEnterCodeModal"
+                                          data-bs-target="#updatedSuccess">Enter code again
+                        </x-button.default>
+                        <form action="{{ route('employer.account.discard-email-update') }}" method="POST">
+                            @csrf
+                            <x-button.default class="float-start" type="submit" colorType="warning">Discard email
+                                changes
+                            </x-button.default>
+                        </form>
+                    </div>
                 @endif
-                <x-button.default class="float-end" type="submit">Save changes</x-button.default>
-            </form>
+            </div>
         </div>
 
         <x-modal.index id="updatedSuccess">

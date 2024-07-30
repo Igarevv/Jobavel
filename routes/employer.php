@@ -6,18 +6,7 @@ use App\Http\Controllers\Employer\RegisterController;
 use App\Http\Controllers\Employer\VacancyEmployerViewController;
 use App\Http\Controllers\Employer\VacancyManipulationController;
 use App\Http\Controllers\FileController;
-use App\Http\Controllers\VacancyController;
 use Illuminate\Support\Facades\Route;
-
-Route::prefix('vacancies')->name('vacancies.')->whereNumber('vacancy')->group(function () {
-    /*
-     * ---------------------------------
-     * -      Vacancy public view      -
-     * ---------------------------------
-     */
-
-    Route::get('/{vacancy}', [VacancyController::class, 'show'])->name('show');
-});
 
 Route::name('employer.')->group(function () {
     /*
@@ -34,7 +23,6 @@ Route::name('employer.')->group(function () {
     Route::group(['middleware' => ['auth', 'role:employer']], function () {
         Route::prefix('employer')->group(function () {
             Route::redirect('/', '/employer/main');
-
             /*
              * ---------------------------------
              * -      Employer home page       -
@@ -55,6 +43,8 @@ Route::name('employer.')->group(function () {
                 Route::post('/account/verify-contact-email', 'verifyContactEmail')->name('verify-contact-email');
 
                 Route::post('/account/resend-code', 'resendCode')->name('resend-code');
+
+                Route::post('/account/discard-email-changes', 'discardEmailChanges')->name('discard-email-update');
             });
 
             /*

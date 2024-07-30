@@ -344,3 +344,23 @@
 .mb-6rem {
     margin-bottom: 6rem
 }
+
+.accordion-button:not(.collapsed) {
+    color: #ffffff !important;
+    background-color: #f9322c !important;
+}
+
+.accordion-button:focus {
+    z-index: 3;
+    border-color: #f9322c !important;
+    outline: 0;
+    box-shadow: 0 0 0 .25rem #f9322c !important;
+}
+
+.accordion-button:link, .accordion-button:visited, .accordion-button:hover, .accordion-button:active {
+    background-color: #f9322c !important;
+    color: #FFF !important;
+    text-decoration: none !important;
+    border: hidden #FFF !important;
+    box-shadow: 0px !important;
+}

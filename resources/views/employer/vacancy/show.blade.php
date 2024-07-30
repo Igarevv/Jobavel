@@ -119,7 +119,7 @@
                                 <div class="d-flex justify-content-center gap-3 flex-wrap">
                                     @foreach($skillSet as $skill)
                                         <ul class="list-unstyled mb-0">
-                                            <li><a href="#!">
+                                            <li><a href="{{ route('vacancies.all', ['skills' => $skill->id]) }}">
                                             <span
                                                     class="badge small bg-dark text-light">{{ $skill->skillName }}
                                             </span>

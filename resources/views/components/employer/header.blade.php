@@ -8,7 +8,8 @@
             challenges, and contributions to society.
         </p>
         <div class="d-flex justify-content-between">
-            <a href="{{ route('employer.main') }}" class="btn btn-outline-danger">Home Page</a>
+            <a href="{{ route('employer.main') }}" class="btn btn-outline-danger">My Home Page</a>
+            <a href="{{ route('vacancies.all') }}" class="btn btn-outline-danger">All vacancies</a>
             <a href="{{ '#' }}" class="btn btn-outline-secondary">Support</a>
             <a href="{{ '#' }}" class="btn btn-outline-info">Account Settings</a>
         </div>

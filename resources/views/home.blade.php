@@ -102,13 +102,12 @@
                     @foreach($vacancies as $vacancy)
                         <x-card.jobcard :vacancy="$vacancy"></x-card.jobcard>
                     @endforeach
+                    <a href="{{ route('vacancies.all') }}" class="btn btn-outline-danger float-center">Show more</a>
                 </div>
             </div>
         </div>
     </x-main>
 
     <x-footer></x-footer>
-
-    <script nonce="{{ csp_nonce() }}" src="/assets/js/hideShowSkills.js"></script>
 </x-layout>
 

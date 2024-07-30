@@ -10,7 +10,7 @@
                 <h5 class="fw-light">company</h5>
                 <h1 class="red text-decoration-underline fw-bold fw-italic">{{ session('user.name') }}</h1>
                 <h4 class="fw-light">Total number of vacancy</h4>
-                <h5 class="fw-normal mb-5">{{ $vacancies->total() }}</h5>
+                <h5 class="fw-normal mb-5">{{ $vacancies->total() ?? 0 }}</h5>
             </div>
 
             <div class="row border-published">
@@ -22,8 +22,8 @@
                         </div>
                         <div class="mb-3">
                             <h6 class="fw-bold text-decoration-underline fst-italic">By technology</h6>
-                            <x-categories.skills-filter :skillSet="$skills"
-                                                        name="skills"></x-categories.skills-filter>
+                            <x-categories.skills-filter-column :skillSet="$skills"
+                                                               name="skills"></x-categories.skills-filter-column>
                         </div>
                         <div class="mb-3">
                             <h6 class="fw-bold text-decoration-underline fst-italic">By experience</h6>
@@ -144,6 +144,5 @@
     @endonce
 
     <script nonce="{{ csp_nonce() }}" src="/assets/js/filter.js"></script>
-    <script nonce="{{ csp_nonce() }}" src="/assets/js/hideShowSkills.js"></script>
     <x-footer></x-footer>
 </x-layout>

@@ -19,21 +19,17 @@ tbody td {
     border-radius: .5rem;
 }
 
-.category-label {
+.category-label-column {
     display: flex;
     align-items: center;
     cursor: pointer;
 }
 
-.category-label input[type="checkbox"] {
+.category-label-column input[type="checkbox"] {
     display: none;
 }
 
-.category-label input[type="checkbox"] {
-    display: none;
-}
-
-.category-label input[type="checkbox"]:checked + span {
+.category-label-column input[type="checkbox"]:checked + span {
     color: #f9322c;
 }
 
@@ -83,4 +79,33 @@ tbody td {
         flex: 0 0 auto;
         width: 35%;
     }
+}
+
+.top-15 {
+    top: 15%;
+}
+
+
+.skill-group {
+    margin-bottom: 20px;
+}
+
+.alphabet-letter {
+    display: block;
+    font-weight: bold;
+    color: red;
+    margin-bottom: 10px;
+}
+
+.category-label-raw {
+    cursor: pointer;
+}
+
+.category-label-raw input[type="checkbox"] {
+    display: none;
+}
+
+
+.category-label-raw input[type="checkbox"]:checked + span {
+    color: #f9322c;
 }

@@ -7,6 +7,10 @@
             They range from small businesses to large multinational corporations, each with unique dynamics,
             challenges, and contributions to society.
         </p>
+        <div class="d-flex justify-content-between">
+            <a href="{{ route('vacancies.all') }}" class="btn btn-outline-danger">Show me vacancies</a>
+            <a href="{{ '#' }}" class="btn btn-outline-secondary">Support</a>
+        </div>
     </div>
     <div class="col-sm-4 offset-md-1 py-4">
         <div class="d-flex flex-column h-100 justify-content-center align-items-center">

@@ -27,6 +27,7 @@
 
     @stack('change-logo')
     @stack('vacancy-css')
+    @stack('jobcard-script')
 
     <link rel="stylesheet"
           href="https://unpkg.com/bs-brain@2.0.4/components/registrations/registration-3/assets/css/registration-3.css">
