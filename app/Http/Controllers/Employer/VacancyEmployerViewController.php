@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Employer;
 
 use App\Http\Controllers\Controller;
+use App\Http\Presenters\VacancyCardPresenter;
 use App\Http\Requests\VacancyFilterRequest as FilterRequest;
 use App\Persistence\Filters\Manual\Vacancy\VacancyFilter;
 use App\Persistence\Models\Vacancy;
 use App\Service\Employer\Vacancy\VacancyService;
 use App\View\ViewModels\SkillsViewModel;
 use App\View\ViewModels\VacancyViewModel;
-use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -57,7 +57,7 @@ class VacancyEmployerViewController extends Controller
     public function showTrashedPreview(Vacancy $vacancy, VacancyViewModel $vacancyViewModel): View
     {
         $this->authorize('view', $vacancy);
-        
+
         if (! $vacancy->trashed()) {
             abort(404);
         }
@@ -74,14 +74,16 @@ class VacancyEmployerViewController extends Controller
         ]);
     }
 
-    public function publishedForEmployer(FilterRequest $request, VacancyService $vacancyService, Application $app): View
+    public function publishedForEmployer(FilterRequest $request, VacancyService $vacancyService): View
     {
-        $filter = $app->make(VacancyFilter::class, ['queryParams' => $request->validated()]);
+        $filter = app()->make(VacancyFilter::class, ['queryParams' => $request->validated()]);
 
         $vacancies = $vacancyService->publishedFilteredVacanciesForEmployer(
             filter: $filter,
             employerId: session('user.emp_id'),
         );
+
+        $vacancies = (new VacancyCardPresenter($vacancies))->paginatedCollectionToBase();
 
         return view('employer.vacancy.published', [
             'vacancies' => $vacancies,

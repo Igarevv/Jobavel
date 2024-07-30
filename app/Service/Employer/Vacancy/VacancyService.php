@@ -35,13 +35,11 @@ class VacancyService
         $this->vacancyRepository->updateWithSkills($vacancy, $vacancyDto);
     }
 
-    public function overrideSkillsAndEmployerLogos(Collection $vacancies): Collection
+    public function overrideEmployerLogos(Collection|Paginator $vacancies): Collection|Paginator
     {
         $processedEmployerLogo = collect();
 
         $vacancies->each(function (Vacancy $vacancy) use ($processedEmployerLogo) {
-            $vacancy->skills = $vacancy->techSkillsAsArrayOfBase();
-
             $employerId = $vacancy->employer->id;
 
             if (! $processedEmployerLogo->has($employerId)) {
@@ -67,12 +65,17 @@ class VacancyService
 
         $vacancies->each(function (Vacancy $vacancy) use ($employer) {
             $vacancy->employer = $employer;
-            $vacancy->skills = $vacancy->techSkillsAsArrayOfBase();
         });
 
         return $vacancies;
     }
 
+    public function allPublishedFilteredVacancies(FilterInterface $filter, int $paginatePerPage): Paginator
+    {
+        $vacancies = $this->vacancyRepository->getFilteredVacancies($filter, $paginatePerPage);
+
+        return $this->overrideEmployerLogos($vacancies);
+    }
 
     public function getRandomEmployersLogoWhoHasVacancy(int $count): array
     {

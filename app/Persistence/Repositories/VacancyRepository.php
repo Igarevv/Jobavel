@@ -69,19 +69,17 @@ class VacancyRepository implements VacancyRepositoryInterface
         }
     }
 
-    public function getFilteredVacancies(FilterInterface $filter, ?int $paginatePerPage = null): LengthAwarePaginator
+    public function getFilteredVacancies(FilterInterface $filter, int $paginatePerPage = null): LengthAwarePaginator
     {
-        return $this->getFiltered($filter)->when($paginatePerPage,
-            function (Builder $builder) use ($paginatePerPage) {
-                $builder->paginate($paginatePerPage, ['title', 'location', 'id', 'salary', 'employer_id']);
-            }, function (Builder $builder) {
-                $builder->get(['title', 'location', 'id', 'salary', 'employer_id']);
-            });
+        return $this->getFiltered($filter, [
+            'employer:id,company_name,company_logo',
+            'techSkills:id,skill_name'
+        ])->paginate($paginatePerPage, ['title', 'location', 'id', 'salary', 'employer_id']);
     }
 
     public function getFilteredVacanciesForEmployer(FilterInterface $filter, int $employerId): LengthAwarePaginator
     {
-        return Vacancy::with('techSkills:id,skill_name')
+        return $this->getFiltered($filter, ['techSkills:id,skill_name'])
             ->where('employer_id', $employerId)
             ->published()->filter($filter)->paginate(3,
                 ['title', 'location', 'id', 'salary', 'employer_id']);
@@ -96,9 +94,9 @@ class VacancyRepository implements VacancyRepositoryInterface
             ->get(['id', 'title', 'employer_id', 'location']);
     }
 
-    protected function getFiltered(FilterInterface $filter): Builder|Vacancy
+    protected function getFiltered(FilterInterface $filter, array $withTables): Builder|Vacancy
     {
-        return Vacancy::with('techSkills:id,skill_name')
+        return Vacancy::with($withTables)
             ->published()->filter($filter);
     }
 }

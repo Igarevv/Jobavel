@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class SkillsFilterView extends Component
+class SkillsFilterColumn extends Component
 {
 
     public function __construct(
@@ -22,6 +22,6 @@ class SkillsFilterView extends Component
 
     public function render(): View|Closure|string
     {
-        return view('components.categories.skills-filter');
+        return view('components.categories.skills-filter-column');
     }
 }

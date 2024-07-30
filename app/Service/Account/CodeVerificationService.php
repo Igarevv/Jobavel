@@ -17,7 +17,7 @@ class CodeVerificationService
     ) {
     }
 
-    public function verifyCodeFromRequest(int $code, string|int $user_id): void
+    public function verifyCodeFromRequest(int $code, string $user_id): void
     {
         $verificationData = $this->verificationRepository->getCodeByUserId($user_id);
 
@@ -34,7 +34,7 @@ class CodeVerificationService
         $this->verificationRepository->setNewEmployerContactEmail($user_id, $verificationData->new_contact_email);
     }
 
-    public function sendEmail(string|int $userId, string $email): bool
+    public function sendEmail(string $userId, string $email): bool
     {
         $code = $this->verificationRepository
             ->saveVerificationCode($userId, $email, $this->generateCode());
@@ -44,7 +44,7 @@ class CodeVerificationService
         return true;
     }
 
-    public function resendEmail(string|int $userId): void
+    public function resendEmail(string $userId): void
     {
         $newCode = $this->generateCode();
 
@@ -59,7 +59,12 @@ class CodeVerificationService
         event(new ContactEmailUpdatedEvent($newCode, $verificationData->new_contact_email));
     }
 
-    protected function regenerateExpiredCode(string|int $userId, string $email): void
+    public function discardEmailChanges(string $userId): void
+    {
+        $this->verificationRepository->deleteCode($userId);
+    }
+
+    protected function regenerateExpiredCode(string $userId, string $email): void
     {
         $this->sendEmail($userId, $email);
 

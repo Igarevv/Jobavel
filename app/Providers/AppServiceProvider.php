@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Contracts\Storage\LogoStorageInterface;
+use App\Http\Kernel;
 use App\Persistence\Contracts\EmployerAccountRepositoryInterface;
 use App\Persistence\Contracts\UserRepositoryInterface;
 use App\Persistence\Contracts\VacancyRepositoryInterface;
@@ -16,7 +17,9 @@ use App\Persistence\Repositories\VacancyRepository;
 use App\Service\Cache\Cache;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
+use Spatie\Csp\AddCspHeaders;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -42,8 +45,15 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    public function boot(Kernel $kernel): void
     {
+        if (! $this->app->hasDebugModeEnabled() || $this->app->isProduction()) {
+            $kernel->prependMiddlewareToGroup('web', AddCspHeaders::class);
+        }
+
+        Collection::macro('present', function (string $class) {
+            return new $class($this);
+        });
     }
 
     protected function bindFileStorage(): void

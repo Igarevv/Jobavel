@@ -18,22 +18,20 @@ final class EmployerAccountService extends AccountService
         parent::__construct(new AccountRepositoryFactory(User::EMPLOYER));
     }
 
-    public function update(string|int $userId, array $newData, CodeVerificationService $verificationService): Employer
+    public function update(string|int $userId, array $newData): Employer|false
     {
         $employer = $this->getRepository()->update($userId, $newData);
-        
-        if (! $employer->compareEmails($newData['email'])) {
-            $verificationService->sendEmail($userId, $newData['email']);
 
-            $this->isEmailChanged = true;
+        if (! $employer->wasChanged() && ! $this->isNewContactEmail($employer, $newData['email'])) {
+            return false;
         }
 
         return $employer;
     }
 
-    public function isNewContactEmail(): bool
+    public function isNewContactEmail(Employer $employer, string $newEmail): bool
     {
-        return $this->isEmailChanged;
+        return ! $employer->compareEmails($newEmail);
     }
 
 }

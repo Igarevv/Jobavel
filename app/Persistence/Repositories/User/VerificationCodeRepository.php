@@ -28,7 +28,7 @@ class VerificationCodeRepository implements VerificationCodeRepositoryInterface
         return $code;
     }
 
-    public function setNewEmployerContactEmail(string|int $userId, string $email): void
+    public function setNewEmployerContactEmail(string $userId, string $email): void
     {
         DB::transaction(function () use ($userId, $email) {
             $this->deleteCode($userId);
@@ -41,17 +41,17 @@ class VerificationCodeRepository implements VerificationCodeRepositoryInterface
         });
     }
 
-    public function getCodeByUserId(string|int $userId): ?\stdClass
+    public function getCodeByUserId(string $userId): ?\stdClass
     {
         return DB::table('verification_codes')->where('user_id', $userId)->first();
     }
 
-    protected function deleteCode(int|string $userId): void
+    public function deleteCode(string $userId): void
     {
         DB::table('verification_codes')->where('user_id', $userId)->delete();
     }
 
-    public function updateCodeForResendingAction(int $code, int|string $userId): void
+    public function updateCodeForResendingAction(int $code, string $userId): void
     {
         DB::table('verification_codes')->where('user_id', $userId)
             ->update([

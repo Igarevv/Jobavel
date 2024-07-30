@@ -2,6 +2,7 @@
 
 namespace App\Persistence\Models;
 
+use App\Observers\EmployerObserver;
 use App\Service\Cache\Cache;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;

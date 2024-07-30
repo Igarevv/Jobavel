@@ -72,11 +72,6 @@ class Vacancy extends Model
         return $this->belongsToMany(TechSkill::class);
     }
 
-    public function techSkill(): BelongsTo
-    {
-        return $this->belongsTo(TechSkill::class);
-    }
-
     public function employer(): BelongsTo
     {
         return $this->belongsTo(Employer::class, 'employer_id');

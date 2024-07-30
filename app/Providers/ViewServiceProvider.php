@@ -4,7 +4,8 @@ namespace App\Providers;
 
 use App\View\Components\CategoriesView;
 use App\View\Components\LogoView;
-use App\View\Components\SkillsFilterView;
+use App\View\Components\SkillsFilterColumn;
+use App\View\Components\SkillsFilterRaw;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Session;
@@ -31,7 +32,8 @@ class ViewServiceProvider extends ServiceProvider
 
         Blade::component('image.logo', LogoView::class);
         Blade::component('categories.list', CategoriesView::class);
-        Blade::component('categories.skills-filter', SkillsFilterView::class);
+        Blade::component('categories.skills-filter-column', SkillsFilterColumn::class);
+        Blade::component('categories.skills-filter-raw', SkillsFilterRaw::class);
 
         View::share('currentYear', date('Y'));
 

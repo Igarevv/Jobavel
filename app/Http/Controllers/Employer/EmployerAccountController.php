@@ -25,12 +25,16 @@ class EmployerAccountController extends Controller
     {
         $updatedData = $request->validated();
 
-        $employer = $this->accountService->update(session('user.emp_id'), $updatedData, $this->verificationService);
+        $employer = $this->accountService->update(session('user.emp_id'), $updatedData);
+
+        if ($employer === false) {
+            return back()->with('nothing-updated', trans('alerts.employer-account.nothing-updated'));
+        }
 
         $request->session()->put('user.name', $employer->company_name);
 
-        if ($this->accountService->isNewContactEmail()) {
-            $request->session()->put('frontend.show-button-for-modal', true);
+        if ($this->accountService->isNewContactEmail($employer, $updatedData['email'])) {
+            $request->session()->put('frontend.show-buttons-for-modal', true);
 
             return back()->with('frontend.email-want-update', true);
         }
@@ -47,7 +51,7 @@ class EmployerAccountController extends Controller
         try {
             $this->verificationService->verifyCodeFromRequest((int) $input['code'], session('user.emp_id'));
 
-            $request->session()->forget('frontend.show-button-for-modal');
+            $request->session()->forget('frontend.show-buttons-for-modal');
         } catch (VerificationCodeTimeExpiredException|InvalidVerificationCodeException $e) {
             return back()->with('frontend.code-expired', $e->getMessage());
         }
@@ -62,6 +66,15 @@ class EmployerAccountController extends Controller
         $request->session()->put('frontend.show-button-for-modal', true);
 
         return response()->json(['status' => 200]);
+    }
+
+    public function discardEmailChanges(Request $request): RedirectResponse
+    {
+        $this->verificationService->discardEmailChanges(session('user.emp_id'));
+
+        $request->session()->forget('frontend.show-buttons-for-modal');
+
+        return back();
     }
 
 }

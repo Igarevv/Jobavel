@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\EmployerUpdated;
 use App\Listeners\AuthEventSubscriber;
+use App\Listeners\CodeSendingOnEmployerUpdate;
 use App\Listeners\SuccessfulLogin;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -19,6 +21,9 @@ class EventServiceProvider extends ServiceProvider
         Login::class => [
             SuccessfulLogin::class,
         ],
+        EmployerUpdated::class => [
+            CodeSendingOnEmployerUpdate::class
+        ]
     ];
 
     protected $subscribe = [

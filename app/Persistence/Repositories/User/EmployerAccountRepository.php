@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Persistence\Repositories\User;
 
+use App\Events\EmployerUpdated;
 use App\Persistence\Contracts\EmployerAccountRepositoryInterface;
 use App\Persistence\Models\Employer;
 use Illuminate\Database\Eloquent\Collection;
@@ -16,7 +17,7 @@ class EmployerAccountRepository implements EmployerAccountRepositoryInterface
         'name' => 'company_name',
         'description' => 'company_description',
         'logo' => 'company_logo',
-        'type' => 'company_type'
+        'type' => 'company_type',
     ];
 
     public function getById(int|string $userId, ?array $columns = ['*']): Employer
@@ -30,12 +31,15 @@ class EmployerAccountRepository implements EmployerAccountRepositoryInterface
         if ($model instanceof Employer) {
             $employer = $model;
         } else {
-            $employer = $this->getById($model, ['id', 'contact_email']);
+            $employer = $this->getById($model,
+                ['id', 'contact_email', 'company_name', 'company_description', 'employer_id']);
         }
 
         $transformedData = $this->transformData($data);
 
         $employer->update($transformedData);
+
+        event(new EmployerUpdated($employer, $data['email']));
 
         return $employer;
     }
