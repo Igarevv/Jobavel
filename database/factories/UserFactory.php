@@ -13,13 +13,15 @@ use Ramsey\Uuid\Uuid;
 class UserFactory extends Factory
 {
 
+    public const TEST_PASSWORD = 'password12345';
+
     protected $model = User::class;
 
     public function definition(): array
     {
         return [
             'email' => fake()->safeEmail(),
-            'password' => Hash::make('password'),
+            'password' => Hash::make(self::TEST_PASSWORD, ['salt' => 12]),
             'user_id' => Uuid::uuid7()->toString(),
             'is_confirmed' => true,
             'email_verified_at' => now(),

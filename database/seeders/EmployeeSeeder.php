@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Persistence\Models\Employee;
+use App\Persistence\Models\User;
 use Illuminate\Database\Seeder;
 
 class EmployeeSeeder extends Seeder
@@ -14,15 +15,19 @@ class EmployeeSeeder extends Seeder
     public function run(): void
     {
         Employee::query()->truncate();
-        //$employer = Employee::factory()->create();
-        /* User::factory(1)
-             ->has(
-                 Employee::factory()->state(
-                     function (array $attributes, User $user) {
-                         return ['email' => $user->email];
-                     }
-                 )
-             )->state(['role' => 'employee'])->create();*/
+
+        $users = User::factory()
+            ->has(
+                Employee::factory()->state(
+                    function (array $attributes, User $user) {
+                        return ['email' => $user->email];
+                    }
+                )
+            )->state(['role' => User::EMPLOYEE])->create();
+
+        $users->each(function (User $user) {
+            $user->assignRole(User::EMPLOYEE);
+        });
     }
 
 }

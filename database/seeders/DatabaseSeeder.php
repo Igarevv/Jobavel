@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Persistence\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,13 +14,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('users')->truncate(); // optional
+        User::query()->truncate();
 
         $this->call([
             PermissionSeeder::class,
             TechSkillsSeeder::class,
             EmployeeSeeder::class,
             EmployerSeeder::class,
+            VacancySeeder::class
         ]);
     }
 

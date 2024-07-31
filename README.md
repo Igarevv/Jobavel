@@ -63,7 +63,7 @@ docker-compose up --build -d
 Then, run composer
 
 ````
-docker-compose exec php composer install
+docker-compose exec php composer install --prefer-dist --no-dev -o
 ````
 
 Run migration
@@ -78,14 +78,22 @@ Create symbolic link for local storage use command:
 php artisan storage:link
 ````
 
+You can also get test user data for login:
+
+````
+docker compose exec php php artisan test:give-user
+````
+
 Cache routes, views, configs
 
 ````
 docker-compose exec php php artisan route:cache
 ````
+
 ````
 docker-compose exec php php artisan config:cache
 ````
+
 ````
 docker-compose exec php php artisan view:cache
 ````

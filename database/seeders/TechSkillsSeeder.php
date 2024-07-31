@@ -14,6 +14,7 @@ class TechSkillsSeeder extends Seeder
     public function run(): void
     {
         DB::table('tech_skills')->truncate();
+
         DB::table('tech_skills')->insert([
             ['skill_name' => 'PHP'],
             ['skill_name' => 'Laravel'],

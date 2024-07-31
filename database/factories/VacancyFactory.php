@@ -2,9 +2,11 @@
 
 namespace Database\Factories\Persistence\Models;
 
+use App\Enums\Vacancy\EmploymentEnum;
 use App\Persistence\Models\Vacancy;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Arr;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Persistence\Models\Vacancy>
@@ -21,16 +23,33 @@ class VacancyFactory extends Factory
      */
     public function definition(): array
     {
+        $isPublished = $this->faker->boolean();
+
+        if ($isPublished) {
+            $publishedAt = now();
+        }
+
         return [
-            'title' => 'Programmer',
-            'description' => $this->faker->paragraph,
+            'title' => $this->faker->jobTitle(),
+            'description' => $this->faker->paragraph(10),
             'responsibilities' => $this->faker->sentences(5),
             'requirements' => $this->faker->sentences(5),
             'offers' => $this->faker->sentences(4),
             'location' => $this->faker->country.", ".$this->faker->city,
             'created_at' => Carbon::now(),
-            'salary' => 2500,
-            'is_published' => (bool) $this->faker->numberBetween(0, 1),
+            'employment_type' => Arr::random(
+                [
+                    EmploymentEnum::EMPLOYMENT_MIXED,
+                    EmploymentEnum::EMPLOYMENT_REMOTE,
+                    EmploymentEnum::EMPLOYMENT_OFFICE,
+                    EmploymentEnum::EMPLOYMENT_PART_TIME
+                ]
+            ),
+            'experience_time' => Arr::random([0, 1, 3, 5, 10]),
+            'consider_without_experience' => $this->faker->boolean(),
+            'salary' => $this->faker->numberBetween(0, 5000),
+            'is_published' => $isPublished,
+            'published_at' => $publishedAt ?? null
         ];
     }
 
