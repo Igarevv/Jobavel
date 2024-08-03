@@ -109,3 +109,15 @@ tbody td {
 .category-label-raw input[type="checkbox"]:checked + span {
     color: #f9322c;
 }
+
+.w-65 {
+    width: 65%;
+}
+
+.font-18 {
+    font-size: 18px;
+}
+
+.font-14 {
+    font-size: 14px;
+}

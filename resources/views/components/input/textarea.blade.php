@@ -1,8 +1,8 @@
 @props(['id' => '', 'label' => '', 'name', 'required' => false])
 
-@if(trim($label) !== '')
-    <label for="{{ $id }}" class="form-label fw-bold">{{ $label }}</label>
-@endif
+@isset($label)
+    <label for="{{ $id }}" id="{{ $id }}-label" class="form-label fw-bold">{{ $label }}</label>
+@endisset
 
 <textarea id="{{ $id }}"
           name="{{ $name }}" {{ $attributes->merge(['class' => 'form-control']) }} @required($required)>{{ $slot }}</textarea>

@@ -142,7 +142,6 @@
             <link nonce="{{ csp_nonce() }}" href="/assets/css/vacancy.css" type="text/css" rel="stylesheet">
         @endpush
     @endonce
-
-    <script nonce="{{ csp_nonce() }}" src="/assets/js/filter.js"></script>
     <x-footer></x-footer>
+    <script nonce="{{ csp_nonce() }}" src="/assets/js/employer/filter.js"></script>
 </x-layout>

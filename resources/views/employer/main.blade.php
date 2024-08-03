@@ -181,7 +181,7 @@
     @endif
 
     @push("change-logo")
-        <script nonce="{{ csp_nonce() }}" src="/assets/js/changeLogo.js"></script>
+        <script nonce="{{ csp_nonce() }}" src="/assets/js/employer/changeLogo.js"></script>
     @endpush
 
     <script nonce="{{ csp_nonce() }}">
@@ -192,5 +192,5 @@
         });
     </script>
 
-    <script nonce="{{ csp_nonce() }}" src="/assets/js/verificationCode.js"></script>
+    <script nonce="{{ csp_nonce() }}" src="/assets/js/employer/verificationCode.js"></script>
 </x-layout>

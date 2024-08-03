@@ -364,3 +364,11 @@
     border: hidden #FFF !important;
     box-shadow: 0px !important;
 }
+
+.text-14 {
+    font-size: 14px;
+}
+
+.w-85 {
+    width: 85%;
+}

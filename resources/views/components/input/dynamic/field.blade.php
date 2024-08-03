@@ -1,13 +1,15 @@
 @props([
     'id',
-    'label',
+    'label' => '',
     'name',
     'required' => false,
     'value' => []
 ])
 
-<h6 class="fw-bold text-decoration-underline">{{ $label }}</h6>
-<div id="{{ $id }}">
+@if(trim($label) !== '')
+    <h6 class="fw-bold text-decoration-underline">{{ $label }}</h6>
+@endif
+<div id="{{ $id }}" data-input-name="{{ $name }}" class="input-container">
     <div class="input-group">
         <x-input.index type="text" name="{{ $name }}[]" id="{{ $id }}"
                        required="{{ $required }}" value="{{ $value[0] ?? '' }}"></x-input.index>

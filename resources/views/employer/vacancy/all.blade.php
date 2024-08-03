@@ -177,5 +177,5 @@
     </x-main>
     <x-footer></x-footer>
 
-    <script nonce="{{ csp_nonce() }}" src="/assets/js/filter.js"></script>
+    <script nonce="{{ csp_nonce() }}" src="/assets/js/employer/filter.js"></script>
 </x-layout>

@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         url.search = params.toString();
         history.pushState(null, '', url.toString());
+        console.log(url.toString())
         fetch(url.toString(), {
             method: 'GET'
         }).then(() => {

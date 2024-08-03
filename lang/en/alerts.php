@@ -22,5 +22,9 @@ return [
         'updated' => 'Your company data was successfully updated',
         'email-verified' => 'Your new contact email verified successfully',
         'nothing-updated' => 'Your account data is up-to-date'
+    ],
+    'employee-account' => [
+        'nothing-updated' => 'Your personal info is up-to-date',
+        'updated' => 'Your personal info was successfully updated'
     ]
 ];

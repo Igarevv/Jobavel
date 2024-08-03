@@ -1,0 +1,29 @@
+.editable-input {
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+.bg-color-dark {
+    background-color: rgba(243, 21, 21, 0.7);
+}
+
+.input-hover:hover {
+    color: #f9322c;
+}
+
+.input-hover-white:hover {
+    color: #f6f6f6;
+}
+
+.hover-primary:hover {
+    color: #2566c4;
+}
+
+.text-block {
+    width: 100%;
+    font-size: 16px;
+}
+
+.text-white {
+    color: white;
+}

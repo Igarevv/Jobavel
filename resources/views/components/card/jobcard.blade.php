@@ -1,15 +1,15 @@
-<div class="col-md-6 job-card {{ $class ?? '' }}">
+<div class="col-md-6 job-card {{ $class ?? '' }} w-65">
     <div class="card">
         <div class="card-body d-flex align-items-center gap-3">
             <x-image.logo url="{{ $vacancy->employer->company_logo }}" imgColSize="2"></x-image.logo>
             <div class="w-100">
                 <div class="d-flex justify-content-between">
-                    <h5 class="card-title text-start fw-bold">{{ $vacancy->title }}</h5>
+                    <h5 class="card-title text-start fw-bold font-18">{{ $vacancy->title }}</h5>
                     @isset($vacancy->salary)
                         <h5 class="card-title fw-bold text-end money">{{ $vacancy->salary ? '$'.$vacancy->salary : ''}}</h5>
                     @endisset
                 </div>
-                <h6 class="card-title text-muted">{{ $vacancy->employer->company_name }}</h6>
+                <h6 class="card-title text-muted font-14">{{ $vacancy->employer->company_name }}</h6>
                 <div class="mb-2">
                     @php
                         $shownSkills = $vacancy->skills->take(5);
@@ -50,5 +50,5 @@
     </div>
 </div>
 @pushonce('jobcard-script')
-    <script nonce="{{ csp_nonce() }}" src="/assets/js/hideShowSkills.js"></script>
+    <script nonce="{{ csp_nonce() }}" src="/assets/js/employer/hideShowSkills.js"></script>
 @endpushonce
