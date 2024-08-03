@@ -3,9 +3,9 @@
 use App\Http\Controllers\Employer\EmployerAccountController;
 use App\Http\Controllers\Employer\HomeController;
 use App\Http\Controllers\Employer\RegisterController;
-use App\Http\Controllers\Employer\VacancyEmployerViewController;
-use App\Http\Controllers\Employer\VacancyManipulationController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\Vacancy\VacancyEmployerViewController;
+use App\Http\Controllers\Vacancy\VacancyManipulationController;
 use Illuminate\Support\Facades\Route;
 
 Route::name('employer.')->group(function () {
@@ -98,8 +98,10 @@ Route::name('employer.')->group(function () {
 
                         Route::post('/unpublish/{vacancy}', 'unpublish')->name('unpublish');
 
-                        Route::delete('/delete/{vacancy}/forever',
-                            'deleteForever')->name('delete-forever')->withTrashed();
+                        Route::delete(
+                            '/delete/{vacancy}/forever',
+                            'deleteForever'
+                        )->name('delete-forever')->withTrashed();
 
                         Route::post('/restore/{vacancy}', 'restore')->name('restore')->withTrashed();
                     })->whereNumber('vacancy');
@@ -108,3 +110,4 @@ Route::name('employer.')->group(function () {
     });
 });
 
+Route::fallback(fn() => redirect()->to('employer.main'));

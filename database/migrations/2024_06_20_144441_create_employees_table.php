@@ -18,6 +18,11 @@ return new class extends Migration {
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email');
+            $table->string('position')->nullable();
+            $table->integer('preferred_salary')->nullable();
+            $table->text('about_me')->nullable();
+            $table->json('experiences')->nullable();
+            $table->json('skills')->nullable();
             $table->primary('id');
         });
     }

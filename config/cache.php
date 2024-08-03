@@ -122,6 +122,7 @@ return [
         'vacancy-employer' => 'v-emp-key-%s',
         'skills' => 's-set-all',
         'vacancies-published' => 'v-pub-%s',
-        'logo' => 'logo-url-%s'
+        'logo' => 'logo-url-%s',
+        'related-vacancies-for-employee' => 'v-rel-emp-%s'
     ]
 ];

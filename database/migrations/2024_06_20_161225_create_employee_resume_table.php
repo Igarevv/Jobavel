@@ -12,20 +12,9 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('employee_resume', function (Blueprint $table) {
-            $table->bigInteger('id')->unsigned()->generatedAs()->always();
-            $table->foreignIdFor(Employee::class, 'employee_ids')
-                ->constrained()
-                ->cascadeOnDelete();
-            $table->string('position');
-            $table->integer('preferred_salary')->default(0);
-            $table->json('experience_description');
-            $table->primary('id');
-        });
-
         Schema::create('employee_resume_file', function (Blueprint $table) {
             $table->bigInteger('id')->unsigned()->generatedAs()->always();
-            $table->foreignIdFor(Employee::class, 'user_id')
+            $table->foreignIdFor(Employee::class, 'employee_id')
                 ->constrained()
                 ->cascadeOnDelete();
             $table->string('file_id')->unique();
@@ -34,7 +23,7 @@ return new class extends Migration {
         });
 
         Schema::create('employee_resume_skill', function (Blueprint $table) {
-            $table->foreignIdFor(Employee::class, 'user_id')
+            $table->foreignIdFor(Employee::class, 'employee_id')
                 ->constrained()
                 ->cascadeOnDelete();
             $table->integer('tech_skill_id')->unsigned();
@@ -49,7 +38,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('employee_resume');
         Schema::dropIfExists('employee_resume_file');
         Schema::dropIfExists('employee_resume_skill');
     }
