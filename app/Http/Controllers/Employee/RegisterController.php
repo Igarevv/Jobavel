@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Employee;
 
 use App\DTO\Auth\RegisterEmployeeDto;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\EmployeeRegisterRequest;
+use App\Http\Requests\Employee\EmployeeRegisterRequest;
 use App\Service\Auth\AuthService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;

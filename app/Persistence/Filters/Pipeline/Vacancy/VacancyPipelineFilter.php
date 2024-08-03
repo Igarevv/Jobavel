@@ -21,7 +21,7 @@ class VacancyPipelineFilter implements PipelineFilterInterface
         /**@var Pipeline $pipe */
         $pipe = app(Pipeline::class);
 
-        $builder = $pipe->send(new PipelineDto($builder, $this->queryParams))
+        return $pipe->send(new PipelineDto($builder, $this->queryParams))
             ->through([
                 ConsiderWithoutExperienceFilter::class,
                 EmploymentFilter::class,
@@ -34,7 +34,5 @@ class VacancyPipelineFilter implements PipelineFilterInterface
             ->then(function (PipelineDto $pipeline) {
                 return $pipeline->builder;
             });
-
-        return $builder;
     }
 }

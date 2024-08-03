@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\Employer;
+namespace App\Http\Controllers\Vacancy;
 
-use App\DTO\VacancyDto;
+use App\DTO\Vacancy\VacancyDto;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\VacancyRequest;
+use App\Http\Requests\Vacancy\VacancyRequest;
 use App\Persistence\Models\Vacancy;
 use App\Service\Employer\Vacancy\VacancyService;
 use App\View\ViewModels\VacancyViewModel;

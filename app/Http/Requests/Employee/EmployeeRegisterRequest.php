@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Employee;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -16,7 +16,7 @@ class EmployeeRegisterRequest extends FormRequest
 
     public function rules(): array
     {
-        if ( ! $this->isMethod('POST')) {
+        if (! $this->isMethod('POST')) {
             return [];
         }
 

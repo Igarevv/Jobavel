@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Persistence\Repositories;
 
-use App\DTO\VacancyDto;
+use App\DTO\Vacancy\VacancyDto;
 use App\Exceptions\VacancyUpdateException;
 use App\Persistence\Contracts\VacancyRepositoryInterface;
 use App\Persistence\Filters\Manual\FilterInterface;
@@ -81,8 +81,10 @@ class VacancyRepository implements VacancyRepositoryInterface
     {
         return $this->getFiltered($filter, ['techSkills:id,skill_name'])
             ->where('employer_id', $employerId)
-            ->published()->filter($filter)->paginate(3,
-                ['title', 'location', 'id', 'salary', 'employer_id']);
+            ->published()->filter($filter)->paginate(
+                3,
+                ['title', 'location', 'id', 'salary', 'employer_id']
+            );
     }
 
     public function getLatestPublished(int $number): Collection

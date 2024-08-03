@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Employer;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -21,7 +21,10 @@ class UpdateEmployerRequest extends FormRequest
             ],
             'description' => ['sometimes', 'nullable', 'string'],
             'name' => [
-                'sometimes', 'string', 'max:255', Rule::unique('employers', 'company_name')->ignore($userId, 'user_id')
+                'sometimes',
+                'string',
+                'max:255',
+                Rule::unique('employers', 'company_name')->ignore($userId, 'user_id')
             ]
         ];
     }

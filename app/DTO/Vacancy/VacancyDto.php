@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\DTO;
+namespace App\DTO\Vacancy;
 
-use App\Http\Requests\VacancyRequest;
+use App\Http\Requests\Vacancy\VacancyRequest;
 use Carbon\Carbon;
 
 class VacancyDto
@@ -43,7 +43,7 @@ class VacancyDto
             employmentType: $input['employment'],
             considerWithoutExp: $input['consider'],
             offers: $input['offers'] ?? [],
-            salary: (int) ($input['salary'] ?? 0)
+            salary: (int)($input['salary'] ?? 0)
         );
     }
 

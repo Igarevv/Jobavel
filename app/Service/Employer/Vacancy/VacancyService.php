@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Employer\Vacancy;
 
-use App\DTO\VacancyDto;
+use App\DTO\Vacancy\VacancyDto;
 use App\Persistence\Contracts\EmployerAccountRepositoryInterface;
 use App\Persistence\Contracts\VacancyRepositoryInterface;
 use App\Persistence\Filters\Manual\FilterInterface;

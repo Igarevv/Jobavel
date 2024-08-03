@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Vacancy;
 
 use App\Contracts\Request\AfterValidationInterface;
 use App\Enums\Vacancy\EmploymentEnum;
@@ -24,14 +24,15 @@ class VacancyFilterRequest extends FormRequest implements AfterValidationInterfa
             'skills' => ['nullable', new TechSkillsExistsRule()],
             'experience' => ['nullable', Rule::in(['0', '1', '3', '5', '10'])],
             'employment' => [
-                'nullable', Rule::enum(EmploymentEnum::class)->only([
+                'nullable',
+                Rule::enum(EmploymentEnum::class)->only([
                     EmploymentEnum::EMPLOYMENT_OFFICE,
                     EmploymentEnum::EMPLOYMENT_REMOTE,
                     EmploymentEnum::EMPLOYMENT_PART_TIME,
                     EmploymentEnum::EMPLOYMENT_MIXED
                 ])
             ],
-            'salary' => ['nullable', 'numeric', 'min:1'],
+            'salary' => ['nullable', 'numeric', 'between:0,999999'],
             'location' => ['nullable', 'string'],
             'consider' => ['nullable', 'boolean']
         ];
@@ -63,11 +64,11 @@ class VacancyFilterRequest extends FormRequest implements AfterValidationInterfa
     private function mapExperienceWithConsiderInArray(array &$data): void
     {
         if ($this->has('experience')) {
-            $data['experience'] = (int) $this->experience;
+            $data['experience'] = (int)$this->experience;
         }
 
         if ($this->has('consider')) {
-            $data['consider'] = (bool) $this->consider;
+            $data['consider'] = (bool)$this->consider;
         }
 
         if ($this->has('experience') && $this->has('consider')) {
@@ -87,14 +88,14 @@ class VacancyFilterRequest extends FormRequest implements AfterValidationInterfa
     private function castSalaryToInt(array &$data): void
     {
         if ($this->has('salary')) {
-            $data['salary'] = (int) $this->salary;
+            $data['salary'] = (int)$this->salary;
         }
     }
 
     private function castSkillsIdsToInt(array &$data): void
     {
         if ($this->has('skills')) {
-            $data['skills'] = array_map(fn($skillId) => (int) $skillId, $this->skills);
+            $data['skills'] = array_map(fn($skillId) => (int)$skillId, $this->skills);
         }
     }
 

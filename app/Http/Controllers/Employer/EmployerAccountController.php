@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Employer;
 
+use App\DTO\Employer\EmployerPersonalInfoDto;
 use App\Exceptions\InvalidVerificationCodeException;
 use App\Exceptions\VerificationCodeTimeExpiredException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdateEmployerRequest;
-use App\Service\Account\CodeVerificationService;
-use App\Service\Account\EmployerAccountService;
+use App\Http\Requests\Employer\UpdateEmployerRequest;
+use App\Service\Account\Employer\CodeVerificationService;
+use App\Service\Account\Employer\EmployerAccountService;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -23,9 +24,9 @@ class EmployerAccountController extends Controller
 
     public function update(UpdateEmployerRequest $request): RedirectResponse
     {
-        $updatedData = $request->validated();
+        $employerDto = EmployerPersonalInfoDto::fromRequest($request);
 
-        $employer = $this->accountService->update(session('user.emp_id'), $updatedData);
+        $employer = $this->accountService->update(session('user.emp_id'), $employerDto);
 
         if ($employer === false) {
             return back()->with('nothing-updated', trans('alerts.employer-account.nothing-updated'));
@@ -33,7 +34,7 @@ class EmployerAccountController extends Controller
 
         $request->session()->put('user.name', $employer->company_name);
 
-        if ($this->accountService->isNewContactEmail($employer, $updatedData['email'])) {
+        if ($this->accountService->isNewContactEmail($employer, $employerDto->contactEmail)) {
             $request->session()->put('frontend.show-buttons-for-modal', true);
 
             return back()->with('frontend.email-want-update', true);
@@ -49,7 +50,7 @@ class EmployerAccountController extends Controller
         ]);
 
         try {
-            $this->verificationService->verifyCodeFromRequest((int) $input['code'], session('user.emp_id'));
+            $this->verificationService->verifyCodeFromRequest((int)$input['code'], session('user.emp_id'));
 
             $request->session()->forget('frontend.show-buttons-for-modal');
         } catch (VerificationCodeTimeExpiredException|InvalidVerificationCodeException $e) {

@@ -7,7 +7,8 @@ namespace App\Service\Account;
 use App\Exceptions\InvalidRoleException;
 use App\Persistence\Contracts\AccountRepositoryInterface;
 use App\Persistence\Models\User;
-use App\Persistence\Repositories\User\EmployerAccountRepository;
+use App\Persistence\Repositories\User\Employee\EmployeeAccountRepository;
+use App\Persistence\Repositories\User\Employer\EmployerAccountRepository;
 
 readonly class AccountRepositoryFactory
 {
@@ -20,7 +21,7 @@ readonly class AccountRepositoryFactory
     {
         return match ($this->role) {
             User::EMPLOYER => new EmployerAccountRepository(),
-            //User::EMPLOYEE => new EmployeeAccountRepository(),
+            User::EMPLOYEE => new EmployeeAccountRepository(),
             default => throw new InvalidRoleException('Tried to get repository for invalid role '.$this->role)
         };
     }

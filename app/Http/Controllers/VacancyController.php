@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Presenters\VacancyCardPresenter;
-use App\Http\Requests\VacancyFilterRequest;
+use App\Http\Requests\Vacancy\VacancyFilterRequest;
 use App\Persistence\Filters\Manual\Vacancy\VacancyFilter;
 use App\Service\Employer\Vacancy\VacancyService;
 use App\View\ViewModels\SkillsViewModel;

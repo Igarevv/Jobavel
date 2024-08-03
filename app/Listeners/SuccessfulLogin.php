@@ -10,7 +10,7 @@ class SuccessfulLogin
     public function handle(Login $event): void
     {
         $user = $event->user->getRelationByUserRole()->first();
-
+        
         session([
             'user' => [
                 'account_id' => $event->user->user_id,

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Vacancy;
 
 use App\Contracts\Request\AfterValidationInterface;
 use App\Enums\Vacancy\EmploymentEnum;
@@ -24,7 +24,7 @@ class VacancyRequest extends FormRequest implements AfterValidationInterface
     {
         $rules = [
             'skillset' => ['required', new TechSkillsExistsRule()],
-            'title' => ['required', 'string', 'max:255'],
+            'title' => ['required', 'string', 'max:40'],
             'salary' => ['numeric', 'between:0,999999'],
             'description' => ['required', 'string'],
             'location' => ['required', 'string'],
@@ -33,7 +33,8 @@ class VacancyRequest extends FormRequest implements AfterValidationInterface
             'offers.*' => ['nullable', 'string'],
             'experience' => ['required', 'numeric'],
             'employment' => [
-                'required', Rule::enum(EmploymentEnum::class)->only([
+                'required',
+                Rule::enum(EmploymentEnum::class)->only([
                     EmploymentEnum::EMPLOYMENT_OFFICE,
                     EmploymentEnum::EMPLOYMENT_REMOTE,
                     EmploymentEnum::EMPLOYMENT_PART_TIME,
@@ -78,14 +79,14 @@ class VacancyRequest extends FormRequest implements AfterValidationInterface
 
     private function castConsiderToBool(array &$data): void
     {
-        $data['consider'] = (bool) $this->consider;
+        $data['consider'] = (bool)$this->consider;
     }
 
     private function castSkillsIdsToInt(array &$data): void
     {
         if ($this->has('skillset')) {
             $data['skillset'] = Arr::map($this->skillset, function ($skillId) {
-                return (int) $skillId;
+                return (int)$skillId;
             });
         }
     }
@@ -93,7 +94,7 @@ class VacancyRequest extends FormRequest implements AfterValidationInterface
     private function castExperienceToInt(array &$data): void
     {
         if ($this->has('experience')) {
-            $data['experience'] = (int) $this->experience;
+            $data['experience'] = (int)$this->experience;
         }
     }
 

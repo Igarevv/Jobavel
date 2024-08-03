@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\DTO\Auth;
 
 use App\Contracts\Auth\RegisterDtoInterface;
-use App\Http\Requests\EmployerRegisterRequest;
+use App\Http\Requests\Employer\EmployerRegisterRequest;
 use App\Persistence\Models\User;
 use Illuminate\Support\Facades\Hash;
 

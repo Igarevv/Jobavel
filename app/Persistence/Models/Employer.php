@@ -2,7 +2,6 @@
 
 namespace App\Persistence\Models;
 
-use App\Observers\EmployerObserver;
 use App\Service\Cache\Cache;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -100,7 +99,7 @@ class Employer extends Model
         );
     }
 
-    public static function findByUuid(string $uuid, array $columns = ['*']): Employer
+    public static function findByUuid(string $uuid, array $columns = ['*']): static
     {
         return static::where('employer_id', $uuid)->firstOrFail($columns);
     }

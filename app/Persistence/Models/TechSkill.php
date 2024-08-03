@@ -21,7 +21,7 @@ class TechSkill extends Model
         return $this->belongsToMany(Vacancy::class);
     }
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 

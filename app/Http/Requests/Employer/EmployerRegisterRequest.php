@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Employer;
 
 use App\Enums\EmployerEnum;
 use Illuminate\Foundation\Http\FormRequest;
@@ -28,7 +28,8 @@ class EmployerRegisterRequest extends FormRequest
             'email' => 'required|email|unique:users,email|unique:employers,contact_email',
             'password' => ['required', 'confirmed', Password::defaults()],
             'type' => [
-                'required', Rule::enum(EmployerEnum::class)->only([
+                'required',
+                Rule::enum(EmployerEnum::class)->only([
                     EmployerEnum::COMPANY_TYPE_OUTSTAFF,
                     EmployerEnum::COMPANY_TYPE_AGENCY,
                     EmployerEnum::COMPANY_TYPE_OUTSOURCE,

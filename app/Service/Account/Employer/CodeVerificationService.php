@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Account;
+namespace App\Service\Account\Employer;
 
 use App\Events\ContactEmailUpdatedEvent;
 use App\Exceptions\InvalidVerificationCodeException;

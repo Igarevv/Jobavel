@@ -2,7 +2,7 @@
 
 namespace App\Persistence\Contracts;
 
-use App\DTO\VacancyDto;
+use App\DTO\Vacancy\VacancyDto;
 use App\Persistence\Filters\Manual\FilterInterface;
 use App\Persistence\Models\Employer;
 use App\Persistence\Models\Vacancy;

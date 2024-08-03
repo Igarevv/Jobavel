@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Listeners;
 
 use App\Events\EmployerUpdated;
-use App\Service\Account\CodeVerificationService;
+use App\Service\Account\Employer\CodeVerificationService;
 
 class CodeSendingOnEmployerUpdate
 {

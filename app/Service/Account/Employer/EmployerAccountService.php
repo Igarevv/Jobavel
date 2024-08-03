@@ -2,10 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Account;
+namespace App\Service\Account\Employer;
 
+use App\DTO\Employer\EmployerPersonalInfoDto;
 use App\Persistence\Models\Employer;
 use App\Persistence\Models\User;
+use App\Service\Account\AccountRepositoryFactory;
+use App\Service\Account\AccountService;
 
 final class EmployerAccountService extends AccountService
 {
@@ -18,11 +21,11 @@ final class EmployerAccountService extends AccountService
         parent::__construct(new AccountRepositoryFactory(User::EMPLOYER));
     }
 
-    public function update(string|int $userId, array $newData): Employer|false
+    public function update(string|int $userId, EmployerPersonalInfoDto $employerDto): Employer|false
     {
-        $employer = $this->getRepository()->update($userId, $newData);
+        $employer = $this->getRepository()->update($userId, $employerDto);
 
-        if (! $employer->wasChanged() && ! $this->isNewContactEmail($employer, $newData['email'])) {
+        if (! $employer->wasChanged() && ! $this->isNewContactEmail($employer, $employerDto->contactEmail)) {
             return false;
         }
 

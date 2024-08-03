@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\Employer;
+namespace App\Http\Controllers\Vacancy;
 
 use App\Http\Controllers\Controller;
 use App\Http\Presenters\VacancyCardPresenter;
-use App\Http\Requests\VacancyFilterRequest as FilterRequest;
+use App\Http\Requests\Vacancy\VacancyFilterRequest as FilterRequest;
 use App\Persistence\Filters\Manual\Vacancy\VacancyFilter;
 use App\Persistence\Models\Vacancy;
 use App\Service\Employer\Vacancy\VacancyService;
@@ -97,8 +97,10 @@ class VacancyEmployerViewController extends Controller
             ->where('employer_id', $request->user()->employer->id)
             ->paginate(5, ['id', 'title', 'salary', 'created_at', 'updated_at']);
 
-        return view('employer.vacancy.unpublished',
-            ['vacancies' => $vacancies]);
+        return view(
+            'employer.vacancy.unpublished',
+            ['vacancies' => $vacancies]
+        );
     }
 
 }

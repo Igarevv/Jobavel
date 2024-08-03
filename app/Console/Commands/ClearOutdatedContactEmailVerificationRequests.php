@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class ClearOutdatedContactEmailVerificationRequests extends Command
 {
@@ -18,7 +17,6 @@ class ClearOutdatedContactEmailVerificationRequests extends Command
 
     public function handle(): void
     {
-        Log::info('clear db');
         DB::table('verification_codes')->whereDate('created_at', '<', Carbon::now()->subHour())->delete();
     }
 }
