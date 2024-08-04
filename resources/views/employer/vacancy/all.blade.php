@@ -13,7 +13,7 @@
                     <h1 class="text-center">All published vacancies</h1>
                     <h6 class="text-muted text-center">Found: {{ $vacancies->total() ?? 0 }} vacancies</h6>
                 </div>
-                <div class="col-lg-8 offset-lg-1">
+                <div class="col-lg-8 offset-lg-1 d-flex justify-content-center align-items-center flex-column">
                     @forelse($vacancies as $vacancy)
                         <x-card.jobcard :vacancy="$vacancy" :class="'w-75'"></x-card.jobcard>
                     @empty

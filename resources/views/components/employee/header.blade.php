@@ -1,25 +1,28 @@
 <x-header.drop>
-    <div class="col-sm-8 col-md-7 py-4">
-        <h4>Welcome, <span class="fw-bold fst-italic">{{ session('user.name', 'user') }}</span></h4>
-        <p class="text-body-secondary">Employees are individuals who work for an organization or company in exchange for
-            compensation, typically in the form of wages or salary.
-            They are hired to perform specific tasks and responsibilities as outlined by their employer, contributing to
-            the goals and operations of the business.
-            Employees work under a contract of employment, which may be permanent, temporary, part-time, or full-time,
-            and are subject to the policies and procedures of the organization.</p>
-        <div class="d-flex justify-content-between">
-            <a href="{{ route('employee.main') }}" class="btn btn-outline-danger">My Home Page</a>
-            <a href="{{ route('vacancies.all') }}" class="btn btn-outline-danger">All vacancies</a>
-            <a href="{{ '#' }}" class="btn btn-outline-secondary">Support</a>
-            <a href="{{ '#' }}" class="btn btn-outline-info">Account Settings</a>
+    <div class="col-md-7 col-12 py-4">
+        <h4 class="text-center text-md-start">Welcome, <span
+                    class="fw-bold fst-italic">{{ session('user.name', 'user') }}</span></h4>
+        <p class="text-body-secondary text-center text-md-start">
+            Employees are individuals who work for an organization or company in exchange for compensation,
+            typically in the form of wages or salary.
+            They are hired to perform specific tasks and responsibilities as outlined by their employer,
+            contributing to the goals and operations of the business.
+            Employees work under a contract of employment, which may be permanent, temporary, part-time, or
+            full-time, and are subject to the policies and procedures of the organization.
+        </p>
+        <div class="d-flex flex-column flex-md-row justify-content-center justify-content-md-between mt-3">
+            <a href="{{ route('employee.main') }}" class="btn btn-outline-danger mb-2 mb-md-0">My Home Page</a>
+            <a href="{{ route('vacancies.all') }}" class="btn btn-outline-danger mb-2 mb-md-0">All vacancies</a>
+            <a href="{{ '#' }}" class="btn btn-outline-secondary mb-2 mb-md-0">Support</a>
+            <a href="{{ '#' }}" class="btn btn-outline-info mb-2 mb-md-0">Account Settings</a>
         </div>
     </div>
-    <div class="col-sm-4 offset-md-1 py-4">
-        <h4>Contact</h4>
-        <ul class="list-unstyled">
-            <li><a href="#" class="text-white">Follow on Twitter</a></li>
-            <li><a href="#" class="text-white">Like on Facebook</a></li>
-            <li><a href="#" class="text-white">Email me</a></li>
+    <div class="col-md-4 offset-md-1 col-12 py-4">
+        <h4 class="text-center text-md-start">Contact</h4>
+        <ul class="list-unstyled text-center text-md-start">
+            <li><a href="#" class="text-white d-block">Follow on Twitter</a></li>
+            <li><a href="#" class="text-white d-block">Like on Facebook</a></li>
+            <li><a href="#" class="text-white d-block">Email me</a></li>
         </ul>
     </div>
 </x-header.drop>

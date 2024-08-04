@@ -35,7 +35,7 @@
                         <img src="{{ asset('static/home-picture-1.jpg') }}" alt="Image" class="img-fluid">
                     </div>
                     <div class="col-lg-6 col-md-8 order-md-first">
-                        <h2 class="fw-bold">Who we are?</h2>
+                        <h2 class="fw-bold mt-3">Who we are?</h2>
                         <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         <p class="text-center h5">Integer malesuada nunc vel risus commodo. Euismod in pellentesque
                             massa
@@ -59,7 +59,7 @@
                         <img src="{{ asset('static/home-picture-2.jpg') }}" alt="Image" class="img-fluid">
                     </div>
                     <div class="col-lg-6 col-md-8 order-md-last">
-                        <h2 class="fw-bold">Why you should choose us?</h2>
+                        <h2 class="fw-bold mt-3">Why you should choose us?</h2>
                         <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         <p class="text-center h5">Integer malesuada nunc vel risus commodo. Euismod in pellentesque
                             massa
@@ -98,9 +98,13 @@
                         </div>
                     </div>
                 </form>
-                <div class="row">
+            </div>
+            <div class="container my-5 w-85">
+                <div class="row gx-2 gy-4">
                     @foreach($vacancies as $vacancy)
-                        <x-card.jobcard :vacancy="$vacancy"></x-card.jobcard>
+                        <div class="col-lg-6 col-12 d-flex justify-content-center">
+                            <x-card.jobcard :class="'w-85'" :vacancy="$vacancy"></x-card.jobcard>
+                        </div>
                     @endforeach
                     <a href="{{ route('vacancies.all') }}" class="btn btn-outline-danger float-center">Show more</a>
                 </div>

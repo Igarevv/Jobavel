@@ -17,10 +17,7 @@ class HomeController extends Controller
     {
         $employee = $getEmpAction->handle(session('user.emp_id'));
 
-        $relatedVacancies = $relVacanciesAction->handle(
-            cacheKey: $employee->employee_id,
-            skills: $employee->skills
-        );
+        $relatedVacancies = $relVacanciesAction->handle($employee);
 
         if ($employee->skills) {
             $skillsInRaw = TechSkill::query()->whereIn('id', $employee->skills)->pluck('skill_name');

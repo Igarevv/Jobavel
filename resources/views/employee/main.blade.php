@@ -84,7 +84,9 @@
                                 <textarea class="form-control d-none" rows="3" name="about-employee"
                                           id="about-employee">{{ old('about-employee') ?? $employee->aboutEmployee ?? '' }}</textarea>
                                 @error('about-employee')
-                                <p class="text-danger">{{ $message }}</p>
+                                <div class="alert alert-success text-center fw-bold my-2">
+                                    {{ $value }}
+                                </div>
                                 @enderror
                             </x-input.block>
                         </div>
@@ -133,16 +135,24 @@
 
                 </form>
             </div>
-            @if($vacancies)
+            @if(! $vacancies->isEmpty())
                 <div class="container my-5 w-85">
                     <h2 class="text-center fw-bold text-decoration-underline mb-3">Vacancies related to your skill
                         set:</h2>
-                    <div class="row">
+                    <div class="row gx-2 gy-4">
                         @foreach($vacancies as $vacancy)
-                            <x-card.jobcard :class="'w-50'" :vacancy="$vacancy"></x-card.jobcard>
+                            <div class="col-lg-6 col-12 d-flex justify-content-center">
+                                <x-card.jobcard :class="'w-100'" :vacancy="$vacancy"></x-card.jobcard>
+                            </div>
                         @endforeach
-                        <a href="{{ route('vacancies.all', ['skills' => implode(',', $employee->skills)]) }}"
-                           class="btn btn-outline-danger float-center">Show more</a>
+                    </div>
+                    <div class="text-center mt-4">
+                        @empty($employee->skills)
+                            <a href="{{ route('vacancies.all') }}" class="btn btn-outline-danger">Show more</a>
+                        @else
+                            <a href="{{ route('vacancies.all', ['skills' => implode(',', $employee->skills)]) }}"
+                               class="btn btn-outline-danger">Show more</a>
+                        @endempty
                     </div>
                 </div>
             @endif

@@ -26,6 +26,7 @@ RUN docker-php-ext-install pdo pdo_pgsql pgsql
 
 RUN docker-php-ext-configure intl
 RUN docker-php-ext-install intl
+RUN docker-php-ext-install opcache
 
 RUN addgroup --system --gid ${GID} laravel
 RUN adduser --system --uid ${UID} --ingroup laravel --shell /bin/sh --no-create-home laravel

@@ -1,8 +1,8 @@
 @if($data)
     @foreach($data as $index => $experience)
         <div class="experience-item mb-3">
-            <div class="d-flex px-3 py-2 justify-content-between bg-color-dark">
-                <div class="editable-container d-flex align-items-center gap-1">
+            <div class="d-flex flex-column flex-md-row px-3 py-2 justify-content-between bg-color-dark">
+                <div class="editable-container d-flex flex-column flex-md-row align-items-start align-items-md-center gap-1">
                     <div>
                         <h6 class="editable-input d-inline input-hover-white text-node text-white fw-bold"
                             data-id="previous-position-{{ $index }}">{{ old('experiences.'.$index.'.position') ?? $experience->position ?? '[position]' }}</h6>
@@ -23,7 +23,7 @@
                                value="{{ old('experiences.'.$index.'.company') ?? $experience->company ?? '' }}">
                     </div>
                 </div>
-                <div class="editable-container d-flex align-items-center gap-1">
+                <div class="editable-container d-flex flex-column flex-md-row align-items-start align-items-md-center gap-1 mt-2 mt-md-0">
                     <div>
                         <h6 class="editable-input d-inline input-hover-white fw-bold text-white"
                             data-id="from-{{ $index }}">{{ old('experiences.'.$index.'.from') ?? $experience->from ?? '[from]' }}</h6>
@@ -45,22 +45,22 @@
                     </div>
                 </div>
             </div>
-            <div class="editable-section">
+            <div class="editable-section mt-2">
                 <div class="container">
-                            <span class="add-li-field editable-input input-hover text-primary text-center"
-                                  data-experience-id="{{ $index }}">Add description field</span>
+                    <span class="add-li-field editable-input input-hover text-primary text-center d-block"
+                          data-experience-id="{{ $index }}">Add description field</span>
                     <ul id="description-list-{{ $index }}">
                         @if (isset($experience->description) || old('experiences.'.$index.'.description', []))
                             @foreach ((old('experiences.'.$index.'.description') ?? $experience->description) as $descIndex => $description)
-                                <li data-id="{{ $index }}">
-                                    <div class="editable-input input-group input-field-{{ $index }} d-flex justify-content-between align-items-center">
+                                <li data-id="{{ $index }}" class="mb-2">
+                                    <div class="editable-input input-group input-field-{{ $index }} d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
                                         <span class="text-node input-hover text-14">{{ old('experiences.' . $index . '.$.description.' . $descIndex) ?? $description ?? '[description]' }}</span>
                                         <input type="text"
                                                name="experiences[{{ $index }}][description][]"
                                                class="form-control input-text d-none"
                                                value="{{ old('experiences.' . $index . '.$.description.' . $descIndex) ?? $description ?? '' }}">
                                     </div>
-                                    <span class="editable-input remove-item input-hover text-danger">Remove field</span>
+                                    <span class="editable-input remove-item input-hover text-danger d-block mt-2 mt-md-0">Remove field</span>
                                 </li>
                             @endforeach
                         @endif
@@ -72,7 +72,7 @@
                     {{ $errors->first("experiences.$index.*") }}
                 @endif
             </div>
-            <button type="button" class="btn btn-danger btn-sm delete-btn">Delete</button>
+            <button type="button" class="btn btn-danger btn-sm delete-btn mt-2">Delete</button>
         </div>
     @endforeach
 @else
