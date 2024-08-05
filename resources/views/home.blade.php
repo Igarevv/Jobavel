@@ -32,7 +32,7 @@
             <div class="container">
                 <div class="row py-lg-5">
                     <div class="col-lg-6 col-md-4 order-md-last">
-                        <img src="{{ asset('static/home-picture-1.jpg') }}" alt="Image" class="img-fluid">
+                        <img src="{{ \Illuminate\Support\Facades\Storage::disk('public_static')->url('home-picture-1.jpg') }}" alt="Image" class="img-fluid">
                     </div>
                     <div class="col-lg-6 col-md-8 order-md-first">
                         <h2 class="fw-bold mt-3">Who we are?</h2>
@@ -56,7 +56,7 @@
             <div class="container">
                 <div class="row py-lg-5">
                     <div class="col-lg-6 col-md-4 order-md-first">
-                        <img src="{{ asset('static/home-picture-2.jpg') }}" alt="Image" class="img-fluid">
+                        <img src="{{ \Illuminate\Support\Facades\Storage::disk('public_static')->url('home-picture-2.jpg') }}" alt="Image" class="img-fluid">
                     </div>
                     <div class="col-lg-6 col-md-8 order-md-last">
                         <h2 class="fw-bold mt-3">Why you should choose us?</h2>

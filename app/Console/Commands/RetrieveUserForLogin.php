@@ -18,7 +18,6 @@ class RetrieveUserForLogin extends Command
         $role = $this->choice(
             question: 'Which type of user do you want to retrieve?',
             choices: ['employer', 'employee'],
-            default: 0,
             attempts: 3
         );
 

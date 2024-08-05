@@ -110,4 +110,4 @@ Route::name('employer.')->group(function () {
     });
 });
 
-Route::fallback(fn() => redirect()->to('employer.main'));
+Route::fallback(fn() => redirect()->to('home'));

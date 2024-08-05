@@ -21,4 +21,4 @@ Route::prefix('employee')->name('employee.')->group(function () {
     });
 });
 
-Route::fallback(fn() => redirect()->to('employee.main'));
+Route::fallback(fn() => redirect()->to('home'));

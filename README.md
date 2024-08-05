@@ -81,7 +81,7 @@ php artisan storage:link
 You can also get test user data for login:
 
 ````
-docker compose exec php php artisan test:give-user
+docker exec -it php php artisan test:give-user
 ````
 
 Cache routes, views, configs

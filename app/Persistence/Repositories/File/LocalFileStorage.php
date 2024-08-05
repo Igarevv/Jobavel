@@ -20,19 +20,17 @@ class LocalFileStorage implements LogoStorageInterface
 
     public function get(string $imageId): string|false
     {
-        $url = Storage::disk('public_logo')->url($imageId);
-
-        return asset($url);
+        return Storage::disk($this->disk)->url(basename($imageId));
     }
 
     public function delete(string $imageId): bool
     {
-        return Storage::disk($this->disk)->delete($imageId);
+        return Storage::disk($this->disk)->delete(basename($imageId));
     }
 
     public function isExists(string $imageId): bool
     {
-        return Storage::disk($this->disk)->exists($imageId);
+        return Storage::disk($this->disk)->exists(basename($imageId));
     }
 
 }
