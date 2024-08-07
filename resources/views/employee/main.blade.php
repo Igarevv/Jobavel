@@ -26,7 +26,7 @@
                     {{ $value }}
                 </div>
                 @endsession
-                <form method="post" action="{{ route('employee.account.personal-info') }}">
+                <form method="post" action="{{ route('employee.account.personal-info') }}" id="employeeForm">
                     @csrf
                     <div class="d-flex flex-column justify-content-center text-center align-items-center">
                         <div class="d-flex gap-5 mb-5 text-center justify-content-center">
@@ -94,6 +94,9 @@
 
                     <h3 class="text-center text-decoration-underline link-danger fw-bold mb-5">Optional</h3>
 
+                    <input type="hidden" name="skills[]" id="current_skills"
+                           value="">
+
                     <div class="mb-5">
                         <div class="text-center mb-4">
                             <h6 class="text-center">For better experience, you can choose your skills:</h6>
@@ -111,6 +114,9 @@
                                 </button>
                             </div>
                             <p class="text-center h6 text-danger fw-bold" id="error-message-skills"></p>
+                            @error('skills')
+                            <p class="text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <div class="container pt-2 font-12" id="skills-container"
@@ -160,11 +166,10 @@
         </div>
     </x-main>
     <x-footer></x-footer>
-
-    <script src="/assets/js/employee/employeePersonalInfo.js" nonce="{{ csp_nonce() }}"></script>
-
-    <script src="/assets/js/addNewField.js" nonce="{{ csp_nonce() }}"></script>
-
-    <script src="/assets/js/viewSkills.js" nonce="{{ csp_nonce() }}"></script>
-
+    @pushonce('vite')
+        @vite([
+            'resources/assets/js/employee/employeePersonalInfo.js',
+            'resources/assets/js/viewSkills.js',
+        ])
+    @endpushonce
 </x-layout>

@@ -66,6 +66,12 @@ Then, run composer
 docker-compose exec php composer install --prefer-dist --no-dev -o
 ````
 
+Then, build frontend assets
+
+````
+docker-compose exec php npm install && npm run build
+````
+
 Run migration
 
 ````

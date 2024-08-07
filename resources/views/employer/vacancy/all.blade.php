@@ -177,5 +177,7 @@
     </x-main>
     <x-footer></x-footer>
 
-    <script nonce="{{ csp_nonce() }}" src="/assets/js/employer/filter.js"></script>
+    @pushonce('vite')
+        @vite(['resources/assets/js/employer/filter.js'])
+    @endpushonce
 </x-layout>

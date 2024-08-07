@@ -106,16 +106,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const experienceContainer = document.getElementById('experience-container');
 
-    experienceContainer.addEventListener('click', function (event) {
-        if (event.target.matches('.add-li-field')) {
-            const experienceId = event.target.getAttribute('data-experience-id');
-            const ul = document.getElementById(`description-list-${experienceId}`);
-            const li = document.createElement('li');
-            const inputFieldId = generateRandomString();
+    if (experienceContainer) {
+        experienceContainer.addEventListener('click', function (event) {
+            if (event.target.matches('.add-li-field')) {
+                const experienceId = event.target.getAttribute('data-experience-id');
+                const ul = document.getElementById(`description-list-${experienceId}`);
+                const li = document.createElement('li');
+                const inputFieldId = generateRandomString();
 
-            li.setAttribute('data-id', inputFieldId);
+                li.setAttribute('data-id', inputFieldId);
 
-            li.innerHTML = `
+                li.innerHTML = `
                 <div class="editable-input input-group d-flex justify-content-between align-items-center">
                     <span class="text-node input-hover text-14">[description]</span>
                     <input type="text" name="experiences[${experienceId}][description][]" 
@@ -123,30 +124,31 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
                 <span class="editable-input remove-item input-hover text-danger">Remove field</span>
             `;
-            ul.appendChild(li);
-            attachEditableClickListeners();
-            attachLiInputBlurListeners();
-        }
-    });
-
-    experienceContainer.addEventListener('click', function (event) {
-        if (event.target.matches('.text-node')) {
-            const li = event.target.closest('li');
-            if (li) {
-                const input = li.querySelector('.input-text');
-                event.target.classList.add('d-none');
-                input.classList.remove('d-none');
-                input.focus();
+                ul.appendChild(li);
+                attachEditableClickListeners();
+                attachLiInputBlurListeners();
             }
-        }
+        });
 
-        if (event.target.matches('.remove-item')) {
-            const li = event.target.closest('li');
-            if (li) {
-                li.remove();
+        experienceContainer.addEventListener('click', function (event) {
+            if (event.target.matches('.text-node')) {
+                const li = event.target.closest('li');
+                if (li) {
+                    const input = li.querySelector('.input-text');
+                    event.target.classList.add('d-none');
+                    input.classList.remove('d-none');
+                    input.focus();
+                }
             }
-        }
-    });
+
+            if (event.target.matches('.remove-item')) {
+                const li = event.target.closest('li');
+                if (li) {
+                    li.remove();
+                }
+            }
+        });
+    }
 
     document.getElementById('add-more').addEventListener('click', function () {
         let newExperience = document.createElement('div');

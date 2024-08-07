@@ -180,10 +180,6 @@
         </script>
     @endif
 
-    @push("change-logo")
-        <script nonce="{{ csp_nonce() }}" src="/assets/js/employer/changeLogo.js"></script>
-    @endpush
-
     <script nonce="{{ csp_nonce() }}">
         document.addEventListener('DOMContentLoaded', function () {
             const imageBlock = document.getElementById('background-image-block');
@@ -191,6 +187,10 @@
             imageBlock.style.background = 'url(' + url + ') center center / cover no-repeat';
         });
     </script>
-
-    <script nonce="{{ csp_nonce() }}" src="/assets/js/employer/verificationCode.js"></script>
+    @pushonce('vite')
+        @vite([
+            'resources/assets/js/employer/verificationCode.js',
+            'resources/assets/js/employer/changeLogo.js'
+        ])
+    @endpushonce
 </x-layout>

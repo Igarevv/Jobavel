@@ -1,7 +1,3 @@
-@pushonce('vacancy-css')
-    <link nonce="{{ csp_nonce() }}" href="/assets/css/vacancy.css" type="text/css" rel="stylesheet">
-@endpushonce
-
 <div class="overflow-auto vh-50">
     @foreach($skillSet as $chunk)
         @foreach($chunk as $key => $skills)

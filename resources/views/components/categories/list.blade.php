@@ -1,6 +1,3 @@
-@pushonce('vacancy-css')
-    <link nonce="{{ csp_nonce() }}" href="/assets/css/vacancy.css" type="text/css" rel="stylesheet">
-@endpushonce
 <div class="container pt-2 font-12">
     @forelse($skillSet as $chunk)
         <div class="row justify-content-around gx-1">

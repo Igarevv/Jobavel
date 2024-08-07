@@ -1,5 +1,9 @@
-document.getElementById('view-skills').addEventListener('click', async function () {
+document.addEventListener('DOMContentLoaded', () => {
+    const currentSkills = JSON.parse(document.getElementById('skills-container').getAttribute('data-employee-skills')) || [];
+    document.getElementById('current_skills').value = JSON.stringify(currentSkills);
+});
 
+document.getElementById('view-skills').addEventListener('click', async function () {
     const response = await fetch('/api/vacancy/skills');
 
     if (!response.ok) {
@@ -7,11 +11,9 @@ document.getElementById('view-skills').addEventListener('click', async function 
     }
 
     const skillArray = await response.json();
-
     const container = document.getElementById('skills-container');
     const errorMessage = document.getElementById('error-message-skills');
-
-    const employeeCurrentSkills = JSON.parse(container.getAttribute('data-employee-skills')) || [];
+    const employeeCurrentSkills = JSON.parse(document.getElementById('current_skills').value) || [];
 
     container.innerHTML = '';
     errorMessage.innerText = '';
@@ -70,12 +72,38 @@ document.getElementById('view-skills').addEventListener('click', async function 
     });
 
     document.getElementById('hide-skills').classList.remove('d-none');
-    container.classList.remove('d-none')
+    container.classList.remove('d-none');
     this.classList.add('d-none');
 });
+
 
 document.getElementById('hide-skills').addEventListener('click', function () {
     this.classList.add('d-none');
     document.getElementById('skills-container').classList.add('d-none');
     document.getElementById('view-skills').classList.remove('d-none');
 })
+
+document.getElementById('employeeForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    const selectedSkills = Array.from(document.querySelectorAll('input[name="skills[]"]:checked'))
+        .map(input => Number(input.value));
+
+    const currentSkills = JSON.parse(document.getElementById('skills-container').getAttribute('data-employee-skills')) || [];
+
+    const allSkills = [...new Set([...currentSkills, ...selectedSkills])];
+
+    const form = event.target;
+    form.querySelectorAll('input[name="skills[]"]').forEach(input => input.remove());
+
+    allSkills.forEach(skillId => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'skills[]';
+        input.value = skillId;
+        form.appendChild(input);
+    });
+
+    form.submit();
+});
+

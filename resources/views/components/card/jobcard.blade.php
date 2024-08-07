@@ -56,4 +56,6 @@
     </div>
 </div>
 
-<script src="/assets/js/employer/hideShowSkills.js" nonce="{{ csp_nonce() }}"></script>
+@pushonce('vite')
+    @vite(['resources/assets/js/employer/hideShowSkills.js'])
+@endpushonce

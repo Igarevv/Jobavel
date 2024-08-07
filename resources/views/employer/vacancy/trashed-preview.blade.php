@@ -209,10 +209,5 @@
             </div>
         </div>
     </x-main>
-    @once
-        @push('vacancy-css')
-            <link nonce="{{ csp_nonce() }}" href="/assets/css/vacancy.css" type="text/css" rel="stylesheet">
-        @endpush
-    @endonce
     <x-footer></x-footer>
 </x-layout>

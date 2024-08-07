@@ -142,6 +142,7 @@
     </x-main>
 
     <x-footer></x-footer>
-
-    <script nonce="{{ csp_nonce() }}" src="/assets/js/addNewField.js"></script>
+    @pushonce('vite')
+        @vite(['resources/assets/js/addNewField.js'])
+    @endpushonce
 </x-layout>

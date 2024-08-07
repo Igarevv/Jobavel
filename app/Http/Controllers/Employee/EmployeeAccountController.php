@@ -8,6 +8,7 @@ use App\DTO\Employee\EmployeePersonalInfoDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Employee\EmployeePersonalInfo;
 use App\Service\Account\Employee\EmployeeAccountService;
+use Illuminate\Http\RedirectResponse;
 
 class EmployeeAccountController extends Controller
 {
@@ -17,7 +18,7 @@ class EmployeeAccountController extends Controller
     ) {
     }
 
-    public function update(EmployeePersonalInfo $request): \Illuminate\Http\RedirectResponse
+    public function update(EmployeePersonalInfo $request): RedirectResponse
     {
         $employeeDto = EmployeePersonalInfoDto::fromRequest($request);
 

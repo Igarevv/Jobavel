@@ -21,3 +21,4 @@ storage/clockwork
 storage/debugbar
 worker.log
 Makefile
+package-lock.json
