@@ -22,3 +22,6 @@ storage/debugbar
 worker.log
 Makefile
 package-lock.json
+composer.lock
+/public/logo
+/public/static

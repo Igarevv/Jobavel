@@ -17,6 +17,15 @@ tbody td {
 
 .card {
     border-radius: .5rem;
+    transition: .2s;
+}
+
+.card:hover {
+    border-color: #f9322c;
+
+    .card-title {
+        color: #f9322c;
+    }
 }
 
 .category-label-column {
