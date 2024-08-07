@@ -43,7 +43,11 @@ RUN mkdir -p /usr/src/php/ext/redis \
     && echo 'redis' >> /usr/src/php-available-exts \
     && docker-php-ext-install redis
 
+RUN mkdir -p /var/www/jobavel/.npm
+RUN npm config set cache /var/www/jobavel/.npm --global
+
 RUN chown -R ${UID}:${GID} /var/www/jobavel
+RUN chmod -R 755 /var/www/jobavel
 
 USER laravel
 

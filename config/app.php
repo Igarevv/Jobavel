@@ -1,6 +1,5 @@
 <?php
 
-use Clockwork\Support\Laravel\ClockworkServiceProvider;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
@@ -168,7 +167,6 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        ClockworkServiceProvider::class,
         \App\Providers\ViewServiceProvider::class,
         \App\Providers\ValidationServiceProvider::class,
     ])->toArray(),

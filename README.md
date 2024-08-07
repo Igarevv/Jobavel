@@ -66,10 +66,16 @@ Then, run composer
 docker-compose exec php composer install --prefer-dist --no-dev -o
 ````
 
+Generate application key
+
+````
+docker-compose exec php php artisan key:generate
+````
+
 Then, build frontend assets
 
 ````
-docker-compose exec php npm install && npm run build
+docker-compose exec php sh -c "npm install && npm run build"
 ````
 
 Run migration
@@ -81,7 +87,7 @@ docker-compose exec php php artisan migrate:fresh --seed
 Create symbolic link for local storage use command:
 
 ````
-php artisan storage:link
+docker-compose exec php php artisan storage:link
 ````
 
 You can also get test user data for login:

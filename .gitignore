@@ -1,6 +1,7 @@
 /.phpunit.cache
 /node_modules
 /public/build
+/.npm
 /public/hot
 /public/storage
 /storage/*.key
@@ -25,3 +26,4 @@ package-lock.json
 composer.lock
 /public/logo
 /public/static
+/src

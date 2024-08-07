@@ -49,6 +49,7 @@ class AppServiceProvider extends ServiceProvider
     {
         if (! $this->app->hasDebugModeEnabled() || $this->app->isProduction()) {
             $kernel->prependMiddlewareToGroup('web', AddCspHeaders::class);
+            $this->app->register('\Clockwork\Support\Laravel\ClockworkSupport::class');
         }
 
         Collection::macro('present', function (string $class) {

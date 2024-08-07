@@ -15,11 +15,11 @@
         "league/flysystem-aws-s3-v3": "^3.0",
         "predis/predis": "^2.2",
         "spatie/laravel-csp": "^2.10",
-        "spatie/laravel-permission": "^6.9"
+        "spatie/laravel-permission": "^6.9",
+        "fakerphp/faker": "^1.9.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13",
-        "fakerphp/faker": "^1.9.1",
         "itsgoingd/clockwork": "^5.2",
         "laravel/pint": "^1.0",
         "mockery/mockery": "^1.4.4",
