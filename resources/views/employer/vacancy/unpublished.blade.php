@@ -72,12 +72,12 @@
                                                                 <td>{{ $vacancy->created_at }}</td>
                                                                 <td>{{ $vacancy->updated_at ?? "Not updated yet"}}</td>
                                                                 <td class="text-center">
-                                                                    <a href="{{ route('vacancies.show', ['vacancy' => $vacancy->id]) }}"
+                                                                    <a href="{{ route('vacancies.show', ['vacancy' => $vacancy->slug]) }}"
                                                                        class="btn btn-outline-light">Show
                                                                         Preview</a>
                                                                 </td>
                                                                 <td class="text-center">
-                                                                    <form action="{{ route('employer.vacancy.publish', ['vacancy' => $vacancy->id]) }}"
+                                                                    <form action="{{ route('employer.vacancy.publish', ['vacancy' => $vacancy->slug]) }}"
                                                                           method="POST">
                                                                         @csrf
                                                                         <x-button.outline colorType="success"

@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Vacancy\VacancyRequest;
 use App\Persistence\Models\Vacancy;
 use App\Service\Employer\Vacancy\VacancyService;
+use App\Support\SlugVacancy;
 use App\View\ViewModels\VacancyViewModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Str;
@@ -21,9 +22,9 @@ class VacancyManipulationController extends Controller
     ) {
     }
 
-    public function update(int $vacancy, VacancyRequest $request, VacancyViewModel $viewModel): RedirectResponse
+    public function update(SlugVacancy $vacancy, VacancyRequest $request, VacancyViewModel $viewModel): RedirectResponse
     {
-        $existedVacancy = $viewModel->vacancy($vacancy);
+        $existedVacancy = $viewModel->vacancy($vacancy->clearSlug());
 
         $this->authorize('edit', $existedVacancy);
 
@@ -98,7 +99,7 @@ class VacancyManipulationController extends Controller
 
         $vacancy->unpublish();
 
-        return redirect()->route('employer.vacancy.unpublished', ['vacancy' => $vacancy->id]);
+        return redirect()->route('employer.vacancy.unpublished', ['vacancy' => $vacancy->slug]);
     }
 
 }

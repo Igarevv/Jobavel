@@ -57,10 +57,10 @@
                                                                 <td>{{ $vacancy->updated_at ?? "Not updated yet"}}</td>
                                                                 <td class="text-center">
                                                                     <a class="btn btn-outline-light"
-                                                                       href="{{ route('employer.vacancy.trashed.preview', ['vacancy' => $vacancy->id]) }}">Show</a>
+                                                                       href="{{ route('employer.vacancy.trashed.preview', ['vacancy' => $vacancy->slug]) }}">Show</a>
                                                                 </td>
                                                                 <td class="text-center">
-                                                                    <form action="{{ route('employer.vacancy.restore', ['vacancy' => $vacancy->id]) }}"
+                                                                    <form action="{{ route('employer.vacancy.restore', ['vacancy' => $vacancy->slug]) }}"
                                                                           method="POST">
                                                                         @csrf
                                                                         <x-button.outline colorType="success"
@@ -69,7 +69,7 @@
                                                                     </form>
                                                                 </td>
                                                                 <td class="text-center">
-                                                                    <form action="{{ route('employer.vacancy.delete-forever', ['vacancy' => $vacancy->id]) }}"
+                                                                    <form action="{{ route('employer.vacancy.delete-forever', ['vacancy' => $vacancy->slug]) }}"
                                                                           method="POST">
                                                                         @csrf
                                                                         @method('DELETE')

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Vacancy;
 
-use App\Contracts\Request\AfterValidationInterface;
 use App\Enums\Vacancy\EmploymentEnum;
 use App\Exceptions\FormDefaultDataModifiedException;
 use App\Rules\TechSkillsExistsRule;
@@ -13,7 +12,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class VacancyFilterRequest extends FormRequest implements AfterValidationInterface
+class VacancyFilterRequest extends FormRequest
 {
 
     use AfterValidation;

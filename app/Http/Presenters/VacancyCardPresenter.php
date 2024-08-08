@@ -17,7 +17,7 @@ readonly class VacancyCardPresenter
     public function paginatedCollectionToBase(): Paginator
     {
         $this->vacancies->through(function (Vacancy $vacancy) {
-            return (object) $this->mapper($vacancy)->toArray();
+            return (object)$this->mapper($vacancy)->toArray();
         });
 
         return $this->vacancies;
@@ -26,7 +26,7 @@ readonly class VacancyCardPresenter
     public function collectionToBase(): Collection
     {
         return $this->vacancies->map(function (Vacancy $vacancy) {
-            return (object) $this->mapper($vacancy)->toArray();
+            return (object)$this->mapper($vacancy)->toArray();
         });
     }
 
@@ -38,7 +38,7 @@ readonly class VacancyCardPresenter
 
         unset($vacancy->employer, $vacancy->techSkills);
 
-        $vacancy->employer = (object) $employer->toArray();
+        $vacancy->employer = (object)$employer->toArray();
 
         return $vacancy;
     }

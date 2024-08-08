@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Vacancy;
 
-use App\Contracts\Request\AfterValidationInterface;
 use App\Enums\Vacancy\EmploymentEnum;
 use App\Rules\TechSkillsExistsRule;
 use App\Traits\AfterValidation;
@@ -10,7 +9,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
 
-class VacancyRequest extends FormRequest implements AfterValidationInterface
+class VacancyRequest extends FormRequest
 {
 
     use AfterValidation;

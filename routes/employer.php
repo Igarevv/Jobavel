@@ -69,8 +69,7 @@ Route::name('employer.')->group(function () {
 
                         Route::get('/unpublished', 'unpublished')->name('unpublished');
 
-                        Route::get('/{vacancy}/edit', 'showEdit')->whereNumber('vacancy')
-                            ->name('show.edit');
+                        Route::get('/{vacancy}/edit', 'showEdit')->name('show.edit');
 
                         Route::get('/create', 'create')->name('create');
 
@@ -78,7 +77,6 @@ Route::name('employer.')->group(function () {
 
                         Route::get('/trashed/{vacancy}', 'showTrashedPreview')
                             ->name('trashed.preview')
-                            ->whereNumber('vacancy')
                             ->withTrashed();
                     });
 
@@ -104,7 +102,7 @@ Route::name('employer.')->group(function () {
                         )->name('delete-forever')->withTrashed();
 
                         Route::post('/restore/{vacancy}', 'restore')->name('restore')->withTrashed();
-                    })->whereNumber('vacancy');
+                    });
             });
         });
     });

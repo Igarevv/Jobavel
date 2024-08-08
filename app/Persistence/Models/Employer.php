@@ -40,7 +40,7 @@ class Employer extends Model
         'company_type',
         'company_logo'
     ];
-
+    
     protected $hidden = [
         'id',
         'user_id'

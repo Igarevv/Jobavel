@@ -185,14 +185,14 @@
                                 <div class="card-body d-flex flex-column">
                                     <h5 class="card-title text-center fw-bold">Actions for you</h5>
                                     <div class="d-flex justify-content-between align-items-center gap-3">
-                                        <form action="{{ route('employer.vacancy.restore', ['vacancy' => $vacancy->id]) }}"
+                                        <form action="{{ route('employer.vacancy.restore', ['vacancy' => $vacancy->slug]) }}"
                                               method="POST">
                                             @csrf
                                             <x-button.outline colorType="success"
                                                               type="submit">Restore
                                             </x-button.outline>
                                         </form>
-                                        <form action="{{ route('employer.vacancy.delete-forever', ['vacancy' => $vacancy->id]) }}"
+                                        <form action="{{ route('employer.vacancy.delete-forever', ['vacancy' => $vacancy->slug]) }}"
                                               method="POST">
                                             @csrf
                                             @method('DELETE')

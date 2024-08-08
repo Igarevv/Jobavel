@@ -2,13 +2,12 @@
 
 namespace App\Http\Requests\Employee;
 
-use App\Contracts\Request\AfterValidationInterface;
 use App\Rules\TechSkillsExistsRule;
 use App\Traits\AfterValidation;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
 
-class EmployeePersonalInfo extends FormRequest implements AfterValidationInterface
+class EmployeePersonalInfo extends FormRequest
 {
 
     use AfterValidation;

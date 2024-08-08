@@ -74,7 +74,7 @@ class VacancyRepository implements VacancyRepositoryInterface
         return $this->getFiltered($filter, [
             'employer:id,company_name,company_logo',
             'techSkills:id,skill_name'
-        ])->paginate($paginatePerPage, ['title', 'location', 'id', 'salary', 'employer_id']);
+        ])->paginate($paginatePerPage, ['title', 'location', 'id', 'salary', 'employer_id', 'slug']);
     }
 
     public function getFilteredVacanciesForEmployer(FilterInterface $filter, int $employerId): LengthAwarePaginator
@@ -83,7 +83,7 @@ class VacancyRepository implements VacancyRepositoryInterface
             ->where('employer_id', $employerId)
             ->published()->filter($filter)->paginate(
                 3,
-                ['title', 'location', 'id', 'salary', 'employer_id']
+                ['title', 'location', 'id', 'salary', 'employer_id', 'slug']
             );
     }
 
@@ -93,7 +93,7 @@ class VacancyRepository implements VacancyRepositoryInterface
             ->published()
             ->latest()
             ->take($number)
-            ->get(['id', 'title', 'employer_id', 'location']);
+            ->get(['id', 'title', 'employer_id', 'location', 'slug']);
     }
 
     protected function getFiltered(FilterInterface $filter, array $withTables): Builder|Vacancy

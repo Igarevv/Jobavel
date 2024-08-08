@@ -7,6 +7,8 @@ use Illuminate\Validation\Validator;
 trait AfterValidation
 {
 
+    abstract public function makeCastAndMutatorsAfterValidation(array &$data);
+
     protected function getValidatorInstance(): \Illuminate\Contracts\Validation\Validator
     {
         return parent::getValidatorInstance()->after(function (Validator $validator) {
@@ -18,9 +20,7 @@ trait AfterValidation
     {
         $data = $validator->getData();
 
-        if (method_exists($this, 'makeCastAndMutatorsAfterValidation')) {
-            $this->makeCastAndMutatorsAfterValidation($data);
-        }
+        $this->makeCastAndMutatorsAfterValidation($data);
 
         $validator->setData($data);
     }

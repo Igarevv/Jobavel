@@ -45,7 +45,7 @@
                         <p class="card-text mb-0"><small class="text-muted">{{ $vacancy->location }}</small></p>
                     </div>
                     <small class="mt-2 mt-md-0">
-                        <a href="{{ route('vacancies.show', ['vacancy' => $vacancy->id]) }}"
+                        <a href="{{ route('vacancies.show', ['vacancy' => $vacancy->slug]) }}"
                            class="red text-end link-offset-2 link-underline-opacity-10 link-underline-opacity-100-hover">
                             Show details >
                         </a>

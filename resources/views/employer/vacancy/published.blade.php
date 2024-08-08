@@ -118,9 +118,9 @@
                                     <div class="d-flex align-items-center justify-content-center gap-5 transform-card">
                                         <x-card.jobcard :class="'w-85'" :vacancy="$vacancy"></x-card.jobcard>
                                         <div class="d-flex flex-row gap-3 mb-3">
-                                            <a href="{{ route('employer.vacancy.show.edit', ['vacancy' => $vacancy->id]) }}"
+                                            <a href="{{ route('employer.vacancy.show.edit', ['vacancy' => $vacancy->slug]) }}"
                                                class="btn btn-outline-primary">Edit</a>
-                                            <form action="{{ route('employer.vacancy.unpublish', ['vacancy' => $vacancy->id]) }}"
+                                            <form action="{{ route('employer.vacancy.unpublish', ['vacancy' => $vacancy->slug]) }}"
                                                   method="POST">
                                                 @csrf
                                                 <x-button.outline colorType="danger" type="submit">Unpublish

@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 /**
  * @mixin Builder
@@ -46,6 +48,7 @@ class Vacancy extends Model
 
     use HasFactory;
     use SoftDeletes;
+    use HasSlug;
 
     protected $casts = [
         'requirements' => 'array',
@@ -57,10 +60,16 @@ class Vacancy extends Model
     ];
 
     protected $fillable = [
-        'location', 'employment_type', 'experience_time',
-        'title', 'salary', 'description',
-        'requirements', 'responsibilities', 'offers',
-        'consider_without_experience'
+        'location',
+        'employment_type',
+        'experience_time',
+        'title',
+        'salary',
+        'description',
+        'requirements',
+        'responsibilities',
+        'offers',
+        'consider_without_experience',
     ];
 
     protected $hidden = [
@@ -102,7 +111,7 @@ class Vacancy extends Model
     public function techSkillsAsArrayOfBase(): Collection
     {
         return $this->techSkills->map(function ($skill) {
-            return (object) [
+            return (object)[
                 'id' => $skill->id,
                 'skillName' => $skill->skill_name
             ];
@@ -137,6 +146,18 @@ class Vacancy extends Model
         return ExperienceEnum::tryFrom($this->experience_time)?->experienceFromString();
     }
 
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom(['title', 'id'])
+            ->saveSlugsTo('slug');
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
     protected function offers(): Attribute
     {
         return Attribute::make(
@@ -148,7 +169,7 @@ class Vacancy extends Model
     protected function experienceTime(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => ExperienceEnum::experienceToString((float) $value),
+            get: fn($value) => ExperienceEnum::experienceToString((float)$value),
         );
     }
 

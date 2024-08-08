@@ -67,9 +67,9 @@ Route::prefix('/auth/email/verify')->middleware('auth')->group(
  * ---------------------------------
  */
 
-Route::prefix('vacancies')->name('vacancies.')->whereNumber('vacancy')->group(function () {
+Route::prefix('vacancies')->name('vacancies.')->group(function () {
     Route::get('/', [VacancyController::class, 'all'])->name('all');
-    
+
     Route::get('/{vacancy}', [VacancyController::class, 'show'])->name('show');
 });
 

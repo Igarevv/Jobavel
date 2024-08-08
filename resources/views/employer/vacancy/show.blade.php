@@ -191,10 +191,10 @@
                                 <div class="card-body d-flex flex-column">
                                     <h5 class="card-title text-center fw-bold">Actions for you</h5>
                                     <div class="d-flex justify-content-between align-items-center gap-3">
-                                        <a href="{{ route('employer.vacancy.show.edit', ['vacancy' => $vacancy->id]) }}"
+                                        <a href="{{ route('employer.vacancy.show.edit', ['vacancy' => $vacancy->slug]) }}"
                                            class="btn btn-outline-primary">Edit
                                             vacancy</a>
-                                        <form action="{{ route('employer.vacancy.destroy', ['vacancy' => $vacancy->id]) }}"
+                                        <form action="{{ route('employer.vacancy.destroy', ['vacancy' => $vacancy->slug]) }}"
                                               method="POST">
                                             @csrf
                                             @method('DELETE')
@@ -202,14 +202,14 @@
                                             </x-button.outline>
                                         </form>
                                         @if($vacancy->isPublished())
-                                            <form action="{{ route('employer.vacancy.unpublish', ['vacancy' => $vacancy->id]) }}"
+                                            <form action="{{ route('employer.vacancy.unpublish', ['vacancy' => $vacancy->slug]) }}"
                                                   method="POST">
                                                 @csrf
                                                 <x-button.outline colorType="warning" type="submit">Unpublish vacancy
                                                 </x-button.outline>
                                             </form>
                                         @else
-                                            <form action="{{ route('employer.vacancy.publish', ['vacancy' => $vacancy->id]) }}"
+                                            <form action="{{ route('employer.vacancy.publish', ['vacancy' => $vacancy->slug]) }}"
                                                   method="POST">
                                                 @csrf
                                                 <x-button.outline colorType="success" type="submit">Publish vacancy

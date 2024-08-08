@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Support\SlugVacancy;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -38,6 +39,14 @@ class RouteServiceProvider extends ServiceProvider
                     require base_path('routes/employer.php');
                 });
         });
+
+        $this->routeBindings();
     }
 
+    protected function routeBindings(): void
+    {
+        Route::bind('vacancy', function (string $slug) {
+            return new SlugVacancy($slug);
+        });
+    }
 }

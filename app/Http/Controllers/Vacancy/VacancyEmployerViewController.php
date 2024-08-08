@@ -10,6 +10,7 @@ use App\Http\Requests\Vacancy\VacancyFilterRequest as FilterRequest;
 use App\Persistence\Filters\Manual\Vacancy\VacancyFilter;
 use App\Persistence\Models\Vacancy;
 use App\Service\Employer\Vacancy\VacancyService;
+use App\Support\SlugVacancy;
 use App\View\ViewModels\SkillsViewModel;
 use App\View\ViewModels\VacancyViewModel;
 use Illuminate\Http\Request;
@@ -32,9 +33,9 @@ class VacancyEmployerViewController extends Controller
         return view('employer.vacancy.create', ['skills' => $categories->toArray()]);
     }
 
-    public function showEdit(int $vacancy, VacancyViewModel $vacancyViewModel): View
+    public function showEdit(SlugVacancy $vacancy, VacancyViewModel $vacancyViewModel): View
     {
-        $existingVacancy = $vacancyViewModel->vacancy($vacancy);
+        $existingVacancy = $vacancyViewModel->vacancy($vacancy->clearSlug());
 
         $this->authorize('edit', $existingVacancy);
 
@@ -95,7 +96,7 @@ class VacancyEmployerViewController extends Controller
     {
         $vacancies = Vacancy::query()->notPublished()
             ->where('employer_id', $request->user()->employer->id)
-            ->paginate(5, ['id', 'title', 'salary', 'created_at', 'updated_at']);
+            ->paginate(5, ['id', 'title', 'salary', 'created_at', 'updated_at', 'slug']);
 
         return view(
             'employer.vacancy.unpublished',

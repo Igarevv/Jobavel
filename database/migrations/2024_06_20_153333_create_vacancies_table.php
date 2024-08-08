@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->foreignIdFor(Employer::class, 'employer_id')
                 ->constrained()
                 ->cascadeOnDelete();
+            $table->string('slug');
             $table->string('title');
             $table->integer('salary')->default(0);
             $table->text('description');

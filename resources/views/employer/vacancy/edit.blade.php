@@ -20,7 +20,7 @@
                     {{ $value }}
                 </div>
                 @endsession
-                <form action="{{ route('employer.vacancy.update', ['vacancy' => $vacancy->id]) }}" method="POST">
+                <form action="{{ route('employer.vacancy.update', ['vacancy' => $vacancy->slug]) }}" method="POST">
                     @csrf
                     @method('PUT')
                     <x-input.block id="createVacancyInput">
