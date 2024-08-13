@@ -9,6 +9,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ext-pdo": "*",
+        "cviebrock/eloquent-sluggable": "^10.0",
         "fakerphp/faker": "^1.9.1",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
@@ -17,8 +19,7 @@
         "predis/predis": "^2.2",
         "spatie/laravel-csp": "^2.10",
         "spatie/laravel-permission": "^6.9",
-        "spatie/laravel-sluggable": "^3.6",
-        "ext-pdo": "*"
+        "spatie/laravel-sluggable": "^3.6"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13",

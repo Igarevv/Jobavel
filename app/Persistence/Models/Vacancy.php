@@ -7,6 +7,8 @@ use App\Observers\VacancyObserver;
 use App\Persistence\Filters\Manual\FilterInterface;
 use App\Persistence\Filters\Pipeline\PipelineFilterInterface;
 use Carbon\Carbon;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Cviebrock\EloquentSluggable\SluggableObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -23,9 +25,11 @@ use Spatie\Sluggable\SlugOptions;
  * @mixin Builder
  * @method static static with($relations)
  * @method static Builder|static query()
- * @property-read  int employer_id
- * @property string title
+ * @property-read  int $employer_id
+ * @property-read int $id
+ * @property string $title
  * @property int $salary
+ * @property string $slug
  * @property string $description
  * @property string $location
  * @property array $requirements,
@@ -48,7 +52,6 @@ class Vacancy extends Model
 
     use HasFactory;
     use SoftDeletes;
-    use HasSlug;
 
     protected $casts = [
         'requirements' => 'array',
@@ -61,6 +64,7 @@ class Vacancy extends Model
 
     protected $fillable = [
         'location',
+        'slug',
         'employment_type',
         'experience_time',
         'title',
@@ -70,11 +74,11 @@ class Vacancy extends Model
         'responsibilities',
         'offers',
         'consider_without_experience',
-        'response_number'
+        'response_number',
     ];
 
     protected $hidden = [
-        'employer_id'
+        'employer_id',
     ];
 
     public function techSkills(): BelongsToMany
@@ -119,7 +123,7 @@ class Vacancy extends Model
         return $this->techSkills->map(function ($skill) {
             return (object)[
                 'id' => $skill->id,
-                'skillName' => $skill->skill_name
+                'skillName' => $skill->skill_name,
             ];
         });
     }
@@ -150,13 +154,6 @@ class Vacancy extends Model
     public function experienceFromString(): ?int
     {
         return ExperienceEnum::tryFrom($this->experience_time)?->experienceFromString();
-    }
-
-    public function getSlugOptions(): SlugOptions
-    {
-        return SlugOptions::create()
-            ->generateSlugsFrom(['title', 'id'])
-            ->saveSlugsTo('slug');
     }
 
     public function getRouteKeyName(): string

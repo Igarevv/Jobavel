@@ -14,6 +14,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class VacancyRepository implements VacancyRepositoryInterface
 {
@@ -39,6 +40,9 @@ class VacancyRepository implements VacancyRepositoryInterface
             if ($vacancy) {
                 $vacancy->techSkills()->sync($vacancyDto->skillSet);
             }
+
+            $vacancy->slug = Str::lower(Str::slug($vacancy->title).'-'.$vacancy->id);
+            $vacancy->save();
         });
     }
 
@@ -60,7 +64,8 @@ class VacancyRepository implements VacancyRepositoryInterface
                 'location' => $newData->location,
                 'experience_time' => $newData->experienceTime,
                 'employment_type' => $newData->employmentType,
-                'consider_without_experience' => $newData->considerWithoutExp
+                'consider_without_experience' => $newData->considerWithoutExp,
+                'slug' => Str::lower(Str::slug($newData->title).'-'.$vacancy->id)
             ]);
 
             $vacancy->techSkills()->sync($newData->skillSet);

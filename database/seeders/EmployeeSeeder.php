@@ -16,7 +16,7 @@ class EmployeeSeeder extends Seeder
     {
         Employee::query()->truncate();
 
-        $users = User::factory()
+        $users = User::factory(3)
             ->has(
                 Employee::factory()->state(
                     function (array $attributes, User $user) {

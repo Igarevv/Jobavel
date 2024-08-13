@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Persistence\Models\Vacancy;
 use App\Service\Cache\Cache;
+use Illuminate\Support\Str;
 
 class VacancyObserver
 {
@@ -25,4 +26,5 @@ class VacancyObserver
         Cache::forgetKey('vacancy', $vacancy->id);
         Cache::forgetKey('vacancies-published', $vacancy->employer()->first()?->employer_id);
     }
+
 }
