@@ -24,7 +24,7 @@ class VacancyManipulationController extends Controller
 
     public function update(SlugVacancy $vacancy, VacancyRequest $request, VacancyViewModel $viewModel): RedirectResponse
     {
-        $existedVacancy = $viewModel->vacancy($vacancy->clearSlug());
+        $existedVacancy = $viewModel->vacancy($vacancy->getIdFromSlug());
 
         $this->authorize('edit', $existedVacancy);
 

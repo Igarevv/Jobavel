@@ -27,14 +27,14 @@ class GuessVacancyForEmployeeAction
             return collect();
         }
 
-        $cacheKey = $this->cache->getCacheKey('related-vacancies-for-employee', $employee->employee_id);
+        $cacheKey = $this->cache->getCacheKey('related-vacancies-for-employee', $employee->employeeId);
 
         return $this->cache->repository()->remember(
             $cacheKey,
             Carbon::now()->addMinutes(30),
             function () use ($employee) {
                 $vacancies = Vacancy::with(['employer:id,company_name,company_logo', 'techSkills:id,skill_name'])
-                    ->select('id', 'title', 'location', 'employer_id')
+                    ->select('id', 'title', 'location', 'employer_id', 'slug')
                     ->published()
                     ->whereHas('techSkills', function (Builder $builder) use ($employee) {
                         $builder->whereIn('id', $employee->skills);

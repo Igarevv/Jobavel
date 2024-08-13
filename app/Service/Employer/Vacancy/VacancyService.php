@@ -55,7 +55,6 @@ class VacancyService
         return $vacancies;
     }
 
-
     public function publishedFilteredVacanciesForEmployer(FilterInterface $filter, string $employerId): Paginator
     {
         $employer = $this->employerAccountRepository->getById($employerId, ['id', 'company_name', 'company_logo']);

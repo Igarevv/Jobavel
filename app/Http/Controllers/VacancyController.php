@@ -17,13 +17,14 @@ class VacancyController extends Controller
 {
 
     public function __construct(
-        protected SkillsViewModel $skillsViewModel
+        protected SkillsViewModel $skillsViewModel,
+        protected VacancyService $vacancyService
     ) {
     }
 
     public function show(SlugVacancy $vacancy, VacancyViewModel $vacancyViewModel): View
     {
-        $vacancyModel = $vacancyViewModel->vacancy($vacancy->clearSlug());
+        $vacancyModel = $vacancyViewModel->vacancy($vacancy->getIdFromSlug());
 
         $this->authorize('viewAny', $vacancyModel);
 
@@ -39,11 +40,11 @@ class VacancyController extends Controller
         ]);
     }
 
-    public function all(VacancyFilterRequest $request, VacancyService $vacancyService): View
+    public function all(VacancyFilterRequest $request): View
     {
         $filter = app()->make(VacancyFilter::class, ['queryParams' => $request->validated()]);
 
-        $vacancies = $vacancyService->allPublishedFilteredVacancies($filter, 6);
+        $vacancies = $this->vacancyService->allPublishedFilteredVacancies($filter, 6);
 
         $vacancies = (new VacancyCardPresenter($vacancies))->paginatedCollectionToBase();
 

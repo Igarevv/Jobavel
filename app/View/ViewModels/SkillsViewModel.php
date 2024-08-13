@@ -29,7 +29,7 @@ class SkillsViewModel
             $result = $sorted->mapToGroups(function (object $techSkill) {
                 $firstLetter = Str::upper(Str::substr($techSkill->skill_name, 0, 1));
 
-                $skill = (object) [
+                $skill = (object)[
                     'id' => $techSkill->id,
                     'skillName' => $techSkill->skill_name
                 ];
@@ -41,16 +41,16 @@ class SkillsViewModel
         });
     }
 
-    public function skillsAsRow(Collection $skills): string
+    public function skillsAsRow(Collection $skills, string $delimiter = ' / '): string
     {
         return $skills->implode(function (\stdClass $skill) {
             return $skill->skillName;
-        }, ' / ');
+        }, $delimiter);
     }
 
     public function pluckExistingSkillsFromVacancy(Vacancy $vacancy): object
     {
-        return (object) [
+        return (object)[
             'ids' => $vacancy->techSkills->pluck('id')->toArray(),
             'names' => $vacancy->techSkills->pluck('skill_name')->toArray(),
         ];

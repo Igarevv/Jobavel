@@ -21,6 +21,11 @@ class VacancyPolicy
         return $this->checkPermission($user, $vacancy, 'vacancy-edit');
     }
 
+    public function apply(?User $user): bool
+    {
+        return (bool)$user?->hasPermissionTo('vacancy-apply');
+    }
+
     public function viewAny(?User $user, Vacancy $vacancy): Response
     {
         if ($vacancy->is_published) {

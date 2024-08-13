@@ -14,7 +14,7 @@ interface VacancyRepositoryInterface
 
     public function createAndSync(Employer $employer, VacancyDto $vacancyDto): void;
 
-    public function getVacancyById(int $id): Vacancy;
+    public function getVacancyById(int $id, array $columns = ['*']): Vacancy;
 
     public function updateWithSkills(Vacancy $vacancy, VacancyDto $newData): void;
 

@@ -35,7 +35,7 @@ class VacancyEmployerViewController extends Controller
 
     public function showEdit(SlugVacancy $vacancy, VacancyViewModel $vacancyViewModel): View
     {
-        $existingVacancy = $vacancyViewModel->vacancy($vacancy->clearSlug());
+        $existingVacancy = $vacancyViewModel->vacancy($vacancy->getIdFromSlug());
 
         $this->authorize('edit', $existingVacancy);
 
@@ -102,6 +102,16 @@ class VacancyEmployerViewController extends Controller
             'employer.vacancy.unpublished',
             ['vacancies' => $vacancies]
         );
+    }
+
+    public function applied(Request $request, VacancyViewModel $vacancyViewModel): View
+    {
+        $vacancies = $vacancyViewModel->getAllVacanciesRelatedToEmployer(
+            employer: $request->user()->employer,
+            columns: ['id', 'title', 'slug', 'created_at']
+        );
+
+        return view('employer.vacancy.applied', ['vacancies' => $vacancies]);
     }
 
 }

@@ -70,6 +70,7 @@ class Vacancy extends Model
         'responsibilities',
         'offers',
         'consider_without_experience',
+        'response_number'
     ];
 
     protected $hidden = [
@@ -84,6 +85,11 @@ class Vacancy extends Model
     public function employer(): BelongsTo
     {
         return $this->belongsTo(Employer::class, 'employer_id');
+    }
+
+    public function employees(): BelongsToMany
+    {
+        return $this->belongsToMany(Employee::class)->withPivot('applied_at', 'has_cv');
     }
 
     public function scopeNotPublished(Builder $builder): Builder
