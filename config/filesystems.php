@@ -36,6 +36,12 @@ return [
             'throw' => false,
         ],
 
+        'cv' => [
+            'driver' => 'local',
+            'root' => storage_path('app/cv'),
+            'throw' => false
+        ],
+
         'public_logo' => [
             'driver' => 'local',
             'root' => storage_path('app/public/logo'),
@@ -52,7 +58,7 @@ return [
             'throw' => false,
         ],
 
-        's3_logo' => [
+        's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
             'secret' => env('AWS_SECRET_ACCESS_KEY'),

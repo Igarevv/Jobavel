@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Employer;
 
+use App\Http\Controllers\Controller;
 use App\Persistence\Models\Employer;
 use App\Service\Employer\Storage\EmployerLogoService;
 use Illuminate\Http\RedirectResponse;
@@ -11,7 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\File;
 
-class FileController extends Controller
+class LogoController extends Controller
 {
     public function __construct(
         protected EmployerLogoService $logoStorageService

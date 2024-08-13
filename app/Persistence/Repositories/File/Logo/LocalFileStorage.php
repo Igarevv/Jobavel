@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Persistence\Repositories\File;
+namespace App\Persistence\Repositories\File\Logo;
 
 use App\Contracts\Storage\LogoStorageInterface;
 use Illuminate\Http\UploadedFile;
@@ -18,19 +18,19 @@ class LocalFileStorage implements LogoStorageInterface
         return Storage::putFile('public/logo', $file);
     }
 
-    public function get(string $imageId): string|false
+    public function get(string $fileId): string|false
     {
-        return Storage::disk($this->disk)->url(basename($imageId));
+        return Storage::disk($this->disk)->url(basename($fileId));
     }
 
-    public function delete(string $imageId): bool
+    public function delete(string $fileId): bool
     {
-        return Storage::disk($this->disk)->delete(basename($imageId));
+        return Storage::disk($this->disk)->delete(basename($fileId));
     }
 
-    public function isExists(string $imageId): bool
+    public function isExists(string $fileId): bool
     {
-        return Storage::disk($this->disk)->exists(basename($imageId));
+        return Storage::disk($this->disk)->exists(basename($fileId));
     }
 
 }

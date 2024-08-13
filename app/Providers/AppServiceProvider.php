@@ -2,14 +2,17 @@
 
 namespace App\Providers;
 
+use App\Contracts\Storage\CvStorageInterface;
 use App\Contracts\Storage\LogoStorageInterface;
 use App\Http\Kernel;
 use App\Persistence\Contracts\EmployerAccountRepositoryInterface;
 use App\Persistence\Contracts\UserRepositoryInterface;
 use App\Persistence\Contracts\VacancyRepositoryInterface;
 use App\Persistence\Contracts\VerificationCodeRepositoryInterface;
-use App\Persistence\Repositories\File\LocalFileStorage;
-use App\Persistence\Repositories\File\S3FileStorage;
+use App\Persistence\Repositories\File\CV\LocalCvStorage;
+use App\Persistence\Repositories\File\CV\S3CvStorage;
+use App\Persistence\Repositories\File\Logo\LocalFileStorage;
+use App\Persistence\Repositories\File\Logo\S3FileStorage;
 use App\Persistence\Repositories\User\Employer\EmployerAccountRepository;
 use App\Persistence\Repositories\User\Employer\VerificationCodeRepository;
 use App\Persistence\Repositories\User\UserRepository;
@@ -61,7 +64,9 @@ class AppServiceProvider extends ServiceProvider
     {
         if (config('filesystems.provider') === 'file') {
             $this->app->singleton(LogoStorageInterface::class, LocalFileStorage::class);
+            $this->app->singleton(CvStorageInterface::class, LocalCvStorage::class);
         } elseif (config('filesystems.provider') === 's3') {
+            $this->app->singleton(CvStorageInterface::class, S3CvStorage::class);
             $this->app->singleton(LogoStorageInterface::class, S3FileStorage::class);
         }
     }

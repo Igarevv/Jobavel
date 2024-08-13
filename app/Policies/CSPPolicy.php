@@ -33,6 +33,7 @@ class CSPPolicy extends Basic
                 Keyword::SELF,
                 'https://fonts.gstatic.com/'
             ])
+            ->addDirective(Directive::FRAME, Keyword::SELF)
             ->addNonceForDirective(Directive::SCRIPT)
             ->addNonceForDirective(Directive::STYLE)
             ->addDirective(Directive::UPGRADE_INSECURE_REQUESTS, Value::NO_VALUE);

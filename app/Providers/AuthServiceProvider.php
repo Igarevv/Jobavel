@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+use App\Persistence\Models\Employee;
+use App\Persistence\Models\Employer;
 use App\Persistence\Models\Vacancy;
+use App\Policies\ResumePolicy;
 use App\Policies\VacancyPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -16,7 +19,9 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        Vacancy::class => VacancyPolicy::class
+        Vacancy::class => VacancyPolicy::class,
+        Employee::class => ResumePolicy::class,
+        Employer::class => ResumePolicy::class
     ];
 
     /**

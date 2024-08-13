@@ -123,6 +123,7 @@ return [
         'skills' => 's-set-all',
         'vacancies-published' => 'v-pub-%s',
         'logo' => 'logo-url-%s',
-        'related-vacancies-for-employee' => 'v-rel-emp-%s'
+        'related-vacancies-for-employee' => 'v-rel-emp-%s',
+        'all-employer-vacancies' => 'all-v-e-%s'
     ]
 ];
