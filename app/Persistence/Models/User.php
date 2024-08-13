@@ -66,6 +66,16 @@ class User extends Model implements AuthContract, MustVerifyEmail, AuthorizableC
         return $this->getRoleNames()->first();
     }
 
+    public function isEmployee(): bool
+    {
+        return $this->role === self::EMPLOYEE;
+    }
+
+    public function isEmployer(): bool
+    {
+        return $this->role === self::EMPLOYER;
+    }
+
     public function markEmailAsVerified(): void
     {
         $this->is_confirmed = true;
