@@ -23,6 +23,7 @@ return new class extends Migration {
             $table->text('about_me')->nullable();
             $table->json('experiences')->nullable();
             $table->json('skills')->nullable();
+            $table->string('resume_file')->nullable();
             $table->primary('id');
         });
     }
