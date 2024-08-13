@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -15,7 +18,8 @@ use Ramsey\Uuid\Uuid;
  * @property string $email,
  * @property int $preferred_salary,
  * @property string $about_me,
- * @property array $experiences
+ * @property array $experiences,
+ * @property string $resume_file
  */
 class Employee extends Model
 {
@@ -35,7 +39,8 @@ class Employee extends Model
         'preferred_salary',
         'about_me',
         'experiences',
-        'skills'
+        'skills',
+        'resume_file'
     ];
 
     protected $hidden = [
@@ -49,6 +54,11 @@ class Employee extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function vacancies(): BelongsToMany
+    {
+        return $this->belongsToMany(Vacancy::class)->withPivot('applied_at', 'has_cv');
     }
 
     public function experiences(): Attribute
@@ -67,6 +77,27 @@ class Employee extends Model
     public function getFullName(): ?string
     {
         return $this->last_name.' '.$this->first_name;
+    }
+
+    public function hasMinimallyFilledPersonalInfo(): bool
+    {
+        return $this->position && $this->about_me;
+    }
+
+    public function cvFileName(): ?string
+    {
+        $employeeName = Str::lower(preg_replace('/\s+/', '-', $this->getFullName()));
+
+        $extension = File::extension($this->resume_file);
+
+        return $extension ? $employeeName.'.'.$extension : null;
+    }
+
+    public function clearCvPath(): void
+    {
+        $this->resume_file = null;
+
+        $this->save();
     }
 
     public static function findByUuid(string $uuid, array $columns = ['*']): static

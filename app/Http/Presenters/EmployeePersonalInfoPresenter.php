@@ -17,7 +17,7 @@ readonly class EmployeePersonalInfoPresenter
     public function present(): object
     {
         return (object)[
-            'employee_id' => $this->employee->employee_id,
+            'employeeId' => $this->employee->employee_id,
             'currentPosition' => $this->employee->position,
             'salary' => $this->employee->preferred_salary,
             'firstName' => $this->employee->first_name,

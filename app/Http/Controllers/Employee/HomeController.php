@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Employee;
 
-use App\Actions\Employee\GetEmployeeHomeAction;
+use App\Actions\Employee\GetEmployeeInfoAction;
 use App\Actions\Employee\GuessVacancyForEmployeeAction;
 use App\Http\Controllers\Controller;
 use App\Persistence\Models\TechSkill;
@@ -13,7 +13,7 @@ use Illuminate\View\View;
 class HomeController extends Controller
 {
 
-    public function index(GetEmployeeHomeAction $getEmpAction, GuessVacancyForEmployeeAction $relVacanciesAction): View
+    public function index(GetEmployeeInfoAction $getEmpAction, GuessVacancyForEmployeeAction $relVacanciesAction): View
     {
         $employee = $getEmpAction->handle(session('user.emp_id'));
 

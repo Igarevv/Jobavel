@@ -7,14 +7,13 @@ namespace App\Actions\Employee;
 use App\Http\Presenters\EmployeePersonalInfoPresenter;
 use App\Persistence\Models\Employee;
 
-class GetEmployeeHomeAction
+class GetEmployeeInfoAction
 {
 
-    public function handle(string $employeeId): object
+    public function handle(string|Employee $employee): object
     {
-        $employee = Employee::findByUuid(
-            $employeeId,
-            [
+        if (is_string($employee)) {
+            $employee = Employee::findByUuid($employee, [
                 'employee_id',
                 'position',
                 'first_name',
@@ -23,8 +22,8 @@ class GetEmployeeHomeAction
                 'preferred_salary',
                 'experiences',
                 'skills'
-            ]
-        );
+            ]);
+        }
 
         return (new EmployeePersonalInfoPresenter($employee))->present();
     }
