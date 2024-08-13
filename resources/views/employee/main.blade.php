@@ -135,10 +135,13 @@
                         </div>
                     </x-input.block>
 
-                    <div class="d-flex justify-content-end mb-5">
+                    <div class="d-flex justify-content-end mb-5 gap-3">
+                        @if($employee->currentPosition && $employee->aboutEmployee)
+                            <a href="{{ route('employee.resume', ['employee' => $employee->employeeId, 'type' => 'manual']) }}"
+                               class="btn btn-info" type="button">Show resume preview</a>
+                        @endif
                         <x-button.default type="submit">Save changes</x-button.default>
                     </div>
-
                 </form>
             </div>
             @if(! $vacancies->isEmpty())

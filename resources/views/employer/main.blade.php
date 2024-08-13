@@ -173,7 +173,7 @@
     <x-footer></x-footer>
 
     @if(session('frontend.email-want-update') || session('frontend.code-expired'))
-        <script>
+        <script type="module">
             $(document).ready(function () {
                 $('#updatedSuccess').modal('show');
             });

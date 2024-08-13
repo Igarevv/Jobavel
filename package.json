@@ -13,6 +13,7 @@
     },
     "dependencies": {
         "@popperjs/core": "^2.11.8",
+        "@rollup/plugin-inject": "^5.0.5",
         "bootstrap": "^5.3.3",
         "jquery": "^3.7.1"
     }

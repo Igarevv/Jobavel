@@ -130,3 +130,16 @@ tbody td {
 .font-14 {
     font-size: 14px;
 }
+
+.nav-pills .nav-link.active {
+    background-color: #f9322c;
+    font-weight: bolder;
+    color: #ffffff;
+}
+
+.nav-pills .nav-link {
+    font-weight: bolder;
+    background-color: #212529;
+    color: white;
+}
+

@@ -30,6 +30,9 @@
                 <x-header.li><a href="{{ route('employer.vacancy.create') }}"
                                 class="text-light link-secondary d-block">Create new vacancy</a>
                 </x-header.li>
+                <x-header.li><a href="{{ route('employer.vacancy.applied') }}"
+                                class="text-light link-secondary d-block">Responses to my vacancies</a>
+                </x-header.li>
             </x-header.navli>
         </div>
     </div>

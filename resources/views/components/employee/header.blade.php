@@ -18,11 +18,15 @@
         </div>
     </div>
     <div class="col-md-4 offset-md-1 col-12 py-4">
-        <h4 class="text-center text-md-start">Contact</h4>
-        <ul class="list-unstyled text-center text-md-start">
-            <li><a href="#" class="text-white d-block">Follow on Twitter</a></li>
-            <li><a href="#" class="text-white d-block">Like on Facebook</a></li>
-            <li><a href="#" class="text-white d-block">Email me</a></li>
-        </ul>
+        <div class="d-flex flex-column flex-md-row gap-3">
+            <x-header.navli name="My vacancy" color="info">
+                <x-header.li><a href="{{ route('employee.vacancy.applied') }}"
+                                class="text-light link-secondary d-block">Applied vacancies</a>
+                </x-header.li>
+                <x-header.li><a href="{{ route('employee.cv.create') }}"
+                                class="text-light link-secondary d-block">My CV file</a>
+                </x-header.li>
+            </x-header.navli>
+        </div>
     </div>
 </x-header.drop>

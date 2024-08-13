@@ -25,6 +25,9 @@ return [
     ],
     'employee-account' => [
         'nothing-updated' => 'Your personal info is up-to-date',
-        'updated' => 'Your personal info was successfully updated'
+        'updated' => 'Your personal info was successfully updated',
+        'cv-uploaded' => 'Your CV file was successfully upload',
+        'no-cv' => 'To apply vacancy with CV file, firstly you need to upload it',
+        'no-personal-info' => 'You must fill your personal info to choose this option. See in your home page'
     ]
 ];

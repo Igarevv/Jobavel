@@ -179,8 +179,16 @@
                                     <div>
                                         <span>{{ $vacancy->response_number }}</span>
                                         @if(! auth()->user()?->role || auth()->user()->role !== User::EMPLOYER)
-                                            <x-button.default class="float-end" colorType="danger">Apply
-                                            </x-button.default>
+                                            @if(! $vacancy->employees()->where('employee_vacancy.employee_id', auth()->user()->employee->id)->exists())
+                                                <x-button.default class="float-end mt-3" colorType="danger"
+                                                                  data-bs-toggle="modal" data-bs-target="#apply-modal">
+                                                    Apply
+                                                </x-button.default>
+                                            @else
+                                                <a href="{{ route('employee.vacancy.applied') }}"
+                                                   class="btn btn-outline-info float-end mt-3">You have already
+                                                    applied</a>
+                                            @endif
                                         @endif
                                     </div>
                                 </div>
@@ -234,6 +242,55 @@
                 </div>
             </div>
         </div>
+        <x-modal.index id="apply-modal">
+            <x-modal.withform title="Choose your CV" btnActionName="Apply"
+                              actionPath="{{ route('vacancies.employee.apply', ['vacancy' => $vacancy->slug]) }}"
+                              withClose>
+                <div class="d-flex justify-content-center gap-3">
+                    <div class="custom-radio">
+                        <input type="radio" id="option1" name="cvType" class="custom-control-input" value="0" required
+                                @checked(old('cvType') == 0)>
+                        <label class="custom-control-label p-3" for="option1">
+                            <a href=""
+                               class="link-offset-2 text-decoration-none">
+                                <span>Manually</span> <span>created</span> <span>CV</span>
+                            </a>
+                        </label>
+                    </div>
+                    <div class="custom-radio">
+                        <input type="radio" id="option2" name="cvType" class="custom-control-input" value="1"
+                               required @checked(old('cvType') == 1)>
+                        <label class="custom-control-label py-3 px-4" for="option2">
+                            <a href=""
+                               class="link-offset-2 text-decoration-none">
+                                <span>Use</span> <span>my file</span> <span>CV</span>
+                            </a>
+                        </label>
+                    </div>
+                </div>
+                <div class="my-2">
+                    <h6>Your contact email:</h6>
+                    <div class="input-group">
+                        <div class="input-group-text">
+                            <label for="checkboxEmail" class="me-2">Use account email</label>
+                            <input class="form-check-input mt-0" type="checkbox" value="1" name="useCurrent"
+                                   aria-label="Checkbox for following text input"
+                                   id="checkboxEmail" @checked(old('useCurrent') == 1)>
+                        </div>
+                        <input type="email" class="form-control" aria-label="Text input with checkbox"
+                               name="contactEmail" value="{{ old('contactEmail') ?? '' }}">
+                    </div>
+                </div>
+                <span class="text-danger">{{ $errors->first() }}</span>
+            </x-modal.withform>
+        </x-modal.index>
     </x-main>
     <x-footer></x-footer>
+    @if($errors->any())
+        <script type="module">
+            $(document).ready(function () {
+                $('#apply-modal').modal('show');
+            });
+        </script>
+    @endif
 </x-layout>
