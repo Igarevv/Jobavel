@@ -22,6 +22,7 @@ class EmployeeAccountService extends AccountService
     public function updatePersonalData(string|int $userId, EmployeePersonalInfoDto $employerDto): Employee|false
     {
         $employee = $this->getRepository()->update($userId, $employerDto);
+
         if (! $employee->wasChanged()) {
             return false;
         }

@@ -47,7 +47,7 @@
                                             <p class="text-danger fst-italic fw-bolder h6">{{ $message }}</p>
                                             @enderror
                                         </x-input.block>
-                                        <div сlass="col-12">
+                                        <div class="col-12">
                                             <h6 class="fw-bold">Company type</h6>
                                             <select class="form-select" required name="type">
                                                 <option value="{{ EmployerEnum::COMPANY_TYPE_PRODUCT->value }}"

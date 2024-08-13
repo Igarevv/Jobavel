@@ -1,11 +1,3 @@
-@pushonce('employee-css')
-    <link rel="stylesheet" href="/assets/css/employee.css" nonce="{{ csp_nonce() }}" type="text/css">
-@endpushonce
-
-@pushonce('vacancy-css')
-    <link nonce="{{ csp_nonce() }}" href="/assets/css/vacancy.css" type="text/css" rel="stylesheet">
-@endpushonce
-
 <x-layout class="d-flex flex-column min-vh-100">
     <x-header></x-header>
     <x-main>

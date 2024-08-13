@@ -19,8 +19,8 @@ class RegisterController extends Controller
     ) {
     }
 
-    public function __invoke(EmployerRegisterRequest $request
-    ): RedirectResponse|View {
+    public function __invoke(EmployerRegisterRequest $request): RedirectResponse|View
+    {
         if ($request->isMethod('GET')) {
             return view('employer.register');
         }

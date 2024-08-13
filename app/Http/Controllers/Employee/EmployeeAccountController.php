@@ -28,7 +28,7 @@ class EmployeeAccountController extends Controller
             return back()->with('nothing-updated', trans('alerts.employee-account.nothing-updated'));
         }
 
-        $request->session()->put('user.name', $employeeUpdated->last_name.' '.$employeeUpdated->first_name);
+        $request->session()->put('user.name', $employeeUpdated->getFullName());
 
         return redirect()->action([HomeController::class, 'index'])->with(
             'success-updated',

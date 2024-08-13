@@ -14,6 +14,7 @@ use App\Service\Employer\Vacancy\EmployeeVacancyService;
 use App\Support\SlugVacancy;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class VacancyEmployeeController extends Controller
 {
@@ -22,7 +23,7 @@ class VacancyEmployeeController extends Controller
     ) {
     }
 
-    public function appliedVacancies(GetAppliedVacanciesAction $appliedVacancies)
+    public function appliedVacancies(GetAppliedVacanciesAction $appliedVacancies): View
     {
         $vacancies = $appliedVacancies->handle(session('user.emp_id'));
 
@@ -53,8 +54,8 @@ class VacancyEmployeeController extends Controller
         $employee = Employee::findByUuid(session('user.emp_id'));
 
         $result = $this->employeeVacancyService->withDrawEmployeeFromVacancy(
-            $vacancy->createFromSlug('id'),
-            $employee
+            vacancy: $vacancy->createFromSlug('id'),
+            employee: $employee
         );
 
         if ($result) {

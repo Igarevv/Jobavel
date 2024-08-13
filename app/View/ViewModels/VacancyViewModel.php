@@ -70,9 +70,7 @@ class VacancyViewModel
             $cacheKey,
             CarbonInterval::month()->totalSeconds,
             function () use ($employer, $columns) {
-                $vacancies = Vacancy::query()->where('employer_id', $employer->id)->get($columns);
-
-                return $vacancies;
+                return Vacancy::query()->where('employer_id', $employer->id)->get($columns);
             }
         );
     }

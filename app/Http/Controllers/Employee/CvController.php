@@ -5,14 +5,13 @@ namespace App\Http\Controllers\Employee;
 use App\Actions\Employee\GetEmployeeCvFileAction;
 use App\Actions\Employee\GetEmployeeInfoAction;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Employee\UploadCvRequest;
 use App\Persistence\Models\Employee;
 use App\Persistence\Models\TechSkill;
 use App\Persistence\Models\Vacancy;
 use App\Service\Employer\Storage\EmployeeCvService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules\File;
 use Illuminate\View\View;
 
 class CvController extends Controller
@@ -33,15 +32,11 @@ class CvController extends Controller
         ]);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(UploadCvRequest $request): RedirectResponse
     {
         if (! $request->user()->can('apply', Vacancy::class)) {
             return redirect()->route('login.show');
         }
-
-        Validator::make($request->all(), [
-            'cv' => ['required', File::types(['pdf', 'docx'])->max(2048)]
-        ])->validate();
 
         $employee = Employee::findByUuid(session('user.emp_id'), ['id']);
 

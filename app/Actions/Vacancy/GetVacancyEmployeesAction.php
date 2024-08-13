@@ -4,17 +4,12 @@ declare(strict_types=1);
 
 namespace App\Actions\Vacancy;
 
-use App\Contracts\Storage\CvStorageInterface;
 use App\Persistence\Models\Employee;
 use App\Persistence\Models\Vacancy;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class GetVacancyEmployeesAction
 {
-    public function __construct(
-        private CvStorageInterface $cvStorage
-    ) {
-    }
 
     public function handle(Vacancy $vacancy): LengthAwarePaginator
     {

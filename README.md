@@ -19,6 +19,7 @@ This is CRUD application
 - Simple frontend
 - Filtering
 - Caching with [Redis](https://redis.io/)
+- Employee response to a vacancy (with CV created by app and own file)
 
 ## Configuration:
 
