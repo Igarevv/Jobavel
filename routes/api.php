@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Vacancy\SkillsController;
+use App\Http\Controllers\Vacancy\VacancyEmployeeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/vacancy/skills', [SkillsController::class, 'getAllSkills']);
+
+Route::get('/vacancy/{vacancy}/employees', [VacancyEmployeeController::class, 'appliedEmployees'])
+    ->middleware(['auth', 'role:employer']);

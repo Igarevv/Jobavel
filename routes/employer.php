@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\Employer\EmployerAccountController;
 use App\Http\Controllers\Employer\HomeController;
+use App\Http\Controllers\Employer\LogoController;
 use App\Http\Controllers\Employer\RegisterController;
-use App\Http\Controllers\FileController;
 use App\Http\Controllers\Vacancy\VacancyEmployerViewController;
 use App\Http\Controllers\Vacancy\VacancyManipulationController;
 use Illuminate\Support\Facades\Route;
@@ -53,7 +53,7 @@ Route::name('employer.')->group(function () {
             * ---------------------------------
             */
 
-            Route::post('/logo', [FileController::class, 'uploadLogo'])->name('logo.upload');
+            Route::post('/logo', [LogoController::class, 'uploadLogo'])->name('logo.upload');
 
             Route::middleware(['verified'])->group(function () {
                 /*
@@ -78,6 +78,8 @@ Route::name('employer.')->group(function () {
                         Route::get('/trashed/{vacancy}', 'showTrashedPreview')
                             ->name('trashed.preview')
                             ->withTrashed();
+
+                        Route::get('/applied', 'applied')->name('applied');
                     });
 
                 /*
