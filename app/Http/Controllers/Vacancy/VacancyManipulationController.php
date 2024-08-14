@@ -49,57 +49,65 @@ class VacancyManipulationController extends Controller
             ->with('vacancy-added', trans('alerts.vacancy.added'));
     }
 
-    public function destroy(Vacancy $vacancy): RedirectResponse
+    public function destroy(SlugVacancy $vacancy): RedirectResponse
     {
-        $this->authorize('delete', $vacancy);
+        $vacancyModel = $vacancy->createFromSlug();
 
-        $vacancy->delete();
+        $this->authorize('delete', $vacancyModel);
 
-        if ($vacancy->isPublished()) {
-            $vacancy->unpublish();
+        $vacancyModel->delete();
+
+        if ($vacancyModel->isPublished()) {
+            $vacancyModel->unpublish();
         }
 
         return redirect()->route('employer.vacancy.unpublished')
             ->with('vacancy-trashed', trans('alerts.vacancy.trashed'));
     }
 
-    public function restore(Vacancy $vacancy): RedirectResponse
+    public function restore(SlugVacancy $vacancy): RedirectResponse
     {
-        $vacancy->restore();
+        $vacancy->createFromSlug()->restore();
 
         return redirect()->route('employer.vacancy.unpublished')
             ->with('vacancy-restored', trans('alerts.vacancy.restored'));
     }
 
-    public function deleteForever(Vacancy $vacancy): RedirectResponse
+    public function deleteForever(SlugVacancy $vacancy): RedirectResponse
     {
-        $this->authorize('delete', $vacancy);
+        $vacancyModel = $vacancy->createFromSlug();
 
-        $vacancy->forceDelete();
+        $this->authorize('delete', $vacancyModel);
+
+        $vacancyModel->forceDelete();
 
         return redirect()->route('employer.vacancy.trashed')->with('vacancy-deleted', trans('alerts.vacancy.deleted'));
     }
 
-    public function publish(Vacancy $vacancy): RedirectResponse
+    public function publish(SlugVacancy $vacancy): RedirectResponse
     {
-        $this->authorize('publish', $vacancy);
+        $vacancyModel = $vacancy->createFromSlug();
 
-        if (Str::of($vacancy->employer->company_description)->isEmpty()) {
+        $this->authorize('publish', $vacancyModel);
+
+        if (Str::of($vacancyModel->employer->company_description)->isEmpty()) {
             return back()->with('errors', trans('alerts.employer.empty-description'));
         }
 
-        $vacancy->publish();
+        $vacancyModel->publish();
 
         return redirect()->route('employer.vacancy.published');
     }
 
-    public function unpublish(Vacancy $vacancy): RedirectResponse
+    public function unpublish(SlugVacancy $vacancy): RedirectResponse
     {
-        $this->authorize('publish', $vacancy);
+        $vacancyModel = $vacancy->createFromSlug();
 
-        $vacancy->unpublish();
+        $this->authorize('publish', $vacancyModel);
 
-        return redirect()->route('employer.vacancy.unpublished', ['vacancy' => $vacancy->slug]);
+        $vacancyModel->unpublish();
+
+        return redirect()->route('employer.vacancy.unpublished', ['vacancy' => $vacancyModel->slug]);
     }
 
 }

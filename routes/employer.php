@@ -76,8 +76,7 @@ Route::name('employer.')->group(function () {
                         Route::get('/trashed', 'viewTrashed')->name('trashed');
 
                         Route::get('/trashed/{vacancy}', 'showTrashedPreview')
-                            ->name('trashed.preview')
-                            ->withTrashed();
+                            ->name('trashed.preview');
 
                         Route::get('/applied', 'applied')->name('applied');
                     });

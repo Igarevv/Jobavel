@@ -18,8 +18,7 @@ class SlugVacancy
         if (! $columns) {
             $columns = ['*'];
         }
-
-        return Vacancy::findOrFail($this->getIdFromSlug(), $columns);
+        return Vacancy::withTrashed()->findOrFail($this->getIdFromSlug(), $columns);
     }
 
     public function getIdFromSlug(): int

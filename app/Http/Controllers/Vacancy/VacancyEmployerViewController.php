@@ -50,25 +50,27 @@ class VacancyEmployerViewController extends Controller
     {
         $vacancies = Vacancy::onlyTrashed()
             ->where('employer_id', $request->user()->employer->id)
-            ->paginate(5, ['id', 'title', 'salary', 'created_at', 'deleted_at']);
+            ->paginate(5, ['id', 'title', 'salary', 'created_at', 'deleted_at', 'slug']);
 
         return view('employer.vacancy.trashed', ['vacancies' => $vacancies]);
     }
 
-    public function showTrashedPreview(Vacancy $vacancy, VacancyViewModel $vacancyViewModel): View
+    public function showTrashedPreview(SlugVacancy $vacancy, VacancyViewModel $vacancyViewModel): View
     {
-        $this->authorize('view', $vacancy);
+        $vacancyModel = $vacancy->createFromSlug();
+        
+        $this->authorize('view', $vacancyModel);
 
-        if (! $vacancy->trashed()) {
+        if (! $vacancyModel->trashed()) {
             abort(404);
         }
 
-        $employer = $vacancyViewModel->vacancyEmployerData($vacancy);
+        $employer = $vacancyViewModel->vacancyEmployerData($vacancyModel);
 
-        $skills = $vacancy->techSkillsAsArrayOfBase();
+        $skills = $vacancyModel->techSkillsAsArrayOfBase();
 
         return view('employer.vacancy.trashed-preview', [
-            'vacancy' => $vacancy,
+            'vacancy' => $vacancyModel,
             'employer' => $employer,
             'skillSet' => $skills,
             'skillSetRow' => $this->skillsViewModel->skillsAsRow($skills)
