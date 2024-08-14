@@ -2,9 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const tabButtons = document.querySelectorAll('.nav-link[data-bs-toggle="pill"]');
 
     let currentPage = 1;
-    let currentVacancyId = tabButtons[0]?.getAttribute('data-vacancy-slug'); // Set initial vacancyId based on the first tab
+    let currentVacancyId = tabButtons[0]?.getAttribute('data-vacancy-slug');
 
-    // Fetch and populate applications for the initially active tab
     if (currentVacancyId) {
         fetchApplications(currentVacancyId, currentPage);
     }
@@ -13,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
         button.addEventListener('shown.bs.tab', async function (event) {
             const vacancyId = button.getAttribute('data-vacancy-slug');
             currentVacancyId = vacancyId;
-            currentPage = 1; // Reset page to 1 for new vacancy
+            currentPage = 1;
 
             await fetchApplications(vacancyId, currentPage);
         });

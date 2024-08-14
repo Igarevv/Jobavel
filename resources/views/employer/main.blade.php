@@ -19,15 +19,15 @@
                         <h5>total number of vacancy</h5>
                         <p class="fw-bold">{{ $statistics->totalVacancies }}</p>
                     </x-card.linkcard>
-                    <x-card.linkcard>
+                    <x-card.linkcard href="{{ route('employer.vacancy.applied') }}">
                         <h3>Your</h3>
                         <h5>total number of responses for today</h5>
-                        <p> {{ 0 }}</p>
+                        <p> {{ $statistics->today }}</p>
                     </x-card.linkcard>
-                    <x-card.linkcard>
+                    <x-card.linkcard href="{{ route('employer.vacancy.applied') }}">
                         <h3>Your</h3>
                         <h5>total number of responses for month</h5>
-                        <p> {{ 0 }}</p>
+                        <p> {{ $statistics->month }}</p>
                     </x-card.linkcard>
                     @isset($statistics->skills)
                         <x-card.linkcard
@@ -187,10 +187,11 @@
             imageBlock.style.background = 'url(' + url + ') center center / cover no-repeat';
         });
     </script>
+
     @pushonce('vite')
         @vite([
             'resources/assets/js/employer/verificationCode.js',
-            'resources/assets/js/employer/changeLogo.js'
+            'resources/assets/js/employer/changeLogo.js',
         ])
     @endpushonce
 </x-layout>

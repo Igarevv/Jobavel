@@ -40,7 +40,7 @@ class Employer extends Model
         'company_type',
         'company_logo'
     ];
-    
+
     protected $hidden = [
         'id',
         'user_id'
@@ -59,6 +59,25 @@ class Employer extends Model
     public function techSkills(): HasManyThrough
     {
         return $this->hasManyThrough(VacancySkills::class, Vacancy::class, 'employer_id', 'vacancy_id');
+    }
+
+    public function appliedVacancies(): HasManyThrough
+    {
+        return $this->hasManyThrough(EmployeeVacancy::class, Vacancy::class, 'employer_id', 'vacancy_id');
+    }
+
+    public function appliedVacanciesForTodayAndMonth(): array
+    {
+        $applicationsCount = $this->appliedVacancies()
+            ->selectRaw(
+                'COUNT(CASE WHEN DATE(employee_vacancy.applied_at) = ? THEN 1 END) as today,
+                COUNT(CASE WHEN DATE(employee_vacancy.applied_at) BETWEEN ? AND ? THEN 1 END) as month',
+                [now()->toDateString(), now()->startOfMonth()->toDateString(), now()->endOfMonth()->toDateString()]
+            )->groupBy('vacancies.employer_id')
+            ->first(['today', 'month'])
+            ?->toArray();
+
+        return [$applicationsCount['today'] ?? 0, $applicationsCount['month'] ?? 0];
     }
 
     public function topFrequentlySelectedSkills(int $limit): Collection

@@ -15,15 +15,19 @@ class EmployerViewModel
         $topSkills = $employer->topFrequentlySelectedSkills(3) ?: null;
 
         if ($topSkills) {
-            $topSkills = (object) [
+            $topSkills = (object)[
                 'ids' => $this->skillIdsInRaw($topSkills),
                 'names' => $this->skillNamesInRaw($topSkills)
             ];
         }
 
-        return (object) [
+        [$today, $month] = $employer->appliedVacanciesForTodayAndMonth();
+
+        return (object)[
             'totalVacancies' => $employer->vacancy()->count(),
             'skills' => $topSkills,
+            'today' => $today,
+            'month' => $month
         ];
     }
 
