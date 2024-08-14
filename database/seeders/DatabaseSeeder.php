@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             TechSkillsSeeder::class,
             EmployeeSeeder::class,
             EmployerSeeder::class,
-            //VacancySeeder::class
+            VacancySeeder::class
         ]);
     }
 
