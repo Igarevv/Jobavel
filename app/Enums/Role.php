@@ -11,6 +11,10 @@ enum Role: string
 
     case EMPLOYEE = 'employee';
 
+    case ADMIN = 'admin';
+
+    case SUPER_ADMIN = 'super-admin';
+
     public function roleMainPage(): string
     {
         return match ($this) {

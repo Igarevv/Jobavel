@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Persistence\Models\Admin;
 use App\Persistence\Models\User;
 use App\Persistence\Models\Vacancy;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -10,6 +11,11 @@ use Illuminate\Auth\Access\Response;
 class VacancyPolicy
 {
     use HandlesAuthorization;
+
+    public function before(User $user, string $ability): ?true
+    {
+        return $user->hasRole(Admin::SUPER_ADMIN) || $user->hasRole(Admin::ADMIN) ? true : null;
+    }
 
     public function create(?User $user): bool
     {

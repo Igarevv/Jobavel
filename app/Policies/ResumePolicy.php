@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use App\Persistence\Models\Admin;
 use App\Persistence\Models\Employee;
 use App\Persistence\Models\Employer;
 use App\Persistence\Models\User;
@@ -13,6 +14,12 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ResumePolicy
 {
+
+    public function before(User $user, string $ability): ?true
+    {
+        return $user->hasRole(Admin::SUPER_ADMIN) || $user->hasRole(Admin::ADMIN) ? true : null;
+    }
+
     public function view(?User $user, Employee $employee, ?Employer $employer = null): Response
     {
         if (! $user) {

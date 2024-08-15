@@ -1,5 +1,6 @@
 <?php
 
+use App\Persistence\Models\Admin;
 use App\Persistence\Models\User;
 
 return [
@@ -43,6 +44,11 @@ return [
             'provider' => 'users',
             'remember' => 20160,
         ],
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+            'remember' => 20160
+        ]
     ],
 
     /*
@@ -67,10 +73,10 @@ return [
             'driver' => 'eloquent',
             'model' => User::class,
         ],
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => Admin::class
+        ]
     ],
 
     /*

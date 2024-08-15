@@ -31,7 +31,7 @@ class AuthController extends Controller
             'password' => 'required',
         ])->validate();
 
-        if (Auth::attempt($data, $request->has('remember'))) {
+        if (Auth::guard('web')->attempt($data, $request->has('remember'))) {
             $request->session()->regenerate();
 
             return redirect()->intended(

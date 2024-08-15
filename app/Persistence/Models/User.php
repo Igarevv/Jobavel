@@ -61,6 +61,11 @@ class User extends Model implements AuthContract, MustVerifyEmail, AuthorizableC
         return $this->hasOne(Employer::class);
     }
 
+    public function admins(): HasOne
+    {
+        return $this->hasOne(Admin::class);
+    }
+
     public function getRole(): string
     {
         return $this->getRoleNames()->first();

@@ -7,6 +7,7 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/assets/css/app.css',
+                'resources/assets/css/admin.css',
                 'resources/assets/js/app.js',
                 'resources/assets/js/employer/changeLogo.js',
                 'resources/assets/js/employer/filter.js',
