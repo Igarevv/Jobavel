@@ -17,8 +17,7 @@
     "league/flysystem-aws-s3-v3": "^3.0",
     "predis/predis": "^2.2",
     "spatie/laravel-csp": "^2.10",
-    "spatie/laravel-permission": "^6.9",
-    "spatie/laravel-sluggable": "^3.6"
+    "spatie/laravel-permission": "^6.9"
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.13",

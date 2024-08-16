@@ -10,15 +10,15 @@
     @vite(['resources/assets/css/admin.css', 'resources/assets/js/admin.js'])
 </head>
 
-<body>
-<div class="flex gap-8 bg-white dark:bg-gray-900">
-    <x-admin.sidebar class="min-w-fit flex-grow-0 flex-shrink-0 hidden md:block"/>
-    <main class="mt-4 px-4">
+<body class="flex flex-col min-h-screen">
+<div class="flex h-screen bg-white dark:bg-gray-900">
+    <x-admin.sidebar class="min-w-fit flex-grow-0 flex-shrink-0 hidden md:block" />
+    <main class="mt-4 px-4 flex-grow">
         <div class="block sm:absolute top-5 right-8 order-1">
-            <x-admin.dark-mode-toggle size="4"/>
+            <x-admin.dark-mode-toggle size="4" />
         </div>
         {{ $slot }}
-        <x-admin.footer/>
+        <x-admin.footer />
     </main>
 </div>
 </body>

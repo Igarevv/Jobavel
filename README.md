@@ -76,7 +76,7 @@ docker-compose exec php php artisan key:generate
 Then, build frontend assets
 
 ````
-docker-compose exec php sh -c "npm install && npm run build"
+docker-compose exec php sh -c "npm install && npm run build|dev"
 ````
 
 Run migration

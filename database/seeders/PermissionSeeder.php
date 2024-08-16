@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Persistence\Models\Admin;
 use App\Persistence\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
@@ -29,6 +30,7 @@ class PermissionSeeder extends Seeder
 
         $employerRole = Role::create(['name' => User::EMPLOYER]);
         $employeeRole = Role::create(['name' => User::EMPLOYEE]);
+        $admin = Role::create(['name' => Admin::ADMIN]);
 
         $employerRole->givePermissionTo(
             'vacancy-create',

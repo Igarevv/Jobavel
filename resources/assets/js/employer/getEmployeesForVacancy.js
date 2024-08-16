@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const jsonResponse = await response.json();
 
             const container = document.querySelector(`.container[data-vacancy-slug="${vacancyId}"]`);
-            const tableBody = container.querySelector('.table tbody');
+            const tableBody = container.querySelector('.table tbody.blade.php');
 
             tableBody.innerHTML = '';
 
