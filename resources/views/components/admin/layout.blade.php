@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'Jobavel Admin' }}</title>
     @vite(['resources/assets/css/admin.css', 'resources/assets/js/admin.js'])
+    @stack('vite')
 </head>
 
 <body class="flex flex-col min-h-screen">

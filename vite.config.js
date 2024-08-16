@@ -25,7 +25,8 @@ export default defineConfig({
                 'resources/assets/js/addNewField.js',
                 'resources/assets/js/viewSkills.js',
                 'resources/assets/js/employee/employeePersonalInfo.js',
-                'resources/assets/js/employer/getEmployeesForVacancy.js'
+                'resources/assets/js/employer/getEmployeesForVacancy.js',
+                'resources/assets/js/admin/rolePermissions.js'
             ],
             refresh: true,
         }),

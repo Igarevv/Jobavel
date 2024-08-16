@@ -7,10 +7,11 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 class AdminAuthController extends Controller
 {
-    public function signInIndex()
+    public function signInIndex(): View
     {
         return view('admin.sign-in');
     }

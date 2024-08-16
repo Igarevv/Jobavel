@@ -15,3 +15,19 @@
 .min-vh-100 {
     min-height: 100vh !important;
 }
+
+tbody {
+    max-height: 200px;
+    overflow-y: auto;
+    display: block;
+}
+
+thead, tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.w-30 {
+    width: 8rem;
+}
