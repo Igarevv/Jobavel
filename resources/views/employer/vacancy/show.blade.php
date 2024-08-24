@@ -178,8 +178,8 @@
                                     <span class="fw-bolder text-14">Number of applies:</span>
                                     <div>
                                         <span>{{ $vacancy->response_number }}</span>
-                                        @if(! auth()->user()?->role || auth()->user()?->role !== User::EMPLOYER)
-                                            @if(auth()->guest() || (auth()->user()?->isEmployee() && ! $vacancy->employees()->where('employee_vacancy.employee_id', auth()->user()->employee->id)->exists()))
+                                        @if(! auth()->user()?->getRole() || auth()->user()?->getRole() !== User::EMPLOYER)
+                                            @if(auth()->guest() || (auth()->user()?->isEmployee() && ! $vacancy->employees()->where('employee_vacancy.employee_id', auth()->user()?->employee->id)->exists()))
                                                 <x-button.default class="float-end mt-3" colorType="danger"
                                                                   data-bs-toggle="modal" data-bs-target="#apply-modal">
                                                     Apply

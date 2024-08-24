@@ -11,23 +11,19 @@ return new class extends Migration {
     public function up(): void
     {
         DB::statement(
-            "CREATE OR REPLACE VIEW user_login_data AS
-                     SELECT
-                        u.user_id AS account_id,
-                        e.employee_id AS user_id,
-                        concat(e.first_name, ' ', e.last_name) AS name,
-                        u.email,
-                        u.role
-                     FROM users u
-                     JOIN employees e ON e.user_id = u.id
-                     UNION ALL
-                     SELECT u.user_id      AS account_id,
-                            e.employer_id  AS user_id,
-                            e.company_name AS name,
-                            u.email,
-                            u.role
-                     FROM users u
-                              JOIN employers e ON e.user_id = u.id"
+            "SELECT u.user_id              AS account_id,
+                    e.employee_id                          AS user_id,
+                    concat(e.first_name, ' ', e.last_name) AS name,
+                    u.email                                AS email
+                    FROM users u
+                        JOIN employees e ON e.user_id = u.id
+                    UNION ALL
+                    SELECT u.user_id      AS account_id,
+                           e.employer_id  AS user_id,
+                           e.company_name AS name,
+                           u.email        AS email
+                    FROM users u
+                             JOIN employers e ON e.user_id = u.id"
         );
     }
 

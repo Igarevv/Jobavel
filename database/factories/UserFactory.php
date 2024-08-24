@@ -33,7 +33,7 @@ class UserFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'is_confirmed' => false,
-                'email_confirmed_at' => null,
+                'email_verified_at' => null,
             ];
         });
     }

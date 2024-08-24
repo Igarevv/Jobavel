@@ -49,7 +49,7 @@
                                                         <tbody>
                                                         @foreach($vacancies as $vacancy)
                                                             <tr class="align-middle">
-                                                                <td>{{ $loop->iteration }}</td>
+                                                                <td>{{ $loop->iteration + ($vacancies->currentPage() - 1) * $vacancies->perPage() }}</td>
                                                                 <td>{{ $vacancy->id }}</td>
                                                                 <td>{{ $vacancy->title }}</td>
                                                                 <td>{{ $vacancy->salary }}</td>

@@ -16,13 +16,14 @@
     min-height: 100vh !important;
 }
 
-tbody {
+table.want-scroll tbody {
     max-height: 200px;
     overflow-y: auto;
     display: block;
 }
 
-thead, tr {
+table.want-scroll thead,
+table.want-scroll tr {
     display: table;
     width: 100%;
     table-layout: fixed;
