@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Employee;
 
+use App\DTO\Auth\RegisterEmployeeDto;
+use App\Persistence\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Hash;
 
 class EmployeeRegisterRequest extends FormRequest
 {
@@ -28,4 +31,14 @@ class EmployeeRegisterRequest extends FormRequest
         ];
     }
 
+    public function getDto(): RegisterEmployeeDto
+    {
+        return new RegisterEmployeeDto(
+            firstName: $this->get('firstName'),
+            lastName: $this->get('lastName'),
+            email: $this->get('email'),
+            password: Hash::make($this->get('password'), ['rounds' => 12]),
+            role: User::EMPLOYEE
+        );
+    }
 }

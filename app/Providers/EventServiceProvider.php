@@ -3,8 +3,12 @@
 namespace App\Providers;
 
 use App\Events\EmployerUpdated;
+use App\Events\JobFailedInAdminPanel;
+use App\Events\UserDeletedTemporarily;
 use App\Listeners\AuthEventSubscriber;
 use App\Listeners\CodeSendingOnEmployerUpdate;
+use App\Listeners\SendEmailAboutFailedJobToSuperAdmin;
+use App\Listeners\SendEmailWhenUserDeleted;
 use App\Listeners\SuccessfulAdminLogin;
 use App\Listeners\SuccessfulUserLogin;
 use Illuminate\Auth\Events\Login;
@@ -25,6 +29,12 @@ class EventServiceProvider extends ServiceProvider
         ],
         EmployerUpdated::class => [
             CodeSendingOnEmployerUpdate::class
+        ],
+        JobFailedInAdminPanel::class => [
+            SendEmailAboutFailedJobToSuperAdmin::class
+        ],
+        UserDeletedTemporarily::class => [
+            SendEmailWhenUserDeleted::class
         ]
     ];
 

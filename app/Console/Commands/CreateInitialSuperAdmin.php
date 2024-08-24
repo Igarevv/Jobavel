@@ -43,11 +43,11 @@ class CreateInitialSuperAdmin extends Command
             $admin->makeAdminAsSuperAdmin();
 
             Role::query()->updateOrCreate([
-                'name' => Admin::SUPER_ADMIN,
+                'name' => Admin::ADMIN,
                 'guard_name' => Admin::ADMIN
             ]);
 
-            $admin->assignRole([Admin::SUPER_ADMIN]);
+            $admin->assignRole([Admin::ADMIN]);
 
             return $admin;
         });

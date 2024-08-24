@@ -15,7 +15,7 @@ final class RoleRedirectionMiddleware
         Closure $next,
         string $role
     ): Response {
-        $currentRole = auth()->user()->role;
+        $currentRole = auth()->user()->getRole();
 
         if ($currentRole !== $role) {
             return redirect()->route(

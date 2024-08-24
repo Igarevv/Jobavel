@@ -9,13 +9,18 @@ use Illuminate\Auth\MustVerifyEmail as Mailer;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthContract;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Ramsey\Uuid\Uuid;
 use Spatie\Permission\Traits\HasRoles;
 
+/**
+ * @method static Builder|static unverified()
+ */
 class User extends Model implements AuthContract, MustVerifyEmail, AuthorizableContract
 {
 
@@ -24,6 +29,7 @@ class User extends Model implements AuthContract, MustVerifyEmail, AuthorizableC
     use Authenticatable;
     use HasRoles;
     use Authorizable;
+    use SoftDeletes;
 
     public const EMPLOYEE = Role::EMPLOYEE->value;
 
@@ -44,6 +50,10 @@ class User extends Model implements AuthContract, MustVerifyEmail, AuthorizableC
         'password',
         'id',
         'remember_token',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime'
     ];
 
     public function getAuthIdentifierName(): string
@@ -81,6 +91,11 @@ class User extends Model implements AuthContract, MustVerifyEmail, AuthorizableC
         return $this->role === self::EMPLOYER;
     }
 
+    public function scopeUnverified(Builder $builder): Builder
+    {
+        return $builder->where('is_confirmed', false);
+    }
+
     public function markEmailAsVerified(): void
     {
         $this->is_confirmed = true;
@@ -88,7 +103,7 @@ class User extends Model implements AuthContract, MustVerifyEmail, AuthorizableC
         $this->save();
     }
 
-    public function getEmailForVerification()
+    public function getEmailForVerification(): string
     {
         return $this->email;
     }

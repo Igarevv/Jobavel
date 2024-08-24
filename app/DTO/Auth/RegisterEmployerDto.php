@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace App\DTO\Auth;
 
 use App\Contracts\Auth\RegisterDtoInterface;
-use App\Http\Requests\Employer\EmployerRegisterRequest;
-use App\Persistence\Models\User;
-use Illuminate\Support\Facades\Hash;
 
 readonly class RegisterEmployerDto implements RegisterDtoInterface
 {
@@ -30,20 +27,6 @@ readonly class RegisterEmployerDto implements RegisterDtoInterface
             'company_logo' => $this->companyLogo,
             'company_type' => $this->companyType
         ];
-    }
-
-    public static function fromRequest(EmployerRegisterRequest $request, string $defaultLogo): static
-    {
-        $data = $request->validated();
-
-        return new static(
-            companyName: $data['company'],
-            email: $data['email'],
-            password: Hash::make($data['password'], ['rounds' => 12]),
-            role: User::EMPLOYER,
-            companyLogo: $defaultLogo,
-            companyType: $data['type']
-        );
     }
 
     public function getEmail(): string

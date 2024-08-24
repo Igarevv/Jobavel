@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Employer;
 
+use App\DTO\Employer\EmployerPersonalInfoDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -27,5 +28,14 @@ class UpdateEmployerRequest extends FormRequest
                 Rule::unique('employers', 'company_name')->ignore($userId, 'user_id')
             ]
         ];
+    }
+
+    public function getDto(): EmployerPersonalInfoDto
+    {
+        return new EmployerPersonalInfoDto(
+            contactEmail: $this->get('email'),
+            description: $this->get('description'),
+            companyName: $this->get('name')
+        );
     }
 }

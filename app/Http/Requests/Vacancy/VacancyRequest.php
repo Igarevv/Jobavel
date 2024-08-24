@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Vacancy;
 
+use App\DTO\Vacancy\VacancyDto;
 use App\Enums\Vacancy\EmploymentEnum;
 use App\Rules\TechSkillsExistsRule;
 use App\Traits\AfterValidation;
@@ -67,6 +68,23 @@ class VacancyRequest extends FormRequest
             'requirements.*' => 'requirement',
             'offers' => 'offer',
         ];
+    }
+
+    public function getDto(): VacancyDto
+    {
+        return new VacancyDto(
+            title: $this->get('title'),
+            description: $this->get('description'),
+            responsibilities: $this->get('responsibilities'),
+            requirements: $this->get('requirements'),
+            skillSet: $this->get('skillset'),
+            location: $this->get('location'),
+            experienceTime: $this->get('experience'),
+            employmentType: $this->get('employment'),
+            considerWithoutExp: $this->get('consider'),
+            offers: $this->get('offers') ?? [],
+            salary: (int)($this->get('salary') ?? 0)
+        );
     }
 
     public function messages(): array

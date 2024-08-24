@@ -31,7 +31,11 @@ class UserRepository implements UserRepositoryInterface
         $columnName = is_numeric($id) ? 'id' : 'user_id';
 
         return User::query()->where($columnName, $id)->first([
-            'user_id', 'email', 'role', 'is_confirmed', 'created_at',
+            'user_id',
+            'email',
+            'role',
+            'is_confirmed',
+            'created_at',
         ]);
     }
 
@@ -40,7 +44,6 @@ class UserRepository implements UserRepositoryInterface
         return User::query()->create([
             'email' => $userData->getEmail(),
             'password' => $userData->getPassword(),
-            'role' => $userData->getRole(),
         ]);
     }
 

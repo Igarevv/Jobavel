@@ -30,7 +30,7 @@ class PermissionSeeder extends Seeder
 
         $employerRole = Role::create(['name' => User::EMPLOYER]);
         $employeeRole = Role::create(['name' => User::EMPLOYEE]);
-        $admin = Role::create(['name' => Admin::ADMIN, 'guard_name' => Admin::ADMIN]);
+        $admin = Role::query()->updateOrCreate(['name' => Admin::ADMIN, 'guard_name' => Admin::ADMIN]);
 
         $employerRole->givePermissionTo(
             'vacancy-create',

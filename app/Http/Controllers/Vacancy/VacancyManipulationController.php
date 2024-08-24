@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Vacancy;
 
-use App\DTO\Vacancy\VacancyDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Vacancy\VacancyRequest;
 use App\Persistence\Models\Vacancy;
@@ -28,9 +27,7 @@ class VacancyManipulationController extends Controller
 
         $this->authorize('edit', $existedVacancy);
 
-        $vacancyDto = VacancyDto::fromRequest($request);
-
-        $this->vacancyService->update($existedVacancy, $vacancyDto);
+        $this->vacancyService->update($existedVacancy, $request->getDto());
 
         return redirect()->route('vacancies.show', ['vacancy' => $vacancy])
             ->with('edit-success', trans('alerts.vacancy.edited'));
@@ -40,9 +37,7 @@ class VacancyManipulationController extends Controller
     {
         $this->authorize('create', Vacancy::class);
 
-        $vacancyDto = VacancyDto::fromRequest($request);
-
-        $this->vacancyService->create(session('user.emp_id'), $vacancyDto);
+        $this->vacancyService->create(session('user.emp_id'), $request->getDto());
 
         return redirect()
             ->route('employer.vacancy.unpublished')

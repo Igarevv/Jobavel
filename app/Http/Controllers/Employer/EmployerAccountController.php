@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Employer;
 
-use App\DTO\Employer\EmployerPersonalInfoDto;
 use App\Exceptions\InvalidVerificationCodeException;
 use App\Exceptions\VerificationCodeTimeExpiredException;
 use App\Http\Controllers\Controller;
@@ -24,7 +23,7 @@ class EmployerAccountController extends Controller
 
     public function update(UpdateEmployerRequest $request): RedirectResponse
     {
-        $employerDto = EmployerPersonalInfoDto::fromRequest($request);
+        $employerDto = $request->getDto();
 
         $employer = $this->accountService->update(session('user.emp_id'), $employerDto);
 

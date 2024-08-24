@@ -10,29 +10,28 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\URL;
 
-class ConfirmEmail extends Mailable
+class NeedToVerifyEmailOrAccountWillDeleteMail extends Mailable
 {
+    use Queueable, SerializesModels;
 
-    use Queueable;
-    use SerializesModels;
-
-    public function __construct(protected User $user)
-    {
+    public function __construct(
+        private User $user
+    ) {
     }
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Confirm Email',
+            subject: 'Please, verify email',
         );
     }
 
     public function content(): Content
     {
         return new Content(
-            markdown: 'auth.email.verify-email',
+            markdown: 'auth.email.verify-or-die',
             with: [
-                'verificationUrl' => $this->verificationUrl(),
+                'url' => $this->verificationUrl()
             ]
         );
     }
@@ -44,5 +43,4 @@ class ConfirmEmail extends Mailable
             'hash' => sha1($this->user->getEmailForVerification()),
         ]);
     }
-
 }

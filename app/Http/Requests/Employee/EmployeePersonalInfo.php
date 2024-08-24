@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Employee;
 
+use App\DTO\Employee\EmployeePersonalInfoDto;
 use App\Rules\TechSkillsExistsRule;
 use App\Traits\AfterValidation;
 use Illuminate\Foundation\Http\FormRequest;
@@ -55,6 +56,19 @@ class EmployeePersonalInfo extends FormRequest
         $this->makeExperienceDefaultValue($data);
         $this->castSkillsIdsToInt($data);
         $this->setSkillsAsNullIfNotExists($data);
+    }
+
+    public function getDto(): EmployeePersonalInfoDto
+    {
+        return new EmployeePersonalInfoDto(
+            firstName: $this->get('first-name'),
+            lastName: $this->get('last-name'),
+            currentPosition: $this->get('position'),
+            aboutEmployee: $this->get('about-employee'),
+            experiences: $this->get('experiences'),
+            skills: $this->get('skills'),
+            preferredSalary: $this->get('salary')
+        );
     }
 
     private function castSalaryToInt(array &$data): void

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\DTO\Vacancy;
 
-use App\Http\Requests\Vacancy\VacancyRequest;
 use Carbon\Carbon;
 
 class VacancyDto
@@ -26,25 +25,6 @@ class VacancyDto
         private ?int $id = null,
         public ?int $responses = 0
     ) {
-    }
-
-    public static function fromRequest(VacancyRequest $request): static
-    {
-        $input = $request->validated();
-
-        return new static(
-            title: $input['title'],
-            description: $input['description'],
-            responsibilities: $input['responsibilities'],
-            requirements: $input['requirements'],
-            skillSet: $input['skillset'],
-            location: $input['location'],
-            experienceTime: $input['experience'],
-            employmentType: $input['employment'],
-            considerWithoutExp: $input['consider'],
-            offers: $input['offers'] ?? [],
-            salary: (int)($input['salary'] ?? 0)
-        );
     }
 
     public function connectId(int $vacancyId): void
