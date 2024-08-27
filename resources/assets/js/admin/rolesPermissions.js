@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
         roleRadio.addEventListener('click', async () => {
             const id = roleRadio.getAttribute('data-role-id');
 
-            const response = await fetch(`/admin/roles/${id}/permissions`);
+            const response = await fetch(`/api/admin/roles/${id}/permissions`);
 
             const data = await response.json();
 

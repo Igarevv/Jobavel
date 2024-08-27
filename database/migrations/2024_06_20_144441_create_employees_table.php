@@ -24,6 +24,7 @@ return new class extends Migration {
             $table->json('experiences')->nullable();
             $table->json('skills')->nullable();
             $table->string('resume_file')->nullable();
+            $table->timestamp('created_at')->useCurrent();
             $table->primary('id');
         });
     }

@@ -37,12 +37,13 @@
                             @forelse($roles as $role)
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                     <th scope="row"
-                                        class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $loop->iteration }}</th>
-                                    <td class="px-6 py-4">{{ $role->name }}</td>
-                                    <td class="px-6 py-4">{{ $role->createdAt }}</td>
-                                    <td class="px-6 py-4">{{ $role->updatedAt }}</td>
-                                    <td class="px-6 py-4 text-right">
-                                        <form action="" method="POST">
+                                        class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $loop->iteration }}</th>
+                                    <td class="px-3 py-4">{{ $role->name }}</td>
+                                    <td class="px-3 py-4">{{ $role->createdAt }}</td>
+                                    <td class="px-3 py-4">{{ $role->updatedAt }}</td>
+                                    <td class="px-3 py-4 text-right">
+                                        <form action="{{ route('admin.roles.remove', ['role' => $role->id]) }}"
+                                              method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
@@ -135,67 +136,71 @@
                         </div>
                     </div>
                     @endsession
+                    @session('permission-not-found')
+                    <div class="flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800"
+                         role="alert">
+                        <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true"
+                             xmlns="http://www.w3.org/2000/svg"
+                             fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                        </svg>
+                        <span class="sr-only">Info</span>
+                        <div>
+                            <span class="font-medium">Error!</span> {{ $value }}
+                        </div>
+                    </div>
+                    @endsession
+                    @session('permission-revoked')
+                    <div class="flex items-center p-4 mb-4 text-sm text-green-800 border border-green-300 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800"
+                         role="alert">
+                        <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true"
+                             xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                        </svg>
+                        <span class="sr-only">Info</span>
+                        <div>
+                            <span class="font-medium">Success!</span> {{ $value }}
+                        </div>
+                    </div>
+                    @endsession
                     <x-admin.table.default class="w-full" scroll>
                         <x-slot:title>Permissions</x-slot:title>
                         <x-slot:description>Manage all permissions for roles.</x-slot:description>
 
                         <x-admin.table.thead>
                             <th scope="col" class="px-3 py-2 text-sm">No.</th>
-                            <th scope="col" class="px-3 py-2 text-sm">Role</th>
-                            <th scope="col" class="pe-3 ps-1 py-2 text-sm">Permission</th>
-                            <th scope="col" class="pe-3 ps-1 py-2 text-sm">Created At</th>
-                            <th scope="col" class="pe-3 ps-1 py-2 text-sm">Updated At</th>
-                            <th scope="col" class="pe-3 ps-1 py-2 text-sm"></th>
+                            <th scope="col" class="px-3 py-2 text-sm">Permission</th>
+                            <th scope="col" class="px-3 py-2 text-sm">Created At</th>
+                            <th scope="col" class="px-3 py-2 text-sm">Updated At</th>
+                            <th scope="col" class="px-3 py-2 text-sm"></th>
                         </x-admin.table.thead>
 
                         <x-admin.table.tbody>
-                            @php
-                                $currentRole = null;
-                            @endphp
-                            @forelse($roles as $role)
-                                @forelse($role->permissions as $permission)
-                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <th scope="row"
-                                            class="px-3 py-2 font-medium text-gray-900 text-sm whitespace-nowrap dark:text-white">
-                                            {{ $loop->parent->iteration }}.{{ $loop->iteration }}
-                                        </th>
-                                        @if($role->name !== $currentRole)
-                                            <td class="px-3 py-2 text-sm">{{ $role->name }}</td>
-                                            @php $currentRole = $role->name; @endphp
-                                        @else
-                                            <td class="px-3 py-2 text-sm"></td>
-                                        @endif
-                                        <td class="px-3 py-2 text-sm">{{ $permission->name }}</td>
-                                        <td class="px-3 py-2 text-sm">{{ $permission->createdAt }}</td>
-                                        <td class="px-3 py-2 text-sm">{{ $permission->updatedAt }}</td>
-                                        <td class="px-3 py-2 text-right text-sm">
-                                            <form action="" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                        class="unstyled-button font-medium text-red-600 dark:text-blue-500 hover:underline">
-                                                    Delete
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    @if($role->name === \App\Persistence\Models\Admin::ADMIN)
-                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                            <th colspan="6" class="px-3 py-2 text-center text-red-100 text-sm">Admin by
-                                                default has all permissions
-                                            </th>
-                                        </tr>
-                                    @else
-                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                            <th colspan="6" class="px-3 py-2 text-center text-red-100 text-sm">No
-                                                permissions for role {{ $role->name }}</th>
-                                        </tr>
-                                    @endif
-                                @endforelse
+                            @forelse($allPermissions as $permission)
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                    <th scope="row"
+                                        class="px-3 py-2 font-medium text-gray-900 text-sm whitespace-nowrap dark:text-white">
+                                        {{ $loop->iteration }}
+                                    </th>
+                                    <td class="px-3 py-2 text-sm">{{ $permission->name }}</td>
+                                    <td class="px-3 py-2 text-sm">{{ $permission->createdAt }}</td>
+                                    <td class="px-3 py-2 text-sm">{{ $permission->updatedAt }}</td>
+                                    <td class="px-3 py-2 text-right text-sm">
+                                        <form action="{{ route('admin.permissions.remove', ['permission' => $permission->name]) }}"
+                                              method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                    class="unstyled-button font-medium text-red-600 dark:text-blue-500 hover:underline">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
                             @empty
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                    <th colspan="6" class="px-3 py-2 text-center text-red-100 text-sm">Roles not found
+                                    <th colspan="6" class="px-3 py-2 text-center text-red-100 text-sm">Permissions not
+                                        found
                                     </th>
                                 </tr>
                             @endforelse

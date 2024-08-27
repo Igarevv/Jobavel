@@ -1,5 +1,5 @@
-<aside {{ $attributes }} aria-label="Sidebar">
-    <div class="overflow-y-auto py-4 pl-4 pr-16 h-screen bg-gray-50 rounded dark:bg-gray-800">
+<aside {{ $attributes->merge(['class' => 'min-w-fit flex-grow-0 dark:bg-gray-800 flex-shrink-0 bg-gray-50 hidden md:block']) }} aria-label="Sidebar">
+    <div class="overflow-y-auto py-4 pl-4 pr-16 h-screen rounded">
         <a href="{{ route('admin.island') }}" class="flex items-center pl-2.5 mb-5">
             <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Job<span
                         class="text-red-100">avel</span> Admin</span>
@@ -50,11 +50,11 @@
                             users</a>
                     </li>
                     <li>
-                        <a href="#"
+                        <a href="{{ route('admin.users.employers') }}"
                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Employers</a>
                     </li>
                     <li>
-                        <a href="#"
+                        <a href="{{ route('admin.users.employees') }}"
                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Employees</a>
                     </li>
                     <li>
