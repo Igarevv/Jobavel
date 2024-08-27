@@ -19,6 +19,7 @@ use Ramsey\Uuid\Uuid;
  * @property string $employer_id,
  * @property string $company_description,
  * @property string $company_logo,
+ * @property string $company_type
  * @property Carbon $created_at
  * @property string $contact_email
  * @method static Employer|static findOrFail($id, $columns = ['*'])
@@ -38,12 +39,17 @@ class Employer extends Model
         'contact_email',
         'company_description',
         'company_type',
-        'company_logo'
+        'company_logo',
+        'created_at'
     ];
 
     protected $hidden = [
         'id',
         'user_id'
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime'
     ];
 
     public function user(): BelongsTo

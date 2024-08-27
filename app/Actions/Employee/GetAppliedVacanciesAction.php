@@ -6,7 +6,7 @@ namespace App\Actions\Employee;
 
 use App\Persistence\Models\Employee;
 use App\Persistence\Models\Vacancy;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class GetAppliedVacanciesAction
 {
@@ -17,6 +17,11 @@ class GetAppliedVacanciesAction
             ->with('employer:id,company_name')
             ->paginate(5, ['employer_id', 'title', 'applied_at', 'has_cv', 'slug', 'employee_contact_email']);
 
+        return $this->prepareData($vacancies);
+    }
+
+    public function prepareData(LengthAwarePaginator $vacancies): LengthAwarePaginator
+    {
         return $vacancies->through(function (Vacancy $vacancy) {
             return (object)[
                 'title' => $vacancy->title,

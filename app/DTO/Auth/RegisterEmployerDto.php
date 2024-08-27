@@ -25,7 +25,8 @@ readonly class RegisterEmployerDto implements RegisterDtoInterface
             'contact_email' => $this->email,
             'company_name' => $this->companyName,
             'company_logo' => $this->companyLogo,
-            'company_type' => $this->companyType
+            'company_type' => $this->companyType,
+            'created_at' => now()
         ];
     }
 

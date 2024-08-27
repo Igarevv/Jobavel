@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Actions\Admin\Users;
 
 use App\Persistence\Models\User;
-use Illuminate\Pagination\Paginator;
+use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Support\Str;
 
 class GetUnverifiedUsersPaginatedAction
 {
@@ -13,11 +14,17 @@ class GetUnverifiedUsersPaginatedAction
     {
         $users = User::unverified()->simplePaginate(10, ['user_id', 'email', 'created_at']);
 
+        return $this->prepareData($users);
+    }
+
+    public function prepareData(Paginator $users)
+    {
         return $users->through(function (User $user) {
             return (object)[
                 'email' => $user->email,
-                'userId' => $user->user_id,
-                'createdAt' => $user->created_at->format('Y-m-d H:i').' UTC'
+                'id' => Str::mask($user->user_id, '*', 5, -2),
+                'createdAt' => $user->created_at->format('Y-m-d H:i').' '.
+                    $user->created_at->getTimezone()
             ];
         });
     }

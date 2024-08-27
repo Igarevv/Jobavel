@@ -8,24 +8,39 @@ use Spatie\Permission\Models\Role;
 
 class GetRolesWithPermissionsAction
 {
-    public function handle(): Collection
+    public function handle(): array
     {
-        return Role::with('permissions')
+        return [$this->getRoles(), $this->getPermissions()];
+    }
+
+    private function getRoles(): Collection
+    {
+        return Role::query()
             ->get()
             ->map(function (Role $role) {
+                $timezone = $role->created_at->getTimezone();
+                
                 return (object)[
                     'id' => $role->id,
                     'name' => $role->name,
-                    'createdAt' => $role->created_at.' UTC',
-                    'updatedAt' => $role->updated_at.' UTC',
-                    'permissions' => $role->permissions->map(function (Permission $permission) {
-                        return (object)[
-                            'id' => $permission->id,
-                            'name' => $permission->name,
-                            'createdAt' => $permission->created_at.' UTC',
-                            'updatedAt' => $permission->updated_at.' UTC'
-                        ];
-                    })
+                    'createdAt' => $role->created_at->format('Y-m-d H:i').' '.$timezone,
+                    'updatedAt' => $role->updated_at->format('Y-m-d H:i').' '.$timezone,
+                ];
+            });
+    }
+
+    private function getPermissions(): Collection
+    {
+        return Permission::query()
+            ->get()
+            ->map(function (Permission $permission) {
+                $timezone = $permission->created_at->getTimezone();
+
+                return (object)[
+                    'id' => $permission->id,
+                    'name' => $permission->name,
+                    'createdAt' => $permission->created_at->format('Y-m-d H:i').' '.$timezone,
+                    'updatedAt' => $permission->updated_at->format('Y-m-d H:i').' '.$timezone
                 ];
             });
     }

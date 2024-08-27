@@ -45,4 +45,13 @@ class AdminPermissionsController
             'permissions' => $role->permissions()->get(['id']),
         ]);
     }
+    
+    public function delete(string $permission): RedirectResponse
+    {
+        $rowsDeleted = Permission::query()->where('name', $permission)->delete();
+
+        return $rowsDeleted >= 1
+            ? back()->with('permission-revoked', 'Permission was successfully revoked.')
+            : back()->with('permission-not-found', 'Permission not found. Try again');
+    }
 }

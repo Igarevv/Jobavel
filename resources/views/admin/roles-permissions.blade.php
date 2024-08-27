@@ -37,11 +37,11 @@
                             @forelse($roles as $role)
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                     <th scope="row"
-                                        class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $loop->iteration }}</th>
-                                    <td class="px-3 py-4">{{ $role->name }}</td>
-                                    <td class="px-3 py-4">{{ $role->createdAt }}</td>
-                                    <td class="px-3 py-4">{{ $role->updatedAt }}</td>
-                                    <td class="px-3 py-4 text-right">
+                                        class="ps-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $loop->iteration }}</th>
+                                    <td class="ps-3 py-4">{{ $role->name }}</td>
+                                    <td class="ps-3 py-4">{{ $role->createdAt }}</td>
+                                    <td class="ps-3 py-4">{{ $role->updatedAt }}</td>
+                                    <td class="pe-3 py-4 text-right">
                                         <form action="{{ route('admin.roles.remove', ['role' => $role->id]) }}"
                                               method="POST">
                                             @csrf
@@ -179,13 +179,13 @@
                             @forelse($allPermissions as $permission)
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                     <th scope="row"
-                                        class="px-3 py-2 font-medium text-gray-900 text-sm whitespace-nowrap dark:text-white">
+                                        class="ps-3 py-2 font-medium text-gray-900 text-sm whitespace-nowrap dark:text-white">
                                         {{ $loop->iteration }}
                                     </th>
-                                    <td class="px-3 py-2 text-sm">{{ $permission->name }}</td>
-                                    <td class="px-3 py-2 text-sm">{{ $permission->createdAt }}</td>
-                                    <td class="px-3 py-2 text-sm">{{ $permission->updatedAt }}</td>
-                                    <td class="px-3 py-2 text-right text-sm">
+                                    <td class="ps-3 py-4 text-sm">{{ $permission->name }}</td>
+                                    <td class="ps-3 py-4 text-sm">{{ $permission->createdAt }}</td>
+                                    <td class="ps-3 py-4 text-sm">{{ $permission->updatedAt }}</td>
+                                    <td class="px-3 py-4 text-right text-sm">
                                         <form action="{{ route('admin.permissions.remove', ['permission' => $permission->name]) }}"
                                               method="POST">
                                             @csrf

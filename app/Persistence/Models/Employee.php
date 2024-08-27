@@ -2,6 +2,7 @@
 
 namespace App\Persistence\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,6 +21,7 @@ use Ramsey\Uuid\Uuid;
  * @property string $about_me,
  * @property array $experiences,
  * @property string $resume_file
+ * @property Carbon|null $created_at
  */
 class Employee extends Model
 {
@@ -40,7 +42,8 @@ class Employee extends Model
         'about_me',
         'experiences',
         'skills',
-        'resume_file'
+        'resume_file',
+        'created_at'
     ];
 
     protected $hidden = [
@@ -48,7 +51,8 @@ class Employee extends Model
     ];
 
     protected $casts = [
-        'skills' => 'array'
+        'skills' => 'array',
+        'created_at' => 'datetime'
     ];
 
     public function user(): BelongsTo

@@ -24,6 +24,11 @@ class GetVacancyEmployeesAction
                 'employees.employee_id'
             ]);
 
+        return $this->prepareData($employees);
+    }
+
+    public function prepareData(LengthAwarePaginator $employees): LengthAwarePaginator
+    {
         return $employees->through(function (Employee $employee) {
             return (object)[
                 'fullName' => $employee->getFullName(),

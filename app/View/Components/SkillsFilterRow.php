@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
-class SkillsFilterRaw extends Component
+class SkillsFilterRow extends Component
 {
 
     public function __construct(
@@ -24,6 +24,6 @@ class SkillsFilterRaw extends Component
 
     public function render(): View|Closure|string
     {
-        return view('components.categories.skills-filter-raw');
+        return view('components.categories.skills-filter-row');
     }
 }
