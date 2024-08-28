@@ -20,6 +20,10 @@ Route::get('/admin/users/employees', [EmployeesController::class, 'index'])->nam
 
 Route::get('/admin/users/employers', [EmployersController::class, 'index'])->name('admin.users.employers');
 
+Route::get('/admin/employers/search', [EmployersController::class, 'search'])->name('admin.employers.search');
+
+Route::get('/admin/employees/search', [EmployeesController::class, 'search'])->name('admin.employees.search');
+
 //Route::get('/admin/users/admins', [AdminsController::class, 'index'])->name('admin.users.admins');
 
 Route::get('/admin/sign-in', [AdminAuthController::class, 'signInIndex']);

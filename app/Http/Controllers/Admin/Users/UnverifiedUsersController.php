@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Admin\Users;
 
-use App\Actions\Admin\Users\GetUnverifiedUsersPaginatedAction;
-use App\Actions\Admin\Users\SendEmailToAllUnverifiedUsersAction;
+use App\Actions\Admin\Users\Unverified\GetUnverifiedUsersPaginatedAction;
+use App\Actions\Admin\Users\Unverified\SendEmailToAllUnverifiedUsersAction;
 use App\Events\UserDeletedTemporarily;
 use App\Exceptions\TooManyEmailsForUnverifiedUsersPerDay;
 use App\Http\Controllers\Controller;

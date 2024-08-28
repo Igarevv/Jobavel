@@ -6,7 +6,7 @@ namespace App\DTO\Vacancy;
 
 use Carbon\Carbon;
 
-class VacancyDto
+final class VacancyDto
 {
 
     public function __construct(

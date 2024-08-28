@@ -19,7 +19,7 @@ class EmployerSeeder extends Seeder
                     return ['contact_email' => $user->email];
                 }
             )
-        )->state(['role' => User::EMPLOYER])->create();
+        )->create();
 
         $users->each(function (User $user) {
             $user->assignRole(User::EMPLOYER);

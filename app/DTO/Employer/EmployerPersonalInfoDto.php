@@ -7,7 +7,7 @@ namespace App\DTO\Employer;
 use App\Contracts\User\UserDtoInterface;
 use App\Http\Requests\Employer\UpdateEmployerRequest;
 
-readonly class EmployerPersonalInfoDto implements UserDtoInterface
+readonly final class EmployerPersonalInfoDto implements UserDtoInterface
 {
     public function __construct(
         public string $contactEmail,

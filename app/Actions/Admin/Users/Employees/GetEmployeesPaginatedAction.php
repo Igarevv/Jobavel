@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Admin\Users;
+namespace App\Actions\Admin\Users\Employees;
 
 use App\Persistence\Models\Employee;
 use Illuminate\Contracts\Pagination\Paginator;

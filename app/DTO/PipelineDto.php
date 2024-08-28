@@ -6,7 +6,7 @@ namespace App\DTO;
 
 use Illuminate\Database\Eloquent\Builder;
 
-readonly class PipelineDto
+readonly final class PipelineDto
 {
     public function __construct(
         public Builder $builder,

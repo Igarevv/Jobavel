@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Admin\Users;
+namespace App\Actions\Admin\Users\Employers;
 
 use App\Persistence\Models\Employer;
 use Illuminate\Contracts\Pagination\Paginator;
@@ -24,7 +24,7 @@ class GetEmployersPaginatedAction
         return $this->prepareData($employers);
     }
 
-    private function prepareData(Paginator $employers)
+    private function prepareData(Paginator $employers): Paginator
     {
         return $employers->through(function (Employer $employer) {
             return (object)[

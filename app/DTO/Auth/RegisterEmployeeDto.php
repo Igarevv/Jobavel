@@ -6,7 +6,7 @@ namespace App\DTO\Auth;
 
 use App\Contracts\Auth\RegisterDtoInterface;
 
-readonly class RegisterEmployeeDto implements RegisterDtoInterface
+readonly final class RegisterEmployeeDto implements RegisterDtoInterface
 {
 
     public function __construct(

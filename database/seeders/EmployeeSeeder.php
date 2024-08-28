@@ -23,7 +23,7 @@ class EmployeeSeeder extends Seeder
                         return ['email' => $user->email];
                     }
                 )
-            )->state(['role' => User::EMPLOYEE])->create();
+            )->create();
 
         $users->each(function (User $user) {
             $user->assignRole(User::EMPLOYEE);

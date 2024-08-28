@@ -6,7 +6,7 @@ namespace App\DTO\Employee;
 
 use App\Contracts\User\UserDtoInterface;
 
-readonly class EmployeePersonalInfoDto implements UserDtoInterface
+readonly final class EmployeePersonalInfoDto implements UserDtoInterface
 {
     public function __construct(
         public string $firstName,

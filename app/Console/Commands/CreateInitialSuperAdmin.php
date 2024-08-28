@@ -16,7 +16,7 @@ class CreateInitialSuperAdmin extends Command
 
     public function handle(): void
     {
-        if (Admin::query()->where('is_super_admin')->exists()) {
+        if (Admin::query()->where('is_super_admin', true)->exists()) {
             $this->info('Unable to create super admin. Already exists');
             return;
         }

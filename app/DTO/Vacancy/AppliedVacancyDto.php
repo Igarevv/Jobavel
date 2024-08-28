@@ -8,7 +8,7 @@ use App\Http\Requests\Vacancy\ApplyRequest;
 use App\Persistence\Models\Employee;
 use App\Persistence\Models\Vacancy;
 
-readonly class AppliedVacancyDto
+readonly final class AppliedVacancyDto
 {
     public function __construct(
         public Vacancy $vacancy,

@@ -24,6 +24,9 @@ class PermissionSeeder extends Seeder
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
+        Role::query()->truncate();
+        Permission::query()->truncate();
+
         foreach ($this->permissions as $permission) {
             Permission::create(['name' => $permission]);
         }

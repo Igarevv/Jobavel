@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Admin\Users;
+namespace App\Actions\Admin\Users\Unverified;
 
 use App\Persistence\Models\User;
 use Illuminate\Contracts\Pagination\Paginator;
