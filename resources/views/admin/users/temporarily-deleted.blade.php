@@ -1,18 +1,18 @@
-@php use App\Enums\Admin\AdminEmployersSearchEnum as SearchEnum; @endphp
+@php use App\Enums\Admin\AdminDeletedUserSearchEnum;use Illuminate\Contracts\Pagination\Paginator; @endphp
 <x-admin.layout>
     <x-admin.header>
-        <x-slot:title>Users > Employers</x-slot:title>
-        In this section, you can manage users with role - employer.
+        <x-slot:title>Users > Temporarily Deleted</x-slot:title>
+        In this section, you can manage with temporarily deleted users
     </x-admin.header>
 
-    <section class="mx-auto w-4/5 my-10">
+    <section class="mx-auto w-3/4 my-10">
         <x-admin.table.default>
-            <x-slot:title>Employers</x-slot:title>
-            <x-slot:description>
-                <span>The full list of employers</span>
+            <x-slot:title>Temporarily deleted users</x-slot:title>
+            <x-slot:description>You can restore temporarily deleted users
                 <div>
                     <div class="text-center">
-                        <form class="max-w-lg mx-auto" action="{{ route('admin.employers.search') }}" method="GET">
+                        <form class="max-w-lg mx-auto" action="{{ route('admin.temporarily-deleted.search') }}"
+                              method="GET">
                             <div class="flex">
                                 @php
                                     $input = $input ?? null;
@@ -21,7 +21,7 @@
                                     <select id="custom-select" name="searchBy"
                                             class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600 appearance-none">
                                         <option value="" disabled selected>Choose column</option>
-                                        @foreach (SearchEnum::columns() as $value => $label)
+                                        @foreach (AdminDeletedUserSearchEnum::columns() as $value => $label)
                                             <option value="{{ $value }}" @selected(old('searchBy') === $value || $input?->searchById === $value)>
                                                 {{ $label }}
                                             </option>
@@ -32,7 +32,7 @@
                                     <input type="search" id="search-dropdown" name="search"
                                            value="{{ old('search') ?? $input?->search }}"
                                            class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-red-500 focus:border-red-500 dark:bg-gray-700 dark:border-s-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-red-500"
-                                           placeholder="Search..." required/>
+                                           placeholder="Search..."/>
                                     <button type="submit"
                                             class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-red-700 rounded-e-lg border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                                         <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -57,55 +57,42 @@
             </x-slot:description>
             <x-admin.table.thead>
                 <th scope="col" class="px-3 py-3 text-sm">No.</th>
-                <th scope="col" class="px-3 py-3 text-sm">Employer Id</th>
-                <th scope="col" class="px-3 py-3 text-sm">Company Name</th>
-                <th scope="col" class="px-3 py-3 text-sm">Company Type</th>
-                <th scope="col" class="px-3 py-3 text-sm">Account Email</th>
-                <th scope="col" class="px-3 py-3 text-sm">Contact Email</th>
+                <th scope="col" class="px-3 py-3 text-sm">User Id</th>
+                <th scope="col" class="px-3 py-3 text-sm">Email</th>
                 <th scope="col" class="px-3 py-3 text-sm">Created At</th>
-                <th scope="col" class="px-3 py-3 text-sm"></th>
+                <th scope="col" class="px-3 py-3 text-sm">Deleted At</th>
                 <th scope="col" class="px-3 py-3 text-sm"></th>
             </x-admin.table.thead>
             <x-admin.table.tbody>
-                @forelse($employers as $employer)
+                @forelse($users as $user)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <th scope="row"
                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ $loop->iteration + ($employers->currentPage() - 1) * $employers->perPage() }}
+                            @if($users instanceof Paginator)
+                                {{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}
+                            @else
+                                {{ $loop->iteration }}
+                            @endif
                         </th>
                         <td class="px-3 py-4">
-                            {{ $employer->idEncrypted }}
+                            {{ $user->idEncrypted }}
                         </td>
                         <td class="px-3 py-4">
-                            {{ $employer->company }}
+                            {{ $user->email }}
                         </td>
                         <td class="px-3 py-4">
-                            {{ $employer->companyType }}
+                            {{ $user->createdAt }}
                         </td>
                         <td class="px-3 py-4">
-                            {{ $employer->accountEmail }}
+                            {{ $user->deletedAt }}
                         </td>
                         <td class="px-3 py-4">
-                            {{ $employer->contactEmail }}
-                        </td>
-                        <td class="px-3 py-4">
-                            {{ $employer->createdAt }}
-                        </td>
-                        <td class="px-3 py-4">
-                            <button type="submit" data-modal-target="static-modal" data-modal-toggle="static-modal"
-                                    data-employer-id="{{ $employer->id }}" data-employer-name="{{ $employer->company }}"
-                                    class="open-modal-btn unstyled-button font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                View vacancies
-                            </button>
-                        </td>
-                        <td class="px-3 py-4">
-                            <form action=""
+                            <form action="{{ route('admin.temporarily-deleted.restore', ['identity' => $user->id]) }}"
                                   method="POST">
                                 @csrf
-                                @method('DELETE')
                                 <button type="submit"
-                                        class="unstyled-button font-medium text-red-600 dark:text-blue-500 hover:underline">
-                                    Ban
+                                        class="unstyled-button font-medium text-green-400 dark:text-white hover:underline">
+                                    Restore
                                 </button>
                             </form>
                         </td>
@@ -113,53 +100,26 @@
                 @empty
                     <tr>
                         <td colspan="8" class="text-center py-6">
-                    <span class="text-xl text-gray-500 dark:text-gray-400">
-                        @isset($input)
-                            Employer with key:
-                            <span class="font-bold underline">{{ $input->searchByValue }}</span>
-                            and search value:
-                            <span class="font-bold underline">{{ $input->search }}</span>
-                            not found
-                        @else
-                            Employers not found
-                        @endisset
-                    </span>
+                     <span class="text-xl text-gray-500 dark:text-gray-400">
+                         @isset($input)
+                             Temporarily deleted user with key:
+                             <span class="font-bold underline">{{ $input->searchByValue }}</span>
+                             and search value:
+                             <span class="font-bold underline">{{ $input->search }}</span>
+                             not found
+                         @else
+                             Temporarily deleted users not found
+                         @endisset
+                     </span>
                         </td>
                     </tr>
                 @endforelse
             </x-admin.table.tbody>
         </x-admin.table.default>
         <div class="mt-1">
-            {{ $employers->withQueryString()->links() }}
+            @if ($users instanceof Paginator )
+                {{ $users->withQueryString()->links() }}
+            @endif
         </div>
     </section>
-    <x-admin.modal.index>
-        <x-admin.modal.header>
-            <x-slot:title><span class="employer-name font-bold"></span> vacancies</x-slot:title>
-        </x-admin.modal.header>
-        <x-admin.modal.content class="content-container">
-            <x-admin.table.default>
-                <x-slot:title>Vacancies</x-slot:title>
-                <x-slot:description>All vacancies for employer <span class="employer-name font-bold"></span>
-                </x-slot:description>
-                <x-admin.table.thead>
-                    <th scope="col" class="px-3 py-3 text-sm">No.</th>
-                    <th scope="col" class="px-3 py-3 text-sm">Title</th>
-                    <th scope="col" class="px-3 py-3 text-sm">Location</th>
-                    <th scope="col" class="px-3 py-3 text-sm">Employment Type</th>
-                    <th scope="col" class="px-3 py-3 text-sm">Response number</th>
-                    <th scope="col" class="px-3 py-3 text-sm">Published At</th>
-                    <th scope="col" class="px-3 py-3 text-sm">Created At</th>
-                    <th scope="col" class="px-3 py-3 text-sm"></th>
-                </x-admin.table.thead>
-                <x-admin.table.tbody class="table-body"/>
-            </x-admin.table.default>
-        </x-admin.modal.content>
-        <x-admin.modal.footer>
-
-        </x-admin.modal.footer>
-    </x-admin.modal.index>
-    @pushonce('vite')
-        @vite(['resources/assets/js/admin/fetchEmployerVacancies.js'])
-    @endpushonce
 </x-admin.layout>

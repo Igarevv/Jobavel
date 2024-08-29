@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\RolesPermissions\AdminPermissionsController;
 use App\Http\Controllers\Admin\RolesPermissions\AdminRolesController;
 use App\Http\Controllers\Admin\Users\EmployeesController;
 use App\Http\Controllers\Admin\Users\EmployersController;
+use App\Http\Controllers\Admin\Users\TemporarilyDeletedUsersController;
 use App\Http\Controllers\Admin\Users\UnverifiedUsersController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,7 +15,7 @@ Route::get('/admin/island', [AdminHomeController::class, 'index'])->name('admin.
 Route::get('/admin/users/unverified', [UnverifiedUsersController::class, 'index'])->name('admin.users.unverified');
 
 Route::delete('/admin/users/unverified/{identity:user_id}/softdel', [UnverifiedUsersController::class, 'delete'])
-    ->name('admin.users.unverified.delete');
+    ->name('admin.unverified.delete');
 
 Route::get('/admin/users/employees', [EmployeesController::class, 'index'])->name('admin.users.employees');
 
@@ -24,6 +25,17 @@ Route::get('/admin/employers/search', [EmployersController::class, 'search'])->n
 
 Route::get('/admin/employees/search', [EmployeesController::class, 'search'])->name('admin.employees.search');
 
+Route::get('/admin/temporarily-deleted/search', [TemporarilyDeletedUsersController::class, 'search'])->name(
+    'admin.temporarily-deleted.search'
+);
+Route::post(
+    '/admin/temporarily-delete/{identity:user_id}/give-second-chance',
+    [TemporarilyDeletedUsersController::class, 'restore']
+)->name('admin.temporarily-deleted.restore');
+
+Route::get('/admin/users/temporarily-deleted', [TemporarilyDeletedUsersController::class, 'index'])->name(
+    'admin.users.temporarily-deleted'
+);
 //Route::get('/admin/users/admins', [AdminsController::class, 'index'])->name('admin.users.admins');
 
 Route::get('/admin/sign-in', [AdminAuthController::class, 'signInIndex']);

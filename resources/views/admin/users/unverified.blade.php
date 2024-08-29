@@ -87,7 +87,7 @@
                                 {{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}
                             </th>
                             <td class="px-3 py-4">
-                                {{ $user->id }}
+                                {{ $user->idEncrypted }}
                             </td>
                             <td class="px-3 py-4">
                                 {{ $user->email }}
@@ -96,7 +96,7 @@
                                 {{ $user->createdAt }}
                             </td>
                             <td class="px-3 py-4">
-                                <form action="{{ route('admin.users.unverified.delete', ['identity' => $user->id]) }}"
+                                <form action="{{ route('admin.unverified.delete', ['identity' => $user->id]) }}"
                                       method="POST">
                                     @csrf
                                     @method('DELETE')

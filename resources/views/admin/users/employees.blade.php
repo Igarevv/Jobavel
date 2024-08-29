@@ -102,12 +102,13 @@
                         <td colspan="8" class="text-center py-6">
                     <span class="text-xl text-gray-500 dark:text-gray-400">
                         @isset($input)
-                            No Employees Found with key:
+                            Employee with key:
                             <span class="font-bold underline">{{ $input->searchByValue }}</span>
                             and search value:
                             <span class="font-bold underline">{{ $input->search }}</span>
+                            not found
                         @else
-                            No Employees Found
+                            Employees not found
                         @endisset
                     </span>
                         </td>
