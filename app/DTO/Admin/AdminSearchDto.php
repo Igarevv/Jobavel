@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\DTO\Admin;
 
 use App\Contracts\Admin\SearchEnumInterface;
+use App\Traits\Searchable\SearchDtoInterface;
 
-class AdminSearchDto
+class AdminSearchDto implements SearchDtoInterface
 {
     public function __construct(
         private SearchEnumInterface $searchBy,

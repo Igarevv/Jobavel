@@ -18,8 +18,10 @@ use App\Persistence\Repositories\User\Employer\VerificationCodeRepository;
 use App\Persistence\Repositories\User\UserRepository;
 use App\Persistence\Repositories\VacancyRepository;
 use App\Service\Cache\Cache;
+use App\Traits\Searchable\SearchDtoInterface;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Csp\AddCspHeaders;
@@ -57,6 +59,14 @@ class AppServiceProvider extends ServiceProvider
 
         Collection::macro('present', function (string $class) {
             return new $class($this);
+        });
+
+        Builder::macro('search', function (SearchDtoInterface $searchDto) {
+            $model = $this->getModel();
+            if (method_exists($model, 'search')) {
+                return $model->search($this, $searchDto);
+            }
+            throw new \BadMethodCallException("Method search does not exist on model ".get_class($model));
         });
     }
 

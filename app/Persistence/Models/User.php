@@ -4,6 +4,9 @@ namespace App\Persistence\Models;
 
 use App\Enums\Role;
 use App\Exceptions\InvalidRoleException;
+use App\Persistence\Searcher\Searchers\UserSearcher;
+use App\Traits\Searchable\Searchable;
+use App\Traits\Searchable\SearchDtoInterface;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\MustVerifyEmail as Mailer;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -20,6 +23,8 @@ use Spatie\Permission\Traits\HasRoles;
 
 /**
  * @method static Builder|static unverified()
+ * @method User|null first(array $columns = ['*'])
+ * @method Builder search(SearchDtoInterface $searchDto)
  */
 class User extends Model implements AuthContract, MustVerifyEmail, AuthorizableContract
 {
@@ -30,6 +35,7 @@ class User extends Model implements AuthContract, MustVerifyEmail, AuthorizableC
     use HasRoles;
     use Authorizable;
     use SoftDeletes;
+    use Searchable;
 
     public const EMPLOYEE = Role::EMPLOYEE->value;
 
@@ -131,6 +137,11 @@ class User extends Model implements AuthContract, MustVerifyEmail, AuthorizableC
         };
     }
 
+    protected function searcher(): string
+    {
+        return UserSearcher::class;
+    }
+
     protected static function boot(): void
     {
         parent::boot();
@@ -141,5 +152,4 @@ class User extends Model implements AuthContract, MustVerifyEmail, AuthorizableC
             }
         });
     }
-
 }

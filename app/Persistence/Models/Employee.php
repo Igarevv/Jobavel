@@ -2,6 +2,8 @@
 
 namespace App\Persistence\Models;
 
+use App\Persistence\Searcher\Searchers\EmployeeSearcher;
+use App\Traits\Searchable\Searchable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,7 +27,7 @@ use Ramsey\Uuid\Uuid;
  */
 class Employee extends Model
 {
-
+    use Searchable;
     use HasFactory;
 
     protected $table = 'employees';
@@ -109,6 +111,11 @@ class Employee extends Model
         return static::where('employee_id', $uuid)->firstOrFail($columns);
     }
 
+    protected function searcher(): string
+    {
+        return EmployeeSearcher::class;
+    }
+
     protected static function boot(): void
     {
         parent::boot();
@@ -119,5 +126,4 @@ class Employee extends Model
             }
         });
     }
-
 }
