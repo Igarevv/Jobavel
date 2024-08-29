@@ -24,9 +24,9 @@ enum AdminEmployersSearchEnum: int implements SearchEnumInterface
         };
     }
 
-    public static function toString(AdminEmployersSearchEnum $enum): string
+    public function toString(): string
     {
-        return match ($enum) {
+        return match ($this) {
             self::ID => 'ID',
             self::COMPANY => 'Company name',
             self::ACCOUNT_EMAIL => 'Account email',

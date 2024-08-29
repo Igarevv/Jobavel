@@ -62,7 +62,7 @@ class VacancyViewModel
         return $this->vacancyRepository->getLatestPublished($howMany);
     }
 
-    public function getAllVacanciesRelatedToEmployer(Employer $employer, array $columns = ['*'])
+    public function getAllVacanciesRelatedToEmployer(Employer $employer, array $columns = ['*']): Collection
     {
         $cacheKey = $this->cache->getCacheKey('all-employer-vacancies', $employer->employer_id);
 

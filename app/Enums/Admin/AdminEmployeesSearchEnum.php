@@ -17,7 +17,7 @@ enum AdminEmployeesSearchEnum: int implements SearchEnumInterface
     public function toDbField(): string
     {
         return match ($this) {
-            self::ID => 'employer_id',
+            self::ID => 'employee_id',
             self::EMAIL => 'email',
             self::POSITION => 'position'
         };

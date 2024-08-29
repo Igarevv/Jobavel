@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Actions\Admin\Users\Employees;
 
 use App\DTO\Admin\AdminSearchDto;
-use App\Enums\Admin\AdminEmployeesSearchEnum;
 use App\Persistence\Models\Employee;
 use Illuminate\Contracts\Pagination\Paginator;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
 class GetEmployeesBySearchAction
@@ -27,28 +25,11 @@ class GetEmployeesBySearchAction
         return $this->prepareData($this->fetchEmployees($searchDto));
     }
 
-    private function applySearchingByFullName(Builder $builder, AdminSearchDto $searchDto): Builder
-    {
-        return $builder->whereRaw("LOWER(CONCAT(first_name, ' ', last_name)) LIKE ?", [
-            '%'.$searchDto->getSearchable().'%'
-        ]);
-    }
-
-    private function applyDefaultSearch(Builder $builder, AdminSearchDto $searchDto): Builder
-    {
-        return $builder->whereRaw("LOWER({$searchDto->getSearchByEnum()->toDbField()}) LIKE ?", [
-            '%'.$searchDto->getSearchable().'%'
-        ]);
-    }
-
     private function fetchEmployees(AdminSearchDto $searchDto): Paginator
     {
         return Employee::query()
-            ->when(
-                value: $searchDto->getSearchByEnum() === AdminEmployeesSearchEnum::NAME,
-                callback: fn(Builder $builder) => $this->applySearchingByFullName($builder, $searchDto),
-                default: fn(Builder $builder) => $this->applyDefaultSearch($builder, $searchDto)
-            )->simplePaginate(10, [
+            ->search($searchDto)
+            ->simplePaginate(10, [
                 'employee_id',
                 'email',
                 'first_name',

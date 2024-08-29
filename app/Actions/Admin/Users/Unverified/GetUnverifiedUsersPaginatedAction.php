@@ -21,8 +21,9 @@ class GetUnverifiedUsersPaginatedAction
     {
         return $users->through(function (User $user) {
             return (object)[
+                'id' => $user->user_id,
+                'idEncrypted' => Str::mask($user->user_id, '*', 5, -2),
                 'email' => $user->email,
-                'id' => Str::mask($user->user_id, '*', 5, -2),
                 'createdAt' => $user->created_at->format('Y-m-d H:i').' '.
                     $user->created_at->getTimezone()
             ];

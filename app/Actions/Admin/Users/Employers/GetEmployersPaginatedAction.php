@@ -21,6 +21,7 @@ class GetEmployersPaginatedAction
                 'company_type',
                 'created_at',
             ]);
+
         return $this->prepareData($employers);
     }
 
@@ -28,7 +29,8 @@ class GetEmployersPaginatedAction
     {
         return $employers->through(function (Employer $employer) {
             return (object)[
-                'id' => Str::mask($employer->employer_id, '*', 5, -2),
+                'id' => $employer->employer_id,
+                'idEncrypted' => Str::mask($employer->employer_id, '*', 5, -2),
                 'company' => $employer->company_name,
                 'companyType' => $employer->company_type,
                 'contactEmail' => $employer->contact_email,
