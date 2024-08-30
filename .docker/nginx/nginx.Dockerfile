@@ -1,5 +1,7 @@
 FROM nginx:latest
 
+WORKDIR /var/www/jobavel
+
 ARG UID
 ARG GID
 
@@ -15,8 +17,6 @@ RUN rm /etc/nginx/conf.d/default.conf
 COPY jobavel.conf /etc/nginx/conf.d/
 
 RUN mkdir -p /var/www/jobavel
-
-WORKDIR /var/www/jobavel
 
 
 

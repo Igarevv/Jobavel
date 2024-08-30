@@ -15,7 +15,7 @@ class VacancySeeder extends Seeder
         Vacancy::flushEventListeners();
         Vacancy::query()->truncate();
 
-        $employers = Employer::all();
+        $employers = Employer::query()->take(3)->get();
 
         foreach ($employers as $employer) {
             Vacancy::factory(5)->create([
