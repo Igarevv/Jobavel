@@ -27,12 +27,16 @@ class EmployeeSearcher extends BaseSearcher
         );
     }
 
-    // TODO: full name search work bad
     private function applySearchingByFullName(Builder $builder, SearchDtoInterface $searchDto): Builder
     {
-        return $builder->whereRaw("LOWER(CONCAT(first_name, ' ', last_name)) LIKE ?", [
-            '%'.$searchDto->getSearchable().'%'
-        ]);
+        return $builder->where('first_name', $searchDto->getSearchable())
+            ->orWhere('last_name', $searchDto->getSearchable())
+            ->orWhereRaw("LOWER(CONCAT(last_name, ' ', first_name)) LIKE ?", [
+                '%'.$searchDto->getSearchable().'%'
+            ])
+            ->orWhereRaw("LOWER(CONCAT(first_name, ' ', last_name)) LIKE ?", [
+                '%'.$searchDto->getSearchable().'%'
+            ]);
     }
 
     private function applyDefaultSearch(Builder $builder, SearchDtoInterface $searchDto): Builder

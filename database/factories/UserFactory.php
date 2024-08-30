@@ -20,7 +20,6 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'email' => fake()->safeEmail(),
             'password' => Hash::make(self::TEST_PASSWORD, ['salt' => 12]),
             'user_id' => Uuid::uuid7()->toString(),
             'is_confirmed' => true,

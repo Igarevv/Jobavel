@@ -30,8 +30,8 @@ Route::get('/admin/temporarily-deleted/search', [TemporarilyDeletedUsersControll
 );
 Route::post(
     '/admin/temporarily-delete/{identity:user_id}/give-second-chance',
-    [TemporarilyDeletedUsersController::class, 'restore']
-)->name('admin.temporarily-deleted.restore');
+    [TemporarilyDeletedUsersController::class, 'sendEmailToRestoreUser']
+)->withTrashed()->name('admin.temporarily-deleted.restore');
 
 Route::get('/admin/users/temporarily-deleted', [TemporarilyDeletedUsersController::class, 'index'])->name(
     'admin.users.temporarily-deleted'

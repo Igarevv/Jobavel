@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\Users\TemporarilyDeletedUsersController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\HomeController;
@@ -57,6 +58,10 @@ Route::prefix('/auth/email/verify')->middleware('auth')->group(
             ->name('verification.send');
     }
 );
+
+Route::get('/deleted-user/restore/{identity:user_id}', [TemporarilyDeletedUsersController::class, 'restore'])
+    ->name('deleted-user.restore')
+    ->withTrashed();
 
 /*
  * ---------------------------------

@@ -14,13 +14,13 @@ use Illuminate\View\View;
 class EmailVerificationController extends Controller
 {
 
-    public function verifyEmail(CustomEmailVerificationRequest $request
-    ): View|RedirectResponse {
-        $user = $request->fulfill();
-
-        if ($user?->hasVerifiedEmail()) {
+    public function verifyEmail(CustomEmailVerificationRequest $request): View|RedirectResponse
+    {
+        if ($request->userIsAlreadyConfirmed()) {
             return redirect()->to('home');
         }
+
+        $user = $request->fulfill();
 
         if ($user?->is_confirmed) {
             return view('auth.email.success');

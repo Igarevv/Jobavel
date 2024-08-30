@@ -17,14 +17,14 @@ class CustomEmailVerificationRequest extends FormRequest
     {
         $this->user = $this->userByUuid();
 
-        if ( ! hash_equals(
+        if (! hash_equals(
             $this->user->getUuidKey(),
             (string)$this->route('user_id')
         )) {
             return false;
         }
 
-        if ( ! hash_equals(
+        if (! hash_equals(
             sha1($this->user->getEmailForVerification()),
             (string)$this->route('hash')
         )) {
@@ -36,7 +36,7 @@ class CustomEmailVerificationRequest extends FormRequest
 
     public function fulfill(): ?User
     {
-        if ( ! $this->user->hasVerifiedEmail()) {
+        if (! $this->user->hasVerifiedEmail()) {
             $this->user->markEmailAsVerified();
 
             event(new Verified($this->user));
@@ -47,6 +47,11 @@ class CustomEmailVerificationRequest extends FormRequest
     public function withValidator(Validator $validator): Validator
     {
         return $validator;
+    }
+
+    public function userIsAlreadyConfirmed(): ?bool
+    {
+        return $this->user?->hasVerifiedEmail();
     }
 
     protected function userByUuid(): User|Builder

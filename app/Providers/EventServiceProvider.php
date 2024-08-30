@@ -4,10 +4,12 @@ namespace App\Providers;
 
 use App\Events\EmployerUpdated;
 use App\Events\JobFailedInAdminPanel;
+use App\Events\UserAccountRestored;
 use App\Events\UserDeletedTemporarily;
 use App\Listeners\AuthEventSubscriber;
 use App\Listeners\CodeSendingOnEmployerUpdate;
 use App\Listeners\SendEmailAboutFailedJobToSuperAdmin;
+use App\Listeners\SendEmailToUserWhoWantsToRestoreAccount;
 use App\Listeners\SendEmailWhenUserDeleted;
 use App\Listeners\SuccessfulAdminLogin;
 use App\Listeners\SuccessfulUserLogin;
@@ -35,6 +37,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         UserDeletedTemporarily::class => [
             SendEmailWhenUserDeleted::class
+        ],
+        UserAccountRestored::class => [
+            SendEmailToUserWhoWantsToRestoreAccount::class
         ]
     ];
 

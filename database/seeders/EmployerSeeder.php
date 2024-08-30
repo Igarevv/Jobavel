@@ -11,6 +11,8 @@ class EmployerSeeder extends Seeder
 
     public function run(): void
     {
+        Employer::flushEventListeners();
+        User::flushEventListeners();
         Employer::query()->truncate();
 
         $users = User::factory(3)->has(
