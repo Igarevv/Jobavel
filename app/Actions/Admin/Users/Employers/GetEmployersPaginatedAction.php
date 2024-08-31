@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace App\Actions\Admin\Users\Employers;
 
 use App\Persistence\Models\Employer;
-use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 
 class GetEmployersPaginatedAction
 {
-    public function handle(): Paginator
+    public function handle(): LengthAwarePaginator
     {
         $employers = Employer::with('user:id,email')
-            ->simplePaginate(10, [
+            ->paginate(10, [
                 'user_id',
                 'employer_id',
                 'company_name',
@@ -25,7 +25,7 @@ class GetEmployersPaginatedAction
         return $this->prepareData($employers);
     }
 
-    private function prepareData(Paginator $employers): Paginator
+    private function prepareData(LengthAwarePaginator $employers): LengthAwarePaginator
     {
         return $employers->through(function (Employer $employer) {
             return (object)[

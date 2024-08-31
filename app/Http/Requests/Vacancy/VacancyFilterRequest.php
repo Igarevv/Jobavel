@@ -33,7 +33,8 @@ class VacancyFilterRequest extends FormRequest
             ],
             'salary' => ['nullable', 'numeric', 'between:0,999999'],
             'location' => ['nullable', 'string'],
-            'consider' => ['nullable', 'boolean']
+            'consider' => ['nullable', 'boolean'],
+            'search' => ['nullable', 'string']
         ];
     }
 

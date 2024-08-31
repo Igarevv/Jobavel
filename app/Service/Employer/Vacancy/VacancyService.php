@@ -77,6 +77,11 @@ class VacancyService
         return $this->overrideEmployerLogos($vacancies);
     }
 
+    public function searchVacancies(string $searchable, int $paginatePerPage): Paginator
+    {
+        return $this->vacancyRepository->searchFullText($searchable, $paginatePerPage);
+    }
+
     public function getRandomEmployersLogoWhoHasVacancy(int $count): array
     {
         $randomEmployersLogo = $this->employerAccountRepository->takeRandomEmployerLogos($count);

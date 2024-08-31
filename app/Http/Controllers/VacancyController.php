@@ -42,18 +42,32 @@ class VacancyController extends Controller
 
     public function all(VacancyFilterRequest $request): View
     {
+        if ($request->has('search')) {
+            return $this->search($request->get('search'));
+        }
+
         $filter = app()->make(VacancyFilter::class, ['queryParams' => $request->validated()]);
 
         $vacancies = $this->vacancyService->allPublishedFilteredVacancies($filter, 6);
 
         $vacancies = (new VacancyCardPresenter($vacancies))->paginatedCollectionToBase();
 
-        $skills = $this->skillsViewModel->allSkills();
-
         return view('employer.vacancy.all', [
             'vacancies' => $vacancies,
-            'skills' => $skills->toArray()
+            'skills' => $this->skillsViewModel->allSkills()->toArray()
         ]);
     }
 
+    private function search(string $searchable): View
+    {
+        $vacancies = $this->vacancyService->searchVacancies($searchable, 10);
+
+        $vacancies = (new VacancyCardPresenter($vacancies))->paginatedCollectionToBase();
+        
+        return view('employer.vacancy.all', [
+            'search' => $searchable,
+            'vacancies' => $vacancies,
+            'skills' => $this->skillsViewModel->allSkills()->toArray()
+        ]);
+    }
 }

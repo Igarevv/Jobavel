@@ -7,7 +7,12 @@
 
     <section class="mx-auto w-3/4 my-10">
         <x-admin.table.default>
-            <x-slot:title>Unverified users</x-slot:title>
+            <x-slot:title>
+                <div class="flex flex-col">
+                    <span>Employees</span>
+                    <span>Found: {{ $employers->count() }} records</span>
+                </div>
+            </x-slot:title>
             <x-slot:description>You can delete or send verification email again.
                 <div>
                     <div class="text-center">

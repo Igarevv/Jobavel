@@ -62,7 +62,7 @@
                         {{-- "Three Dots" Separator --}}
                         @if (is_string($element))
                             <li class="page-item disabled" aria-disabled="true"><span
-                                        class="page-link bg-dark">{{ $element }}</span></li>
+                                        class="page-link bg-light">{{ $element }}</span></li>
                         @endif
 
                         {{-- Array Of Links --}}

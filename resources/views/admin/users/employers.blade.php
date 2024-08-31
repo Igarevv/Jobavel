@@ -7,7 +7,12 @@
 
     <section class="mx-auto w-4/5 my-10">
         <x-admin.table.default>
-            <x-slot:title>Employers</x-slot:title>
+            <x-slot:title>
+                <div class="flex flex-col">
+                    <span>Employers</span>
+                    <span>Found: {{ $employers->total() }} records</span>
+                </div>
+            </x-slot:title>
             <x-slot:description>
                 <span>The full list of employers</span>
                 <div>
@@ -129,8 +134,8 @@
                 @endforelse
             </x-admin.table.tbody>
         </x-admin.table.default>
-        <div class="mt-1">
-            {{ $employers->withQueryString()->links() }}
+        <div class="mt-2">
+            {{ $employers->withQueryString()->links('pagination::tailwind') }}
         </div>
     </section>
     <x-admin.modal.index>

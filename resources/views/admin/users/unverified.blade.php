@@ -62,7 +62,12 @@
             </div>
             @endsession
             <x-admin.table.default>
-                <x-slot:title>Unverified users</x-slot:title>
+                <x-slot:title>
+                    <div class="flex flex-col">
+                        <span>Unverified users</span>
+                        <span>Found: {{ $employers->count() }} records</span>
+                    </div>
+                </x-slot:title>
                 <x-slot:description>You can delete or send verification email again.
                     <form action="{{ route('admin.emails.send') }}" method="POST">
                         @csrf

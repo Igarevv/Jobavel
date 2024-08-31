@@ -74,7 +74,7 @@ class VacancyRepository implements VacancyRepositoryInterface
         }
     }
 
-    public function getFilteredVacancies(FilterInterface $filter, int $paginatePerPage = null): LengthAwarePaginator
+    public function getFilteredVacancies(FilterInterface $filter, int $paginatePerPage): LengthAwarePaginator
     {
         return $this->getFiltered($filter, [
             'employer:id,company_name,company_logo',
@@ -105,5 +105,14 @@ class VacancyRepository implements VacancyRepositoryInterface
     {
         return Vacancy::with($withTables)
             ->published()->filter($filter);
+    }
+
+    public function searchFullText(string $searchable, int $paginatePerPage): LengthAwarePaginator
+    {
+        return Vacancy::with(['employer:id,company_name,company_logo', 'techSkills:id,skill_name'])
+            ->published()
+            ->whereRaw('document_search @@ plainto_tsquery(?)', [$searchable])
+            ->orderByRaw('ts_rank(document_search, plainto_tsquery(?))', [$searchable])
+            ->paginate($paginatePerPage, ['title', 'location', 'id', 'salary', 'employer_id', 'slug']);
     }
 }

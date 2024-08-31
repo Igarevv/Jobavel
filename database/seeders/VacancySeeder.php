@@ -6,7 +6,6 @@ use App\Persistence\Models\Employer;
 use App\Persistence\Models\TechSkill;
 use App\Persistence\Models\Vacancy;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class VacancySeeder extends Seeder
 {

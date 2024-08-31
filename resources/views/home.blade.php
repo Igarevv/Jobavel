@@ -32,7 +32,8 @@
             <div class="container">
                 <div class="row py-lg-5">
                     <div class="col-lg-6 col-md-4 order-md-last">
-                        <img src="{{ \Illuminate\Support\Facades\Storage::disk('public_static')->url('home-picture-1.jpg') }}" alt="Image" class="img-fluid">
+                        <img src="{{ \Illuminate\Support\Facades\Storage::disk('public_static')->url('home-picture-1.jpg') }}"
+                             alt="Image" class="img-fluid">
                     </div>
                     <div class="col-lg-6 col-md-8 order-md-first">
                         <h2 class="fw-bold mt-3">Who we are?</h2>
@@ -56,7 +57,8 @@
             <div class="container">
                 <div class="row py-lg-5">
                     <div class="col-lg-6 col-md-4 order-md-first">
-                        <img src="{{ \Illuminate\Support\Facades\Storage::disk('public_static')->url('home-picture-2.jpg') }}" alt="Image" class="img-fluid">
+                        <img src="{{ \Illuminate\Support\Facades\Storage::disk('public_static')->url('home-picture-2.jpg') }}"
+                             alt="Image" class="img-fluid">
                     </div>
                     <div class="col-lg-6 col-md-8 order-md-last">
                         <h2 class="fw-bold mt-3">Why you should choose us?</h2>
@@ -87,11 +89,11 @@
         <div class="album py-5 bg-body-tertiary">
             <div class="container">
                 <h2 class="text-center fw-bold text-decoration-underline">The latest published vacancies</h2>
-                <form action="" method="post">
-                    @csrf
+                <form action="{{ route('vacancies.all') }}" method="GET">
                     <div class="row my-4">
                         <div class="col">
-                            <input type="text" class="form-control" placeholder="Search Jobavel...">
+                            <input type="text" name="search" class="form-control"
+                                   placeholder="Search Backend Laravel..." required>
                         </div>
                         <div class="col-auto">
                             <button type="submit" class="btn btn-danger">Search</button>

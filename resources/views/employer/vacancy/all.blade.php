@@ -7,11 +7,30 @@
     <x-header></x-header>
 
     <x-main>
+
         <div class="container">
             <div class="row my-5">
                 <div class="mb-5">
                     <h1 class="text-center">All published vacancies</h1>
-                    <h6 class="text-muted text-center">Found: {{ $vacancies->total() ?? 0 }} vacancies</h6>
+                    @isset($search)
+                        <h6 class="text-muted text-center">Found: {{ $vacancies->total() ?? 0 }} vacancies for the
+                            query: {{ $search }}</h6>
+                    @else
+                        <h6 class="text-muted text-center">Found: {{ $vacancies->total() ?? 0 }} vacancies</h6>
+                    @endisset
+                </div>
+                <div class="col-lg-8 offset-lg-1 d-flex justify-content-center align-items-center">
+                    <form action="{{ route('vacancies.all') }}" method="GET" class="col-md-6 col-12 w-50 w-75">
+                        <div class="row my-4">
+                            <div class="col">
+                                <input type="text" name="search" class="form-control"
+                                       placeholder="Search Backend Laravel..." required>
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-danger">Search</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="col-lg-8 offset-lg-1 d-flex justify-content-center align-items-center flex-column">
                     @forelse($vacancies as $vacancy)
@@ -42,8 +61,8 @@
                                     <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse"
                                          aria-labelledby="panelsStayOpen-headingOne">
                                         <div class="accordion-body">
-                                            <x-categories.skills-filter-raw :skillSet="$skills"
-                                                                            name="skills"></x-categories.skills-filter-raw>
+                                            <x-categories.skills-filter-row :skillSet="$skills"
+                                                                            name="skills"></x-categories.skills-filter-row>
                                         </div>
                                     </div>
                                 </div>
@@ -167,10 +186,10 @@
                                 </div>
                             </div>
                         </form>
-                        <div>
-                            {{ $vacancies->withQueryString()->links() }}
-                        </div>
                     </div>
+                </div>
+                <div>
+                    {{ $vacancies->withQueryString()->links() }}
                 </div>
             </div>
         </div>

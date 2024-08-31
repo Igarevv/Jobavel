@@ -20,7 +20,12 @@
         </div>
         @endsession
         <x-admin.table.default>
-            <x-slot:title>Temporarily deleted users</x-slot:title>
+            <x-slot:title>
+                <div class="flex flex-col">
+                    <span>Temporarily deleted users</span>
+                    <span>Found: {{ $employers->count() }} records</span>
+                </div>
+            </x-slot:title>
             <x-slot:description>You can restore temporarily deleted users
                 <div>
                     <div class="text-center">

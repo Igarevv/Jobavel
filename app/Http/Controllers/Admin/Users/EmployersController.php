@@ -10,6 +10,10 @@ use Illuminate\View\View;
 
 class EmployersController extends Controller
 {
+    public function __construct()
+    {
+    }
+
     public function index(GetEmployersPaginatedAction $action): View
     {
         return view('admin.users.employers', ['employers' => $action->handle()]);
