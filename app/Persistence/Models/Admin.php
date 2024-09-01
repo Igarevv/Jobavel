@@ -27,7 +27,8 @@ class Admin extends Model implements Authenticatable, \Illuminate\Contracts\Auth
         'first_name',
         'last_name',
         'email',
-        'password'
+        'password',
+        'is_active'
     ];
 
     protected $hidden = [
@@ -49,6 +50,12 @@ class Admin extends Model implements Authenticatable, \Illuminate\Contracts\Auth
     public function getDefaultGuardName(): string
     {
         return 'admin';
+    }
+
+    public function deactivate(): void
+    {
+        $this->is_active = false;
+        $this->save();
     }
 
     protected static function boot(): void

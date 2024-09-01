@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Persistence\Repositories;
+namespace App\Persistence\Repositories\Vacancy;
 
 use App\DTO\Vacancy\VacancyDto;
 use App\Exceptions\VacancyUpdateException;

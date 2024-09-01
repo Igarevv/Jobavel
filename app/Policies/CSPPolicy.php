@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use Illuminate\Http\Request;
 use Spatie\Csp\Directive;
 use Spatie\Csp\Keyword;
 use Spatie\Csp\Policies\Basic;
 use Spatie\Csp\Value;
+use Symfony\Component\HttpFoundation\Response;
 
 class CSPPolicy extends Basic
 {
@@ -37,5 +39,13 @@ class CSPPolicy extends Basic
             ->addNonceForDirective(Directive::SCRIPT)
             ->addNonceForDirective(Directive::STYLE)
             ->addDirective(Directive::UPGRADE_INSECURE_REQUESTS, Value::NO_VALUE);
+    }
+
+    public function shouldBeApplied(Request $request, Response $response): bool
+    {
+        if (app()->hasDebugModeEnabled() || app()->isProduction()) {
+            return false;
+        }
+        return parent::shouldBeApplied($request, $response);
     }
 }

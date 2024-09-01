@@ -26,6 +26,5 @@ export default {
     darkMode: 'class',
     plugins: [
         require('flowbite/plugin'),
-        //require('tailwindcss-plugins/pagination')
     ],
 }

@@ -4,11 +4,13 @@ namespace App\Providers;
 
 use App\Contracts\Storage\CvStorageInterface;
 use App\Contracts\Storage\LogoStorageInterface;
-use App\Http\Kernel;
+use App\Persistence\Contracts\AdminAuthRepositoryInterface;
+use App\Persistence\Contracts\AdminFirstLoginRepositoryInterface;
 use App\Persistence\Contracts\EmployerAccountRepositoryInterface;
 use App\Persistence\Contracts\UserRepositoryInterface;
 use App\Persistence\Contracts\VacancyRepositoryInterface;
 use App\Persistence\Contracts\VerificationCodeRepositoryInterface;
+use App\Persistence\Repositories\Admin\AdminAuthRepository;
 use App\Persistence\Repositories\File\CV\LocalCvStorage;
 use App\Persistence\Repositories\File\CV\S3CvStorage;
 use App\Persistence\Repositories\File\Logo\LocalFileStorage;
@@ -16,15 +18,15 @@ use App\Persistence\Repositories\File\Logo\S3FileStorage;
 use App\Persistence\Repositories\User\Employer\EmployerAccountRepository;
 use App\Persistence\Repositories\User\Employer\VerificationCodeRepository;
 use App\Persistence\Repositories\User\UserRepository;
-use App\Persistence\Repositories\VacancyRepository;
+use App\Persistence\Repositories\Vacancy\VacancyRepository;
 use App\Service\Cache\Cache;
 use App\Traits\Searchable\SearchDtoInterface;
+use Clockwork\Support\Laravel\ClockworkServiceProvider;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
-use Spatie\Csp\AddCspHeaders;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,7 +35,9 @@ class AppServiceProvider extends ServiceProvider
         UserRepositoryInterface::class => UserRepository::class,
         VacancyRepositoryInterface::class => VacancyRepository::class,
         VerificationCodeRepositoryInterface::class => VerificationCodeRepository::class,
-        EmployerAccountRepositoryInterface::class => EmployerAccountRepository::class
+        EmployerAccountRepositoryInterface::class => EmployerAccountRepository::class,
+        AdminAuthRepositoryInterface::class => AdminAuthRepository::class,
+        AdminFirstLoginRepositoryInterface::class => AdminAuthRepository::class
     ];
 
     public function register(): void
@@ -50,11 +54,10 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(Kernel $kernel): void
+    public function boot(): void
     {
-        if (! $this->app->hasDebugModeEnabled() || $this->app->isProduction()) {
-            $kernel->prependMiddlewareToGroup('web', AddCspHeaders::class);
-            $this->app->register('\Clockwork\Support\Laravel\ClockworkSupport::class');
+        if ($this->app->hasDebugModeEnabled() && ! $this->app->isProduction()) {
+            $this->app->register(ClockworkServiceProvider::class);
         }
 
         Collection::macro('present', function (string $class) {

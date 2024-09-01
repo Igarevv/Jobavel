@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminHomeController;
 use App\Http\Controllers\Admin\RolesPermissions\AdminPermissionsController;
 use App\Http\Controllers\Admin\RolesPermissions\AdminRolesController;
+use App\Http\Controllers\Admin\Users\AdminsController;
 use App\Http\Controllers\Admin\Users\EmployeesController;
 use App\Http\Controllers\Admin\Users\EmployersController;
 use App\Http\Controllers\Admin\Users\TemporarilyDeletedUsersController;
@@ -28,6 +29,7 @@ Route::get('/admin/employees/search', [EmployeesController::class, 'search'])->n
 Route::get('/admin/temporarily-deleted/search', [TemporarilyDeletedUsersController::class, 'search'])->name(
     'admin.temporarily-deleted.search'
 );
+
 Route::post(
     '/admin/temporarily-delete/{identity:user_id}/give-second-chance',
     [TemporarilyDeletedUsersController::class, 'sendEmailToRestoreUser']
@@ -36,7 +38,11 @@ Route::post(
 Route::get('/admin/users/temporarily-deleted', [TemporarilyDeletedUsersController::class, 'index'])->name(
     'admin.users.temporarily-deleted'
 );
-//Route::get('/admin/users/admins', [AdminsController::class, 'index'])->name('admin.users.admins');
+
+Route::get('/admin/users/admins', [AdminsController::class, 'index'])->name('admin.users.admins');
+Route::post('/admin/users/admins/register', [AdminAuthController::class, 'register'])->name(
+    'admin.users.admins.register'
+);
 
 Route::get('/admin/sign-in', [AdminAuthController::class, 'signInIndex']);
 

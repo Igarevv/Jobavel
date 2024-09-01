@@ -9,6 +9,7 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     <title>{{ $title ?? 'Jobavel Admin' }}</title>
     @vite(['resources/assets/css/admin.css', 'resources/assets/js/admin.js'])
+    <meta property="csp-nonce" content="{{ csp_nonce() }}">
     @stack('vite')
 </head>
 

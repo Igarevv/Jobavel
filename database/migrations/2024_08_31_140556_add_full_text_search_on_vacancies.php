@@ -46,7 +46,7 @@ return new class extends Migration {
                 EXECUTE FUNCTION update_full_test_search_on_vacancy_creation();"
             );
 
-            $table->fullText('document_search', 'full_text_search_vacancies_idx');
+            DB::statement('CREATE INDEX full_text_search_vacancies_idx ON vacancies USING gin(document_search);');
         });
     }
 

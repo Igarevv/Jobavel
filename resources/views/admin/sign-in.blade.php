@@ -9,9 +9,9 @@
     @vite(['resources/assets/css/admin.css', 'resources/assets/js/admin.js'])
     <style>
         .login-container {
-            max-width: 600px; /* Set maximum width */
-            width: 150%; /* Full width for smaller screens */
-            padding: 2rem; /* Adjust padding as needed */
+            max-width: 600px;
+            width: 150%;
+            padding: 2rem;
         }
 
         .background-red {
@@ -19,6 +19,9 @@
             color: white;
         }
 
+        .text-red {
+            color: #f9322c;
+        }
     </style>
 </head>
 <body>
@@ -53,10 +56,12 @@
                         Sign in
                     </button>
                 </form>
+                <div class="text-center">
+                    @error('email')
+                    <span class="text-red">{{ $message }}</span>
+                    @enderror
+                </div>
             </div>
-            @error('email')
-            <span class="text-red">{{ $message }}</span>
-            @enderror
         </div>
     </div>
 </section>

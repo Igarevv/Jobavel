@@ -23,7 +23,7 @@
             <x-slot:title>
                 <div class="flex flex-col">
                     <span>Temporarily deleted users</span>
-                    <span>Found: {{ $employers->count() }} records</span>
+                    <span>Found: {{ $users->count() }} records</span>
                 </div>
             </x-slot:title>
             <x-slot:description>You can restore temporarily deleted users

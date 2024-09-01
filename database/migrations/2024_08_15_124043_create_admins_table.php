@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string('email')->unique();
             $table->string('password', 255);
             $table->boolean('is_super_admin')->default(false);
+            $table->boolean('is_active')->default(true);
             $table->primary('id');
         });
     }

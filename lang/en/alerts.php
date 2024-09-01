@@ -2,7 +2,8 @@
 
 return [
     'login' => [
-        'failed' => 'Wrong email or password. Please try again'
+        'failed' => 'Wrong email or password. Please try again',
+        'failed-admin' => 'Wrong email or password, or your account deactivated. Please try again'
     ],
     'register' => [
         'success' => 'Registration completed successfully! We sent you confirmation email, please check your inbox.',

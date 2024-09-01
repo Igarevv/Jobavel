@@ -10,7 +10,7 @@
             <x-slot:title>
                 <div class="flex flex-col">
                     <span>Employees</span>
-                    <span>Found: {{ $employers->count() }} records</span>
+                    <span>Found: {{ $employees->count() }} records</span>
                 </div>
             </x-slot:title>
             <x-slot:description>You can delete or send verification email again.
