@@ -13,7 +13,9 @@ document.getElementById('view-skills').addEventListener('click', async function 
     const skillArray = await response.json();
     const container = document.getElementById('skills-container');
     const errorMessage = document.getElementById('error-message-skills');
-    const employeeCurrentSkills = JSON.parse(document.getElementById('current_skills').value) || [];
+
+    const employeeCurrentSkills = JSON.parse(document.getElementById('skills-container').getAttribute('data-employee-skills')) || [];
+    const employeeCurrentSkillsNumbers = employeeCurrentSkills.map(Number);
 
     container.innerHTML = '';
     errorMessage.innerText = '';
@@ -52,7 +54,7 @@ document.getElementById('view-skills').addEventListener('click', async function 
                 input.value = skill.id;
                 input.id = skill.id;
 
-                if (employeeCurrentSkills.includes(skill.id)) {
+                if (employeeCurrentSkillsNumbers.includes(skill.id)) {
                     input.checked = true;
                 }
 
@@ -89,9 +91,7 @@ document.getElementById('employeeForm').addEventListener('submit', function (eve
     const selectedSkills = Array.from(document.querySelectorAll('input[name="skills[]"]:checked'))
         .map(input => Number(input.value));
 
-    const currentSkills = JSON.parse(document.getElementById('skills-container').getAttribute('data-employee-skills')) || [];
-
-    const allSkills = [...new Set([...currentSkills, ...selectedSkills])];
+    const allSkills = [...new Set([...selectedSkills])];
 
     const form = event.target;
     form.querySelectorAll('input[name="skills[]"]').forEach(input => input.remove());

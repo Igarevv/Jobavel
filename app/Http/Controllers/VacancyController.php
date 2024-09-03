@@ -54,6 +54,7 @@ class VacancyController extends Controller
 
         return view('employer.vacancy.all', [
             'vacancies' => $vacancies,
+            'input' => (object)$request->input(),
             'skills' => $this->skillsViewModel->allSkills()->toArray()
         ]);
     }
@@ -63,7 +64,7 @@ class VacancyController extends Controller
         $vacancies = $this->vacancyService->searchVacancies($searchable, 10);
 
         $vacancies = (new VacancyCardPresenter($vacancies))->paginatedCollectionToBase();
-        
+
         return view('employer.vacancy.all', [
             'search' => $searchable,
             'vacancies' => $vacancies,

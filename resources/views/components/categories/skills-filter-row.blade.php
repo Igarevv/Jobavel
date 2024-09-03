@@ -7,7 +7,7 @@
                     @foreach($skills as $skill)
                         <label class="category-label-raw text-14" for="{{ $skill->id }}">
                             <input type="checkbox" name="{{ $name }}[]" value="{{ $skill->id }}"
-                                   id="{{ $skill->id }}" @checked($isChecked($skill->id, old($name, [])))>
+                                   id="{{ $skill->id }}" @checked($isChecked($skill->id, old($name, $input)))>
                             <span class="skill-name">{{ $skill->skillName }}</span>
                         </label>
                     @endforeach
@@ -16,3 +16,4 @@
         @endforeach
     @endforeach
 </div>
+

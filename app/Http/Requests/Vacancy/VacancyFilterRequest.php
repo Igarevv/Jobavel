@@ -28,14 +28,21 @@ class VacancyFilterRequest extends FormRequest
                     EmploymentEnum::EMPLOYMENT_OFFICE,
                     EmploymentEnum::EMPLOYMENT_REMOTE,
                     EmploymentEnum::EMPLOYMENT_PART_TIME,
-                    EmploymentEnum::EMPLOYMENT_MIXED
-                ])
+                    EmploymentEnum::EMPLOYMENT_MIXED,
+                ]),
             ],
             'salary' => ['nullable', 'numeric', 'between:0,999999'],
             'location' => ['nullable', 'string'],
             'consider' => ['nullable', 'boolean'],
-            'search' => ['nullable', 'string']
+            'search' => ['nullable', 'string'],
         ];
+    }
+
+    public function makeCastAndMutatorsAfterValidation(array &$data): void
+    {
+        $this->mapExperienceWithConsiderInArray($data);
+        $this->castSalaryToInt($data);
+        $this->castSkillsIdsToInt($data);
     }
 
     protected function failedValidation(Validator $validator): void
@@ -45,13 +52,6 @@ class VacancyFilterRequest extends FormRequest
             fallbackUrl: route('employer.vacancy.published'),
             message: $validator->errors()->first()
         );
-    }
-
-    public function makeCastAndMutatorsAfterValidation(array &$data): void
-    {
-        $this->mapExperienceWithConsiderInArray($data);
-        $this->castSalaryToInt($data);
-        $this->castSkillsIdsToInt($data);
     }
 
     protected function prepareForValidation(): void
@@ -80,7 +80,7 @@ class VacancyFilterRequest extends FormRequest
 
             $data['experience'] = [
                 'years' => $experience,
-                'consider' => $consider
+                'consider' => $consider,
             ];
         }
     }

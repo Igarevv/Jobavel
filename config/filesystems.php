@@ -39,7 +39,7 @@ return [
         'cv' => [
             'driver' => 'local',
             'root' => storage_path('app/cv'),
-            'throw' => false
+            'throw' => false,
         ],
 
         'public_logo' => [

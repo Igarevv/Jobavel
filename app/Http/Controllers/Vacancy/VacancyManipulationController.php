@@ -29,7 +29,7 @@ class VacancyManipulationController extends Controller
 
         $this->vacancyService->update($existedVacancy, $request->getDto());
 
-        return redirect()->route('vacancies.show', ['vacancy' => $vacancy])
+        return redirect()->route('vacancies.show', ['vacancy' => $existedVacancy])
             ->with('edit-success', trans('alerts.vacancy.edited'));
     }
 

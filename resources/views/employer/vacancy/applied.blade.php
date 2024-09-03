@@ -49,7 +49,7 @@
                                                             <th scope="col">APPLIED AT</th>
                                                         </tr>
                                                         </thead>
-                                                        <tbody>
+                                                        <tbody class="tbody">
 
                                                         </tbody>
                                                     </table>

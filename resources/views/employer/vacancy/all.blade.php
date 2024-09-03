@@ -61,7 +61,7 @@
                                     <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse"
                                          aria-labelledby="panelsStayOpen-headingOne">
                                         <div class="accordion-body">
-                                            <x-categories.skills-filter-row :skillSet="$skills"
+                                            <x-categories.skills-filter-row :skillSet="$skills" :input="$input?->skills ?? []"
                                                                             name="skills"></x-categories.skills-filter-row>
                                         </div>
                                     </div>
@@ -82,21 +82,21 @@
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox"
                                                            id="flexCheckChecked"
-                                                           value="1" name="consider">
+                                                           value="1" name="consider" @checked($input?->consider ?? false)>
                                                     <label class="form-check-label" for="flexCheckChecked">
                                                         Consider without experience
                                                     </label>
                                                 </div>
-                                                <x-input.radio name="experience" label="Without experience"
-                                                               value="0"></x-input.radio>
-                                                <x-input.radio name="experience" label="1+ year"
-                                                               value="1"></x-input.radio>
-                                                <x-input.radio name="experience" label="3+ year"
-                                                               value="3"></x-input.radio>
-                                                <x-input.radio name="experience" label="5+ year"
-                                                               value="5"></x-input.radio>
-                                                <x-input.radio name="experience" label="10+ year"
-                                                               value="10"></x-input.radio>
+                                                <x-input.radio name="experience" label="Without experience" id="1-year"
+                                                               value="0" checked="{{ ($input?->experience ?? null) === 0 }}"></x-input.radio>
+                                                <x-input.radio name="experience" label="1+ year" id="2-years"
+                                                               value="1" checked="{{ ($input?->experience ?? null) === 1 }}"></x-input.radio>
+                                                <x-input.radio name="experience" label="3+ year" id="3-years"
+                                                               value="3" checked="{{ ($input?->experience ?? null) === 3 }}"></x-input.radio>
+                                                <x-input.radio name="experience" label="5+ year" id="5-years"
+                                                               value="5" checked="{{ ($input?->experience ?? null) === 5 }}"></x-input.radio>
+                                                <x-input.radio name="experience" label="10+ year" id="10-years"
+                                                               value="10" checked="{{ ($input?->experience ?? null) === 10 }}"></x-input.radio>
                                             </div>
                                         </div>
                                     </div>
@@ -115,16 +115,20 @@
                                         <div class="accordion-body">
                                             <div class="text-14 ps-1">
                                                 <x-input.radio name="employment" label="Office"
-                                                               value="{{ EmploymentEnum::EMPLOYMENT_OFFICE->value }}">
+                                                               value="{{ EmploymentEnum::EMPLOYMENT_OFFICE->value }}"
+                                                    checked="{{ ($input?->employment ?? null) === EmploymentEnum::EMPLOYMENT_OFFICE->value }}">
                                                 </x-input.radio>
                                                 <x-input.radio name="employment" label="Remote"
-                                                               value="{{ EmploymentEnum::EMPLOYMENT_REMOTE->value }}">
+                                                               value="{{ EmploymentEnum::EMPLOYMENT_REMOTE->value }}"
+                                                    checked="{{ ($input?->employment ?? null) === EmploymentEnum::EMPLOYMENT_REMOTE->value }}">
                                                 </x-input.radio>
                                                 <x-input.radio name="employment" label="Part-time"
-                                                               value="{{ EmploymentEnum::EMPLOYMENT_PART_TIME->value }}">
+                                                               value="{{ EmploymentEnum::EMPLOYMENT_PART_TIME->value }}"
+                                                    checked="{{ ($input?->employment ?? null) === EmploymentEnum::EMPLOYMENT_PART_TIME->value }}">
                                                 </x-input.radio>
                                                 <x-input.radio name="employment" label="Office / remote"
-                                                               value="{{ EmploymentEnum::EMPLOYMENT_MIXED }}">
+                                                               value="{{ EmploymentEnum::EMPLOYMENT_MIXED->value }}"
+                                                    checked="{{ ($input?->employment ?? null) === EmploymentEnum::EMPLOYMENT_MIXED->value }}">
                                                 </x-input.radio>
                                             </div>
                                         </div>
@@ -146,14 +150,14 @@
                                                 <div class="d-flex flex-row gap-2">
                                                     <input type="range" name="salary" min="0"
                                                            max="{{ $vacancies->max('salary') }}"
-                                                           value="{{ old('salary', 0) }}"
+                                                           value="{{ $input ? $input->salary ?? '' : '' }}"
                                                            class="form-range" id="rangeInput">
                                                     <output id="salaryOutput"></output>
                                                 </div>
                                                 <div>
                                                     <input type="number" min="0" max="{{ $vacancies->max('salary') }}"
                                                            class="form-input"
-                                                           value="{{ old('salary', 0) }}"
+                                                           value="{{ $input ? $input->salary ?? '' : '' }}"
                                                            id="numberInput">
                                                 </div>
                                             </div>
@@ -174,7 +178,7 @@
                                         <div class="accordion-body">
                                             <div class="text-14 w-75 d-flex gap-2 ps-1">
                                                 <input type="text" class="form-input" placeholder="USA"
-                                                       value="{{ old('location') }}" name="location">
+                                                       value="{{ $input ? $input->location ?? '' : '' }}" name="location">
                                             </div>
                                         </div>
                                     </div>
@@ -188,7 +192,7 @@
                         </form>
                     </div>
                 </div>
-                <div>
+                <div class="my-5">
                     {{ $vacancies->withQueryString()->links() }}
                 </div>
             </div>

@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         User::query()->truncate();
         User::factory(5)->unverified()->create();
+        User::query()->truncate();
 
         Artisan::call('admin:super');
 

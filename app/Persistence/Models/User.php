@@ -89,7 +89,7 @@ class User extends Model implements AuthContract, MustVerifyEmail, AuthorizableC
 
     public function isEmployee(): bool
     {
-        return $this->role === self::EMPLOYEE;
+        return $this->getRole() === self::EMPLOYEE;
     }
 
     public function isEmployer(): bool

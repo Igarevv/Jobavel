@@ -76,9 +76,7 @@
                                 <textarea class="form-control d-none" rows="3" name="about-employee"
                                           id="about-employee">{{ old('about-employee') ?? $employee->aboutEmployee ?? '' }}</textarea>
                                 @error('about-employee')
-                                <div class="alert alert-success text-center fw-bold my-2">
-                                    {{ $value }}
-                                </div>
+                                <p class="text-danger">{{ $message }}</p>
                                 @enderror
                             </x-input.block>
                         </div>
@@ -86,8 +84,7 @@
 
                     <h3 class="text-center text-decoration-underline link-danger fw-bold mb-5">Optional</h3>
 
-                    <input type="hidden" name="skills[]" id="current_skills"
-                           value="">
+                    <input type="hidden" name="skills[]" id="current_skills" value="">
 
                     <div class="mb-5">
                         <div class="text-center mb-4">
@@ -111,8 +108,7 @@
                             @enderror
                         </div>
 
-                        <div class="container pt-2 font-12" id="skills-container"
-                             data-employee-skills="@json($employee->skills)">
+                        <div class="container pt-2 font-12" id="skills-container" data-employee-skills="{{ json_encode($employee->skills) }}">
                         </div>
                     </div>
 

@@ -31,7 +31,7 @@ class SkillsViewModel
 
                 $skill = (object)[
                     'id' => $techSkill->id,
-                    'skillName' => $techSkill->skill_name
+                    'skillName' => $techSkill->skill_name,
                 ];
 
                 return [$firstLetter => $skill];
@@ -46,6 +46,15 @@ class SkillsViewModel
         return $skills->implode(function (\stdClass $skill) {
             return $skill->skillName;
         }, $delimiter);
+    }
+
+    public function fetchSkillNamesByIds(array $ids): ?string
+    {
+        $skillNames = TechSkill::query()
+            ->whereIn('id', $ids)
+            ->pluck('skill_name');
+
+        return $skillNames->implode(', ');
     }
 
     public function pluckExistingSkillsFromVacancy(Vacancy $vacancy): object

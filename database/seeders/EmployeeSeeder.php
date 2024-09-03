@@ -18,14 +18,12 @@ class EmployeeSeeder extends Seeder
         Employee::query()->truncate();
         User::flushEventListeners();
 
-        $users = User::factory(3)
-            ->has(
-                Employee::factory()->state(
-                    function (array $attributes, User $user) {
-                        return ['email' => $user->email];
-                    }
-                )
-            )->create();
+        $users = User::factory(3)->has(
+            Employee::factory()->state(
+                function (array $attributes, User $user) {
+                    return ['email' => $user->email];
+                })
+        )->create();
 
         $users->each(function (User $user) {
             $user->assignRole(User::EMPLOYEE);

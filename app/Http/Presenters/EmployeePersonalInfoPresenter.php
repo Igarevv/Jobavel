@@ -24,7 +24,7 @@ readonly class EmployeePersonalInfoPresenter
             'lastName' => $this->employee->last_name,
             'aboutEmployee' => $this->employee->about_me,
             'experiences' => $this->employee->experiences,
-            'skills' => $this->employee->skills
+            'skills' => $this->employee->skills,
         ];
     }
 }

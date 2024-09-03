@@ -11,6 +11,7 @@ use App\Persistence\Models\User;
 use App\Persistence\Models\Vacancy;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Log;
 
 class ResumePolicy
 {

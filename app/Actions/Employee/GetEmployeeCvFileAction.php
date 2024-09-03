@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Actions\Employee;
 
+use App\Contracts\Storage\CvStorageInterface;
 use App\Persistence\Models\Employee;
-use App\Persistence\Repositories\File\CV\S3CvStorage;
 
 class GetEmployeeCvFileAction
 {
     public function __construct(
-        private S3CvStorage $cvStorage
+        private CvStorageInterface $cvStorage
     ) {
     }
 

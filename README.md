@@ -96,7 +96,11 @@ You can also get test user data for login:
 ````
 docker exec -it php php artisan test:give-user
 ````
+And test super-admin for admin panel:
 
+````
+docker exec -it php php artisan admin:super
+````
 Cache routes, views, configs
 
 ````
@@ -110,3 +114,12 @@ docker-compose exec php php artisan config:cache
 ````
 docker-compose exec php php artisan view:cache
 ````
+
+## Additional
+CSP Policies applied only when debug mode is off or app is in production,
+so run npm run dev only in debug or local.
+
+If you want to run application on different devices, make some changes:
+- in .env - APP_URL http://<your-machine-ip-address>:8080
+- in vite.config.js - hmr -> host: '<your-machine-ip-address'
+- rebuild

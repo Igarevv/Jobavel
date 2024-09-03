@@ -20,7 +20,7 @@ class LocalCvStorage implements CvStorageInterface
 
     public function get(string $fileId): string|false
     {
-        return Storage::disk($this->disk)->url(basename($fileId));
+        return storage_path('app/cv/'.basename($fileId));
     }
 
     public function delete(string $fileId): bool

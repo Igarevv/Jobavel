@@ -1,5 +1,6 @@
 @if($data)
     @foreach($data as $index => $experience)
+        @php $experience = is_array($experience) ? (object)$experience : $experience @endphp
         <div class="experience-item mb-3">
             <div class="d-flex flex-column flex-md-row px-3 py-2 justify-content-between bg-color-dark">
                 <div class="editable-container d-flex flex-column flex-md-row align-items-start align-items-md-center gap-1">

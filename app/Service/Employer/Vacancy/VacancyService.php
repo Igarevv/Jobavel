@@ -79,7 +79,9 @@ class VacancyService
 
     public function searchVacancies(string $searchable, int $paginatePerPage): Paginator
     {
-        return $this->vacancyRepository->searchFullText($searchable, $paginatePerPage);
+        $vacancies = $this->vacancyRepository->searchFullText($searchable, $paginatePerPage);
+
+        return $this->overrideEmployerLogos($vacancies);
     }
 
     public function getRandomEmployersLogoWhoHasVacancy(int $count): array

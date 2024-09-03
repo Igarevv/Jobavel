@@ -9,10 +9,15 @@ use App\Enums\Admin\AdminEmployersSearchEnum;
 use App\Persistence\Models\Employer;
 use App\Persistence\Models\User;
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Tests\TestCase;
 
 class SearchEmployerActionTest extends TestCase
 {
+    use RefreshDatabase;
+
     private GetEmployersPaginatedAction $employersPaginatedAction;
 
     private GetEmployersBySearchAction $getEmployersBySearchAction;
@@ -38,7 +43,7 @@ class SearchEmployerActionTest extends TestCase
         $searchDto->method('getSearchable')
             ->willReturn('  ');
 
-        $paginator = $this->createMock(Paginator::class);
+        $paginator = $this->createMock(LengthAwarePaginator::class);
 
         $this->employersPaginatedAction->method('handle')
             ->willReturn($paginator);

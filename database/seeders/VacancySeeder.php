@@ -6,6 +6,7 @@ use App\Persistence\Models\Employer;
 use App\Persistence\Models\TechSkill;
 use App\Persistence\Models\Vacancy;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class VacancySeeder extends Seeder
 {
@@ -25,9 +26,9 @@ class VacancySeeder extends Seeder
         $vacancies = Vacancy::all();
 
         foreach ($vacancies as $vacancy) {
-            $vacancy->update(['slug' => Str::lower(Str::slug($vacancy->title).'-'.$vacancy->id)]);
             $randomTechSkills = TechSkill::inRandomOrder()->take(5)->get();
             $vacancy->techSkills()->sync($randomTechSkills);
+            $vacancy->update(['slug' => Str::lower(Str::slug($vacancy->title).'-'.$vacancy->id)]);
         }
     }
 }

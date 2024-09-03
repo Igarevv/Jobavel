@@ -4,11 +4,12 @@ import inject from '@rollup/plugin-inject';
 
 export default defineConfig({
     server: {
-        host: '0.0.0.0',
-        port: 5173,
+        host: true,
+        https: false,
         strictPort: true,
+        port: 5173,
         hmr: {
-            host: 'localhost',
+            host: 'localhost', //localhost | 192.168.1.x
         },
     },
     plugins: [

@@ -21,11 +21,10 @@ class GetEmployeeInfoAction
                 'about_me',
                 'preferred_salary',
                 'experiences',
-                'skills'
+                'skills',
             ]);
         }
 
         return (new EmployeePersonalInfoPresenter($employee))->present();
     }
-
 }

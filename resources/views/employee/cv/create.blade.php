@@ -36,9 +36,9 @@
                         </div>
                     </div>
                     <div class="d-flex flex-row justify-content-center align-items-center gap-3 mt-3">
-                        <form action="{{ route('employee.cv.index') }}" method="GET">
-                            <x-button.outline type="submit" colorType="primary">View CV</x-button.outline>
-                        </form>
+                        <a href="{{ route('employee.resume', ['employee' => session('user.emp_id'), 'type' => 'file']) }}" class="btn btn-outline-primary">
+                            View CV
+                        </a>
                         <form action="{{ route('employee.cv.destroy') }}" method="POST">
                             @csrf
                             <x-button.outline type="submit" colorType="danger">Delete CV</x-button.outline>
