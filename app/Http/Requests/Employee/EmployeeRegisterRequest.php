@@ -33,11 +33,13 @@ class EmployeeRegisterRequest extends FormRequest
 
     public function getDto(): RegisterEmployeeDto
     {
+        $validated = $this->validated();
+
         return new RegisterEmployeeDto(
-            firstName: $this->get('firstName'),
-            lastName: $this->get('lastName'),
-            email: $this->get('email'),
-            password: Hash::make($this->get('password'), ['rounds' => 12]),
+            firstName: $validated['firstName'],
+            lastName: $validated['lastName'],
+            email: $validated['email'],
+            password: Hash::make($validated['password'], ['rounds' => 12]),
             role: User::EMPLOYEE
         );
     }

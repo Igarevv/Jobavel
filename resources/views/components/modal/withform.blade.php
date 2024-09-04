@@ -1,4 +1,5 @@
 @props([
+    'formId' => null,
     'title',
     'btnActionName',
     'actionPath',
@@ -7,7 +8,7 @@
     'withClose' => false
 ])
 
-<form action="{{ $actionPath }}" method="{{ $method }}" enctype="{{ $enctype }}">
+<form action="{{ $actionPath }}" method="{{ $method }}" enctype="{{ $enctype }}" @isset($formId)id="{{ $formId }}"@endisset>
     @csrf
     @if($withClose)
         <div class="modal-header">

@@ -15,11 +15,6 @@ class VacancyRequest extends FormRequest
 
     use AfterValidation;
 
-    public function authorize(): bool
-    {
-        return $this->user()->can('vacancy-create');
-    }
-
     public function rules(): array
     {
         $rules = [
@@ -44,7 +39,7 @@ class VacancyRequest extends FormRequest
             'consider' => ['nullable', 'boolean']
         ];
 
-        if (array_key_exists(1, $this->offers)) {
+        if (array_key_exists(1, $this->offers ?? [])) {
             foreach ($this->offers as $key => $offer) {
                 $rules['offers.'.$key] = 'string';
             }
@@ -72,18 +67,20 @@ class VacancyRequest extends FormRequest
 
     public function getDto(): VacancyDto
     {
+        $validated = $this->validated();
+
         return new VacancyDto(
-            title: $this->get('title'),
-            description: $this->get('description'),
-            responsibilities: $this->get('responsibilities'),
-            requirements: $this->get('requirements'),
-            skillSet: $this->get('skillset'),
-            location: $this->get('location'),
-            experienceTime: $this->get('experience'),
-            employmentType: $this->get('employment'),
-            considerWithoutExp: $this->get('consider'),
-            offers: $this->get('offers') ?? [],
-            salary: (int)($this->get('salary') ?? 0)
+            title: $validated['title'],
+            description: $validated['description'],
+            responsibilities: $validated['responsibilities'],
+            requirements: $validated['requirements'],
+            skillSet: $validated['skillset'],
+            location: $validated['location'],
+            experienceTime: $validated['experience'],
+            employmentType: $validated['employment'],
+            considerWithoutExp: $validated['consider'],
+            offers: $validated['offers'] ?? [],
+            salary: (int)($validated['salary'] ?? 0)
         );
     }
 
@@ -117,7 +114,7 @@ class VacancyRequest extends FormRequest
 
     private function castFirstOfferToNullIfItIsEmpty(array &$data): void
     {
-        if ($this->offers[0] === null) {
+        if ($this->offers && $this->offers[0] === null) {
             $data['offers'] = null;
         }
     }

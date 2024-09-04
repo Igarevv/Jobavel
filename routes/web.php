@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Vacancy\VacancyEmployeeController;
+use App\Http\Controllers\Vacancy\VacancyEmployerViewController;
 use App\Http\Controllers\VacancyController;
 use Illuminate\Support\Facades\Route;
 

@@ -78,11 +78,11 @@ class VacancyEmployeeController extends Controller
         ]);
     }
 
-    public function changeAttachedDataForVacancy(ApplyRequest $request): RedirectResponse
+    public function changeAttachedDataForVacancy(SlugVacancy $vacancy, ApplyRequest $request): RedirectResponse
     {
         $updateVacancyDto = AppliedVacancyDto::fromRequestWithEntities(
             request: $request,
-            vacancy: (new SlugVacancy($request->validated('vacancySlug')))->createFromSlug('id'),
+            vacancy: $vacancy->createFromSlug('id'),
             employee: Employee::findByUuid(session('user.emp_id'))
         );
 

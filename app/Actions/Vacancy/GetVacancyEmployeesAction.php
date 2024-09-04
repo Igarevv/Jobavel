@@ -7,6 +7,7 @@ namespace App\Actions\Vacancy;
 use App\Persistence\Models\Employee;
 use App\Persistence\Models\Vacancy;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Log;
 
 class GetVacancyEmployeesAction
 {

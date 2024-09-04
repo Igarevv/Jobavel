@@ -52,8 +52,8 @@ return new class extends Migration {
 
     public function down(): void
     {
-        DB::statement("DROP TRIGGER trigger_update_full_text_search_when_vacancy_create_or_update");
-        DB::statement("DROP FUNCTION update_full_test_search_on_vacancy_creation");
+        DB::statement("DROP TRIGGER IF EXISTS trigger_update_full_text_search_when_vacancy_create_or_update ON vacancies");
+        DB::statement("DROP FUNCTION IF EXISTS update_full_test_search_on_vacancy_creation");
         DB::statement("DROP INDEX full_text_search_vacancies_idx");
     }
 };

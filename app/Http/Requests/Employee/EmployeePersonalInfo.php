@@ -60,14 +60,16 @@ class EmployeePersonalInfo extends FormRequest
 
     public function getDto(): EmployeePersonalInfoDto
     {
+        $validated = $this->validated();
+
         return new EmployeePersonalInfoDto(
-            firstName: $this->get('first-name'),
-            lastName: $this->get('last-name'),
-            currentPosition: $this->get('position'),
-            aboutEmployee: $this->get('about-employee'),
-            experiences: $this->get('experiences'),
-            skills: $this->get('skills'),
-            preferredSalary: $this->get('salary')
+            firstName: $validated['first-name'],
+            lastName: $validated['last-name'],
+            currentPosition: $validated['position'],
+            aboutEmployee: $validated['about-employee'],
+            experiences: $validated['experiences'],
+            skills: $validated['skills'],
+            preferredSalary: $validated['salary']
         );
     }
 

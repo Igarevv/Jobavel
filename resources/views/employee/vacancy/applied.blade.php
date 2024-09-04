@@ -121,13 +121,13 @@
     </x-main>
     <x-modal.index id="apply-modal">
         <x-modal.withform title="Choose your CV" btnActionName="Apply"
-                          actionPath="{{ route('employee.vacancy.applied.change') }}"
+                          actionPath="{{ route('employee.vacancy.applied.change', ['vacancy' => ':slug']) }}"
+                          formId="changeForm"
                           withClose>
-            <input type="hidden" name="vacancySlug" id="modalFieldId">
             <div class="d-flex justify-content-center gap-3">
                 <div class="custom-radio">
                     <input type="radio" id="option1" name="cvType" class="custom-control-input" value="0" required
-                            @checked(old('cvType') == 0)>
+                            @checked(old('cvType') == \App\Persistence\Models\Employee::CV_TYPE_MANUAL)>
                     <label class="custom-control-label p-3" for="option1">
                         <a href=""
                            class="link-offset-2 text-decoration-none">
@@ -137,7 +137,7 @@
                 </div>
                 <div class="custom-radio">
                     <input type="radio" id="option2" name="cvType" class="custom-control-input" value="1"
-                           required @checked(old('cvType') == 1)>
+                           required @checked(old('cvType') == \App\Persistence\Models\Employee::CV_TYPE_FILE)>
                     <label class="custom-control-label py-3 px-4" for="option2">
                         <a href=""
                            class="link-offset-2 text-decoration-none">
@@ -151,9 +151,9 @@
                 <div class="input-group">
                     <div class="input-group-text">
                         <label for="checkboxEmail" class="me-2">Use account email</label>
-                        <input class="form-check-input mt-0" type="checkbox" value="1" name="useCurrent"
+                        <input class="form-check-input mt-0" type="checkbox" value="1" name="useCurrentEmail"
                                aria-label="Checkbox for following text input"
-                               id="checkboxEmail" @checked(old('useCurrent') == 1)>
+                               id="checkboxEmail" @checked(old('useCurrentEmail') == 1)>
                     </div>
                     <input type="email" class="form-control" aria-label="Text input with checkbox"
                            name="contactEmail" value="{{ old('contactEmail') ?? '' }}">
@@ -174,13 +174,14 @@
 
     <script nonce="{{ csp_nonce() }}">
         document.addEventListener('DOMContentLoaded', function () {
-            const buttons = document.querySelectorAll('.changeCvOrEmail');
-            buttons.forEach(button => {
+            const form = document.getElementById('changeForm');
+
+            document.querySelectorAll('.changeCvOrEmail').forEach(button => {
                 button.addEventListener('click', () => {
                     const vacancySlug = button.getAttribute('data-vacancy-slug');
-                    const input = document.getElementById('modalFieldId');
-                    input.value = vacancySlug;
-                });
+                    const action = form.getAttribute('action').replace(':slug', vacancySlug);
+                    form.setAttribute('action', action);
+                })
             });
         });
     </script>

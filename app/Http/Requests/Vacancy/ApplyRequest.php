@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Vacancy;
 
+use App\Persistence\Models\Vacancy;
 use App\Traits\AfterValidation;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -13,17 +14,21 @@ class ApplyRequest extends FormRequest
 {
     use AfterValidation;
 
+    public function authorize(): bool
+    {
+        return $this->user()?->can('apply', Vacancy::class);
+    }
+
     public function rules(): array
     {
         return [
             'cvType' => ['required', 'in:0,1'],
-            'useCurrent' => ['nullable', 'boolean'],
+            'useCurrentEmail' => ['nullable', 'boolean'],
             'contactEmail' => [
                 Rule::requiredIf(function () {
-                    return $this->input('useCurrent') === null;
-                })
+                    return $this->input('useCurrentEmail') === null;
+                }),
             ],
-            'vacancySlug' => ['sometimes', 'string']
         ];
     }
 
@@ -31,15 +36,15 @@ class ApplyRequest extends FormRequest
     {
         $employee = $this->user()?->employee;
 
-        if ((int)$this->cvType === 0 && ! $employee->hasMinimallyFilledPersonalInfo()) {
+        if ((int)$this->cvType === 0 && ($employee && ! $employee->hasMinimallyFilledPersonalInfo())) {
             throw ValidationException::withMessages([
-                'cvType' => trans('alerts.employee-account.no-personal-info')
+                'cvType' => trans('alerts.employee-account.no-personal-info'),
             ]);
         }
 
-        if ((int)$this->cvType === 1 && ! $employee->resume_file) {
+        if ((int)$this->cvType === 1 && ($employee && ! $employee->resume_file)) {
             throw ValidationException::withMessages([
-                'no-cv' => trans('alerts.employee-account.no-cv')
+                'no-cv' => trans('alerts.employee-account.no-cv'),
             ]);
         }
     }
@@ -48,10 +53,10 @@ class ApplyRequest extends FormRequest
     {
         $data['cvType'] = (bool)$this->cvType;
 
-        if (! isset($data['useCurrent'])) {
-            $data['useCurrent'] = false;
+        if (! isset($data['useCurrentEmail'])) {
+            $data['useCurrentEmail'] = false;
         } else {
-            $data['useCurrent'] = (bool)$this->useCurrent;
+            $data['useCurrentEmail'] = (bool)$this->useCurrentEmail;
         }
     }
 
@@ -65,7 +70,7 @@ class ApplyRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'contactEmail.required_unless' => 'Contact email is required, when you do not want to use your account email as contact'
+            'contactEmail.required_unless' => 'Contact email is required, when you do not want to use your account email as contact',
         ];
     }
 }

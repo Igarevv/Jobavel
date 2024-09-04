@@ -31,7 +31,7 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        DB::statement('DROP TRIGGER delete_from_roles_when_user_deleted');
+        DB::statement('DROP TRIGGER delete_from_roles_when_user_deleted ON users');
         DB::statement('DROP FUNCTION delete_from_user_roles');
     }
 };

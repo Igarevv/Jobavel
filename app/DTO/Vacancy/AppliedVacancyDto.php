@@ -25,7 +25,7 @@ readonly final class AppliedVacancyDto
         return new static(
             vacancy: $vacancy,
             employee: $employee,
-            contactEmail: $data['useCurrent'] ? $employee->email : $data['contactEmail'],
+            contactEmail: $data['useCurrentEmail'] ? $employee->email : $data['contactEmail'],
             useCvFile: $data['cvType']
         );
     }

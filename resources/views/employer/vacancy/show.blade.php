@@ -276,9 +276,9 @@
                         <div class="input-group">
                             <div class="input-group-text">
                                 <label for="checkboxEmail" class="me-2">Use account email</label>
-                                <input class="form-check-input mt-0" type="checkbox" value="1" name="useCurrent"
+                                <input class="form-check-input mt-0" type="checkbox" value="1" name="useCurrentEmail"
                                        aria-label="Checkbox for following text input"
-                                       id="checkboxEmail" @checked(old('useCurrent') == 1)>
+                                       id="checkboxEmail" @checked(old('useCurrentEmail') == 1)>
                             </div>
                             <input type="email" class="form-control" aria-label="Text input with checkbox"
                                    name="contactEmail" value="{{ old('contactEmail') ?? '' }}">

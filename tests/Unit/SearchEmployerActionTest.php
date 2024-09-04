@@ -8,8 +8,8 @@ use App\DTO\Admin\AdminSearchDto;
 use App\Enums\Admin\AdminEmployersSearchEnum;
 use App\Persistence\Models\Employer;
 use App\Persistence\Models\User;
-use Illuminate\Contracts\Pagination\Paginator;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Database\Seeders\EmployerSeeder;
+use Database\Seeders\PermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Tests\TestCase;
@@ -26,6 +26,8 @@ class SearchEmployerActionTest extends TestCase
     {
         parent::setUp();
 
+        $this->seed([PermissionSeeder::class, EmployerSeeder::class]);
+
         $this->employersPaginatedAction = $this->createMock(GetEmployersPaginatedAction::class);
 
         $this->getEmployersBySearchAction = new GetEmployersBySearchAction($this->employersPaginatedAction);
@@ -33,8 +35,6 @@ class SearchEmployerActionTest extends TestCase
 
     public function test_action_will_return_all_employers_if_search_string_is_empty(): void
     {
-        $this->seed();
-
         $searchDto = $this->createMock(AdminSearchDto::class);
 
         $searchDto->method('getSearchByEnum')

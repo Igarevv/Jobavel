@@ -62,7 +62,7 @@ Route::prefix('employee')->name('employee.')->group(function () {
                 Route::get('/applied', [VacancyEmployeeController::class, 'appliedVacancies'])
                     ->name('applied');
 
-                Route::post('/applied/change', [VacancyEmployeeController::class, 'changeAttachedDataForVacancy'])
+                Route::post('/{vacancy}/applied/change', [VacancyEmployeeController::class, 'changeAttachedDataForVacancy'])
                     ->name('applied.change');
             });
         });

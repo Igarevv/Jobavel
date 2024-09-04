@@ -42,15 +42,34 @@ class VacancyFactory extends Factory
                     EmploymentEnum::EMPLOYMENT_MIXED,
                     EmploymentEnum::EMPLOYMENT_REMOTE,
                     EmploymentEnum::EMPLOYMENT_OFFICE,
-                    EmploymentEnum::EMPLOYMENT_PART_TIME
+                    EmploymentEnum::EMPLOYMENT_PART_TIME,
                 ]
             ),
             'experience_time' => Arr::random([0, 1, 3, 5, 10]),
             'consider_without_experience' => $this->faker->boolean(),
             'salary' => $this->faker->numberBetween(0, 5000),
             'is_published' => $isPublished,
-            'published_at' => $publishedAt ?? null
+            'published_at' => $publishedAt ?? null,
         ];
     }
 
+    public function unpublished(): VacancyFactory|Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'is_published' => false,
+                'published_at' => null
+            ];
+        });
+    }
+
+    public function published(): VacancyFactory|Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'is_published' => true,
+                'published_at' => now()
+            ];
+        });
+    }
 }

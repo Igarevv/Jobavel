@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
@@ -37,6 +38,10 @@ class Handler extends ExceptionHandler
                 'message' => $e->getMessage(),
                 'url' => $e->getFallbackUrl()
             ], 400);
+        }
+
+        if ($e instanceof AuthorizationException) {
+            abort(404);
         }
 
         return parent::render($request, $e);

@@ -32,6 +32,10 @@ class Employee extends Model
 
     protected $table = 'employees';
 
+    public const CV_TYPE_MANUAL = 0;
+
+    public const CV_TYPE_FILE = 1;
+
     public $timestamps = false;
 
     protected $fillable = [

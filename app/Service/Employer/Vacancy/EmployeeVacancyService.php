@@ -40,7 +40,7 @@ class EmployeeVacancyService
     public function withDrawEmployeeFromVacancy(Vacancy $vacancy, Employee $employee): bool
     {
         if ($employee->vacancies()->detach($vacancy) >= 1) {
-            if ($vacancy->response_number !== 0) {
+            if ($vacancy->response_number > 0) {
                 $vacancy->update(['response_number' => $vacancy->response_number - 1]);
             }
 

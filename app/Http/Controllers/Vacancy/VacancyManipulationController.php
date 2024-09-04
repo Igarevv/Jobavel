@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Vacancy;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Vacancy\VacancyCreateRequest;
 use App\Http\Requests\Vacancy\VacancyRequest;
+use App\Http\Requests\Vacancy\VacancyUpdateRequest;
 use App\Persistence\Models\Vacancy;
 use App\Service\Employer\Vacancy\VacancyService;
 use App\Support\SlugVacancy;
@@ -21,11 +23,9 @@ class VacancyManipulationController extends Controller
     ) {
     }
 
-    public function update(SlugVacancy $vacancy, VacancyRequest $request, VacancyViewModel $viewModel): RedirectResponse
+    public function update(SlugVacancy $vacancy, VacancyUpdateRequest $request, VacancyViewModel $viewModel): RedirectResponse
     {
         $existedVacancy = $viewModel->vacancy($vacancy->getIdFromSlug());
-
-        $this->authorize('edit', $existedVacancy);
 
         $this->vacancyService->update($existedVacancy, $request->getDto());
 
@@ -33,10 +33,8 @@ class VacancyManipulationController extends Controller
             ->with('edit-success', trans('alerts.vacancy.edited'));
     }
 
-    public function store(VacancyRequest $request): RedirectResponse
+    public function store(VacancyCreateRequest $request): RedirectResponse
     {
-        $this->authorize('create', Vacancy::class);
-
         $this->vacancyService->create(session('user.emp_id'), $request->getDto());
 
         return redirect()

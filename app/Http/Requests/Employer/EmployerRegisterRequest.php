@@ -52,13 +52,15 @@ class EmployerRegisterRequest extends FormRequest
 
     public function getDto(): RegisterEmployerDto
     {
+        $validated = $this->validated();
+
         return new RegisterEmployerDto(
-            companyName: $this->get('company'),
-            email: $this->get('email'),
-            password: Hash::make($this->get('password'), ['rounds' => 12]),
+            companyName: $validated['company'],
+            email: $validated['email'],
+            password: Hash::make($validated['password'], ['rounds' => 12]),
             role: User::EMPLOYER,
             companyLogo: config('app.default_employer_logo'),
-            companyType: $this->get('type')
+            companyType: $validated['type'],
         );
     }
 
