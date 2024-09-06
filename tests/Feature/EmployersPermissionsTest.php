@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Feature;
 
 use App\Persistence\Models\Employee;
 use App\Persistence\Models\Employer;
@@ -10,7 +10,6 @@ use Database\Seeders\EmployeeSeeder;
 use Database\Seeders\EmployerSeeder;
 use Database\Seeders\PermissionSeeder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use Tests\TestCase;

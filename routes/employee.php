@@ -27,7 +27,7 @@ Route::prefix('employee')->name('employee.')->group(function () {
         ->middleware('guest')
         ->name('register');
 
-    Route::middleware(['auth', "role:employee"])->group(function () {
+    Route::middleware(['auth:web', "role:employee"])->group(function () {
         Route::redirect('/', '/main');
 
         /*
@@ -62,7 +62,8 @@ Route::prefix('employee')->name('employee.')->group(function () {
                 Route::get('/applied', [VacancyEmployeeController::class, 'appliedVacancies'])
                     ->name('applied');
 
-                Route::post('/{vacancy}/applied/change', [VacancyEmployeeController::class, 'changeAttachedDataForVacancy'])
+                Route::post('/{vacancy}/applied/change',
+                    [VacancyEmployeeController::class, 'changeAttachedDataForVacancy'])
                     ->name('applied.change');
             });
         });

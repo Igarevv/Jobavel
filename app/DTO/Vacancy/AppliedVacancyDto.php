@@ -18,11 +18,14 @@ readonly final class AppliedVacancyDto
     ) {
     }
 
-    public static function fromRequestWithEntities(ApplyRequest $request, Vacancy $vacancy, Employee $employee): static
-    {
+    public static function fromRequestWithEntities(
+        ApplyRequest $request,
+        Vacancy $vacancy,
+        Employee $employee
+    ): AppliedVacancyDto {
         $data = $request->validated();
 
-        return new static(
+        return new AppliedVacancyDto(
             vacancy: $vacancy,
             employee: $employee,
             contactEmail: $data['useCurrentEmail'] ? $employee->email : $data['contactEmail'],

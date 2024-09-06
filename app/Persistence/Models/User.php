@@ -42,7 +42,7 @@ class User extends Model implements AuthContract, MustVerifyEmail, AuthorizableC
     public const EMPLOYER = Role::EMPLOYER->value;
 
     protected $table = 'users';
-
+    
     public $timestamps = false;
 
     protected $fillable = [

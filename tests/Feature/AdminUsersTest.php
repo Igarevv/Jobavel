@@ -1,10 +1,9 @@
 <?php
 
-namespace Tests\Unit;
+namespace Feature;
 
 use App\Persistence\Models\User;
 use Database\Factories\Persistence\Models\UserFactory;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

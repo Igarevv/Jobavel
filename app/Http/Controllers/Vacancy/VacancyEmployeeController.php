@@ -32,12 +32,10 @@ class VacancyEmployeeController extends Controller
 
     public function apply(SlugVacancy $vacancy, ApplyRequest $request): RedirectResponse
     {
-        $employee = Employee::findByUuid(session('user.emp_id'));
-
         $appliedVacancyDto = AppliedVacancyDto::fromRequestWithEntities(
             request: $request,
-            vacancy: $vacancy->createFromSlug('id'),
-            employee: $employee
+            vacancy: $vacancy->createFromSlug('id', 'response_number'),
+            employee: Employee::findByUuid(session('user.emp_id'))
         );
 
         $result = $this->employeeVacancyService->applyEmployeeToVacancy($appliedVacancyDto);

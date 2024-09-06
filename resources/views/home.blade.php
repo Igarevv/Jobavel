@@ -4,29 +4,33 @@
     <x-header></x-header>
 
     <x-main>
-        @guest
-            <div class="mt-5 background-badge">
-                <section class="py-5 text-center container">
-                    <div class="row py-lg-5">
-                        <div class="col-lg-6 col-md-8 mx-auto">
-                            <h1 class="fw-light"><strong class="text-white">Job<span
-                                            class="red">avel</span></strong>
-                            </h1>
-                            <p class="lead text-light">Find or post developers jobs</p>
-                            <div class="d-flex justify-content-center align-items-center flex-row">
-                                <div class="text-center">
-                                    <p class="text-white m-2">↓ I'm an Employee</p>
-                                    <a href="{{ route('employee.register') }}" class="btn btn-danger mx-2">Start finding
-                                        job</a>
-                                    <a href="{{ route('employer.register') }}" class="btn btn-danger mx-2">Start posting
-                                        job</a>
-                                    <p class="text-white m-2">I'm an Employer ↑</p>
+        @guest('admin')
+            @guest('web')
+                <div class="mt-5 background-badge">
+                    <section class="py-5 text-center container">
+                        <div class="row py-lg-5">
+                            <div class="col-lg-6 col-md-8 mx-auto">
+                                <h1 class="fw-light"><strong class="text-white">Job<span
+                                                class="red">avel</span></strong>
+                                </h1>
+                                <p class="lead text-light">Find or post developers jobs</p>
+                                <div class="d-flex justify-content-center align-items-center flex-row">
+                                    <div class="text-center">
+                                        <p class="text-white m-2">↓ I'm an Employee</p>
+                                        <a href="{{ route('employee.register') }}" class="btn btn-danger mx-2">Start
+                                            finding
+                                            job</a>
+                                        <a href="{{ route('employer.register') }}" class="btn btn-danger mx-2">Start
+                                            posting
+                                            job</a>
+                                        <p class="text-white m-2">I'm an Employer ↑</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </section>
-            </div>
+                    </section>
+                </div>
+            @endguest
         @endguest
         <section class="py-5 text-center bg-light">
             <div class="container">

@@ -11,7 +11,7 @@ final class RedirectIfEmailVerified
 
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->user()->hasVerifiedEmail()) {
+        if ($request->user('web')->hasVerifiedEmail()) {
             return redirect()->to('home');
         }
 

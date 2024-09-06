@@ -69,7 +69,7 @@
                     </div>
                 </x-slot:title>
                 <x-slot:description>You can delete or send verification email again.
-                    <form action="{{ route('admin.emails.send') }}" method="POST">
+                    <form action="{{ route('admin.users.emails.send') }}" method="POST">
                         @csrf
                         <button type="submit"
                                 class="float-end text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
@@ -101,7 +101,7 @@
                                 {{ $user->createdAt }}
                             </td>
                             <td class="px-3 py-4">
-                                <form action="{{ route('admin.unverified.delete', ['identity' => $user->id]) }}"
+                                <form action="{{ route('admin.users.unverified.delete', ['identity' => $user->id]) }}"
                                       method="POST">
                                     @csrf
                                     @method('DELETE')

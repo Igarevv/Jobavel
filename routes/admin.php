@@ -11,62 +11,131 @@ use App\Http\Controllers\Admin\Users\TemporarilyDeletedUsersController;
 use App\Http\Controllers\Admin\Users\UnverifiedUsersController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/admin/island', [AdminHomeController::class, 'index'])->name('admin.island');
+Route::prefix('admin')->name('admin.')->group(function () {
+    /*
+    * ---------------------------------
+    * -       Admin Main Page         -
+    * ---------------------------------
+    */
 
-Route::get('/admin/users/unverified', [UnverifiedUsersController::class, 'index'])->name('admin.users.unverified');
+    Route::get('/island', [AdminHomeController::class, 'index'])->middleware('auth.admin')
+        ->name('island');
 
-Route::delete('/admin/users/unverified/{identity:user_id}/softdel', [UnverifiedUsersController::class, 'delete'])
-    ->name('admin.unverified.delete');
+    /*
+    * ---------------------------------
+    * -       Admin Auth System       -
+    * ---------------------------------
+    */
 
-Route::get('/admin/users/employees', [EmployeesController::class, 'index'])->name('admin.users.employees');
+    Route::middleware('guest:admin')->group(function () {
+        Route::get('/sign-in', [AdminAuthController::class, 'signInIndex'])->name('sign-in.show');
 
-Route::get('/admin/users/employers', [EmployersController::class, 'index'])->name('admin.users.employers');
+        Route::post('/sign-in', [AdminAuthController::class, 'login'])->name('sign-in');
+    });
+    Route::post('/logout', [AdminAuthController::class, 'logout'])->middleware('auth.admin')->name('logout');
 
-Route::get('/admin/employers/search', [EmployersController::class, 'search'])->name('admin.employers.search');
+    Route::prefix('users')->name('users.')->group(function () {
+        /*
+        * ---------------------------------
+        * -      Admin Users Section      -
+        * ---------------------------------
+        */
 
-Route::get('/admin/employees/search', [EmployeesController::class, 'search'])->name('admin.employees.search');
+        Route::group(['middleware' => 'auth.admin'], function () {
+            /*
+            * ---------------------------------
+            * -       Unverified Users        -
+            * ---------------------------------
+            */
 
-Route::get('/admin/temporarily-deleted/search', [TemporarilyDeletedUsersController::class, 'search'])->name(
-    'admin.temporarily-deleted.search'
-);
+            Route::controller(UnverifiedUsersController::class)->prefix('unverified')->group(function () {
+                Route::get('/', 'index')->name('unverified');
 
-Route::post(
-    '/admin/temporarily-delete/{identity:user_id}/give-second-chance',
-    [TemporarilyDeletedUsersController::class, 'sendEmailToRestoreUser']
-)->withTrashed()->name('admin.temporarily-deleted.restore');
+                Route::delete('/{identity:user_id}/softdel', 'delete')->name('unverified.delete');
 
-Route::get('/admin/users/temporarily-deleted', [TemporarilyDeletedUsersController::class, 'index'])->name(
-    'admin.users.temporarily-deleted'
-);
+                Route::post('/emails/send-to-unverified', 'sendEmailToVerifyUsers')->name('emails.send');
+            });
 
-Route::get('/admin/users/admins', [AdminsController::class, 'index'])->name('admin.users.admins');
-Route::post('/admin/users/admins/register', [AdminAuthController::class, 'register'])->name(
-    'admin.users.admins.register'
-);
+            /*
+            * ---------------------------------
+            * -          Employers            -
+            * ---------------------------------
+            */
 
-Route::get('/admin/sign-in', [AdminAuthController::class, 'signInIndex']);
+            Route::controller(EmployersController::class)->prefix('employers')->group(function () {
+                Route::get('/', 'index')->name('employers');
 
-Route::post('/admin/sign-in', [AdminAuthController::class, 'login'])->name('admin.sign-in');
+                Route::get('/partials', 'fetchEmployers');
 
-Route::get('/admin/roles-permissions', [AdminRolesController::class, 'index'])->name(
-    'admin.roles-permissions'
-);
+                Route::get('/search', 'search')->name('employers.search');
+            });
 
-Route::delete('/admin/role/{role}/remove', [AdminRolesController::class, 'delete'])->name('admin.roles.remove');
+            /*
+            * ---------------------------------
+            * -          Employees            -
+            * ---------------------------------
+            */
 
-Route::post('/admin/emails/send-to-unverified', [UnverifiedUsersController::class, 'sendEmailToVerifyUsers'])->name(
-    'admin.emails.send'
-);
+            Route::controller(EmployeesController::class)->prefix('employees')->group(function () {
+                Route::get('/', 'index')->name('employees');
 
-Route::post('/admin/role/store', [AdminRolesController::class, 'storeRole'])->name('admin.role.store');
+                Route::get('/search', 'search')->name('employees.search');
+            });
 
-Route::post('/admin/permission/store', [AdminPermissionsController::class, 'storePermission'])->name(
-    'admin.permission.store'
-);
+            /*
+            * ---------------------------------
+            * -   Temporarily Deleted Users   -
+            * ---------------------------------
+            */
 
-Route::post('/admin/link-permissions-to-role', [AdminPermissionsController::class, 'linkPermissionsToRole'])->name(
-    'admin.permissions-roles.link'
-);
+            Route::controller(TemporarilyDeletedUsersController::class)->prefix('temporarily-deleted')->group(function (
+            ) {
+                Route::get('/', 'index')->name('temporarily-deleted');
 
-Route::delete('/admin/permission/{permission}/remove', [AdminPermissionsController::class, 'delete'])
-    ->name('admin.permissions.remove');
+                Route::get('/search', 'search')->name('temporarily-deleted.search');
+
+                Route::post('/{identity:user_id}/give-second-chance', 'sendEmailToRestoreUser')
+                    ->withTrashed()
+                    ->name('temporarily-deleted.restore');
+            });
+        });
+
+        /*
+        * ---------------------------------
+        * -            Admins             -
+        * ---------------------------------
+        */
+
+        Route::controller(AdminsController::class)->middleware('auth.admin:super-admin')
+            ->prefix('admins')
+            ->group(function () {
+                Route::get('/', 'index')->name('admins');
+
+                Route::post('/register', 'register')->name('admins.register');
+            });
+    });
+
+    /*
+    * ---------------------------------
+    * -     Roles and Permissions     -
+    * ---------------------------------
+    */
+
+    Route::middleware('auth.admin:super-admin')->group(function () {
+        Route::controller(AdminRolesController::class)->group(function () {
+            Route::get('/roles-permissions', 'index')->name('roles-permissions');
+
+            Route::post('/role/store', 'storeRole')->name('role.store');
+
+            Route::delete('/role/{role}/remove', 'delete')->name('roles.remove');
+        });
+
+        Route::controller(AdminPermissionsController::class)->group(function () {
+            Route::post('/permission/store', 'storePermission')->name('permission.store');
+
+            Route::post('/link-permissions-to-role', 'linkPermissionsToRole')->name('permissions-roles.link');
+
+            Route::delete('/permission/{permission}/remove', 'delete')->name('permissions.remove');
+        });
+    });
+});

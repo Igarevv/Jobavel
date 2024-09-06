@@ -10,14 +10,15 @@
             <x-slot:title>
                 <div class="flex flex-col">
                     <span>Employers</span>
-                    <span>Found: {{ $employers->total() }} records</span>
+                    {{--<span>Found: {{ $employers->total() }} records</span>--}}
                 </div>
             </x-slot:title>
             <x-slot:description>
                 <span>The full list of employers</span>
                 <div>
                     <div class="text-center">
-                        <form class="max-w-lg mx-auto" action="{{ route('admin.employers.search') }}" method="GET">
+                        <form class="max-w-lg mx-auto" action="{{ route('admin.users.employers.search') }}"
+                              method="GET">
                             <div class="flex">
                                 @php
                                     $input = $input ?? null;
@@ -67,76 +68,25 @@
                 <th scope="col" class="px-3 py-3 text-sm">Company Type</th>
                 <th scope="col" class="px-3 py-3 text-sm">Account Email</th>
                 <th scope="col" class="px-3 py-3 text-sm">Contact Email</th>
-                <th scope="col" class="px-3 py-3 text-sm">Created At</th>
+                <th scope="col" class="px-3 py-3 text-sm">
+                    Created at
+                    {{--<a href="{{ route('employers.index', ['sort' => 'creation-time', 'direction' => strtolower(request('direction')) === 'asc' ? 'desc' : 'asc']) }}">
+                         <span class="flex items-center">
+                            Created at
+                            <x-sort-icon field="created_at"/>
+                        </span>
+                    </a>--}}
+                </th>
                 <th scope="col" class="px-3 py-3 text-sm"></th>
                 <th scope="col" class="px-3 py-3 text-sm"></th>
             </x-admin.table.thead>
-            <x-admin.table.tbody>
-                @forelse($employers as $employer)
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <th scope="row"
-                            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ $loop->iteration + ($employers->currentPage() - 1) * $employers->perPage() }}
-                        </th>
-                        <td class="px-3 py-4">
-                            {{ $employer->idEncrypted }}
-                        </td>
-                        <td class="px-3 py-4">
-                            {{ $employer->company }}
-                        </td>
-                        <td class="px-3 py-4">
-                            {{ $employer->companyType }}
-                        </td>
-                        <td class="px-3 py-4">
-                            {{ $employer->accountEmail }}
-                        </td>
-                        <td class="px-3 py-4">
-                            {{ $employer->contactEmail }}
-                        </td>
-                        <td class="px-3 py-4">
-                            {{ $employer->createdAt }}
-                        </td>
-                        <td class="px-3 py-4">
-                            <button type="submit" data-modal-target="static-modal" data-modal-toggle="static-modal"
-                                    data-employer-id="{{ $employer->id }}" data-employer-name="{{ $employer->company }}"
-                                    class="open-modal-btn unstyled-button font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                View vacancies
-                            </button>
-                        </td>
-                        <td class="px-3 py-4">
-                            <form action=""
-                                  method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit"
-                                        class="unstyled-button font-medium text-red-600 dark:text-blue-500 hover:underline">
-                                    Ban
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="8" class="text-center py-6">
-                    <span class="text-xl text-gray-500 dark:text-gray-400">
-                        @isset($input)
-                            Employer with key:
-                            <span class="font-bold underline">{{ $input->searchByValue }}</span>
-                            and search value:
-                            <span class="font-bold underline">{{ $input->search }}</span>
-                            not found
-                        @else
-                            Employers not found
-                        @endisset
-                    </span>
-                        </td>
-                    </tr>
-                @endforelse
+            <x-admin.table.tbody class="employers-body">
+                <!--from rows.blade.php-->
             </x-admin.table.tbody>
         </x-admin.table.default>
-        <div class="mt-2">
+        {{--<div class="mt-2">
             {{ $employers->withQueryString()->links('pagination::tailwind') }}
-        </div>
+        </div>--}}
     </section>
     <x-admin.modal.index>
         <x-admin.modal.header>
@@ -167,4 +117,16 @@
     @pushonce('vite')
         @vite(['resources/assets/js/admin/fetchEmployerVacancies.js'])
     @endpushonce
+
+    <script nonce="{{ csp_nonce() }}">
+        function fetchEmployers() {
+            fetch('/admin/users/employers/partials')
+                .then(response => response.text())
+                .then(html => {
+                    document.querySelector('.employers-body').innerHTML = html;
+                })
+        }
+
+        fetchEmployers()
+    </script>
 </x-admin.layout>

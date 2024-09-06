@@ -20,7 +20,7 @@ Route::name('employer.')->group(function () {
         ->middleware('guest')
         ->name('register');
 
-    Route::group(['middleware' => ['auth', 'role:employer']], function () {
+    Route::group(['middleware' => ['auth:web', 'role:employer']], function () {
         Route::prefix('employer')->group(function () {
             Route::redirect('/', '/employer/main');
             /*

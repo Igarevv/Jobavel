@@ -5,7 +5,6 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Vacancy\VacancyEmployeeController;
-use App\Http\Controllers\Vacancy\VacancyEmployerViewController;
 use App\Http\Controllers\VacancyController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,10 +29,10 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::prefix('auth')->name('login.')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->middleware(
-        'auth'
+        'auth:web'
     )->name('logout');
 
-    Route::middleware('guest')->group(function () {
+    Route::middleware('guest:web,admin')->group(function () {
         Route::get('/login', [AuthController::class, 'index'])->name('show');
         Route::post('/login', [AuthController::class, 'login'])->name('enter');
     });
@@ -45,7 +44,7 @@ Route::prefix('auth')->name('login.')->group(function () {
  * ---------------------------------
  */
 
-Route::prefix('/auth/email/verify')->middleware('auth')->group(
+Route::prefix('/auth/email/verify')->middleware('auth:web')->group(
     function () {
         Route::view('/show', 'auth.email.resend-email')->name('verification.notice')
             ->middleware('unverified');
@@ -53,7 +52,7 @@ Route::prefix('/auth/email/verify')->middleware('auth')->group(
         Route::get('/{user_id}/{hash}', [EmailVerificationController::class, 'verifyEmail'])
             ->middleware('signed.email')
             ->name('verification.verify')
-            ->withoutMiddleware('auth');
+            ->withoutMiddleware('auth:web');
 
         Route::post('/resend', [EmailVerificationController::class, 'resendEmail'])
             ->name('verification.send');
@@ -81,7 +80,7 @@ Route::prefix('vacancies')->name('vacancies.')->group(function () {
     * ---------------------------------
     */
 
-    Route::middleware('auth')->name('employee.')->group(function () {
+    Route::middleware('auth:web')->name('employee.')->group(function () {
         Route::post('/{vacancy}/apply', [VacancyEmployeeController::class, 'apply'])
             ->name('apply');
 

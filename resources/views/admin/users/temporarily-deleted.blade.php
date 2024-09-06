@@ -29,7 +29,7 @@
             <x-slot:description>You can restore temporarily deleted users
                 <div>
                     <div class="text-center">
-                        <form class="max-w-lg mx-auto" action="{{ route('admin.temporarily-deleted.search') }}"
+                        <form class="max-w-lg mx-auto" action="{{ route('admin.users.temporarily-deleted.search') }}"
                               method="GET">
                             <div class="flex">
                                 @php
@@ -161,7 +161,7 @@
                         link to user to restore account and verify it. Are you sure you want to
                         perform this action?</h3>
                     <div class="flex justify-around">
-                        <form action="{{ route('admin.temporarily-deleted.restore', ['identity' => ':id']) }}"
+                        <form action="{{ route('admin.users.temporarily-deleted.restore', ['identity' => ':id']) }}"
                               method="POST" id="restoreForm">
                             @csrf
                             <button type="submit"

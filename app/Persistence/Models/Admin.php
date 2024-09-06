@@ -3,10 +3,11 @@
 namespace App\Persistence\Models;
 
 use App\Enums\Role;
+use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Foundation\Auth\Access\Authorizable as AuthorizableTrait;
 use Ramsey\Uuid\Uuid;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -14,8 +15,8 @@ class Admin extends Model implements Authenticatable, \Illuminate\Contracts\Auth
 {
     use HasFactory;
     use HasRoles;
-    use \Illuminate\Auth\Authenticatable;
-    use Authorizable;
+    use AuthorizableTrait;
+    use AuthenticatableTrait;
 
     public const ADMIN = Role::ADMIN->value;
 
@@ -50,6 +51,11 @@ class Admin extends Model implements Authenticatable, \Illuminate\Contracts\Auth
     public function getDefaultGuardName(): string
     {
         return 'admin';
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->is_super_admin;
     }
 
     public function deactivate(): void

@@ -16,7 +16,12 @@ class EmployersController extends Controller
 
     public function index(GetEmployersPaginatedAction $action): View
     {
-        return view('admin.users.employers', ['employers' => $action->handle()]);
+        return view('admin.users.employers.index');
+    }
+
+    public function fetchEmployers(GetEmployersPaginatedAction $action): View
+    {
+        return view('admin.users.employers._rows', ['employers' => $action->handle()]);
     }
 
     public function search(AdminEmployersSearchRequest $request, GetEmployersBySearchAction $action): View

@@ -2,7 +2,9 @@
   'size' => '4',
 ])
 
-<div class="mb-4">
+<div class="mb-4 flex items-center gap-3">
+    <span class="text-sm dark:text-white font-bold">@session('user.name')Welcome, <span
+                class="italic underline">{{ session('user.name') }}</span>@endsession</span>
     <template x-if="darkMode">
         <button type="button" @click="darkMode = !darkMode"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">

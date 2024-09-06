@@ -11,7 +11,7 @@ class EmployerVacancies extends JsonResource
     public function toArray(Request $request): array
     {
         return $this->resource->map(function (Vacancy $vacancy) {
-            return (object)[
+            return (object) [
                 'id' => $vacancy->id,
                 'slug' => $vacancy->slug,
                 'title' => $vacancy->title,

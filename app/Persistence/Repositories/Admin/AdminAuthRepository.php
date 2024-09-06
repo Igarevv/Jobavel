@@ -36,7 +36,7 @@ class AdminAuthRepository implements AdminAuthRepositoryInterface, AdminFirstLog
         return Admin::query()
             ->where('email', $email)
             ->where('is_active', true)
-            ->first(['id', 'admin_id', 'email', 'password']);
+            ->first(['id', 'admin_id', 'email', 'password', 'first_name', 'last_name']);
     }
 
     public function getAdminFirstLogin(Admin $admin): ?\stdClass

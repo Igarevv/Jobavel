@@ -16,7 +16,8 @@
             <x-slot:description>You can delete or send verification email again.
                 <div>
                     <div class="text-center">
-                        <form class="max-w-lg mx-auto" action="{{ route('admin.employees.search') }}" method="GET">
+                        <form class="max-w-lg mx-auto" action="{{ route('admin.users.employees.search') }}"
+                              method="GET">
                             <div class="flex">
                                 @php
                                     $input = $input ?? null;

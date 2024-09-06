@@ -4,7 +4,6 @@ namespace App\Observers;
 
 use App\Persistence\Models\Vacancy;
 use App\Service\Cache\Cache;
-use Illuminate\Support\Str;
 
 class VacancyObserver
 {
@@ -13,6 +12,12 @@ class VacancyObserver
         if (! $vacancy->created_at) {
             $vacancy->created_at = now();
         }
+    }
+
+    public function updated(Vacancy $vacancy): void
+    {
+        Cache::forgetKey('vacancy', $vacancy->id);
+        Cache::forgetKey('vacancies-published', $vacancy->employer()->first()?->employer_id);
     }
 
     public function saved(Vacancy $vacancy): void

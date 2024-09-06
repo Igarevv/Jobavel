@@ -9,16 +9,23 @@
             </h6>
         </div>
         <div class="d-flex gap-3">
-            @auth
+            @auth('admin')
+                <a href="{{ route('admin.island') }}" class="btn btn-red-moon">
+                    <strong>Job<span class="red">avel</span> Admins</strong>
+                </a>
+            @endauth
+            @auth('web')
                 <form action="{{ route('login.logout') }}" method="post">
                     @csrf
                     <button type="submit" class="btn btn-outline-danger">Log out</button>
                 </form>
             @endauth
-            @guest
-                <div>
-                    <a href="{{ route('login.show') }}" class="btn btn-outline-light">Sign In</a>
-                </div>
+            @guest('admin')
+                @guest('web')
+                    <div>
+                        <a href="{{ route('login.show') }}" class="btn btn-outline-light">Sign In</a>
+                    </div>
+                @endguest
             @endguest
             <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarHeader"

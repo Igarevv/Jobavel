@@ -9,6 +9,7 @@ use App\Http\Requests\Admin\AdminRegisterRequest;
 use App\Service\Admin\AuthService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -39,6 +40,17 @@ class AdminAuthController extends Controller
         }
 
         return redirect()->route('admin.island');
+    }
+
+    public function logout(Request $request): RedirectResponse
+    {
+        Auth::guard('admin')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect()->route('home');
     }
 
     public function register(AdminRegisterRequest $request): RedirectResponse

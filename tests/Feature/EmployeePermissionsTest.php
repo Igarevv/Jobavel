@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Feature;
 
 use App\Persistence\Models\Employee;
 use App\Persistence\Models\Employer;
@@ -35,16 +35,20 @@ class EmployeePermissionsTest extends TestCase
         $stranger = $this->usersAsEmployee[1];
 
         $responseStrangerWantToAccessOwnerResume = $this->actingAs($stranger)
-            ->get(route('employee.resume', [
-                'employee' => $resumeOwner->employee->employee_id,
-                'type' => 'manual'
-            ]));
+            ->get(
+                route('employee.resume', [
+                    'employee' => $resumeOwner->employee->employee_id,
+                    'type' => 'manual'
+                ])
+            );
 
         $responseOwnerWantToAccessTheirResume = $this->actingAs($resumeOwner)
-            ->get(route('employee.resume', [
-                'employee' => $resumeOwner->employee->employee_id,
-                'type' => 'manual'
-            ]));
+            ->get(
+                route('employee.resume', [
+                    'employee' => $resumeOwner->employee->employee_id,
+                    'type' => 'manual'
+                ])
+            );
 
         $responseStrangerWantToAccessOwnerResume->assertNotFound();
         $responseOwnerWantToAccessTheirResume->assertOk();
@@ -62,7 +66,7 @@ class EmployeePermissionsTest extends TestCase
 
         $response = $this->actingAs($userAsEmployee)
             ->withSession(['user' => ['emp_id' => $userAsEmployee->employee->employee_id]])
-            ->post(route('vacancies.employee.apply', ['vacancy' => $vacancy->slug]),[
+            ->post(route('vacancies.employee.apply', ['vacancy' => $vacancy->slug]), [
                 'cvType' => Employee::CV_TYPE_MANUAL,
                 'useCurrentEmail' => true
             ]);

@@ -12,13 +12,17 @@
             <a href="{{ '#' }}" class="btn btn-outline-secondary">Support</a>
         </div>
     </div>
-    <div class="col-sm-4 offset-md-1 py-4">
-        <div class="d-flex flex-column h-100 justify-content-center align-items-center">
-            <h3 class="text-center mb-4">To start, let's register now</h3>
-            <div class="d-flex justify-content-center gap-3">
-                <a href="{{ route('employer.register') }}" class="btn btn-outline-danger">as Employer</a>
-                <a href="{{ route('employee.register') }}" class="btn btn-outline-danger">as Employee</a>
+    @guest('admin')
+        @guest('web')
+            <div class="col-sm-4 offset-md-1 py-4">
+                <div class="d-flex flex-column h-100 justify-content-center align-items-center">
+                    <h3 class="text-center mb-4">To start, let's register now</h3>
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="{{ route('employer.register') }}" class="btn btn-outline-danger">as Employer</a>
+                        <a href="{{ route('employee.register') }}" class="btn btn-outline-danger">as Employee</a>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+        @endguest
+    @endguest
 </x-header.drop>
