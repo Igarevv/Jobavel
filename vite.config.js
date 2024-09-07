@@ -28,7 +28,8 @@ export default defineConfig({
                 'resources/assets/js/employee/employeePersonalInfo.js',
                 'resources/assets/js/employer/getEmployeesForVacancy.js',
                 'resources/assets/js/admin/rolesPermissions.js',
-                'resources/assets/js/admin/fetchEmployerVacancies.js'
+                'resources/assets/js/admin/fetchEmployerVacancies.js',
+                'resources/assets/js/admin/tables/employerTable.js',
             ],
             refresh: true,
         }),

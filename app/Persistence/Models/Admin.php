@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable as AuthorizableTrait;
+use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -62,6 +63,13 @@ class Admin extends Model implements Authenticatable, \Illuminate\Contracts\Auth
     {
         $this->is_active = false;
         $this->save();
+    }
+
+    public function createApiToken(): string
+    {
+        $this->api_token = Str::random(60);
+        $this->save();
+        return $this->api_token;
     }
 
     protected static function boot(): void

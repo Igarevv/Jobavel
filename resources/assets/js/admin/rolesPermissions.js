@@ -1,13 +1,21 @@
+import axios from "axios";
+
 document.addEventListener('DOMContentLoaded', () => {
     const roles = document.querySelectorAll('.custom-radio');
+
+    const token = window.Laravel.token;
 
     roles.forEach(roleRadio => {
         roleRadio.addEventListener('click', async () => {
             const id = roleRadio.getAttribute('data-role-id');
 
-            const response = await fetch(`/api/admin/roles/${id}/permissions`);
+            const response = await axios.get(`/api/admin/roles/${id}/permissions`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
 
-            const data = await response.json();
+            const data = await response.data;
 
             const checkboxes = document.querySelectorAll('#permissionsList input[type="checkbox"]');
 

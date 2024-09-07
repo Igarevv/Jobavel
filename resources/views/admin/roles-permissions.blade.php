@@ -367,4 +367,7 @@
     @pushonce('vite')
         @vite(['resources/assets/js/admin/rolesPermissions.js'])
     @endpushonce
+    <script nonce="{{ csp_nonce() }}">
+        window.Laravel = {!! json_encode(['token' => auth('admin')->user()?->api_token]) !!}
+    </script>
 </x-admin.layout>

@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\View\View;
 
 class AdminAuthController extends Controller
@@ -32,6 +33,9 @@ class AdminAuthController extends Controller
 
             Auth::guard('admin')->login($admin);
 
+            $admin->createApiToken();
+            Cookie::queue('token', $admin->createApiToken(), null, null, true, true);
+            
             $request->session()->regenerate();
         } catch (ModelNotFoundException|TryToSignInWithTempPasswordSecondTime $e) {
             return back()->withErrors(

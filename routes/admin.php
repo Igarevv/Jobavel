@@ -65,7 +65,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::controller(EmployersController::class)->prefix('employers')->group(function () {
                 Route::get('/', 'index')->name('employers');
 
-                Route::get('/partials', 'fetchEmployers');
+                Route::get('/table', 'fetchEmployers')->name('employers.table');
 
                 Route::get('/search', 'search')->name('employers.search');
             });
@@ -88,16 +88,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
             * ---------------------------------
             */
 
-            Route::controller(TemporarilyDeletedUsersController::class)->prefix('temporarily-deleted')->group(function (
-            ) {
-                Route::get('/', 'index')->name('temporarily-deleted');
+            Route::controller(TemporarilyDeletedUsersController::class)->prefix('temporarily-deleted')->group(
+                function () {
+                    Route::get('/', 'index')->name('temporarily-deleted');
 
-                Route::get('/search', 'search')->name('temporarily-deleted.search');
+                    Route::get('/search', 'search')->name('temporarily-deleted.search');
 
-                Route::post('/{identity:user_id}/give-second-chance', 'sendEmailToRestoreUser')
-                    ->withTrashed()
-                    ->name('temporarily-deleted.restore');
-            });
+                    Route::post('/{identity:user_id}/give-second-chance', 'sendEmailToRestoreUser')
+                        ->withTrashed()
+                        ->name('temporarily-deleted.restore');
+                }
+            );
         });
 
         /*

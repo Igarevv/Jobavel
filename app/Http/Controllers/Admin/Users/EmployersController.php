@@ -6,6 +6,7 @@ use App\Actions\Admin\Users\Employers\GetEmployersBySearchAction;
 use App\Actions\Admin\Users\Employers\GetEmployersPaginatedAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminEmployersSearchRequest;
+use App\Http\Resources\Admin\AdminTable;
 use Illuminate\View\View;
 
 class EmployersController extends Controller
@@ -16,21 +17,22 @@ class EmployersController extends Controller
 
     public function index(GetEmployersPaginatedAction $action): View
     {
-        return view('admin.users.employers.index');
+        return view('admin.users.employers', ['employers' => $action->handle()]);
     }
 
-    public function fetchEmployers(GetEmployersPaginatedAction $action): View
+    public function fetchEmployers(GetEmployersPaginatedAction $action): AdminTable
     {
-        return view('admin.users.employers._rows', ['employers' => $action->handle()]);
+        $employers = $action->handle();
+
+        return new AdminTable($employers);
     }
 
-    public function search(AdminEmployersSearchRequest $request, GetEmployersBySearchAction $action): View
+    public function search(AdminEmployersSearchRequest $request, GetEmployersBySearchAction $action): AdminTable
     {
         $searchDto = $request->getDto();
 
-        return view('admin.users.employers', [
-            'employers' => $action->handle($searchDto),
-            'input' => $searchDto->fromDto()
-        ]);
+        $employers = $action->handle($searchDto);
+
+        return new AdminTable($employers);
     }
 }
