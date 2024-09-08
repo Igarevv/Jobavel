@@ -25,6 +25,7 @@
         <x-admin.footer/>
     </main>
 </div>
+
 </body>
 
 </html>

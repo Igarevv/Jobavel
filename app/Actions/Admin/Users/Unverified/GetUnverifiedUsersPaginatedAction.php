@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace App\Actions\Admin\Users\Unverified;
 
 use App\Persistence\Models\User;
+use App\Traits\Sortable\VO\SortedValues;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Str;
 
 class GetUnverifiedUsersPaginatedAction
 {
-    public function handle(): Paginator
+    public function handle(SortedValues $sortedValues): Paginator
     {
-        $users = User::unverified()->simplePaginate(10, ['user_id', 'email', 'created_at']);
+        $users = User::unverified()
+            ->sortBy($sortedValues)
+            ->paginate(10, ['user_id', 'email', 'created_at']);
 
         return $this->prepareData($users);
     }

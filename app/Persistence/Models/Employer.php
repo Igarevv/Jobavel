@@ -5,6 +5,8 @@ namespace App\Persistence\Models;
 use App\Persistence\Searcher\Searchers\EmployerSearcher;
 use App\Service\Cache\Cache;
 use App\Traits\Searchable\Searchable;
+use App\Traits\Sortable\Sortable;
+use App\Traits\Sortable\VO\SortedValues;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -25,11 +27,13 @@ use Ramsey\Uuid\Uuid;
  * @property Carbon $created_at
  * @property string $contact_email
  * @method static Employer|static findOrFail($id, $columns = ['*'])
+ * @method Builder|static sortBy(Builder $builder, SortedValues $sortedValues)
  */
 class Employer extends Model
 {
     use Searchable;
     use HasFactory;
+    use Sortable;
 
     protected $table = 'employers';
 
@@ -136,6 +140,14 @@ class Employer extends Model
         return EmployerSearcher::class;
     }
 
+    protected function sortableFields(): array
+    {
+        return [
+            'creation-time' => 'created_at',
+            'company' => 'company_name'
+        ];
+    }
+
     protected static function boot(): void
     {
         parent::boot();
@@ -154,4 +166,5 @@ class Employer extends Model
             Cache::forgetKey('logo', $employer->company_logo);
         });
     }
+
 }

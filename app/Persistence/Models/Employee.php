@@ -4,6 +4,7 @@ namespace App\Persistence\Models;
 
 use App\Persistence\Searcher\Searchers\EmployeeSearcher;
 use App\Traits\Searchable\Searchable;
+use App\Traits\Sortable\Sortable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,6 +30,7 @@ class Employee extends Model
 {
     use Searchable;
     use HasFactory;
+    use Sortable;
 
     protected $table = 'employees';
 
@@ -118,6 +120,14 @@ class Employee extends Model
     protected function searcher(): string
     {
         return EmployeeSearcher::class;
+    }
+
+    protected function sortableFields(): array
+    {
+        return [
+            'creation-time' => 'created_at',
+            'full-name' => 'last_name, first_name'
+        ];
     }
 
     protected static function boot(): void

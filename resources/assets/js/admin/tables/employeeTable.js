@@ -1,40 +1,32 @@
 import {fetchData, renderPagination, renderTable, searchData} from './dataTables.js';
 
 document.addEventListener('DOMContentLoaded', function () {
-    const tableBody = document.querySelector('.employers-body');
+    const tableBody = document.querySelector('.employees-body');
     const CSRFtoken = document.head.querySelector("[name=csrf-token]").content;
     const paginationContainer = document.querySelector('.pagination-container');
     let searchParams = new URLSearchParams(window.location.search);
 
-    function renderRow(employer, index, data) {
+    function renderRow(employee, index, data) {
         return `
-            <tr class="tbody-content-row bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            ${index + 1 + (data.current_page - 1) * data.per_page}
-                        </th>
-                        <td class="px-3 py-4">${employer.idEncrypted}</td>
-                        <td class="px-3 py-4">${employer.company}</td>
-                        <td class="px-3 py-4">${employer.companyType}</td>
-                        <td class="px-3 py-4">${employer.accountEmail}</td>
-                        <td class="px-3 py-4">${employer.contactEmail}</td>
-                        <td class="px-3 py-4">${employer.createdAt}</td>
-                        <td class="px-3 py-4">
-                            <button type="button" data-modal-target="#static-modal" data-modal-toggle="#static-modal"
-                                    data-employer-id="${employer.id}" data-employer-name="${employer.company}"
-                                    class="open-modal-btn unstyled-button font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                View vacancies
-                            </button>
-                        </td>
-                        <td class="px-3 py-4">
-                            <form action="" method="POST" class="ban-form">
-                                <input type="hidden" name="token" value="${CSRFtoken}" autocomplete="off">
-                                <input type="hidden" name="_method" value="DELETE">
-                                <button type="submit" class="unstyled-button font-medium text-red-600 dark:text-blue-500 hover:underline">
-                                    Ban
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
+            <tr class="tbody-contexnt-row bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    ${index + 1 + (data.current_page - 1) * data.per_page}
+                </th>
+                <td class="px-3 py-4">${employee.idEncrypted}</td>
+                <td class="px-3 py-4">${employee.name}</td>
+                <td class="px-3 py-4">${employee.position}</td>
+                <td class="px-3 py-4">${employee.email}</td>
+                <td class="px-3 py-4">${employee.createdAt}</td>
+                <td class="px-3 py-4">
+                    <form action="" method="POST" class="ban-form">
+                        <input type="hidden" name="token" value="${CSRFtoken}" autocomplete="off">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="unstyled-button font-medium text-red-600 dark:text-blue-500 hover:underline">
+                            Ban
+                        </button>
+                    </form>
+                </td>
+            </tr>
         `;
     }
 
@@ -53,11 +45,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function onPageClick(page) {
-        fetchData('/admin/users/employers/table', {
-                page,
-                sort: searchParams.get('sort') || 'creation-time',
-                direction: searchParams.get('direction') || 'desc'
-            }, tableBody,
+        fetchData('/admin/users/employees/table', {
+                page, sort: searchParams.get('sort') || 'creation-time', direction: searchParams.get('direction') || 'desc'
+            },
+            tableBody,
             data => renderTable(data, tableBody, renderRow),
             data => renderPagination(data, paginationContainer, onPageClick)
         );
@@ -67,23 +58,27 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
         const searchBy = document.getElementById('searchBy').value;
         const search = document.getElementById('search-dropdown').value;
-        searchData('/admin/users/employers/search', {
-            page: 1,
-            searchBy,
-            search
-        }, tableBody, data => renderTable(data, tableBody, renderRow), data => renderPagination(data, paginationContainer, onPageClick), displayErrors);
+        searchData('/admin/users/employees/search', {
+                page: 1,
+                searchBy,
+                search
+            }, tableBody,
+            data => renderTable(data, tableBody, renderRow),
+            data => renderPagination(data, paginationContainer, onPageClick), displayErrors);
     });
 
-    fetchData('/admin/users/employers/table', {
-        page: searchParams.get('page') || 1,
-        sort: searchParams.get('sort') || 'creation-time',
-        direction: searchParams.get('direction') || 'desc'
-    }, tableBody, data => renderTable(data, tableBody, renderRow), data => renderPagination(data, paginationContainer, onPageClick));
+    fetchData('/admin/users/employees/table', {
+            page: searchParams.get('page') || 1,
+            sort: searchParams.get('sort') || 'creation-time',
+            direction: searchParams.get('direction') || 'desc'
+        }, tableBody,
+        data => renderTable(data, tableBody, renderRow),
+        data => renderPagination(data, paginationContainer, onPageClick));
 
     document.getElementById('refreshTable').addEventListener('click', (e) => {
         e.preventDefault();
 
-        fetchData('/admin/users/employers/table', {
+        fetchData('/admin/users/employees/table', {
                 page: searchParams.get('page') || 1,
                 sort: searchParams.get('sort') || 'creation-time',
                 direction: searchParams.get('direction') || 'desc'
@@ -118,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 descIcon.classList.add('text-red-100', 'dark:text-white');
             }
 
-            fetchData('/admin/users/employers/table', {
+            fetchData('/admin/users/employees/table', {
                 page: 1,
                 sort,
                 direction

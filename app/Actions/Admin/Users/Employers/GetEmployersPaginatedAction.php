@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace App\Actions\Admin\Users\Employers;
 
 use App\Persistence\Models\Employer;
+use App\Traits\Sortable\VO\SortedValues;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 
 class GetEmployersPaginatedAction
 {
-    public function handle(): LengthAwarePaginator
+    public function handle(SortedValues $sortedValues): LengthAwarePaginator
     {
         $employers = Employer::with('user:id,email')
+            ->sortBy($sortedValues)
             ->paginate(10, [
                 'user_id',
                 'employer_id',

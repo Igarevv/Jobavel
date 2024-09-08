@@ -25,6 +25,7 @@ class EmployeeFactory extends Factory
             'position' => $this->faker->jobTitle,
             'preferred_salary' => $this->faker->randomElement([5000, 3500, 4000, 2000, 1000]),
             'about_me' => $this->faker->paragraph(5),
+            'created_at' => now(),
             'experiences' => [
                 Str::random(8) => [
                     'position' => $this->faker->jobTitle,

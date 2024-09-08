@@ -6,6 +6,7 @@ namespace App\Actions\Admin\Users\Employees;
 
 use App\DTO\Admin\AdminSearchDto;
 use App\Persistence\Models\Employee;
+use App\Traits\Sortable\VO\SortedValues;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Str;
 
@@ -19,7 +20,9 @@ class GetEmployeesBySearchAction
     public function handle(AdminSearchDto $searchDto): Paginator
     {
         if (Str::of($searchDto->getSearchable())->trim()->value() === '') {
-            return $this->employeesPaginatedAction->handle();
+            return $this->employeesPaginatedAction->handle(
+                SortedValues::fromRequest('creation-time')
+            );
         }
 
         return $this->prepareData($this->fetchEmployees($searchDto));
@@ -29,7 +32,7 @@ class GetEmployeesBySearchAction
     {
         return Employee::query()
             ->search($searchDto)
-            ->simplePaginate(10, [
+            ->paginate(10, [
                 'employee_id',
                 'email',
                 'first_name',

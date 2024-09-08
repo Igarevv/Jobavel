@@ -17,7 +17,7 @@ class AdminSearchDto implements SearchDtoInterface
 
     public function getSearchable(): ?string
     {
-        return $this->searchable;
+        return strtolower($this->searchable);
     }
 
     public function getSearchByEnum(): SearchEnumInterface

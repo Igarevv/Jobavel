@@ -51,6 +51,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::controller(UnverifiedUsersController::class)->prefix('unverified')->group(function () {
                 Route::get('/', 'index')->name('unverified');
 
+                Route::get('/table', 'fetchUnverified')->name('unverified.table');
+
                 Route::delete('/{identity:user_id}/softdel', 'delete')->name('unverified.delete');
 
                 Route::post('/emails/send-to-unverified', 'sendEmailToVerifyUsers')->name('emails.send');
@@ -79,6 +81,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::controller(EmployeesController::class)->prefix('employees')->group(function () {
                 Route::get('/', 'index')->name('employees');
 
+                Route::get('/table', 'fetchEmployees')->name('employees.table');
+
                 Route::get('/search', 'search')->name('employees.search');
             });
 
@@ -91,6 +95,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::controller(TemporarilyDeletedUsersController::class)->prefix('temporarily-deleted')->group(
                 function () {
                     Route::get('/', 'index')->name('temporarily-deleted');
+
+                    Route::get('/table', 'fetchTemporarilyDeletedUsers')->name('temporarily-deleted.table');
 
                     Route::get('/search', 'search')->name('temporarily-deleted.search');
 

@@ -10,14 +10,14 @@
             <x-slot:title>
                 <div class="flex flex-col">
                     <span>Employers</span>
-                    <span>Found: <span id="foundEmployers"></span> records</span>
+                    <span>Found: <span id="foundRecords"></span> records</span>
                 </div>
             </x-slot:title>
             <x-slot:description>
                 <span>The full list of employers</span>
-                <div>
-                    <div class="text-center">
-                        <div class="max-w-lg mx-auto flex">
+                <div class="flex items-center justify-between">
+                    <div class="text-center items-center max-w-lg mx-auto">
+                        <div class="flex">
                             <div class="relative">
                                 <select id="searchBy"
                                         name="searchBy"
@@ -50,55 +50,52 @@
                         </div>
                         <span class="text-sm text-red-100" id="search-validation-error"></span>
                     </div>
+                    <div class="flex justify-end flex-col">
+                        <button type="button" id="refreshTable"
+                                class="py-2.5 px-5 me-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                            Refresh
+                        </button>
+                        <span class="text-green-400 text-xs mt-2" id="refresh-span"></span>
+                    </div>
                 </div>
             </x-slot:description>
             <x-admin.table.thead>
                 <th scope="col" class="px-3 py-3 text-sm">No.</th>
                 <th scope="col" class="px-3 py-3 text-sm">Employer Id</th>
                 <th scope="col" class="px-3 py-3 text-sm">
-                    <a href="{{ route('admin.users.employers', ['sort' => 'creation-time', 'direction' => strtolower(request('direction')) === 'asc' ? 'desc' : 'asc']) }}"
-                       class="flex items-center space-x-1">
-                        <span>Company Name</span>
-                        @if(strtolower(request('direction')) === 'asc')
-                            <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true"
-                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                 viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                      stroke-width="2" d="m5 15 7-7 7 7"/>
-                            </svg>
-                        @else
-                            <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true"
-                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                 viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                      stroke-width="2" d="m19 9-7 7-7-7"/>
-                            </svg>
-                        @endif
-                    </a>
+                    <button type="button" class="sort-link flex items-center space-x-1" data-sort="company">
+                        <span class="uppercase">Company Name</span>
+                        <svg class="w-4 h-4 text-gray-800 dark:text-black" aria-hidden="true" id="asc-icon"
+                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="m5 15 7-7 7 7"/>
+                        </svg>
+                        <svg class="w-4 h-4 text-red-100 dark:text-white" aria-hidden="true" id="desc-icon"
+                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="m19 9-7 7-7-7"/>
+                        </svg>
+                    </button>
                 </th>
                 <th scope="col" class="px-3 py-3 text-sm">Company Type</th>
                 <th scope="col" class="px-3 py-3 text-sm">Account Email</th>
                 <th scope="col" class="px-3 py-3 text-sm">Contact Email</th>
                 <th scope="col" class="px-3 py-3 text-sm">
-                    <a href="{{ route('admin.users.employers', ['sort' => 'creation-time', 'direction' => strtolower(request('direction')) === 'asc' ? 'desc' : 'asc']) }}"
-                       class="flex items-center space-x-1">
-                        <span>Created at</span>
-                        @if(strtolower(request('direction')) === 'asc')
-                            <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true"
-                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                 viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                      stroke-width="2" d="m5 15 7-7 7 7"/>
-                            </svg>
-                        @else
-                            <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true"
-                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                 viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                      stroke-width="2" d="m19 9-7 7-7-7"/>
-                            </svg>
-                        @endif
-                    </a>
+                    <button type="button"
+                            class="sort-link flex items-center space-x-1" data-sort="creation-time"
+                            data-direction="desc">
+                        <span class="uppercase">Created at</span>
+                        <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" id="asc-icon"
+                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="m5 15 7-7 7 7"/>
+                        </svg>
+                        <svg class="w-4 h-4 text-red-100 dark:text-black" aria-hidden="true" id="desc-icon"
+                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="m19 9-7 7-7-7"/>
+                        </svg>
+                    </button>
                 </th>
                 <th scope="col" class="px-3 py-3 text-sm"></th>
                 <th scope="col" class="px-3 py-3 text-sm"></th>

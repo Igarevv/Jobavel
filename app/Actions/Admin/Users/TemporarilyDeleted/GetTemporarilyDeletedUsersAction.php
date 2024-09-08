@@ -5,24 +5,27 @@ declare(strict_types=1);
 namespace App\Actions\Admin\Users\TemporarilyDeleted;
 
 use App\Persistence\Models\User;
-use Illuminate\Contracts\Pagination\Paginator;
+use App\Traits\Sortable\VO\SortedValues;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 
 class GetTemporarilyDeletedUsersAction
 {
-    public function handle(): Paginator
+    public function handle(SortedValues $sortedValues): LengthAwarePaginator
     {
-        $users = User::onlyTrashed()->simplePaginate(10, [
-            'user_id',
-            'email',
-            'created_at',
-            'deleted_at'
-        ]);
+        $users = User::onlyTrashed()
+            ->sortBy($sortedValues)
+            ->paginate(10, [
+                'user_id',
+                'email',
+                'created_at',
+                'deleted_at'
+            ]);
 
         return $this->prepareData($users);
     }
 
-    private function prepareData(Paginator $users): Paginator
+    private function prepareData(LengthAwarePaginator $users): LengthAwarePaginator
     {
         return $users->through(function (User $user) {
             $timezone = $user->created_at->getTimezone();

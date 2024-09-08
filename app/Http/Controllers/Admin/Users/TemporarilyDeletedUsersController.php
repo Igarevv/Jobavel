@@ -7,16 +7,19 @@ use App\Actions\Admin\Users\TemporarilyDeleted\GetTemporarilyDeletedUsersAction;
 use App\Events\UserAccountRestored;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminTemporarilyDeletedSearchRequest;
+use App\Http\Resources\Admin\AdminTable;
 use App\Persistence\Models\User;
+use App\Traits\Sortable\VO\SortedValues;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\View\View;
 
 class TemporarilyDeletedUsersController extends Controller
 {
-    public function index(GetTemporarilyDeletedUsersAction $action): View
+    public function index(): View
     {
-        return view('admin.users.temporarily-deleted', ['users' => $action->handle()]);
+        return view('admin.users.temporarily-deleted');
     }
 
     public function sendEmailToRestoreUser(User $identity): RedirectResponse
@@ -24,6 +27,15 @@ class TemporarilyDeletedUsersController extends Controller
         event(new UserAccountRestored($identity));
 
         return back()->with('success', 'Link to restore user account was sent successfully');
+    }
+
+    public function fetchTemporarilyDeletedUsers(Request $request, GetTemporarilyDeletedUsersAction $action): AdminTable
+    {
+        $users = $action->handle(
+            SortedValues::fromRequest($request->get('sort'), $request->get('direction'))
+        );
+
+        return new AdminTable($users);
     }
 
     public function restore(User $identity): RedirectResponse
@@ -42,13 +54,8 @@ class TemporarilyDeletedUsersController extends Controller
         return redirect($signedUrl);
     }
 
-    public function search(AdminTemporarilyDeletedSearchRequest $request, SearchAction $action): View
+    public function search(AdminTemporarilyDeletedSearchRequest $request, SearchAction $action): AdminTable
     {
-        $searchDto = $request->getDto();
-
-        return view('admin.users.temporarily-deleted', [
-            'users' => $action->handle($searchDto),
-            'input' => $searchDto->fromDto()
-        ]);
+        return new AdminTable($action->handle($request->getDto()));
     }
 }

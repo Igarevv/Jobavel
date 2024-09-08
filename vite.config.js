@@ -29,7 +29,11 @@ export default defineConfig({
                 'resources/assets/js/employer/getEmployeesForVacancy.js',
                 'resources/assets/js/admin/rolesPermissions.js',
                 'resources/assets/js/admin/fetchEmployerVacancies.js',
+                'resources/assets/js/admin/tables/dataTables.js',
                 'resources/assets/js/admin/tables/employerTable.js',
+                'resources/assets/js/admin/tables/employeeTable.js',
+                'resources/assets/js/admin/tables/temporarilyDeletedTable.js',
+                'resources/assets/js/admin/tables/unverifiedTable.js'
             ],
             refresh: true,
         }),

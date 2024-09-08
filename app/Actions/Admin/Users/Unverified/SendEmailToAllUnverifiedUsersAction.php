@@ -31,7 +31,7 @@ class SendEmailToAllUnverifiedUsersAction
             ->where('created_at', now()->subMonth()->startOfDay())
             ->get(['email', 'user_id']);
 
-        if (! $unverifiedUserWithinMonth) {
+        if ($unverifiedUserWithinMonth->isEmpty()) {
             throw new ModelNotFoundException('Unverified users not found');
         }
 

@@ -7,6 +7,8 @@ use App\Actions\Admin\Users\Employers\GetEmployersPaginatedAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminEmployersSearchRequest;
 use App\Http\Resources\Admin\AdminTable;
+use App\Traits\Sortable\VO\SortedValues;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class EmployersController extends Controller
@@ -15,24 +17,22 @@ class EmployersController extends Controller
     {
     }
 
-    public function index(GetEmployersPaginatedAction $action): View
+    public function index(): View
     {
-        return view('admin.users.employers', ['employers' => $action->handle()]);
+        return view('admin.users.employers');
     }
 
-    public function fetchEmployers(GetEmployersPaginatedAction $action): AdminTable
+    public function fetchEmployers(Request $request, GetEmployersPaginatedAction $action): AdminTable
     {
-        $employers = $action->handle();
+        $employers = $action->handle(
+            SortedValues::fromRequest($request->get('sort'), $request->get('direction'))
+        );
 
         return new AdminTable($employers);
     }
 
     public function search(AdminEmployersSearchRequest $request, GetEmployersBySearchAction $action): AdminTable
     {
-        $searchDto = $request->getDto();
-
-        $employers = $action->handle($searchDto);
-
-        return new AdminTable($employers);
+        return new AdminTable($action->handle($request->getDto()));
     }
 }

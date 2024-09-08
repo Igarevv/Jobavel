@@ -9,19 +9,28 @@ use App\Actions\Admin\Users\Unverified\SendEmailToAllUnverifiedUsersAction;
 use App\Events\UserDeletedTemporarily;
 use App\Exceptions\TooManyEmailsForUnverifiedUsersPerDay;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Admin\AdminTable;
 use App\Persistence\Models\User;
+use App\Traits\Sortable\VO\SortedValues;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Pagination\Paginator;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class UnverifiedUsersController extends Controller
 {
-    public function index(GetUnverifiedUsersPaginatedAction $getUnverifiedUsers): View
+    public function index(): View
     {
-        Paginator::useTailwind();
+        return view('admin.users.unverified');
+    }
 
-        return view('admin.users.unverified', ['users' => $getUnverifiedUsers->handle()]);
+    public function fetchUnverified(Request $request, GetUnverifiedUsersPaginatedAction $action): AdminTable
+    {
+        $users = $action->handle(
+            SortedValues::fromRequest($request->get('sort'), $request->get('direction'))
+        );
+
+        return new AdminTable($users);
     }
 
     public function sendEmailToVerifyUsers(SendEmailToAllUnverifiedUsersAction $action): RedirectResponse

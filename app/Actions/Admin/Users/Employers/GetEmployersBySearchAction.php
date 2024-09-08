@@ -6,6 +6,7 @@ namespace App\Actions\Admin\Users\Employers;
 
 use App\DTO\Admin\AdminSearchDto;
 use App\Persistence\Models\Employer;
+use App\Traits\Sortable\VO\SortedValues;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 
@@ -19,7 +20,9 @@ class GetEmployersBySearchAction
     public function handle(AdminSearchDto $searchDto): LengthAwarePaginator
     {
         if (Str::of($searchDto->getSearchable())->trim()->value() === '') {
-            return $this->employersPaginatedAction->handle();
+            return $this->employersPaginatedAction->handle(
+                SortedValues::fromRequest('creation-time')
+            );
         }
 
         return $this->prepareData($this->fetchEmployers($searchDto));

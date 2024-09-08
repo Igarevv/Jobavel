@@ -7,6 +7,7 @@ use App\Exceptions\InvalidRoleException;
 use App\Persistence\Searcher\Searchers\UserSearcher;
 use App\Traits\Searchable\Searchable;
 use App\Traits\Searchable\SearchDtoInterface;
+use App\Traits\Sortable\Sortable;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\MustVerifyEmail as Mailer;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -36,13 +37,14 @@ class User extends Model implements AuthContract, MustVerifyEmail, AuthorizableC
     use Authorizable;
     use SoftDeletes;
     use Searchable;
+    use Sortable;
 
     public const EMPLOYEE = Role::EMPLOYEE->value;
 
     public const EMPLOYER = Role::EMPLOYER->value;
 
     protected $table = 'users';
-    
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -140,6 +142,14 @@ class User extends Model implements AuthContract, MustVerifyEmail, AuthorizableC
     protected function searcher(): string
     {
         return UserSearcher::class;
+    }
+
+    protected function sortableFields(): array
+    {
+        return [
+            'creation-time' => 'created_at',
+            'removed-time' => 'deleted_at'
+        ];
     }
 
     protected static function boot(): void
