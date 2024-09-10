@@ -34,8 +34,7 @@ class AdminAuthController extends Controller
             Auth::guard('admin')->login($admin);
 
             $admin->createApiToken();
-            Cookie::queue('token', $admin->createApiToken(), null, null, true, true);
-            
+
             $request->session()->regenerate();
         } catch (ModelNotFoundException|TryToSignInWithTempPasswordSecondTime $e) {
             return back()->withErrors(

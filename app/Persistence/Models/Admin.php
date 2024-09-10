@@ -2,9 +2,12 @@
 
 namespace App\Persistence\Models;
 
+use App\Enums\Admin\AdminAccountStatusEnum;
 use App\Enums\Role;
+use App\Traits\Sortable\Sortable;
 use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable as AuthorizableTrait;
@@ -18,6 +21,7 @@ class Admin extends Model implements Authenticatable, \Illuminate\Contracts\Auth
     use HasRoles;
     use AuthorizableTrait;
     use AuthenticatableTrait;
+    use Sortable;
 
     public const ADMIN = Role::ADMIN->value;
 
@@ -30,12 +34,16 @@ class Admin extends Model implements Authenticatable, \Illuminate\Contracts\Auth
         'last_name',
         'email',
         'password',
-        'is_active'
+        'account_status',
     ];
 
     protected $hidden = [
         'id',
-        'password'
+        'password',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
     ];
 
     public function makeAdminAsSuperAdmin(): void
@@ -59,9 +67,29 @@ class Admin extends Model implements Authenticatable, \Illuminate\Contracts\Auth
         return $this->is_super_admin;
     }
 
+    public function scopeDeactivatedAdmins(Builder $builder): Builder
+    {
+        return $builder->where('account_status', AdminAccountStatusEnum::DEACTIVATED->value);
+    }
+
+    public function scopeActiveAdmins(Builder $builder): Builder
+    {
+        return $builder->where('account_status', AdminAccountStatusEnum::ACTIVE->value);
+    }
+
+    public function scopePendingAdmins(Builder $builder): Builder
+    {
+        return $builder->where('account_status', AdminAccountStatusEnum::PENDING_TO_AUTHORIZE->value);
+    }
+
+    public function scopeWithoutSuperAdmins(Builder $builder): Builder
+    {
+        return $builder->where('is_super_admin', false);
+    }
+
     public function deactivate(): void
     {
-        $this->is_active = false;
+        $this->account_status = AdminAccountStatusEnum::DEACTIVATED->value;
         $this->save();
     }
 
@@ -70,6 +98,15 @@ class Admin extends Model implements Authenticatable, \Illuminate\Contracts\Auth
         $this->api_token = Str::random(60);
         $this->save();
         return $this->api_token;
+    }
+
+    protected function sortableFields(): array
+    {
+        return [
+            'status' => 'account_status',
+            'creation-time' => 'created_at',
+            'full-name' => 'last_name, first_name',
+        ];
     }
 
     protected static function boot(): void

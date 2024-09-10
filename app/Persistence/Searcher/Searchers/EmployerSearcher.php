@@ -10,7 +10,7 @@ use App\Traits\Searchable\SearchDtoInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
-class EmployerSearcher extends BaseSearcher
+final class EmployerSearcher extends BaseSearcher
 {
 
     public function apply(Builder $builder, SearchDtoInterface $searchDto): Builder

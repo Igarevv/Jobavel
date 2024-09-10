@@ -46,7 +46,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="relative w-full">
+                            <div class="relative w-[512px]">
                                 <input type="search" id="search-dropdown"
                                        name="search"
                                        value=""

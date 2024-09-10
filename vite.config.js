@@ -33,7 +33,10 @@ export default defineConfig({
                 'resources/assets/js/admin/tables/employerTable.js',
                 'resources/assets/js/admin/tables/employeeTable.js',
                 'resources/assets/js/admin/tables/temporarilyDeletedTable.js',
-                'resources/assets/js/admin/tables/unverifiedTable.js'
+                'resources/assets/js/admin/tables/unverifiedTable.js',
+                'resources/assets/js/admin/tables/adminsTable.js',
+                'resources/assets/js/admin/tables/vacancyTable.js',
+                'resources/assets/js/admin/fetchEmployer.js'
             ],
             refresh: true,
         }),

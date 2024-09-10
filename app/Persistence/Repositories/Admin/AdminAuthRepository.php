@@ -23,6 +23,8 @@ class AdminAuthRepository implements AdminAuthRepositoryInterface, AdminFirstLog
                 'password' => Hash::make($tempPassword, ['rounds' => 12])
             ]);
 
+            $admin->assignRole(Admin::ADMIN);
+
             DB::table('admins_login')->insert([
                 'admin_id' => $admin->admin_id,
             ]);
@@ -35,7 +37,7 @@ class AdminAuthRepository implements AdminAuthRepositoryInterface, AdminFirstLog
     {
         return Admin::query()
             ->where('email', $email)
-            ->where('is_active', true)
+            ->activeAdmins()
             ->first(['id', 'admin_id', 'email', 'password', 'first_name', 'last_name']);
     }
 

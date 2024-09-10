@@ -18,8 +18,8 @@ class EmployerVacancies extends JsonResource
                 'location' => $vacancy->location,
                 'employment' => $vacancy->employment_type,
                 'response' => $vacancy->response_number,
-                'publishedAt' => $vacancy->published_at->format('Y-m-d H:i').' '.$vacancy->published_at->getTimezone(),
-                'createdAt' => $vacancy->created_at->format('Y-m-d H:i').' '.$vacancy->created_at->getTimezone()
+                'publishedAt' => $vacancy->publishedAtToString(),
+                'createdAt' => $vacancy->createdAtString()
             ];
         })->toArray();
     }

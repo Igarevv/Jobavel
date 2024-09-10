@@ -61,14 +61,14 @@ export function renderPagination(data, paginationContainer, onPageClick) {
     const {current_page, last_page, total, per_page} = data;
 
     paginationContainer.innerHTML = `
-        <div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+        <div class="flex items-center justify-between border-t border-gray-200 px-4 py-3 sm:px-6">
           <div class="flex flex-1 justify-between sm:hidden">
             ${current_page > 1 ? `<button data-page="${current_page - 1}" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Previous</button>` : ''}
             ${current_page < last_page ? `<button data-page="${current_page + 1}" class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Next</button>` : ''}
           </div>
           <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
             <div>
-              <p class="text-sm text-gray-700">
+              <p class="text-sm text-gray-700 dark:text-white">
                 Showing
                 <span class="font-medium">${(current_page - 1) * per_page + 1}</span>
                 to
@@ -90,7 +90,7 @@ export function renderPagination(data, paginationContainer, onPageClick) {
                 ` : ''}
                 ${Array.from({length: last_page}, (_, i) => i + 1).map(page => {
         return `
-                      <button data-page="${page}" class="relative inline-flex items-center ${page === current_page ? 'bg-red-600 text-white z-10' : 'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50'} px-4 py-2 text-sm font-semibold focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                      <button data-page="${page}" class="relative inline-flex items-center ${page === current_page ? 'bg-red-600 text-white z-10 ' : 'dark:bg-white text-gray-900 ring-1 ring-inset dark:hover:bg-gray-500 dark:hover:ring-gray-500 ring-gray-300 hover:bg-gray-50'} px-4 py-2 text-sm font-semibold focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                         ${page}
                       </button>
                     `;

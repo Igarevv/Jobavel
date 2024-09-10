@@ -37,12 +37,12 @@ class EmployerLogoService
     {
         return $employers->map(function (Employer $employer) {
             return (object) [
-                'url' => $this->getImageUrlByEmployer($employer)
+                'url' => $this->getImageUrlForEmployer($employer)
             ];
         })->toArray();
     }
 
-    public function getImageUrlByEmployer(Employer $employer): string
+    public function getImageUrlForEmployer(Employer $employer): string
     {
         $logoUrl = $this->logoStorage->get($employer->company_logo);
 

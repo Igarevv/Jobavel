@@ -7,7 +7,9 @@
     <x-header></x-header>
 
     <x-main>
-
+        @php
+            $input = $input ?? null;
+        @endphp
         <div class="container">
             <div class="row my-5">
                 <div class="mb-5">

@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\Admin\AdminAccountStatusEnum;
 use App\Persistence\Models\Admin;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -37,6 +38,7 @@ class CreateInitialSuperAdmin extends Command
                 'first_name' => 'John',
                 'last_name' => 'Doe',
                 'email' => 'superadminjohn@gmail.com',
+                'account_status' => AdminAccountStatusEnum::ACTIVE->value,
                 'password' => Hash::make('superadminpassword')
             ]);
 

@@ -45,7 +45,7 @@ class VacancyService
             if (! $processedEmployerLogo->has($employerId)) {
                 $processedEmployerLogo->put(
                     key: $employerId,
-                    value: $this->employerLogoService->getImageUrlByEmployer($vacancy->employer)
+                    value: $this->employerLogoService->getImageUrlForEmployer($vacancy->employer)
                 );
             }
 
@@ -61,7 +61,7 @@ class VacancyService
 
         $vacancies = $this->vacancyRepository->getFilteredVacanciesForEmployer($filter, $employer->id);
 
-        $employer->company_logo = $this->employerLogoService->getImageUrlByEmployer($employer);
+        $employer->company_logo = $this->employerLogoService->getImageUrlForEmployer($employer);
 
         $vacancies->each(function (Vacancy $vacancy) use ($employer) {
             $vacancy->employer = $employer;

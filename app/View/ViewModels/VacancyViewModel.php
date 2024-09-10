@@ -44,14 +44,15 @@ class VacancyViewModel
             function () use ($vacancy) {
                 $employer = $vacancy->employer;
 
-                $companyLogoUrl = $this->employerLogoService->getImageUrlByEmployer($employer);
+                $companyLogoUrl = $this->employerLogoService->getImageUrlForEmployer($employer);
 
                 return (object)[
                     'company' => $employer->company_name,
                     'description' => $employer->company_description,
                     'logo' => $companyLogoUrl,
                     'email' => $employer->contact_email,
-                    'type' => $employer->company_type
+                    'type' => $employer->company_type,
+                    'createdAt' => $employer->created_at,
                 ];
             }
         );

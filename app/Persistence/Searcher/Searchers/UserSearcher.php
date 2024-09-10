@@ -9,7 +9,7 @@ use App\Persistence\Searcher\BaseSearcher;
 use App\Traits\Searchable\SearchDtoInterface;
 use Illuminate\Database\Eloquent\Builder;
 
-class UserSearcher extends BaseSearcher
+final class UserSearcher extends BaseSearcher
 {
 
     public function apply(Builder $builder, SearchDtoInterface $searchDto): Builder

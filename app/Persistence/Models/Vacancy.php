@@ -6,6 +6,9 @@ use App\Enums\Vacancy\ExperienceEnum;
 use App\Observers\VacancyObserver;
 use App\Persistence\Filters\Manual\FilterInterface;
 use App\Persistence\Filters\Pipeline\PipelineFilterInterface;
+use App\Persistence\Searcher\Searchers\VacancySearcher;
+use App\Traits\Searchable\Searchable;
+use App\Traits\Sortable\Sortable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
@@ -48,6 +51,8 @@ class Vacancy extends Model
 
     use HasFactory;
     use SoftDeletes;
+    use Sortable;
+    use Searchable;
 
     protected $casts = [
         'requirements' => 'array',
@@ -147,6 +152,18 @@ class Vacancy extends Model
         $this->save();
     }
 
+    public function publishedAtToString(): string
+    {
+        return $this->published_at
+            ? $this->published_at?->format('Y-m-d H:i').' '.$this->published_at?->getTimezone()
+            : 'Not published';
+    }
+
+    public function createdAtString(): string
+    {
+        return $this->created_at->format('Y-m-d H:i').' '.$this->created_at->getTimezone();
+    }
+
     public function experienceFromString(): ?int
     {
         return ExperienceEnum::tryFrom($this->experience_time)?->experienceFromString();
@@ -177,6 +194,20 @@ class Vacancy extends Model
         return Attribute::make(
             get: fn(string $value) => ucfirst($value)
         );
+    }
+
+    protected function searcher(): string
+    {
+        return VacancySearcher::class;
+    }
+
+    protected function sortableFields(): array
+    {
+        return [
+            'creation-time' => 'created_at',
+            'published-time' => 'published_at',
+            'responses' => 'response_number'
+        ];
     }
 
 }

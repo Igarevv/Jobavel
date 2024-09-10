@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\Users\EmployeesController;
 use App\Http\Controllers\Admin\Users\EmployersController;
 use App\Http\Controllers\Admin\Users\TemporarilyDeletedUsersController;
 use App\Http\Controllers\Admin\Users\UnverifiedUsersController;
+use App\Http\Controllers\Admin\Vacancies\VacancyController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -113,12 +114,26 @@ Route::prefix('admin')->name('admin.')->group(function () {
         * ---------------------------------
         */
 
-        Route::controller(AdminsController::class)->middleware('auth.admin:super-admin')
-            ->prefix('admins')
-            ->group(function () {
+        Route::middleware('auth.admin:super-admin')->prefix('admins')->group(function () {
+            Route::controller(AdminsController::class)->group(function () {
                 Route::get('/', 'index')->name('admins');
 
-                Route::post('/register', 'register')->name('admins.register');
+                Route::get('/table', 'fetchAdmins')->name('admins.table');
+            });
+
+            Route::post('/register', [AdminAuthController::class, 'register'])->name('admins.register');
+        });
+    });
+
+    Route::middleware('auth.admin')->group(function () {
+        Route::controller(VacancyController::class)->prefix('vacancies')
+            ->name('vacancies.')
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+
+                Route::get('/{vacancy}/employer', 'vacancyOwner')->name('employer');
+
+                Route::get('/table', 'fetchVacancies')->name('table');
             });
     });
 

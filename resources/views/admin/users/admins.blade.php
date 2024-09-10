@@ -74,13 +74,78 @@
         </x-slot:content>
     </x-admin.separate-section>
 
-    <!-- Admin List Section -->
     <section class="w-4/5 mx-auto my-8 p-6 bg-gray-100 rounded-lg shadow-lg">
         <h3 class="font-bold text-xl mb-4">Admin list</h3>
         <div>
-            <!-- Content related to Admin list goes here. For example, a table or list of admins. -->
             <p class="text-gray-700">List of admins will be displayed here.</p>
+            <div class="my-5">
+                <x-admin.table.default>
+                    <x-slot:title>
+                        <div class="flex flex-col">
+                            <span>Admins</span>
+                            <span>Found: <span id="foundRecords"></span> records</span>
+                        </div>
+                    </x-slot:title>
+                    <x-slot:description>
+                        <div class="float-end flex flex-col">
+                            <button type="button" id="refreshTable"
+                                    class="py-2.5 px-5 me-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                                Refresh
+                            </button>
+                            <span class="text-green-400 text-xs mt-2" id="refresh-span"></span>
+                        </div>
+                    </x-slot:description>
+                    <x-admin.table.thead>
+                        <th scope="col" class="px-3 py-3 text-sm">No.</th>
+                        <th scope="col" class="px-3 py-3 text-sm">Admin Id</th>
+                        <th scope="col" class="px-3 py-3 text-sm">
+                            <button type="button" class="sort-link flex items-center space-x-1" data-sort="full-name">
+                                <span class="uppercase">Full name</span>
+                                <svg class="w-4 h-4 text-gray-800 dark:text-black" aria-hidden="true" id="asc-icon"
+                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="m5 15 7-7 7 7"/>
+                                </svg>
+                                <svg class="w-4 h-4 text-red-100 dark:text-white" aria-hidden="true" id="desc-icon"
+                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="m19 9-7 7-7-7"/>
+                                </svg>
+                            </button>
+                        </th>
+                        <th scope="col" class="px-3 py-3 text-sm">Email</th>
+                        <th scope="col" class="px-3 py-3 text-sm">Account status</th>
+                        <th scope="col" class="px-3 py-3 text-sm">
+                            <button type="button"
+                                    class="sort-link flex items-center space-x-1" data-sort="creation-time"
+                                    data-direction="desc">
+                                <span class="uppercase">Created at</span>
+                                <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" id="asc-icon"
+                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="m5 15 7-7 7 7"/>
+                                </svg>
+                                <svg class="w-4 h-4 text-red-100 dark:text-black" aria-hidden="true" id="desc-icon"
+                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="m19 9-7 7-7-7"/>
+                                </svg>
+                            </button>
+                        </th>
+                        <th scope="col" class="px-3 py-3 text-sm"></th>
+                    </x-admin.table.thead>
+                    <x-admin.table.tbody class="admins-body">
+                        <!--From JS-->
+                    </x-admin.table.tbody>
+                </x-admin.table.default>
+                <div class="pagination-container">
+                    <!-- Pagination from same JS -->
+                </div>
+            </div>
         </div>
     </section>
 
+    @pushonce('vite')
+        @vite(['resources/assets/js/admin/tables/adminsTable.js'])
+    @endpushonce
 </x-admin.layout>

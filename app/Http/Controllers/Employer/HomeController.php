@@ -25,7 +25,7 @@ class HomeController extends Controller
 
         $statistics = $this->employerViewModel->prepareStatistics($employer);
 
-        $logo = $this->employerLogoService->getImageUrlByEmployer($employer);
+        $logo = $this->employerLogoService->getImageUrlForEmployer($employer);
 
         return view('employer.main', [
             'employer' => $employer,

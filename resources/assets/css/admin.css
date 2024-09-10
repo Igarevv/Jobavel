@@ -57,3 +57,9 @@ table.want-scroll tr {
     justify-content: center;
     align-items: center;
 }
+
+.sidebar-btn:hover {
+    svg {
+        color: red;
+    }
+}
