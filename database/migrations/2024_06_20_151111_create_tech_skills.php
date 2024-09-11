@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('tech_skills', function (Blueprint $table) {
             $table->integer('id')->unsigned()->generatedAs()->always();
             $table->string('skill_name');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable();
             $table->primary('id');
         });
     }

@@ -37,5 +37,13 @@ return [
     'permissions' => [
         'created' => 'Permission was successfully created.',
         'linked' => 'New permissions was successfully linked to role'
-    ]
+    ],
+    'skills' => [
+        'update-success' => 'The tech skill name was updated successfully',
+        'update-failed' => 'The tech skill name was not updated. Try again',
+        'delete-success' => 'The tech skill name was deleted successfully',
+        'delete-failed' => 'The tech skill name was not deleted. Try again',
+        'created' => 'The tech skill was successfully created',
+        'not-created' => 'The tech skill was not created. Try again'
+    ],
 ];

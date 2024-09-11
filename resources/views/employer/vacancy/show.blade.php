@@ -113,23 +113,25 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="d-flex flex-column align-items-center gap-3">
-                        <div class="card w-75 border border-dark rounded mb-4">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title text-center fw-bold">Click to show more</h5>
-                                <div class="d-flex justify-content-center gap-3 flex-wrap">
-                                    @foreach($skillSet as $skill)
-                                        <ul class="list-unstyled mb-0">
-                                            <li><a href="{{ route('vacancies.all', ['skills' => $skill->id]) }}">
+                        @if(! $skillSet->isEmpty())
+                            <div class="card w-75 border border-dark rounded mb-4">
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title text-center fw-bold">Click to show more</h5>
+                                    <div class="d-flex justify-content-center gap-3 flex-wrap">
+                                        @foreach($skillSet as $skill)
+                                            <ul class="list-unstyled mb-0">
+                                                <li><a href="{{ route('vacancies.all', ['skills' => $skill->id]) }}">
                                             <span
-                                                    class="badge small bg-dark text-light">{{ $skill->skillName }}
+                                                class="badge small bg-dark text-light">{{ $skill->skillName }}
                                             </span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    @endforeach
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
                         <div class="card w-75 border border-dark rounded mb-4">
                             <div class="card-body">
                                 <div class="mb-3">
@@ -145,9 +147,11 @@
                                     @endif
                                 </div>
                                 <p class="fw-bold">{{ $vacancy->employment_type }} job</p>
-                                <div class="d-flex align-items-center mb-3">
-                                    <h6 class="mb-0 fw-bold text-14">{{ $skillSetRow }}</h6>
-                                </div>
+                                @isset($skillSetRow)
+                                    <div class="d-flex align-items-center mb-3">
+                                        <h6 class="mb-0 fw-bold text-14">{{ $skillSetRow }}</h6>
+                                    </div>
+                                @endisset
                                 <div class="d-flex align-items-center mb-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
                                          class="float-start me-2" viewBox="0 0 16 16">

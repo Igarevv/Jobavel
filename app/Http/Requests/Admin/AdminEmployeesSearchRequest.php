@@ -11,11 +11,15 @@ use Illuminate\Validation\Validator;
 
 class AdminEmployeesSearchRequest extends FormRequest
 {
+
     public function rules(): array
     {
         return [
-            'searchBy' => ['required', Rule::enum(AdminEmployeesSearchEnum::class)],
-            'search' => ['nullable', 'string']
+            'searchBy' => [
+                'required_with:search',
+                Rule::enum(AdminEmployeesSearchEnum::class),
+            ],
+            'search' => ['nullable', 'string'],
         ];
     }
 
@@ -30,7 +34,7 @@ class AdminEmployeesSearchRequest extends FormRequest
     public function withValidator(Validator $validator): void
     {
         $validator->after(function (Validator $validator) {
-            if (! $this->ensureSearchByUserIdHasValidSearchable()) {
+            if ( ! $this->ensureSearchByUserIdHasValidSearchable()) {
                 $validator->errors()->add(
                     'search',
                     'If search performed by user id, then the search string must be a valid id'
@@ -41,10 +45,13 @@ class AdminEmployeesSearchRequest extends FormRequest
 
     protected function ensureSearchByUserIdHasValidSearchable(): bool
     {
-        if ((int)$this->get('searchBy') === AdminEmployeesSearchEnum::ID->value) {
+        if ($this->get('searchBy') !== null && (int)$this->get(
+                'searchBy'
+            ) === AdminEmployeesSearchEnum::ID->value) {
             return Str::isUuid($this->get('search'));
         }
 
         return true;
     }
+
 }

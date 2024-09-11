@@ -1,8 +1,13 @@
-import {fetchData, renderPagination, renderTable, searchData} from './dataTables.js';
+import {
+    fetchData,
+    renderPagination,
+    renderTable,
+    searchData,
+} from './dataTables.js';
 
 document.addEventListener('DOMContentLoaded', function () {
     const tableBody = document.querySelector('.employers-body');
-    const CSRFtoken = document.head.querySelector("[name=csrf-token]").content;
+    const CSRFtoken = document.head.querySelector('[name=csrf-token]').content;
     const paginationContainer = document.querySelector('.pagination-container');
     let searchParams = new URLSearchParams(window.location.search);
 
@@ -53,31 +58,36 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function onPageClick(page) {
+        const searchBy = document.getElementById('searchBy').value || searchParams.get('searchBy');
+        const search = document.getElementById('search-dropdown').value || searchParams.get('search');
+
         fetchData('/admin/users/employers/table', {
                 page,
                 sort: searchParams.get('sort') || 'creation-time',
-                direction: searchParams.get('direction') || 'desc'
+                direction: searchParams.get('direction') || 'desc',
+                searchBy: searchBy || null,
+                search: search || null,
             }, tableBody,
             data => renderTable(data, tableBody, renderRow),
-            data => renderPagination(data, paginationContainer, onPageClick)
-        );
+            data => renderPagination(data, paginationContainer, onPageClick));
     }
 
     document.getElementById('searchBtn').addEventListener('click', function (e) {
         e.preventDefault();
         const searchBy = document.getElementById('searchBy').value;
         const search = document.getElementById('search-dropdown').value;
-        searchData('/admin/users/employers/search', {
-            page: 1,
+        searchData('/admin/users/employers/table', {
             searchBy,
-            search
+            search,
+            page: searchParams.get('page') || 1,
+            sort: searchParams.get('sort') || 'creation-time',
         }, tableBody, data => renderTable(data, tableBody, renderRow), data => renderPagination(data, paginationContainer, onPageClick), displayErrors);
     });
 
     fetchData('/admin/users/employers/table', {
         page: searchParams.get('page') || 1,
         sort: searchParams.get('sort') || 'creation-time',
-        direction: searchParams.get('direction') || 'desc'
+        direction: searchParams.get('direction') || 'desc',
     }, tableBody, data => renderTable(data, tableBody, renderRow), data => renderPagination(data, paginationContainer, onPageClick));
 
     document.getElementById('refreshTable').addEventListener('click', (e) => {
@@ -86,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchData('/admin/users/employers/table', {
                 page: searchParams.get('page') || 1,
                 sort: searchParams.get('sort') || 'creation-time',
-                direction: searchParams.get('direction') || 'desc'
+                direction: searchParams.get('direction') || 'desc',
             }, tableBody,
             data => renderTable(data, tableBody, renderRow),
             data => renderPagination(data, paginationContainer, onPageClick));
@@ -118,10 +128,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 descIcon.classList.add('text-red-100', 'dark:text-white');
             }
 
+            // Preserve search parameters if they exist
+            const searchBy = document.getElementById('searchBy').value || searchParams.get('searchBy');
+            const search = document.getElementById('search-dropdown').value || searchParams.get('search');
+
             fetchData('/admin/users/employers/table', {
                 page: 1,
                 sort,
-                direction
+                direction,
+                searchBy: searchBy || null,
+                search: search || null,
             }, tableBody, data => renderTable(data, tableBody, renderRow), data => renderPagination(data, paginationContainer, onPageClick));
         });
     });

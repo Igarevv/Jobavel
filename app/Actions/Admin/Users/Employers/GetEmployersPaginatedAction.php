@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Admin\Users\Employers;
 
+use App\DTO\Admin\AdminSearchDto;
 use App\Persistence\Models\Employer;
 use App\Traits\Sortable\VO\SortedValues;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -11,10 +12,24 @@ use Illuminate\Support\Str;
 
 class GetEmployersPaginatedAction
 {
-    public function handle(SortedValues $sortedValues): LengthAwarePaginator
-    {
-        $employers = Employer::with('user:id,email')
-            ->sortBy($sortedValues)
+
+    public function handle(
+        AdminSearchDto $searchDto,
+        SortedValues $sortedValues
+    ): LengthAwarePaginator {
+        if (Str::of($searchDto->getSearchable())->trim()->value() === '') {
+            return $this->prepareData($this->getSortedOnly($sortedValues));
+        }
+
+        return $this->prepareData(
+            $this->getSearchedSorted($searchDto, $sortedValues)
+        );
+    }
+
+    private function getSortedOnly(SortedValues $sortedValue
+    ): LengthAwarePaginator {
+        return Employer::with('user:id,email')
+            ->sortBy($sortedValue)
             ->paginate(10, [
                 'user_id',
                 'employer_id',
@@ -23,12 +38,28 @@ class GetEmployersPaginatedAction
                 'company_type',
                 'created_at',
             ]);
-
-        return $this->prepareData($employers);
     }
 
-    private function prepareData(LengthAwarePaginator $employers): LengthAwarePaginator
-    {
+    private function getSearchedSorted(
+        AdminSearchDto $searchDto,
+        SortedValues $sortedValue
+    ): LengthAwarePaginator {
+        return Employer::query()
+            ->with('user:id,email')
+            ->search($searchDto)
+            ->sortBy($sortedValue)
+            ->paginate(10, [
+                'user_id',
+                'employer_id',
+                'company_name',
+                'contact_email',
+                'company_type',
+                'created_at',
+            ]);
+    }
+
+    private function prepareData(LengthAwarePaginator $employers
+    ): LengthAwarePaginator {
         return $employers->through(function (Employer $employer) {
             return (object)[
                 'id' => $employer->employer_id,
@@ -42,4 +73,5 @@ class GetEmployersPaginatedAction
             ];
         });
     }
+
 }

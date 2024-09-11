@@ -8,5 +8,5 @@ interface SearchDtoInterface
 {
     public function getSearchable(): ?string;
 
-    public function getSearchByEnum(): SearchEnumInterface;
+    public function getSearchBy(): SearchEnumInterface|string;
 }

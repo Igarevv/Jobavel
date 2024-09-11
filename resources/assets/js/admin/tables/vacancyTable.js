@@ -1,37 +1,31 @@
-import {
-    fetchData,
-    renderPagination,
-    renderTable,
-    searchData,
-} from './dataTables.js';
+import { fetchData, renderPagination, renderTable } from './dataTables.js';
 
 document.addEventListener('DOMContentLoaded', function () {
-    const tableBody = document.querySelector('.employees-body');
-    const CSRFtoken = document.head.querySelector('[name=csrf-token]').content;
+    const tableBody = document.querySelector('.vacancies-body');
     const paginationContainer = document.querySelector('.pagination-container');
     let searchParams = new URLSearchParams(window.location.search);
 
-    function renderRow(employee, index, data) {
+    function renderRow(vacancy, index, data) {
         return `
-            <tr class="tbody-contexnt-row bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    ${index + 1 + (data.current_page - 1) * data.per_page}
-                </th>
-                <td class="px-3 py-4">${employee.idEncrypted}</td>
-                <td class="px-3 py-4">${employee.name}</td>
-                <td class="px-3 py-4">${employee.position}</td>
-                <td class="px-3 py-4">${employee.email}</td>
-                <td class="px-3 py-4">${employee.createdAt}</td>
-                <td class="px-3 py-4">
-                    <form action="" method="POST" class="ban-form">
-                        <input type="hidden" name="token" value="${CSRFtoken}" autocomplete="off">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit" class="unstyled-button font-medium text-red-600 dark:text-blue-500 hover:underline">
-                            Ban
-                        </button>
-                    </form>
-                </td>
-            </tr>
+            <tr class="tbody-content-row bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            ${index + 1 + (data.current_page - 1) * data.per_page}
+                        </th>
+                        <td class="px-3 py-4">
+                            <a href="/vacancies/${vacancy.slug}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">${vacancy.title}</a>
+                        </td>
+                        <td class="px-3 py-4">${vacancy.employment}</td>
+                        <td class="px-3 py-4">${vacancy.responses}</td>
+                        <td class="px-3 py-4">
+                            <button type="button" data-modal-target="#static-modal" data-modal-toggle="#static-modal"
+                                    data-vacancy-slug="${vacancy.slug}" data-vacancy-title="${vacancy.title}"
+                                    class="open-modal-btn unstyled-button font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                View
+                            </button>
+                        </td>
+                        <td class="px-3 py-4">${vacancy.createdAt}</td>
+                        <td class="px-3 py-4">${vacancy.publishedAt}</td>
+                    </tr>
         `;
     }
 
@@ -39,13 +33,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const errorMessagesSpan = document.getElementById('search-validation-error');
         errorMessagesSpan.innerText = '';
 
-        if (errors.searchBy) {
-            errorMessagesSpan.innerText += errors.searchBy;
+        if (errors.searchBy && errors.searchBy.length > 0) {
+            errorMessagesSpan.innerText += errors.searchBy.join(', ');
             return;
         }
 
-        if (errors.search) {
-            errorMessagesSpan.innerText += errors.search;
+        if (errors.search && errors.search.length > 0) {
+            errorMessagesSpan.innerText += errors.search.join(', ');
         }
     }
 
@@ -53,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const searchBy = document.getElementById('searchBy').value || searchParams.get('searchBy');
         const search = document.getElementById('search-dropdown').value || searchParams.get('search');
 
-        fetchData('/admin/users/employees/table', {
+        fetchData('/admin/vacancies/table', {
                 page,
                 sort: searchParams.get('sort') || 'creation-time',
                 direction: searchParams.get('direction') || 'desc',
@@ -68,28 +62,30 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
         const searchBy = document.getElementById('searchBy').value;
         const search = document.getElementById('search-dropdown').value;
-        searchData('/admin/users/employees/table', {
-                page: searchParams.get('page') || 1,
-                sort: searchParams.get('sort') || 'creation-time',
+
+        fetchData('/admin/vacancies/table', {
                 searchBy,
                 search,
+                page: searchParams.get('page') || 1,
+                sort: searchParams.get('sort') || 'creation-time',
+                direction: searchParams.get('direction') || 'desc',
             }, tableBody,
             data => renderTable(data, tableBody, renderRow),
-            data => renderPagination(data, paginationContainer, onPageClick), displayErrors);
+            data => renderPagination(data, paginationContainer, onPageClick),
+            displayErrors,
+        );
     });
 
-    fetchData('/admin/users/employees/table', {
-            page: searchParams.get('page') || 1,
-            sort: searchParams.get('sort') || 'creation-time',
-            direction: searchParams.get('direction') || 'desc',
-        }, tableBody,
-        data => renderTable(data, tableBody, renderRow),
-        data => renderPagination(data, paginationContainer, onPageClick));
+    fetchData('/admin/vacancies/table', {
+        page: searchParams.get('page') || 1,
+        sort: searchParams.get('sort') || 'creation-time',
+        direction: searchParams.get('direction') || 'desc',
+    }, tableBody, data => renderTable(data, tableBody, renderRow), data => renderPagination(data, paginationContainer, onPageClick));
 
     document.getElementById('refreshTable').addEventListener('click', (e) => {
         e.preventDefault();
 
-        fetchData('/admin/users/employees/table', {
+        fetchData('/admin/vacancies/table', {
                 page: searchParams.get('page') || 1,
                 sort: searchParams.get('sort') || 'creation-time',
                 direction: searchParams.get('direction') || 'desc',
@@ -127,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const searchBy = document.getElementById('searchBy').value || searchParams.get('searchBy');
             const search = document.getElementById('search-dropdown').value || searchParams.get('search');
 
-            fetchData('/admin/users/employees/table', {
+            fetchData('/admin/vacancies/table', {
                 page: 1,
                 sort,
                 direction,

@@ -41,8 +41,12 @@ class SkillsViewModel
         });
     }
 
-    public function skillsAsRow(Collection $skills, string $delimiter = ' / '): string
+    public function skillsAsRow(Collection $skills, string $delimiter = ' / '): ?string
     {
+        if ($skills->isEmpty()) {
+            return null;
+        }
+
         return $skills->implode(function (\stdClass $skill) {
             return $skill->skillName;
         }, $delimiter);

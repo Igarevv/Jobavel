@@ -28,7 +28,7 @@ final class Cache
     public static function forgetKey(string $prefix, string|int|null $identifier = null): void
     {
         if ($identifier === null) {
-            LaravelCache::forget(config('cache.keys'.$prefix));
+            LaravelCache::forget(config('cache.keys.'.$prefix));
         } else {
             LaravelCache::forget(sprintf(config('cache.keys.'.$prefix), $identifier));
         }

@@ -10,7 +10,7 @@ use App\Traits\Searchable\SearchDtoInterface;
 class AdminSearchDto implements SearchDtoInterface
 {
     public function __construct(
-        private SearchEnumInterface $searchBy,
+        private SearchEnumInterface|string $searchBy,
         private ?string $searchable
     ) {
     }
@@ -20,7 +20,7 @@ class AdminSearchDto implements SearchDtoInterface
         return strtolower($this->searchable ?? '');
     }
 
-    public function getSearchByEnum(): SearchEnumInterface
+    public function getSearchBy(): string|SearchEnumInterface
     {
         return $this->searchBy;
     }
@@ -28,9 +28,10 @@ class AdminSearchDto implements SearchDtoInterface
     public function fromDto(): object
     {
         return (object)[
-            'searchById' => $this->searchBy->value,
+            'searchById' => is_string($this->searchBy) ? $this->searchBy : $this->searchBy->value,
             'searchByValue' => $this->searchBy->toString(),
             'search' => $this->searchable
         ];
     }
+
 }

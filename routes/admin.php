@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminHomeController;
 use App\Http\Controllers\Admin\RolesPermissions\AdminPermissionsController;
 use App\Http\Controllers\Admin\RolesPermissions\AdminRolesController;
+use App\Http\Controllers\Admin\Skills\AdminSkillsController;
 use App\Http\Controllers\Admin\Users\AdminsController;
 use App\Http\Controllers\Admin\Users\EmployeesController;
 use App\Http\Controllers\Admin\Users\EmployersController;
@@ -69,8 +70,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
                 Route::get('/', 'index')->name('employers');
 
                 Route::get('/table', 'fetchEmployers')->name('employers.table');
-
-                Route::get('/search', 'search')->name('employers.search');
             });
 
             /*
@@ -83,8 +82,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
                 Route::get('/', 'index')->name('employees');
 
                 Route::get('/table', 'fetchEmployees')->name('employees.table');
-
-                Route::get('/search', 'search')->name('employees.search');
             });
 
             /*
@@ -98,8 +95,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
                     Route::get('/', 'index')->name('temporarily-deleted');
 
                     Route::get('/table', 'fetchTemporarilyDeletedUsers')->name('temporarily-deleted.table');
-
-                    Route::get('/search', 'search')->name('temporarily-deleted.search');
 
                     Route::post('/{identity:user_id}/give-second-chance', 'sendEmailToRestoreUser')
                         ->withTrashed()
@@ -126,6 +121,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
     Route::middleware('auth.admin')->group(function () {
+        /*
+        * ---------------------------------
+        * -           Vacancies           -
+        * ---------------------------------
+        */
+
         Route::controller(VacancyController::class)->prefix('vacancies')
             ->name('vacancies.')
             ->group(function () {
@@ -134,6 +135,28 @@ Route::prefix('admin')->name('admin.')->group(function () {
                 Route::get('/{vacancy}/employer', 'vacancyOwner')->name('employer');
 
                 Route::get('/table', 'fetchVacancies')->name('table');
+            });
+
+        /*
+        * ---------------------------------
+        * -          Tech skills          -
+        * ---------------------------------
+        */
+
+        Route::controller(AdminSkillsController::class)->prefix('skills')
+            ->name('skills.')
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+
+                Route::get('/table', 'fetchSkills')->name('table');
+
+                Route::withoutMiddleware('auth.admin')->group(function () {
+                    Route::post('/create', 'create')->name('create');
+
+                    Route::patch('/{skill}/edit', 'update')->name('edit');
+
+                    Route::delete('/{skill}/delete', 'delete')->name('delete');
+                })->middleware('auth.admin:super-admin');
             });
     });
 

@@ -47,7 +47,7 @@ return new class extends Migration {
             $table->integer('tech_skill_id')->unsigned();
             $table->foreign('tech_skill_id')->references('id')->on(
                 'tech_skills'
-            );
+            )->cascadeOnDelete();
         });
     }
 

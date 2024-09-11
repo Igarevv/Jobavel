@@ -20,8 +20,12 @@ class SortedValues
         $this->direction = strtolower($direction) === 'asc' ? 'asc' : 'desc';
     }
 
-    public static function fromRequest(string $fieldName, string $direction = 'desc'): static
+    public static function fromRequest(string $fieldName, ?string $direction = 'desc'): static
     {
+        if ($direction === null) {
+            $direction = 'desc';
+        }
+
         return new static($fieldName, $direction);
     }
 
@@ -34,4 +38,5 @@ class SortedValues
     {
         return $this->direction;
     }
+
 }

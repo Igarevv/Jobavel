@@ -11,18 +11,24 @@ use Illuminate\Validation\Validator;
 
 class AdminTemporarilyDeletedSearchRequest extends FormRequest
 {
+
     public function rules(): array
     {
         return [
-            'searchBy' => ['required', Rule::enum(AdminDeletedUserSearchEnum::class)],
-            'search' => ['nullable', 'string']
+            'searchBy' => [
+                'required_with:search',
+                Rule::enum(AdminDeletedUserSearchEnum::class),
+            ],
+            'search' => ['nullable', 'string'],
         ];
     }
 
     public function getDto(): AdminSearchDto
     {
         return new AdminSearchDto(
-            searchBy: AdminDeletedUserSearchEnum::tryFrom($this->get('searchBy')),
+            searchBy: AdminDeletedUserSearchEnum::tryFrom(
+                $this->get('searchBy')
+            ),
             searchable: $this->get('search')
         );
     }
@@ -30,21 +36,17 @@ class AdminTemporarilyDeletedSearchRequest extends FormRequest
     public function withValidator(Validator $validator): void
     {
         $validator->after(function (Validator $validator) {
-            if (! $this->ensureSearchByUserIdHasValidSearchable()) {
+            if ($this->get('searchBy') !== null && (int)($this->get(
+                        'searchBy'
+                    ) === AdminDeletedUserSearchEnum::ID->value) && ! Str::isUuid(
+                    $this->get('search')
+                )) {
                 $validator->errors()->add(
                     'search',
-                    'If search performed by user id, then the search string must be a valid id'
+                    'If search is performed by user ID, the search string must be a valid UUID.'
                 );
             }
         });
     }
 
-    protected function ensureSearchByUserIdHasValidSearchable(): bool
-    {
-        if ((int)$this->get('searchBy') === AdminDeletedUserSearchEnum::ID->value) {
-            return Str::isUuid($this->get('search'));
-        }
-
-        return true;
-    }
 }

@@ -152,7 +152,7 @@
                                                 <div class="d-flex flex-row gap-2">
                                                     <input type="range" name="salary" min="0"
                                                            max="{{ $vacancies->max('salary') }}"
-                                                           value="{{ $input ? $input->salary ?? '' : '' }}"
+                                                           value="{{ $input ? $input->salary ?? 0 : 0 }}"
                                                            class="form-range" id="rangeInput">
                                                     <output id="salaryOutput"></output>
                                                 </div>
