@@ -12,12 +12,12 @@
         <x-admin.table.default>
             <x-slot:title>
                 <div class="flex flex-col">
-                    <span>Employers</span>
+                    <span>Vacancies</span>
                     <span>Found: <span id="foundRecords"></span> records</span>
                 </div>
             </x-slot:title>
             <x-slot:description>
-                <span>The full list of employers</span>
+                <span>The full list of vacancies</span>
                 <div class="flex items-center justify-between">
                     <div class="text-center items-center max-w-lg mx-auto">
                         <div class="flex">
@@ -25,7 +25,7 @@
                                 <select id="searchBy"
                                         name="searchBy"
                                         class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600 appearance-none">
-                                    <option disabled selected>Choose column</option>
+                                    <option disabled selected hidden value>Choose column</option>
                                     @foreach (SearchEnum::columns() as $value => $label)
                                         <option value="{{ $value }}" @selected(old('searchBy') === $value)>
                                             {{ $label }}

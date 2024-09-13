@@ -8,6 +8,7 @@ use App\Traits\Sortable\Sortable;
 use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable as AuthorizableTrait;
@@ -35,6 +36,7 @@ class Admin extends Model implements Authenticatable, \Illuminate\Contracts\Auth
         'email',
         'password',
         'account_status',
+        'password_reset_at',
     ];
 
     protected $hidden = [
@@ -44,6 +46,7 @@ class Admin extends Model implements Authenticatable, \Illuminate\Contracts\Auth
 
     protected $casts = [
         'created_at' => 'datetime',
+        'password_reset_at' => 'datetime',
     ];
 
     public function makeAdminAsSuperAdmin(): void
@@ -74,7 +77,7 @@ class Admin extends Model implements Authenticatable, \Illuminate\Contracts\Auth
 
     public function scopeActiveAdmins(Builder $builder): Builder
     {
-        return $builder->where('account_status', AdminAccountStatusEnum::ACTIVE->value);
+        return $builder->whereNot('account_status', AdminAccountStatusEnum::DEACTIVATED->value);
     }
 
     public function scopePendingAdmins(Builder $builder): Builder
@@ -87,9 +90,22 @@ class Admin extends Model implements Authenticatable, \Illuminate\Contracts\Auth
         return $builder->where('is_super_admin', false);
     }
 
+    public function accountStatus(): Attribute
+    {
+        return Attribute::get(function (int $value) {
+            return AdminAccountStatusEnum::tryFrom($value);
+        });
+    }
+
     public function deactivate(): void
     {
         $this->account_status = AdminAccountStatusEnum::DEACTIVATED->value;
+        $this->save();
+    }
+
+    public function activate(): void
+    {
+        $this->account_status = AdminAccountStatusEnum::ACTIVE->value;
         $this->save();
     }
 
@@ -98,6 +114,13 @@ class Admin extends Model implements Authenticatable, \Illuminate\Contracts\Auth
         $this->api_token = Str::random(60);
         $this->save();
         return $this->api_token;
+    }
+
+    public function lastPasswordReset(): string
+    {
+        return $this->password_reset_at
+            ? $this->password_reset_at->format('Y-m-d').' '.$this->password_reset_at->getTimezone()
+            : 'not been changed yet';
     }
 
     protected function sortableFields(): array

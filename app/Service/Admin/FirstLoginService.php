@@ -27,19 +27,42 @@ class FirstLoginService
         }
 
         if ($firstLogin->first_login_at !== null) {
-            $this->deactivate($admin, $firstLogin);
+            $this->deactivate($admin);
         }
 
-        $this->adminFirstLoginRepository->allowAdminMakeFirstLogin($firstLogin->id);
+        $this->adminFirstLoginRepository->allowAdminMakeFirstLogin($admin);
 
         return $admin;
     }
 
-    protected function deactivate(Admin $admin, object $firstLoginData): void
+    public function completeFirstLoginTrackingIfNeeded(Admin $admin): void
+    {
+        if (! $this->isFirstLogin($admin)) {
+            return;
+        }
+
+        $this->adminFirstLoginRepository->deleteAdminFromFirstLogin($admin);
+
+        $admin->activate();
+    }
+
+    protected function isFirstLogin(Admin $admin): bool
+    {
+        $firstLogin = $this->adminFirstLoginRepository->getAdminFirstLogin($admin);
+
+        if ($firstLogin && $firstLogin->first_login_at !== null) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    protected function deactivate(Admin $admin): void
     {
         $admin->deactivate();
 
-        $this->adminFirstLoginRepository->deleteAdminFromFirstLogin($firstLoginData->id);
+        $this->adminFirstLoginRepository->deleteAdminFromFirstLogin($admin);
 
         throw new TryToSignInWithTempPasswordSecondTime();
     }

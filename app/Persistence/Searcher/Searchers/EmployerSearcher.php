@@ -16,11 +16,11 @@ final class EmployerSearcher extends BaseSearcher
     public function apply(Builder $builder, SearchDtoInterface $searchDto): Builder
     {
         return $builder->when(
-            value: $searchDto->getSearchByEnum() === AdminEmployersSearchEnum::ID,
+            value: $searchDto->getSearchBy() === AdminEmployersSearchEnum::ID,
             callback: fn(Builder $builder) => $this->applySearchByEmployerId($builder, $searchDto),
             default: function (Builder $builder) use ($searchDto) {
                 $builder->when(
-                    value: $searchDto->getSearchByEnum() === AdminEmployersSearchEnum::ACCOUNT_EMAIL,
+                    value: $searchDto->getSearchBy() === AdminEmployersSearchEnum::ACCOUNT_EMAIL,
                     callback: fn(Builder $builder) => $this->applySearchByAccountEmail($builder, $searchDto),
                     default: fn(Builder $builder) => $this->applyDefaultSearch($builder, $searchDto)
                 );
@@ -30,7 +30,7 @@ final class EmployerSearcher extends BaseSearcher
 
     private function applyDefaultSearch(Builder $builder, SearchDtoInterface $searchDto): Builder
     {
-        return $builder->whereRaw("LOWER({$searchDto->getSearchByEnum()->toDbField()}) LIKE ?", [
+        return $builder->whereRaw("LOWER({$searchDto->getSearchBy()->toDbField()}) LIKE ?", [
             '%'.Str::lower($searchDto->getSearchable()).'%'
         ]);
     }
@@ -38,7 +38,7 @@ final class EmployerSearcher extends BaseSearcher
     private function applySearchByAccountEmail(Builder $builder, SearchDtoInterface $searchDto): Builder
     {
         return $builder->whereHas('user', function (Builder $builder) use ($searchDto) {
-            $builder->whereRaw("LOWER({$searchDto->getSearchByEnum()->toDbField()}) LIKE ?", [
+            $builder->whereRaw("LOWER({$searchDto->getSearchBy()->toDbField()}) LIKE ?", [
                 '%'.$searchDto->getSearchable().'%'
             ]);
         });
@@ -46,6 +46,6 @@ final class EmployerSearcher extends BaseSearcher
 
     private function applySearchByEmployerId(Builder $builder, SearchDtoInterface $searchDto): Builder
     {
-        return $builder->where($searchDto->getSearchByEnum()->toDbField(), $searchDto->getSearchable());
+        return $builder->where($searchDto->getSearchBy()->toDbField(), $searchDto->getSearchable());
     }
 }

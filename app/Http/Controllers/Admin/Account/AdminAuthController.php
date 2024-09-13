@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Account;
 
 use App\Exceptions\TryToSignInWithTempPasswordSecondTime;
 use App\Http\Controllers\Controller;
@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\View\View;
 
 class AdminAuthController extends Controller

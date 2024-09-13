@@ -17,7 +17,7 @@ class AdminVacanciesSearchRequest extends FormRequest
         ];
     }
 
-    public function getDto(): ?AdminSearchDto
+    public function getDto(): AdminSearchDto
     {
         return new AdminSearchDto(
             searchBy: AdminVacanciesSearchEnum::tryFrom($this->get('searchBy')),

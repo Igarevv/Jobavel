@@ -2,8 +2,6 @@
 
 namespace App\Enums\Admin;
 
-use function PHPUnit\Framework\matches;
-
 enum AdminAccountStatusEnum: int
 {
     case ACTIVE = 0;
@@ -18,6 +16,15 @@ enum AdminAccountStatusEnum: int
             self::ACTIVE => 'Active',
             self::DEACTIVATED => 'Deactivated',
             self::PENDING_TO_AUTHORIZE => 'Pending'
+        };
+    }
+
+    public function statusColor(): string
+    {
+        return match ($this) {
+            self::ACTIVE => '#43d33c',
+            self::DEACTIVATED => '#f9322c',
+            self::PENDING_TO_AUTHORIZE => '#ffb40a'
         };
     }
 }

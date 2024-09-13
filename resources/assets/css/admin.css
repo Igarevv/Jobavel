@@ -63,3 +63,7 @@ table.want-scroll tr {
         color: red;
     }
 }
+
+#iframe-reset-form {
+    display: none;
+}

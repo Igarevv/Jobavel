@@ -48,7 +48,7 @@ class TechSkill extends Model
     protected function sortableFields(): array
     {
         return [
-            'creation_time' => 'created_at',
+            'creation-time' => 'created_at',
             'skill' => 'skill_name',
             'update-time' => 'updated_at'
         ];

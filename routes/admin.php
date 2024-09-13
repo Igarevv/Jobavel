@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\Account\AdminAccountController;
+use App\Http\Controllers\Admin\Account\AdminAuthController;
 use App\Http\Controllers\Admin\AdminHomeController;
 use App\Http\Controllers\Admin\RolesPermissions\AdminPermissionsController;
 use App\Http\Controllers\Admin\RolesPermissions\AdminRolesController;
@@ -121,6 +122,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
     Route::middleware('auth.admin')->group(function () {
+        /*
+        * ---------------------------------
+        * -       Account Settings        -
+        * ---------------------------------
+        */
+
+        Route::controller(AdminAccountController::class)->prefix('account')->group(function () {
+            Route::get('/settings', 'fetchAccountInfo')->name('settings');
+
+            Route::post('/reset-password', 'resetPassword')->name('reset-password');
+        });
+
         /*
         * ---------------------------------
         * -           Vacancies           -

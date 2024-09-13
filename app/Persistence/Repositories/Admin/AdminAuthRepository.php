@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Persistence\Repositories\Admin;
 
 use App\DTO\Auth\AdminRegisterDto;
+use App\Enums\Admin\AdminAccountStatusEnum;
 use App\Persistence\Contracts\AdminAuthRepositoryInterface;
 use App\Persistence\Contracts\AdminFirstLoginRepositoryInterface;
 use App\Persistence\Models\Admin;
@@ -20,7 +21,8 @@ class AdminAuthRepository implements AdminAuthRepositoryInterface, AdminFirstLog
                 'email' => $adminRegisterDto->email,
                 'first_name' => $adminRegisterDto->firstName,
                 'last_name' => $adminRegisterDto->lastName,
-                'password' => Hash::make($tempPassword, ['rounds' => 12])
+                'password' => Hash::make($tempPassword),
+                'account_status' => AdminAccountStatusEnum::PENDING_TO_AUTHORIZE->value
             ]);
 
             $admin->assignRole(Admin::ADMIN);
@@ -38,7 +40,15 @@ class AdminAuthRepository implements AdminAuthRepositoryInterface, AdminFirstLog
         return Admin::query()
             ->where('email', $email)
             ->activeAdmins()
-            ->first(['id', 'admin_id', 'email', 'password', 'first_name', 'last_name']);
+            ->first([
+                'id',
+                'admin_id',
+                'email',
+                'password',
+                'first_name',
+                'last_name',
+                'account_status'
+            ]);
     }
 
     public function getAdminFirstLogin(Admin $admin): ?\stdClass
@@ -46,14 +56,14 @@ class AdminAuthRepository implements AdminAuthRepositoryInterface, AdminFirstLog
         return DB::table('admins_login')->where('admin_id', $admin->admin_id)->first();
     }
 
-    public function deleteAdminFromFirstLogin(int $rowId): void
+    public function deleteAdminFromFirstLogin(Admin $admin): void
     {
-        DB::table('admins_login')->where('id', $rowId)->delete();
+        DB::table('admins_login')->where('admin_id', $admin->admin_id)->delete();
     }
 
-    public function allowAdminMakeFirstLogin(int $rowId): void
+    public function allowAdminMakeFirstLogin(Admin $admin): void
     {
-        DB::table('admins_login')->where('id', $rowId)->update([
+        DB::table('admins_login')->where('admin_id', $admin->admin_id)->update([
             'first_login_at' => now()
         ]);
     }

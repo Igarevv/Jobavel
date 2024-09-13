@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->smallInteger('account_status')->default(\App\Enums\Admin\AdminAccountStatusEnum::PENDING_TO_AUTHORIZE->value);
             $table->char('api_token', 60)->unique()->nullable();
             $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('password_reset_at')->nullable();
             $table->primary('id');
         });
     }

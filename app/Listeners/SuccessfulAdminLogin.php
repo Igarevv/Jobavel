@@ -13,7 +13,8 @@ class SuccessfulAdminLogin
                 'user' => [
                     'user_id' => $event->user->admin_id,
                     'name' => $event->user->getFullName(),
-                    'role' => Admin::ADMIN
+                    'role' => Admin::ADMIN,
+                    'acc_status' => $event->user->account_status?->toString()
                 ],
             ]);
         }

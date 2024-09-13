@@ -17,6 +17,7 @@
 <body class="flex flex-col min-vh-100">
 <div class="flex min-vh-100 bg-white dark:bg-gray-900">
     <x-admin.sidebar/>
+    <x-admin.banners.reset-password/>
     <main class="mt-4 px-4 flex-grow">
         <div class="block sm:absolute top-5 right-8 order-1">
             <x-admin.dark-mode-toggle size="4"/>
@@ -25,7 +26,6 @@
         <x-admin.footer/>
     </main>
 </div>
-
 </body>
-
+@stack('scripts')
 </html>

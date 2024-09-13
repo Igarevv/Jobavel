@@ -15,7 +15,7 @@ final class UserSearcher extends BaseSearcher
     public function apply(Builder $builder, SearchDtoInterface $searchDto): Builder
     {
         return $builder->when(
-            value: $searchDto->getSearchByEnum() === AdminDeletedUserSearchEnum::ID,
+            value: $searchDto->getSearchBy() === AdminDeletedUserSearchEnum::ID,
             callback: fn(Builder $builder) => $this->applySearchByUserId($builder, $searchDto),
             default: fn(Builder $builder) => $this->applySearchByDefaultFields($builder, $searchDto)
         );
@@ -23,12 +23,12 @@ final class UserSearcher extends BaseSearcher
 
     private function applySearchByUserId(Builder $builder, SearchDtoInterface $searchDto): Builder
     {
-        return $builder->where($searchDto->getSearchByEnum()->toDbField(), $searchDto->getSearchable());
+        return $builder->where($searchDto->getSearchBy()->toDbField(), $searchDto->getSearchable());
     }
 
     private function applySearchByDefaultFields(Builder $builder, SearchDtoInterface $searchDto): Builder
     {
-        return $builder->whereRaw("LOWER({$searchDto->getSearchByEnum()->toDbField()}) LIKE ?", [
+        return $builder->whereRaw("LOWER({$searchDto->getSearchBy()->toDbField()}) LIKE ?", [
             '%'.$searchDto->getSearchable().'%'
         ]);
     }
