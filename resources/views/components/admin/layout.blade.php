@@ -18,13 +18,12 @@
 <div class="flex min-vh-100 bg-white dark:bg-gray-900">
     <x-admin.sidebar/>
     <x-admin.banners.reset-password/>
-    <main class="mt-4 px-4 flex-grow">
-        <div class="block sm:absolute top-5 right-8 order-1">
-            <x-admin.dark-mode-toggle size="4"/>
+    <div class="p-4 sm:ml-64 flex-grow">
+        <div class="p-4 rounded-lg dark:border-gray-700 mt-14">
+            {{ $slot }}
+            <x-admin.footer/>
         </div>
-        {{ $slot }}
-        <x-admin.footer/>
-    </main>
+    </div>
 </div>
 </body>
 @stack('scripts')

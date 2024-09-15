@@ -2,8 +2,8 @@
 
 namespace App\Service\Admin;
 
+use App\DTO\Admin\AdminAccountDto;
 use App\Persistence\Models\Admin;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Hash;
 
 class AccountService
@@ -14,15 +14,30 @@ class AccountService
 
     public function resetPassword(Admin $admin, string $currentPassword, string $newPassword): void
     {
-        if (! Hash::check($currentPassword, $admin->password)) {
-            throw new AuthorizationException('Your current password is incorrect');
-        }
-
         $admin->update([
             'password' => Hash::make($newPassword, ['rounds' => 12]),
-            'password_reset_at' => now()
+            'password_reset_at' => now(),
         ]);
 
         $this->firstLoginService->completeFirstLoginTrackingIfNeeded($admin);
+    }
+
+    public function updateName(Admin $admin, AdminAccountDto $accountDto): bool
+    {
+        $admin->update([
+            'first_name' => $accountDto->getFirstName() ?? $admin->first_name,
+            'last_name' => $accountDto->getLastName() ?? $admin->last_name,
+        ]);
+
+        return $admin->wasChanged();
+    }
+
+    public function updateEmail(Admin $admin, AdminAccountDto $accountDto): bool
+    {
+        $admin->update([
+            'email' => $accountDto->getEmail()
+        ]);
+
+        return $admin->wasChanged();
     }
 }

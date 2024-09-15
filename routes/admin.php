@@ -12,7 +12,12 @@ use App\Http\Controllers\Admin\Users\EmployersController;
 use App\Http\Controllers\Admin\Users\TemporarilyDeletedUsersController;
 use App\Http\Controllers\Admin\Users\UnverifiedUsersController;
 use App\Http\Controllers\Admin\Vacancies\VacancyController;
+use App\Http\Controllers\Auth\EmailVerificationController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/admin/confirm-email/{id}/{email}', [EmailVerificationController::class, 'confirmAdminEmailChanging'])
+    ->middleware('signed')
+    ->name('admin.confirm-email-change');
 
 Route::prefix('admin')->name('admin.')->group(function () {
     /*
@@ -132,6 +137,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/settings', 'fetchAccountInfo')->name('settings');
 
             Route::post('/reset-password', 'resetPassword')->name('reset-password');
+
+            Route::post('/update-info', 'updateAccountInfo')->name('account.update');
         });
 
         /*

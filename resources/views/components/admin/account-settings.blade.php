@@ -22,39 +22,46 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-6 border-b border-gray-200 dark:border-gray-600 pb-6">
-                <h3 class="text-lg font-medium mb-4">Your name</h3>
-                <div class="space-y-4">
-                    <div class="flex items-center space-x-4">
-                        <label for="first-name" class="block text-sm font-medium mb-1 w-1/4">First Name</label>
-                        <input
-                            type="text"
-                            id="settings-first-name"
-                            class="bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white p-3 rounded border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 w-3/4"
-                        />
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <label for="last-name" class="block text-sm font-medium mb-1 w-1/4">Last Name</label>
-                        <input
-                            type="text"
-                            id="settings-last-name"
-                            class="bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white p-3 rounded border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 w-3/4"
-                        />
-                    </div>
-                </div>
-            </div>
 
-            <div class="mb-6 border-b border-gray-200 dark:border-gray-600 pb-6">
-                <h3 class="text-lg font-medium mb-4">Email</h3>
-                <div class="flex items-center space-x-4">
-                    <label for="email" class="block text-sm font-medium mb-1 w-1/4">Email</label>
-                    <input
-                        type="email"
-                        id="settings-email"
-                        class="bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white p-3 rounded border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 w-3/4"
-                    />
+            <form action="{{ route('admin.account.update') }}" method="POST" id="update-info-form">
+                @csrf
+                <div class="mb-6 border-b border-gray-200 dark:border-gray-600 pb-6">
+                    <h3 class="text-lg font-medium mb-4">Your name</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-4">
+                            <label for="first-name" class="block text-sm font-medium mb-1 w-1/4">First Name</label>
+                            <input
+                                type="text"
+                                name="first-name"
+                                id="settings-first-name"
+                                class="bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white p-3 rounded border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 w-3/4"
+                            />
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <label for="last-name" class="block text-sm font-medium mb-1 w-1/4">Last Name</label>
+                            <input
+                                type="text"
+                                id="settings-last-name"
+                                name="last-name"
+                                class="bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white p-3 rounded border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 w-3/4"
+                            />
+                        </div>
+                    </div>
                 </div>
-            </div>
+
+                <div class="mb-6 border-b border-gray-200 dark:border-gray-600 pb-6">
+                    <h3 class="text-lg font-medium mb-4">Email</h3>
+                    <div class="flex items-center space-x-4">
+                        <label for="email" class="block text-sm font-medium mb-1 w-1/4">Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            id="settings-email"
+                            class="bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white p-3 rounded border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 w-3/4"
+                        />
+                    </div>
+                </div>
+            </form>
 
             <div class="mb-6 border-b border-gray-200 dark:border-gray-600 pb-6">
                 <div class="flex justify-between">
@@ -110,13 +117,18 @@
             </div>
         </div>
 
-        <div class="flex justify-end p-4 border-t border-gray-200 dark:border-gray-600">
-            <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded">
-                Save Changes
-            </button>
-            <button data-modal-hide="settings-modal" class="bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-semibold py-2 px-6 rounded ml-4">
-                Close
-            </button>
+        <div class="flex justify-end gap-3 p-4 border-t border-gray-200 dark:border-gray-600">
+            <div class="flex items-center">
+                <span class="text-sm text-center text-green-600" id="message"></span>
+            </div>
+            <div>
+                <button type="submit" form="update-info-form" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded">
+                    Save Changes
+                </button>
+                <button data-modal-hide="settings-modal" class="bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-semibold py-2 px-6 rounded ml-4">
+                    Close
+                </button>
+            </div>
         </div>
     </div>
 </div>

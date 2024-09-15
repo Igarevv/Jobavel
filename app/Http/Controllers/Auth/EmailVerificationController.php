@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
+use App\DTO\Admin\AdminAccountDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CustomEmailVerificationRequest;
+use App\Persistence\Models\Admin;
+use App\Service\Admin\AccountService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -40,6 +43,15 @@ class EmailVerificationController extends Controller
         event(new Registered($user));
 
         return back()->with('email-verify-message', 'Verification link sent!');
+    }
+
+    public function confirmAdminEmailChanging(string $id, string $newEmail, AccountService $accountService): View|RedirectResponse
+    {
+        $admin = Admin::findByUuid($id, ['id', 'email', 'password']);
+
+        $wasChanged = $accountService->updateEmail($admin, new AdminAccountDto(email: $newEmail));
+
+        return $wasChanged ? view('admin.email-changed') : to_route('home');
     }
 
 }

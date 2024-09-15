@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Events\AdminUpdateEmail;
 use App\Events\EmployerUpdated;
 use App\Events\JobFailedInAdminPanel;
 use App\Events\NewAdminCreated;
@@ -10,6 +11,7 @@ use App\Events\UserDeletedTemporarily;
 use App\Listeners\AuthEventSubscriber;
 use App\Listeners\CodeSendingOnEmployerUpdate;
 use App\Listeners\SendEmailAboutFailedJobToSuperAdmin;
+use App\Listeners\SendEmailToAdminToConfirmEmailChange;
 use App\Listeners\SendEmailToNewAdminWithTempPassword;
 use App\Listeners\SendEmailToUserWhoWantsToRestoreAccount;
 use App\Listeners\SendEmailWhenUserDeleted;
@@ -45,6 +47,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         NewAdminCreated::class => [
             SendEmailToNewAdminWithTempPassword::class
+        ],
+        AdminUpdateEmail::class => [
+            SendEmailToAdminToConfirmEmailChange::class
         ]
     ];
 

@@ -11,6 +11,7 @@ use App\Service\Employer\Vacancy\VacancyService;
 use App\Support\SlugVacancy;
 use App\View\ViewModels\SkillsViewModel;
 use App\View\ViewModels\VacancyViewModel;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class VacancyController extends Controller
@@ -25,6 +26,10 @@ class VacancyController extends Controller
     public function show(SlugVacancy $vacancy, VacancyViewModel $vacancyViewModel): View
     {
         $vacancyModel = $vacancyViewModel->vacancy($vacancy->getIdFromSlug());
+
+        if (Auth::guard('admin')->check()) {
+            Auth::shouldUse('admin');
+        }
 
         $this->authorize('viewAny', $vacancyModel);
 

@@ -10,7 +10,7 @@ class AdminAccountResetPasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'current_password' => ['required'],
+            'current_password' => ['required', 'current_password:admin'],
             'new_password' => [
                 'required',
                 'string',

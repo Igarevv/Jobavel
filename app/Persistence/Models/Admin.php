@@ -90,6 +90,11 @@ class Admin extends Model implements Authenticatable, \Illuminate\Contracts\Auth
         return $builder->where('is_super_admin', false);
     }
 
+    public static function findByUuid(string $adminId, array $columns = ['*']): static
+    {
+        return static::where('admin_id', $adminId)->firstOrFail($columns);
+    }
+
     public function accountStatus(): Attribute
     {
         return Attribute::get(function (int $value) {

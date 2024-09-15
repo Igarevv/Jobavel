@@ -182,67 +182,67 @@
                                     <span class="fw-bolder text-14">Number of applies:</span>
                                     <div>
                                         <span>{{ $vacancy->response_number }}</span>
-                                        @if(! auth()->user()?->getRole() || auth()->user()?->getRole() !== User::EMPLOYER)
-                                            @if(auth()->guest() || (auth()->user()?->isEmployee() && ! $vacancy->employees()->where('employee_vacancy.employee_id', auth()->user()?->employee->id)->exists()))
-                                                <x-button.default class="float-end mt-3" colorType="danger"
-                                                                  data-bs-toggle="modal" data-bs-target="#apply-modal">
-                                                    Apply
-                                                </x-button.default>
-                                            @else
-                                                <a href="{{ route('employee.vacancy.applied') }}"
-                                                   class="btn btn-outline-info float-end mt-3">
-                                                    You have already applied
-                                                </a>
-                                            @endif
+                                        @hasrole(User::EMPLOYEE)
+                                        @if(auth('web')->guest() || ! $vacancy->employees()->where('employee_vacancy.employee_id', auth('web')->user()?->employee->id)->exists())
+                                            <x-button.default class="float-end mt-3" colorType="danger" data-bs-toggle="modal" data-bs-target="#apply-modal">
+                                                Apply
+                                            </x-button.default>
+                                        @else
+                                            <a href="{{ route('employee.vacancy.applied') }}" class="btn btn-outline-info float-end mt-3">
+                                                You have already applied
+                                            </a>
                                         @endif
+                                        @endhasrole
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        @can(['edit', 'delete', 'publish'], $vacancy)
-                            <div class="card w-75 border border-dark rounded mb-4">
-                                <div class="card-body d-flex flex-column">
-                                    <h5 class="card-title text-center fw-bold">Actions for you</h5>
-                                    <div class="d-flex justify-content-between align-items-center gap-3">
-                                        <a href="{{ route('employer.vacancy.show.edit', ['vacancy' => $vacancy->slug]) }}"
-                                           class="btn btn-outline-primary">Edit
-                                            vacancy</a>
-                                        <form action="{{ route('employer.vacancy.destroy', ['vacancy' => $vacancy->slug]) }}"
-                                              method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <x-button.outline colorType="danger" type="submit">Move to trash
-                                            </x-button.outline>
-                                        </form>
-                                        @if($vacancy->isPublished())
-                                            <form action="{{ route('employer.vacancy.unpublish', ['vacancy' => $vacancy->slug]) }}"
+                            @role(User::EMPLOYER)
+                            @can(['edit', 'delete', 'publish'], $vacancy)
+                                <div class="card w-75 border border-dark rounded mb-4">
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="card-title text-center fw-bold">Actions for you</h5>
+                                        <div class="d-flex justify-content-between align-items-center gap-3">
+                                            <a href="{{ route('employer.vacancy.show.edit', ['vacancy' => $vacancy->slug]) }}"
+                                               class="btn btn-outline-primary">Edit
+                                                vacancy</a>
+                                            <form action="{{ route('employer.vacancy.destroy', ['vacancy' => $vacancy->slug]) }}"
                                                   method="POST">
                                                 @csrf
-                                                <x-button.outline colorType="warning" type="submit">Unpublish vacancy
+                                                @method('DELETE')
+                                                <x-button.outline colorType="danger" type="submit">Move to trash
                                                 </x-button.outline>
                                             </form>
-                                        @else
-                                            <form action="{{ route('employer.vacancy.publish', ['vacancy' => $vacancy->slug]) }}"
-                                                  method="POST">
-                                                @csrf
-                                                <x-button.outline colorType="success" type="submit">Publish vacancy
-                                                </x-button.outline>
-                                            </form>
-                                        @endif
+                                            @if($vacancy->isPublished())
+                                                <form action="{{ route('employer.vacancy.unpublish', ['vacancy' => $vacancy->slug]) }}"
+                                                      method="POST">
+                                                    @csrf
+                                                    <x-button.outline colorType="warning" type="submit">Unpublish vacancy
+                                                    </x-button.outline>
+                                                </form>
+                                            @else
+                                                <form action="{{ route('employer.vacancy.publish', ['vacancy' => $vacancy->slug]) }}"
+                                                      method="POST">
+                                                    @csrf
+                                                    <x-button.outline colorType="success" type="submit">Publish vacancy
+                                                    </x-button.outline>
+                                                </form>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            @session('edit-success')
-                            <div class="alert alert-success text-center fw-bold">
-                                {{ $value }}
-                            </div>
-                            @endsession
-                            @session('errors')
-                            <div class="alert text-center alert-danger fw-bold">
-                                {{ $value }}
-                            </div>
-                            @endsession
-                        @endcan
+                                @session('edit-success')
+                                <div class="alert alert-success text-center fw-bold">
+                                    {{ $value }}
+                                </div>
+                                @endsession
+                                @session('errors')
+                                <div class="alert text-center alert-danger fw-bold">
+                                    {{ $value }}
+                                </div>
+                                @endsession
+                            @endcan
+                            @endrole
                     </div>
                 </div>
             </div>

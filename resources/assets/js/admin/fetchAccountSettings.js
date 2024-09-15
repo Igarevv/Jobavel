@@ -19,15 +19,7 @@ const resetForm = document.getElementById('reset-form');
 resetForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const formData = new FormData(resetForm);
-    const response = await fetch(resetForm.action, {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'Accept': 'application/json'
-        }
-    })
-    const result = await response.json();
+    const result = await sendUpdateRequest(resetForm);
 
     if (result.errors) {
         Object.keys(result.errors).forEach(key => {
@@ -49,3 +41,29 @@ resetForm.addEventListener('submit', async (e) => {
         window.location.href = result.redirect;
     }
 });
+
+const updateForm = document.getElementById('update-info-form');
+
+updateForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const result = await sendUpdateRequest(updateForm);
+
+    if (result.message) {
+        document.getElementById('message').innerText = result.message;
+    }
+})
+
+
+function sendUpdateRequest(form) {
+    const formData = new FormData(updateForm);
+    const response = fetch(updateForm.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+
+    return response.json();
+}

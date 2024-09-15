@@ -12,9 +12,9 @@ class VacancyPolicy
 {
     use HandlesAuthorization;
 
-    public function before(User $user, string $ability): ?true
+    public function before(Admin $admin, string $ability)
     {
-        return $user->hasRole(Admin::SUPER_ADMIN) || $user->hasRole(Admin::ADMIN) ? true : null;
+        return true;
     }
 
     public function create(?User $user): bool
@@ -63,3 +63,8 @@ class VacancyPolicy
             : Response::denyAsNotFound(code: 404);
     }
 }
+
+//TODO: во первых внутри админская система разрешений
+//TODO: может сделать так чтобы админы могли снимать публикацию с вакансии и давать в первое время какой то бан на публикации вакансий
+//TODO: ну и само собой как то остлеживать ранее забаненых временно людей и если они несколько раз банились то давать перманент
+//TODO: так же нужно чтобы админ мог удалять вакансию и вообще подумай что еще админ может делать по отношению к работодателю и работнику

@@ -9,6 +9,7 @@ use App\Http\Middleware\RoleRedirectionMiddleware;
 use App\Http\Middleware\SetHeaders;
 use App\Http\Middleware\ValidateSignatureAndResendEmail;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Illuminate\Routing\Middleware\ValidateSignature;
 use Spatie\Csp\AddCspHeaders;
 
 class Kernel extends HttpKernel
@@ -59,6 +60,7 @@ class Kernel extends HttpKernel
         'unverified' => RedirectIfEmailVerified::class,
         'role' => RoleRedirectionMiddleware::class,
         'signed.email' => ValidateSignatureAndResendEmail::class,
+        'signed' => ValidateSignature::class
     ];
 
 }
