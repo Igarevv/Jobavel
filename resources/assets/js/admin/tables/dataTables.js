@@ -118,7 +118,6 @@ export function renderTable(data, tableBody, renderRow) {
 
 function copyId(rowIndex, itemId) {
     const idField = document.getElementById(`id-field-${rowIndex}`);
-    console.log(rowIndex)
 
     if (idField) {
         idField.addEventListener('click', () => {
