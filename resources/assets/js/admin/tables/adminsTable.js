@@ -1,4 +1,4 @@
-import {fetchData, renderPagination, renderTable} from './dataTables.js';
+import { fetchData, renderPagination, renderTable } from './dataTables.js';
 
 document.addEventListener('DOMContentLoaded', function () {
     const tableBody = document.querySelector('.admins-body');
@@ -8,17 +8,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function renderRow(admin, index, data) {
         return `
-            <tr class="tbody-contexnt-row bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    ${index + 1 + (data.current_page - 1) * data.per_page}
-                </th>
-                <td class="px-3 py-4">${admin.idEncrypted}</td>
-                <td class="px-3 py-4">${admin.name}</td>
-                <td class="px-3 py-4">${admin.email}</td>
-                <td class="px-3 py-4">${admin.status}</td>
-                <td class="px-3 py-4">${admin.createdAt}</td>
-            </tr>
-        `;
+        <tr class="tbody-contexnt-row bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                ${index + 1 + (data.current_page - 1) * data.per_page}
+            </th>
+            <td class="px-3 py-4 cursor-pointer" id="id-field-${index}">${admin.idEncrypted}</td>
+            <td class="px-3 py-4">${admin.name}</td>
+            <td class="px-3 py-4">${admin.email}</td>
+            <td class="px-3 py-4">${admin.status}</td>
+            <td class="px-3 py-4">${admin.createdAt}</td>
+        </tr>
+    `;
     }
 
     function onPageClick(page) {

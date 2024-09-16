@@ -221,29 +221,29 @@
 @pushonce('vite')
     @vite(['resources/assets/js/admin/tables/skillTable.js'])
 @endpushonce
-    <script nonce="{{ csp_nonce() }}">
+    <script nonce="{{ csp_nonce() }}" async>
         const editForm = document.getElementById('edit-form');
         const deleteForm = document.getElementById('delete-form');
 
         document.addEventListener('click', (e) => {
-           if (e.target.classList.contains('open-modal-btn')) {
-               const input = document.getElementById('skill-name-edit');
+            if (e.target.classList.contains('open-modal-btn')) {
+                const input = document.getElementById('skill-name-edit');
 
-               input.value = e.target.getAttribute('data-skill-name');
+                input.value = e.target.getAttribute('data-skill-name');
 
-               const action = editForm.getAttribute('action').replace(':id', e.target.getAttribute('data-skill-id'));
-               editForm.setAttribute('action', action);
+                const action = editForm.getAttribute('action').replace(':id', e.target.getAttribute('data-skill-id'));
+                editForm.setAttribute('action', action);
 
-               activateModal('static-modal');
-           }
-           if (e.target.classList.contains('open-delete-modal')) {
-               document.getElementById('skillName').innerText = e.target.getAttribute('data-skill-name');
+                activateModal('static-modal');
+            }
+            if (e.target.classList.contains('open-delete-modal')) {
+                document.getElementById('skillName').innerText = e.target.getAttribute('data-skill-name');
 
-               const action = deleteForm.getAttribute('action').replace(':id', e.target.getAttribute('data-skill-id'));
-               deleteForm.setAttribute('action', action);
+                const action = deleteForm.getAttribute('action').replace(':id', e.target.getAttribute('data-skill-id'));
+                deleteForm.setAttribute('action', action);
 
-               activateModal('popup-modal');
-           }
+                activateModal('popup-modal');
+            }
         });
 
         function activateModal(modalId) {

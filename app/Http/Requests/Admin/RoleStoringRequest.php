@@ -5,10 +5,16 @@ namespace App\Http\Requests\Admin;
 use App\Traits\AfterValidation;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Permission;
 
 class RoleStoringRequest extends FormRequest
 {
     use AfterValidation;
+
+    public function authorize(): bool
+    {
+        return $this->user('admin')?->can('manage', Permission::class) !== null;
+    }
 
     public function rules(): array
     {

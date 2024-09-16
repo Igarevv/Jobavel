@@ -19,7 +19,7 @@ class GetRolesWithPermissionsAction
             ->get()
             ->map(function (Role $role) {
                 $timezone = $role->created_at->getTimezone();
-                
+
                 return (object)[
                     'id' => $role->id,
                     'name' => $role->name,
@@ -33,15 +33,18 @@ class GetRolesWithPermissionsAction
     {
         return Permission::query()
             ->get()
-            ->map(function (Permission $permission) {
+            ->mapToGroups(function (Permission $permission) {
                 $timezone = $permission->created_at->getTimezone();
 
-                return (object)[
+                $permissionInfo = (object)[
                     'id' => $permission->id,
                     'name' => $permission->name,
+                    'guard' => $permission->guard_name,
                     'createdAt' => $permission->created_at->format('Y-m-d H:i').' '.$timezone,
                     'updatedAt' => $permission->updated_at->format('Y-m-d H:i').' '.$timezone
                 ];
+
+                return [$permission->guard_name => $permissionInfo];
             });
     }
 }

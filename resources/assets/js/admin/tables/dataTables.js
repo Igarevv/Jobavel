@@ -39,24 +39,6 @@ export function searchData(url, params, tableBody, renderTable, renderPagination
         });
 }
 
-export function renderTable(data, tableBody, renderRow) {
-    if (data.data.length > 0) {
-        data.data.forEach((item, index) => {
-            tableBody.innerHTML += renderRow(item, index, data);
-        });
-    } else {
-        tableBody.innerHTML = `
-            <tr>
-                <td colspan="8" class="text-center py-6">
-                    <span class="text-xl text-gray-500 dark:text-gray-400">
-                        No records found
-                    </span>
-                </td>
-            </tr>
-        `;
-    }
-}
-
 export function renderPagination(data, paginationContainer, onPageClick) {
     const {current_page, last_page, total, per_page} = data;
 
@@ -112,4 +94,45 @@ export function renderPagination(data, paginationContainer, onPageClick) {
     paginationContainer.querySelectorAll('button[data-page]').forEach(button => {
         button.addEventListener('click', () => onPageClick(button.getAttribute('data-page')));
     });
+}
+
+export function renderTable(data, tableBody, renderRow) {
+    if (data.data.length > 0) {
+        data.data.forEach((item, index) => {
+            const rowHtml = renderRow(item, index, data);
+            tableBody.insertAdjacentHTML('beforeend', rowHtml);
+            copyId(index, item.id);
+        });
+    } else {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="8" class="text-center py-6">
+                    <span class="text-xl text-gray-500 dark:text-gray-400">
+                        No records found
+                    </span>
+                </td>
+            </tr>
+        `;
+    }
+}
+
+function copyId(rowIndex, itemId) {
+    const idField = document.getElementById(`id-field-${rowIndex}`);
+    console.log(rowIndex)
+
+    if (idField) {
+        idField.addEventListener('click', () => {
+            navigator.clipboard.writeText(itemId).then(() => {
+                const span = document.createElement('span');
+                span.classList.add('text-green-500', 'text-sm', 'ps-2');
+                span.textContent = 'Copied!';
+
+                idField.appendChild(span);
+
+                setTimeout(() => {
+                    span.remove();
+                }, 2000);
+            });
+        });
+    }
 }

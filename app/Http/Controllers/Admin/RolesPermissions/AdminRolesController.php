@@ -8,17 +8,20 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\RoleStoringRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class AdminRolesController extends Controller
 {
     public function index(GetRolesWithPermissionsAction $rolesPermissions): View
     {
+        $this->authorize('view', Permission::class);
+
         [$roles, $permissions] = $rolesPermissions->handle();
 
         return view('admin.roles-permissions', [
             'roles' => $roles,
-            'allPermissions' => $permissions,
+            'guardedPermissions' => $permissions,
             'guards' => array_keys(config('auth.guards')),
         ]);
     }
@@ -38,6 +41,8 @@ class AdminRolesController extends Controller
 
     public function delete(Role $role): RedirectResponse
     {
+        $this->authorize('manage', Permission::class);
+        
         return $role->delete() >= 1
             ? back()->with('role-removed', 'Role was successfully removed.')
             : back()->with('role-not-found', 'Role not found. Try again.');

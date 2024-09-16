@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Ramsey\Uuid\Uuid;
 
 class ValidationServiceProvider extends ServiceProvider
 {
@@ -30,6 +32,10 @@ class ValidationServiceProvider extends ServiceProvider
             return $app->isProduction() ?
                 $rule->mixedCase()->uncompromised()
                 : $rule;
+        });
+
+        Validator::extend('uuid_or_email', function ($attribute, $value, $parameters, $validator) {
+            return Uuid::isValid($value ?? '') || filter_var($value, FILTER_VALIDATE_EMAIL);
         });
     }
 

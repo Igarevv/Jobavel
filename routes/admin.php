@@ -170,13 +170,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
                 Route::get('/table', 'fetchSkills')->name('table');
 
-                Route::withoutMiddleware('auth.admin')->group(function () {
-                    Route::post('/create', 'create')->name('create');
+                Route::post('/create', 'create')->name('create');
 
-                    Route::patch('/{skill}/edit', 'update')->name('edit');
+                Route::patch('/{skill}/edit', 'update')->name('edit');
 
-                    Route::delete('/{skill}/delete', 'delete')->name('delete');
-                })->middleware('auth.admin:super-admin');
+                Route::delete('/{skill}/delete', 'delete')->name('delete');
             });
     });
 
@@ -186,7 +184,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     * ---------------------------------
     */
 
-    Route::middleware('auth.admin:super-admin')->group(function () {
+    Route::middleware('auth.admin')->group(function () {
         Route::controller(AdminRolesController::class)->group(function () {
             Route::get('/roles-permissions', 'index')->name('roles-permissions');
 
@@ -199,6 +197,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('/permission/store', 'storePermission')->name('permission.store');
 
             Route::post('/link-permissions-to-role', 'linkPermissionsToRole')->name('permissions-roles.link');
+
+            Route::post('/link-permissions-to-admin', 'linkPermissionsToAdmin')->name('permissions-admin.link');
 
             Route::delete('/permission/{permission}/remove', 'delete')->name('permissions.remove');
         });

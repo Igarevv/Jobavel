@@ -11,13 +11,20 @@ use Spatie\Permission\PermissionRegistrar;
 
 class PermissionSeeder extends Seeder
 {
-    private array $permissions = [
+    private array $webPermissions = [
         'vacancy-create',
         'vacancy-edit',
         'vacancy-apply',
         'vacancy-delete',
         'vacancy-publish',
         'vacancy-view',
+    ];
+
+    private array $adminPermissions = [
+        'permissions-view',
+        'permissions-manage',
+        'skills-view',
+        'skills-manage'
     ];
 
     public function run(): void
@@ -27,8 +34,12 @@ class PermissionSeeder extends Seeder
         Role::query()->truncate();
         Permission::query()->truncate();
 
-        foreach ($this->permissions as $permission) {
-            Permission::create(['name' => $permission]);
+        foreach ($this->webPermissions as $permission) {
+            Permission::create(['name' => $permission, 'guard_name' => 'web']);
+        }
+
+        foreach ($this->adminPermissions as $permission) {
+            Permission::create(['name' => $permission, 'guard_name' => 'admin']);
         }
 
         $employerRole = Role::create(['name' => User::EMPLOYER]);

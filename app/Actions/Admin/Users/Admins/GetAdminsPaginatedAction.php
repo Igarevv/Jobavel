@@ -2,7 +2,6 @@
 
 namespace App\Actions\Admin\Users\Admins;
 
-use App\Enums\Admin\AdminAccountStatusEnum;
 use App\Persistence\Models\Admin;
 use App\Traits\Sortable\VO\SortedValues;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -31,10 +30,11 @@ class GetAdminsPaginatedAction
     {
         return $admins->through(function (Admin $admin) {
             return (object) [
+                'id' => $admin->admin_id,
                 'idEncrypted' => Str::mask($admin->admin_id, '*', 5, -2),
                 'email' => $admin->email,
                 'name' => $admin->getFullName(),
-                'status' => AdminAccountStatusEnum::tryFrom($admin->account_status)?->toString(),
+                'status' => $admin->account_status->toString(),
                 'createdAt' => $admin->created_at->format('Y-m-d H:i').' '.$admin->created_at->getTimezone()
             ];
         });

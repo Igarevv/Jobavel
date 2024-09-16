@@ -1,4 +1,4 @@
-import {fetchData, renderPagination, renderTable} from './dataTables.js';
+import { fetchData, renderPagination, renderTable } from './dataTables.js';
 
 document.addEventListener('DOMContentLoaded', function () {
     const tableBody = document.querySelector('.unverified-body');
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     ${index + 1 + (data.current_page - 1) * data.per_page}
                 </th>
-                <td class="px-3 py-4">${user.idEncrypted}</td>
+                <td class="px-3 py-4 cursor-pointer" id="id-field-${index}">${user.idEncrypted}</td>
                 <td class="px-3 py-4">${user.email}</td>
                 <td class="px-3 py-4">${user.createdAt}</td>
                 <td class="px-3 py-4">

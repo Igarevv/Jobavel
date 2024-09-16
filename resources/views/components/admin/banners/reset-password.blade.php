@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <script nonce="{{ csp_nonce() }}">
+    <script nonce="{{ csp_nonce() }}" async>
         function customHide() {
             const banner = document.getElementById('reset-password-banner');
             const modal = document.getElementById('settings-modal');

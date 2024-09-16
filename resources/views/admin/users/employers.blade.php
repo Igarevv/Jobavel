@@ -107,7 +107,6 @@
         <div class="pagination-container">
             <!-- Pagination from same JS -->
         </div>
-
     </section>
 
     <x-admin.modal.index>
@@ -151,9 +150,7 @@
     @pushonce('vite')
         @vite(['resources/assets/js/admin/tables/employerTable.js', 'resources/assets/js/admin/fetchEmployerVacancies.js'])
     @endpushonce
-
-    <script nonce="{{ csp_nonce() }}">
+    <script nonce="{{ csp_nonce() }}" async>
         window.Laravel = {!! json_encode(['token' => auth('admin')->user()?->api_token]) !!}
     </script>
-
 </x-admin.layout>

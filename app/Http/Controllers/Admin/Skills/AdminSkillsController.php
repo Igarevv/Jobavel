@@ -17,11 +17,15 @@ class AdminSkillsController extends Controller
 {
     public function index(): View
     {
+        $this->authorize('view', TechSkill::class);
+
         return view('admin.skills');
     }
 
     public function fetchSkills(Request $request, GetSkillsNamePaginatedAction $action): AdminTable
     {
+        $this->authorize('view', TechSkill::class);
+
         $skills = $action->handle(
             searchDto: new AdminSearchDto('skill_name', $request->get('search')),
             sortedValues: SortedValues::fromRequest($request->get('sort'), $request->get('direction'))
@@ -50,8 +54,10 @@ class AdminSkillsController extends Controller
             : back()->with('update-failed', trans('alerts.skills.update-failed'));
     }
 
-    public function delete(TechSkill $skill): RedirectResponse
+    public function delete(Request $request, TechSkill $skill): RedirectResponse
     {
+        $this->authorize('manage', TechSkill::class);
+
         $result = $skill->delete();
 
         return $result

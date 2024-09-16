@@ -11,7 +11,7 @@
     <title>{{ $title ?? config('app.name') }}</title>
     @vite(['resources/assets/css/app.css', 'resources/assets/js/app.js'])
     @stack('vite')
-    <link rel="stylesheet"
+    <link rel="preload"
           href="https://unpkg.com/bs-brain@2.0.4/components/registrations/registration-3/assets/css/registration-3.css">
 </head>
 

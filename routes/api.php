@@ -27,7 +27,10 @@ Route::get(
 Route::get(
     '/admin/roles/{role}/permissions',
     [AdminPermissionsController::class, 'permissionsByRole']
-)->middleware('auth.admin.api:super-admin');
+)->middleware('auth.admin.api');
+
+Route::get('/admin/person/{adminIdentifier}/permissions', [AdminPermissionsController::class, 'permissionsForAdmin'])
+    ->middleware('auth.admin.api');
 
 Route::get('/admin/employers/{employer:employer_id}/vacancies', [VacancyController::class, 'employerVacancies']
 )->middleware('auth.admin.api');

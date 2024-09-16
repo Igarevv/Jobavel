@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Persistence\Models\Admin;
 use App\Support\SlugVacancy;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -48,6 +49,10 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::bind('vacancy', function (string $slug) {
             return new SlugVacancy($slug);
+        });
+
+        Route::bind('adminIdentifier', function (string $identifier) {
+            return Admin::findByUuidOrEmail($identifier);
         });
     }
 }

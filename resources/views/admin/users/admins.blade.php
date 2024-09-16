@@ -122,7 +122,6 @@
                                 </svg>
                             </button>
                         </th>
-                        <th scope="col" class="px-3 py-3 text-sm"></th>
                     </x-admin.table.thead>
                     <x-admin.table.tbody class="admins-body">
                         <!--From JS-->

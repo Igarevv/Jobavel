@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             ${index + 1 + (data.current_page - 1) * data.per_page}
                         </th>
-                        <td class="px-3 py-4">${employer.idEncrypted}</td>
+                        <td class="px-3 py-4 cursor-pointer" id="id-field-${index}">${employer.idEncrypted}</td>
                         <td class="px-3 py-4">${employer.company}</td>
                         <td class="px-3 py-4">${employer.companyType}</td>
                         <td class="px-3 py-4">${employer.accountEmail}</td>

@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Admin\RolesPermissions;
 
 use App\Exceptions\PermissionsException;
+use App\Http\Requests\Admin\AdminLinkPermissionToAdminRequest;
 use App\Http\Requests\Admin\PermissionStoringRequest;
 use App\Http\Requests\Admin\RolePermissionsLinkRequest;
+use App\Persistence\Models\Admin;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -38,6 +41,15 @@ class AdminPermissionsController
         return back()->with('permissions-linked', trans('alerts.permissions.linked'));
     }
 
+    public function linkPermissionsToAdmin(AdminLinkPermissionToAdminRequest $request): RedirectResponse
+    {
+        $admin = Admin::findByUuidOrEmail($request->get('identifier'));
+
+        $admin->givePermissionTo($request->get('permissions'));
+
+        return back()->with('permissions-linked', trans('alerts.permissions.linked'));
+    }
+
     public function permissionsByRole(Role $role): JsonResponse
     {
         return response()->json([
@@ -45,9 +57,18 @@ class AdminPermissionsController
             'permissions' => $role->permissions()->get(['id']),
         ]);
     }
-    
-    public function delete(string $permission): RedirectResponse
+
+    public function permissionsForAdmin(Admin $adminIdentifier): JsonResponse
     {
+        return response()->json([
+            'permissions' => $adminIdentifier->getDirectPermissions()
+        ]);
+    }
+
+    public function delete(Request $request, string $permission): RedirectResponse
+    {
+        $this->authorize('manage', Permission::class);
+
         $rowsDeleted = Permission::query()->where('name', $permission)->delete();
 
         return $rowsDeleted >= 1
