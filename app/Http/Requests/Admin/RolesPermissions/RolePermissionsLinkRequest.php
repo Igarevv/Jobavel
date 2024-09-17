@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\Admin\RolesPermissions;
 
 use App\Rules\ExistsPermissionRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
-class AdminLinkPermissionToAdminRequest extends FormRequest
+class RolePermissionsLinkRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -16,8 +17,8 @@ class AdminLinkPermissionToAdminRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'identifier' => ['uuid_or_email'],
-            'permissions' => [new ExistsPermissionRule()]
+            'role' => ['required', 'numeric', 'in:'.implode(',', Role::query()->pluck('id')->toArray())],
+            'permissions' => ['required', new ExistsPermissionRule()],
         ];
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin\Users;
 
 use App\Actions\Admin\Users\Employers\GetEmployersPaginatedAction;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\AdminEmployersSearchRequest;
+use App\Http\Requests\Admin\Users\AdminEmployersSearchRequest;
 use App\Http\Resources\Admin\AdminTable;
 use App\Traits\Sortable\VO\SortedValues;
 use Illuminate\View\View;

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin\Skills;
 use App\Actions\Admin\Skills\GetSkillsNamePaginatedAction;
 use App\DTO\Admin\AdminSearchDto;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\AdminTechSkillRequest;
+use App\Http\Requests\Admin\Vacancy\AdminTechSkillRequest;
 use App\Http\Resources\Admin\AdminTable;
 use App\Persistence\Models\TechSkill;
 use App\Traits\Sortable\VO\SortedValues;

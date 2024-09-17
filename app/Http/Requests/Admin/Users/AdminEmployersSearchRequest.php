@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\Admin\Users;
 
 use App\DTO\Admin\AdminSearchDto;
 use App\Enums\Admin\AdminEmployersSearchEnum;

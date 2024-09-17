@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\Access\Authorizable as AuthorizableTrait;
 use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
@@ -48,6 +49,11 @@ class Admin extends Model implements Authenticatable, \Illuminate\Contracts\Auth
         'created_at' => 'datetime',
         'password_reset_at' => 'datetime',
     ];
+
+    public function actions(): HasMany
+    {
+        return $this->hasMany(AdminAction::class);
+    }
 
     public function makeAdminAsSuperAdmin(): void
     {

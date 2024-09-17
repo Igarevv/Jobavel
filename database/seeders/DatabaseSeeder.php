@@ -5,7 +5,6 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Persistence\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Artisan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,8 +17,6 @@ class DatabaseSeeder extends Seeder
         User::query()->truncate();
         User::factory(5)->unverified()->create();
         User::query()->truncate();
-
-        Artisan::call('admin:super');
 
         $this->call([
             PermissionSeeder::class,

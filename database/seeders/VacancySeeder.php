@@ -12,7 +12,6 @@ class VacancySeeder extends Seeder
 {
     public function run(): void
     {
-        Vacancy::flushEventListeners();
         Vacancy::query()->truncate();
 
         $employers = Employer::query()->take(3)->get();

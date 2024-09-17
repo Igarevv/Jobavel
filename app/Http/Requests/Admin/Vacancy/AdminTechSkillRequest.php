@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\Admin\Vacancy;
 
 use App\Persistence\Models\TechSkill;
 use Illuminate\Foundation\Http\FormRequest;

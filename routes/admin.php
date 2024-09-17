@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\Users\TemporarilyDeletedUsersController;
 use App\Http\Controllers\Admin\Users\UnverifiedUsersController;
 use App\Http\Controllers\Admin\Vacancies\VacancyController;
 use App\Http\Controllers\Auth\EmailVerificationController;
+use App\Http\Controllers\Vacancy\VacancyEmployerViewController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/admin/confirm-email/{id}/{email}', [EmailVerificationController::class, 'confirmAdminEmailChanging'])
@@ -155,7 +156,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
                 Route::get('/{vacancy}/employer', 'vacancyOwner')->name('employer');
 
                 Route::get('/table', 'fetchVacancies')->name('table');
+
+                Route::post('/{vacancy}/delete', 'deleteVacancyByAdmin')->withTrashed()->name('delete');
             });
+
+        Route::get('/vacancy/{vacancy}/trashed', [VacancyEmployerViewController::class, 'showTrashedPreview'])->name('vacancy.trashed');
 
         /*
         * ---------------------------------

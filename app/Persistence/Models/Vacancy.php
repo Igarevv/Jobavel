@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 
@@ -95,6 +96,11 @@ class Vacancy extends Model
     public function employees(): BelongsToMany
     {
         return $this->belongsToMany(Employee::class)->withPivot('applied_at', 'has_cv');
+    }
+
+    public function actionsMadeByAdmin(): MorphMany
+    {
+        return $this->morphMany(AdminAction::class, 'actionable');
     }
 
     public function scopeNotPublished(Builder $builder): Builder
@@ -206,7 +212,7 @@ class Vacancy extends Model
         return [
             'creation-time' => 'created_at',
             'published-time' => 'published_at',
-            'responses' => 'response_number'
+            'responses' => 'response_number',
         ];
     }
 

@@ -58,7 +58,7 @@ class VacancyEmployerViewController extends Controller
     public function showTrashedPreview(SlugVacancy $vacancy, VacancyViewModel $vacancyViewModel): View
     {
         $vacancyModel = $vacancy->createFromSlug();
-        
+
         $this->authorize('view', $vacancyModel);
 
         if (! $vacancyModel->trashed()) {

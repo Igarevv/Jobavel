@@ -4,13 +4,14 @@ namespace Database\Seeders;
 
 use App\Persistence\Models\Admin;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 
 class AdminSeeder extends Seeder
 {
     public function run(): void
     {
-        Admin::flushEventListeners();
         Admin::query()->truncate();
+        Artisan::call('admin:super');
 
         $admins = Admin::factory(5)->create();
 

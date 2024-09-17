@@ -46,4 +46,7 @@ return [
         'created' => 'The tech skill was successfully created',
         'not-created' => 'The tech skill was not created. Try again'
     ],
+    'admin' => [
+        'vacancy-deleted' => 'Vacancy was successfully deleted or moved to trash'
+    ]
 ];

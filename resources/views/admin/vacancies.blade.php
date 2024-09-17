@@ -9,6 +9,9 @@
     </x-admin.header>
 
     <section class="mx-auto w-11/12 my-10">
+        @session('vacancy-deleted')
+        <x-admin.alerts.success>{{ $value }}</x-admin.alerts.success>
+        @endsession
         <x-admin.table.default>
             <x-slot:title>
                 <div class="flex flex-col">

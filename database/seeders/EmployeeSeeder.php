@@ -16,7 +16,6 @@ class EmployeeSeeder extends Seeder
     {
         Employee::flushEventListeners();
         Employee::query()->truncate();
-        User::flushEventListeners();
 
         $users = User::factory(3)->has(
             Employee::factory()->state(

@@ -30,6 +30,7 @@ class GetVacanciesPaginatedAction
                 'response_number',
                 'created_at',
                 'published_at',
+                'deleted_at'
             ]);
     }
 
@@ -45,6 +46,7 @@ class GetVacanciesPaginatedAction
                 'response_number',
                 'vacancies.created_at',
                 'published_at',
+                'deleted_at'
             ]);
     }
 

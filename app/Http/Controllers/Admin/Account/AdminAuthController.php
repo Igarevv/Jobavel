@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin\Account;
 
 use App\Exceptions\TryToSignInWithTempPasswordSecondTime;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\AdminLoginRequest;
-use App\Http\Requests\Admin\AdminRegisterRequest;
+use App\Http\Requests\Admin\Auth\AdminLoginRequest;
+use App\Http\Requests\Admin\Auth\AdminRegisterRequest;
 use App\Service\Admin\AuthService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;

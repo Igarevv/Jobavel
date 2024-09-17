@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Admin\RolesPermissions;
 
 use App\Exceptions\PermissionsException;
-use App\Http\Requests\Admin\AdminLinkPermissionToAdminRequest;
-use App\Http\Requests\Admin\PermissionStoringRequest;
-use App\Http\Requests\Admin\RolePermissionsLinkRequest;
+use App\Http\Requests\Admin\RolesPermissions\AdminLinkPermissionToAdminRequest;
+use App\Http\Requests\Admin\RolesPermissions\PermissionStoringRequest;
+use App\Http\Requests\Admin\RolesPermissions\RolePermissionsLinkRequest;
 use App\Persistence\Models\Admin;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;

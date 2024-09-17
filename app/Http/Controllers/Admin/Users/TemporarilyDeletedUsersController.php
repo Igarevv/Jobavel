@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin\Users;
 use App\Actions\Admin\Users\TemporarilyDeleted\GetTemporarilyDeletedUsersAction;
 use App\Events\UserAccountRestored;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\AdminTemporarilyDeletedSearchRequest;
+use App\Http\Requests\Admin\Users\AdminTemporarilyDeletedSearchRequest;
 use App\Http\Resources\Admin\AdminTable;
 use App\Persistence\Models\User;
 use App\Traits\Sortable\VO\SortedValues;

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin\RolesPermissions;
 use App\Actions\Admin\RolesPermissions\GetRolesWithPermissionsAction;
 use App\Exceptions\RoleException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\RoleStoringRequest;
+use App\Http\Requests\Admin\RolesPermissions\RoleStoringRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Permission;
@@ -42,7 +42,7 @@ class AdminRolesController extends Controller
     public function delete(Role $role): RedirectResponse
     {
         $this->authorize('manage', Permission::class);
-        
+
         return $role->delete() >= 1
             ? back()->with('role-removed', 'Role was successfully removed.')
             : back()->with('role-not-found', 'Role not found. Try again.');
