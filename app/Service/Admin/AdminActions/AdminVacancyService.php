@@ -1,20 +1,21 @@
 <?php
 
-namespace App\Service\Admin;
+namespace App\Service\Admin\AdminActions;
 
 use App\DTO\Admin\AdminDeleteVacancyDto;
-use App\Enums\Admin\DeleteVacancyTypeEnum;
 use App\Enums\Admin\DeleteVacancyTypeEnum as DeleteEnum;
-use App\Persistence\Models\AdminAction;
-use App\Persistence\Models\Vacancy;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
 class AdminVacancyService
 {
+    public function __construct(
+        protected AdminLogActionService $logActionService
+    ) {}
+
     public function delete(AdminDeleteVacancyDto $dto): void
     {
-        $vacancy = $dto->getVacancy();
+        $vacancy = $dto->getActionableModel();
 
         if ($dto->deleteVacancyTypeEnum() === DeleteEnum::DELETE_TRASH && $vacancy->trashed()) {
             throw new InvalidArgumentException('Cannot move to trash already trashed vacancy');
@@ -28,23 +29,8 @@ class AdminVacancyService
             }
 
             if ($result) {
-                $this->logAction($dto);
+                $this->logActionService->log($dto, $dto->deleteVacancyTypeEnum()->toActionName());
             }
         });
-    }
-
-    protected function logAction(AdminDeleteVacancyDto $dto): void
-    {
-        $action = new AdminAction();
-        $action->admin_id = $dto->getAdmin()->id;
-        $action->action_name = $dto->deleteVacancyTypeEnum()->toActionName();
-        $action->reason = [
-            'type' => $dto->reasonToDeleteVacancyEnum()->toString(),
-            'description' => $dto->reasonToDeleteVacancyEnum()->toString(),
-            'comment' => $dto->getComment(),
-        ];
-
-        $dto->getVacancy()->actionsMadeByAdmin()
-            ->save($action);
     }
 }

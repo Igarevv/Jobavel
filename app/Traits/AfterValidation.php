@@ -7,7 +7,7 @@ use Illuminate\Validation\Validator;
 trait AfterValidation
 {
 
-    abstract public function makeCastAndMutatorsAfterValidation(array &$data);
+    abstract public function makeCastAndMutatorsAfterValidation(array &$data): void;
 
     protected function getValidatorInstance(): \Illuminate\Contracts\Validation\Validator
     {

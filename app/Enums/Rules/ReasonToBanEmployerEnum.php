@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Enums\Reason;
+namespace App\Enums\Rules;
 
-enum ReasonToBanEmployerEnum: int
+use App\Contracts\Admin\AdminReasonEnumInterface;
+
+enum ReasonToBanEmployerEnum: int implements AdminReasonEnumInterface
 {
     case SPAM = 0;
 
@@ -15,6 +17,18 @@ enum ReasonToBanEmployerEnum: int
     case COPYRIGHT_INFRINGEMENT = 4;
 
     case DUPLICATION = 5;
+
+    public function toString(): string
+    {
+        return match ($this) {
+            self::SPAM => 'Spam',
+            self::OFFENSIVE_INAPPROPRIATE_BEHAVIOR => 'Offensive or inappropriate behaviour',
+            self::PROFANE_AGGRESSIVE_LANGUAGE => 'Profanity or aggressive language',
+            self::FRAUD_OR_DECEPTION => 'Fraud or deception',
+            self::COPYRIGHT_INFRINGEMENT => 'Copyright infringement.',
+            self::DUPLICATION => 'Duplication'
+        };
+    }
 
     public function description(): string
     {

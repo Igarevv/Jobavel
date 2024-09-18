@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Enums\Reason;
+namespace App\Enums\Rules;
 
-enum ReasonToDeleteVacancyEnum: int
+use App\Contracts\Admin\AdminReasonEnumInterface;
+
+enum ReasonToDeleteVacancyEnum: int implements AdminReasonEnumInterface
 {
     case INAPPROPRIATE_CONTENT = 0;
 

@@ -1,4 +1,4 @@
-@php use App\Enums\Admin\AdminEmployersSearchEnum as SearchEnum; @endphp
+@php use App\Enums\Admin\AdminEmployersSearchEnum as SearchEnum;use App\Enums\Rules\BanDurationEnum;use App\Enums\Rules\ReasonToBanEmployerEnum; @endphp
 <x-admin.layout>
     <x-admin.header>
         <x-slot:title>Users > Employers</x-slot:title>
@@ -109,6 +109,48 @@
         </div>
     </section>
 
+    <x-admin.modal.index id="ban-employer-modal" class="relative p-4 w-full max-w-xl max-h-full">
+        <x-admin.modal.header>
+            <x-slot:title>Ban employer - <span class="employer-name font-bold"></span></x-slot:title>
+        </x-admin.modal.header>
+        <x-admin.modal.content class="content-container relative">
+            <form class="max-w-sm mx-auto flex flex-col gap-3" id="ban-form"
+                  action="{{ route('admin.users.employers.ban', ['employer' => ':id']) }}" method="POST">
+                @csrf
+                <div>
+                    <label for="reason" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select
+                        reason type</label>
+                    <select id="reason" name="reason_type"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                        @foreach(ReasonToBanEmployerEnum::cases() as $enum)
+                            <option
+                                value="{{ $enum->value }}" @selected($enum === ReasonToBanEmployerEnum::SPAM)>{{ $enum->toString() }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label for="duration" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select
+                        reason type</label>
+                    <select id="duration" name="duration"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                        @foreach(BanDurationEnum::cases() as $enum)
+                            <option
+                                value="{{ $enum->value }}" @selected($enum === BanDurationEnum::DAY)>{{ $enum->toString() }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Additional message (optional)</label>
+                    <textarea id="message" rows="2" name="comment" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                </div>
+                <button type="submit" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Ban</button>
+            </form>
+        </x-admin.modal.content>
+        <x-admin.modal.footer></x-admin.modal.footer>
+    </x-admin.modal.index>
+
     <x-admin.modal.index>
         <x-admin.modal.header>
             <x-slot:title><span class="employer-name font-bold"></span> vacancies</x-slot:title>
@@ -119,10 +161,12 @@
                     <svg aria-hidden="true"
                          class="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-red-600"
                          viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                              fill="currentColor"/>
-                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                              fill="currentFill"/>
+                        <path
+                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                            fill="currentColor"/>
+                        <path
+                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                            fill="currentFill"/>
                     </svg>
                     <span class="sr-only text-black">Loading...</span>
                 </div>
@@ -148,8 +192,9 @@
     </x-admin.modal.index>
 
     @pushonce('vite')
-        @vite(['resources/assets/js/admin/tables/employerTable.js', 'resources/assets/js/admin/fetchEmployerVacancies.js'])
+        @vite(['resources/assets/js/admin/tables/employerTable.js', 'resources/assets/js/admin/employerTableScript.js'])
     @endpushonce
+
     <script nonce="{{ csp_nonce() }}" async>
         window.Laravel = {!! json_encode(['token' => auth('admin')->user()?->api_token]) !!}
     </script>

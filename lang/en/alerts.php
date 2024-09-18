@@ -47,6 +47,8 @@ return [
         'not-created' => 'The tech skill was not created. Try again'
     ],
     'admin' => [
-        'vacancy-deleted' => 'Vacancy was successfully deleted or moved to trash'
+        'vacancy-deleted' => 'Vacancy was successfully deleted or moved to trash',
+        'ban-temp' => 'User %s received temporarily ban with duration - %s.',
+        'ban-perm' => 'User %s received permanently ban.'
     ]
 ];

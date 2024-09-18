@@ -2,12 +2,13 @@
 
 namespace App\DTO\Admin;
 
+use App\Contracts\Admin\AdminActionDtoInterface;
 use App\Enums\Admin\DeleteVacancyTypeEnum;
-use App\Enums\Reason\ReasonToDeleteVacancyEnum;
+use App\Enums\Rules\ReasonToDeleteVacancyEnum;
 use App\Persistence\Models\Admin;
 use App\Persistence\Models\Vacancy;
 
-readonly final class AdminDeleteVacancyDto
+readonly final class AdminDeleteVacancyDto implements AdminActionDtoInterface
 {
 
     public function __construct(
@@ -23,12 +24,12 @@ readonly final class AdminDeleteVacancyDto
         return $this->admin;
     }
 
-    public function getVacancy(): Vacancy
+    public function getActionableModel(): Vacancy
     {
         return $this->vacancy;
     }
 
-    public function reasonToDeleteVacancyEnum(): ReasonToDeleteVacancyEnum
+    public function getReasonForAction(): ReasonToDeleteVacancyEnum
     {
         return $this->reasonEnum;
     }

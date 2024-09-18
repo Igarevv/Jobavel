@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminHomeController;
 use App\Http\Controllers\Admin\RolesPermissions\AdminPermissionsController;
 use App\Http\Controllers\Admin\RolesPermissions\AdminRolesController;
 use App\Http\Controllers\Admin\Skills\AdminSkillsController;
+use App\Http\Controllers\Admin\Users\AdminBannedUsersController;
 use App\Http\Controllers\Admin\Users\AdminsController;
 use App\Http\Controllers\Admin\Users\EmployeesController;
 use App\Http\Controllers\Admin\Users\EmployersController;
@@ -77,6 +78,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
                 Route::get('/', 'index')->name('employers');
 
                 Route::get('/table', 'fetchEmployers')->name('employers.table');
+
+                Route::post('/{employer:employer_id}/ban', 'banEmployer')->name('employers.ban');
             });
 
             /*
@@ -106,6 +109,20 @@ Route::prefix('admin')->name('admin.')->group(function () {
                     Route::post('/{identity:user_id}/give-second-chance', 'sendEmailToRestoreUser')
                         ->withTrashed()
                         ->name('temporarily-deleted.restore');
+                }
+            );
+
+            /*
+            * ---------------------------------
+            * -         Banned users          -
+            * ---------------------------------
+            */
+
+            Route::controller(AdminBannedUsersController::class)->prefix('banned')->group(
+                function () {
+                    Route::get('/', 'index')->name('banned');
+
+                    Route::get('/table', 'fetchBannedUsers')->name('banned.table');
                 }
             );
         });

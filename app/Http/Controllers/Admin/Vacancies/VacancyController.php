@@ -12,7 +12,7 @@ use App\Http\Requests\Admin\Vacancy\AdminVacanciesSearchRequest;
 use App\Http\Resources\Admin\AdminTable;
 use App\Http\Resources\Admin\EmployerVacancies;
 use App\Persistence\Models\Employer;
-use App\Service\Admin\AdminVacancyService;
+use App\Service\Admin\AdminActions\AdminVacancyService;
 use App\Support\SlugVacancy;
 use App\Traits\Sortable\VO\SortedValues;
 use App\View\ViewModels\VacancyViewModel;

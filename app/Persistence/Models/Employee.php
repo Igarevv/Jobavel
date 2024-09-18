@@ -81,7 +81,7 @@ class Employee extends Model
         );
     }
 
-    public function getEmpId(): ?string
+    public function getUuid(): ?string
     {
         return $this->employee_id;
     }

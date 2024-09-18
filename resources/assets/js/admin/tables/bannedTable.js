@@ -1,42 +1,31 @@
-import {
-    fetchData,
-    renderPagination,
-    renderTable,
-    searchData,
-} from './dataTables.js';
+import { fetchData, renderPagination, renderTable } from './dataTables.js';
 
 document.addEventListener('DOMContentLoaded', function () {
-    const tableBody = document.querySelector('.employers-body');
-    const CSRFtoken = document.head.querySelector('[name=csrf-token]').content;
+    const tableBody = document.querySelector('.banned-body');
     const paginationContainer = document.querySelector('.pagination-container');
     let searchParams = new URLSearchParams(window.location.search);
 
-    function renderRow(employer, index, data) {
+    function renderRow(banned, index, data) {
+        const btnToViewComment = `
+            <td class="px-3 py-4">
+                 <button type="button" data-modal-target="#static-modal" data-modal-toggle="#static-modal"
+                     data-comment="${banned.comment}"
+                     class="open-modal-btn unstyled-button font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                        View comment
+                 </button>
+            </td>`;
+
         return `
             <tr class="tbody-content-row bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             ${index + 1 + (data.current_page - 1) * data.per_page}
                         </th>
-                        <td class="px-3 py-4 cursor-pointer" id="id-field-${index}">${employer.idEncrypted}</td>
-                        <td class="px-3 py-4">${employer.company}</td>
-                        <td class="px-3 py-4">${employer.companyType}</td>
-                        <td class="px-3 py-4">${employer.accountEmail}</td>
-                        <td class="px-3 py-4">${employer.contactEmail}</td>
-                        <td class="px-3 py-4">${employer.createdAt}</td>
-                        <td class="px-3 py-4">
-                            <button type="button" data-modal-target="#static-modal" data-modal-toggle="#static-modal"
-                                    data-employer-id="${employer.id}" data-employer-name="${employer.company}"
-                                    class="open-modal-btn unstyled-button font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                View vacancies
-                            </button>
-                        </td>
-                        <td class="px-3 py-4">
-                            <button type="submit" data-modal-target="#ban-employer-modal" data-modal-toggle="#ban-employer-modal"
-                                    data-employer-id="${employer.id}" data-employer-name="${employer.company}"
-                                    class="open-delete-modal-btn unstyled-button font-medium text-red-600 dark:text-blue-500 hover:underline">
-                                    Ban
-                            </button>
-                        </td>
+                        <td class="px-3 py-4 cursor-pointer" id="id-field-${index}">${banned.idEncrypted}</td>
+                        <td class="px-3 py-4">${banned.reason}</td>
+                        ${banned.comment ? btnToViewComment : `<td class="px-3 py-4">No comment</td>`}
+                        <td class="px-3 py-4">${banned.duration}</td>
+                        <td class="px-3 py-4">${banned.bannedUntil}</td>
+                        <td class="px-3 py-4">${banned.bannedAt}</td>
                     </tr>
         `;
     }
@@ -59,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const searchBy = document.getElementById('searchBy').value || searchParams.get('searchBy');
         const search = document.getElementById('search-dropdown').value || searchParams.get('search');
 
-        fetchData('/admin/users/employers/table', {
+        fetchData('/admin/users/banned/table', {
                 page,
                 sort: searchParams.get('sort') || 'creation-time',
                 direction: searchParams.get('direction') || 'desc',
@@ -82,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }, tableBody, data => renderTable(data, tableBody, renderRow), data => renderPagination(data, paginationContainer, onPageClick), displayErrors);
     });
 
-    fetchData('/admin/users/employers/table', {
+    fetchData('/admin/users/banned/table', {
         page: searchParams.get('page') || 1,
         sort: searchParams.get('sort') || 'creation-time',
         direction: searchParams.get('direction') || 'desc',
@@ -91,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('refreshTable').addEventListener('click', (e) => {
         e.preventDefault();
 
-        fetchData('/admin/users/employers/table', {
+        fetchData('/admin/users/banned/table', {
                 page: searchParams.get('page') || 1,
                 sort: searchParams.get('sort') || 'creation-time',
                 direction: searchParams.get('direction') || 'desc',
@@ -125,11 +114,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 descIcon.classList.remove('dark:text-black');
                 descIcon.classList.add('text-red-100', 'dark:text-white');
             }
-            
+
             const searchBy = document.getElementById('searchBy').value || searchParams.get('searchBy');
             const search = document.getElementById('search-dropdown').value || searchParams.get('search');
 
-            fetchData('/admin/users/employers/table', {
+            fetchData('/admin/users/banned/table', {
                 page: 1,
                 sort,
                 direction,
@@ -138,4 +127,22 @@ document.addEventListener('DOMContentLoaded', function () {
             }, tableBody, data => renderTable(data, tableBody, renderRow), data => renderPagination(data, paginationContainer, onPageClick));
         });
     });
+});
+
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('open-modal-btn')) {
+        const modalElement = document.getElementById('static-modal');
+        const modal = new Modal(modalElement);
+
+        document.getElementById('ban-comment').innerText = e.target.getAttribute('data-comment');
+
+        modal.show();
+
+        const closeModalBtn = modalElement.querySelector('.hide-modal-btn');
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', () => {
+                modal.hide();
+            });
+        }
+    }
 });

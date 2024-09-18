@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Collection;
 use Ramsey\Uuid\Uuid;
 
@@ -27,7 +28,7 @@ use Ramsey\Uuid\Uuid;
  * @property Carbon $created_at
  * @property string $contact_email
  * @method static Employer|static findOrFail($id, $columns = ['*'])
- * @method Builder|static sortBy(Builder $builder, SortedValues $sortedValues)
+ * @method static Builder|static sortBy(Builder $builder, SortedValues $sortedValues)
  */
 class Employer extends Model
 {
@@ -46,16 +47,16 @@ class Employer extends Model
         'company_description',
         'company_type',
         'company_logo',
-        'created_at'
+        'created_at',
     ];
 
     protected $hidden = [
         'id',
-        'user_id'
+        'user_id',
     ];
 
     protected $casts = [
-        'created_at' => 'datetime'
+        'created_at' => 'datetime',
     ];
 
     public function user(): BelongsTo
@@ -76,6 +77,11 @@ class Employer extends Model
     public function appliedVacancies(): HasManyThrough
     {
         return $this->hasManyThrough(EmployeeVacancy::class, Vacancy::class, 'employer_id', 'vacancy_id');
+    }
+
+    public function actionsMadeByAdmin(): MorphOne
+    {
+        return $this->morphOne(AdminAction::class, 'actionable');
     }
 
     public function appliedVacanciesForTodayAndMonth(): array
@@ -113,7 +119,7 @@ class Employer extends Model
         return $this->contact_email === $newEmail;
     }
 
-    public function getEmpId(): ?string
+    public function getUuid(): ?string
     {
         return $this->employer_id;
     }
@@ -144,7 +150,7 @@ class Employer extends Model
     {
         return [
             'creation-time' => 'created_at',
-            'company' => 'company_name'
+            'company' => 'company_name',
         ];
     }
 

@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin\Vacancy;
 
 use App\DTO\Admin\AdminDeleteVacancyDto;
 use App\Enums\Admin\DeleteVacancyTypeEnum;
-use App\Enums\Reason\ReasonToDeleteVacancyEnum;
+use App\Enums\Rules\ReasonToDeleteVacancyEnum;
 use App\Persistence\Models\Vacancy;
 use App\Traits\AfterValidation;
 use Illuminate\Foundation\Http\FormRequest;

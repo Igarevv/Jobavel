@@ -9,7 +9,6 @@
     <title>{{ $title ?? 'Jobavel Admin' }}</title>
     @vite(['resources/assets/css/admin.css', 'resources/assets/js/admin.js'])
     <meta property="csp-nonce" content="{{ csp_nonce() }}">
-    @stack('vite')
     @stack('scripts')
 </head>
 
@@ -25,5 +24,6 @@
         </div>
     </div>
 </div>
+@stack('vite')
 </body>
 </html>

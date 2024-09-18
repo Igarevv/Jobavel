@@ -7,16 +7,14 @@ namespace App\Actions\Admin\Users\Employers;
 use App\DTO\Admin\AdminSearchDto;
 use App\Persistence\Models\Employer;
 use App\Traits\Sortable\VO\SortedValues;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Illuminate\Support\Str;
 
 class GetEmployersPaginatedAction
 {
 
-    public function handle(
-        AdminSearchDto $searchDto,
-        SortedValues $sortedValues
-    ): LengthAwarePaginator {
+    public function handle(AdminSearchDto $searchDto, SortedValues $sortedValues): Paginator
+    {
         if (Str::of($searchDto->getSearchable())->trim()->value() === '') {
             return $this->prepareData($this->getSortedOnly($sortedValues));
         }
@@ -26,8 +24,8 @@ class GetEmployersPaginatedAction
         );
     }
 
-    private function getSortedOnly(SortedValues $sortedValue
-    ): LengthAwarePaginator {
+    private function getSortedOnly(SortedValues $sortedValue): Paginator
+    {
         return Employer::with('user:id,email')
             ->sortBy($sortedValue)
             ->paginate(10, [
@@ -40,10 +38,8 @@ class GetEmployersPaginatedAction
             ]);
     }
 
-    private function getSearchedSorted(
-        AdminSearchDto $searchDto,
-        SortedValues $sortedValue
-    ): LengthAwarePaginator {
+    private function getSearchedSorted(AdminSearchDto $searchDto, SortedValues $sortedValue): Paginator
+    {
         return Employer::query()
             ->with('user:id,email')
             ->search($searchDto)
@@ -58,8 +54,8 @@ class GetEmployersPaginatedAction
             ]);
     }
 
-    private function prepareData(LengthAwarePaginator $employers
-    ): LengthAwarePaginator {
+    private function prepareData(Paginator $employers): Paginator
+    {
         return $employers->through(function (Employer $employer) {
             return (object)[
                 'id' => $employer->employer_id,

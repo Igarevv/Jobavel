@@ -1,6 +1,26 @@
-import axios from "axios";
+import axios from 'axios';
 
 document.addEventListener('click', async function (e) {
+    if (e.target.classList.contains('open-delete-modal-btn')) {
+        const employerId = e.target.getAttribute('data-employer-id');
+        document.querySelector('.employer-name').innerText = e.target.getAttribute('data-employer-name');
+
+        const modalElement = document.getElementById('ban-employer-modal');
+        const modal = new Modal(modalElement);
+        modal.show();
+
+        const closeModalBtn = modalElement.querySelector('.hide-modal-btn');
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', () => {
+                modal.hide();
+            });
+        }
+
+        const form = document.getElementById('ban-form');
+        const action = form.getAttribute('action').replace(':id', employerId);
+        form.setAttribute('action', action);
+    }
+
     if (e.target.classList.contains('open-modal-btn')) {
         const employerId = e.target.getAttribute('data-employer-id');
         const employerName = e.target.getAttribute('data-employer-name');
