@@ -38,7 +38,7 @@ class VacancyPolicy
 
     public function viewAny(?User $user, Vacancy $vacancy): Response
     {
-        if ($vacancy->is_published) {
+        if ($vacancy->isPublished()) {
             return Response::allow();
         }
 

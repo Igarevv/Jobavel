@@ -3,6 +3,7 @@
 namespace App\Persistence\Models;
 
 use App\Enums\Vacancy\ExperienceEnum;
+use App\Enums\Vacancy\VacancyStatusEnum;
 use App\Observers\VacancyObserver;
 use App\Persistence\Filters\Manual\FilterInterface;
 use App\Persistence\Filters\Pipeline\PipelineFilterInterface;
@@ -35,7 +36,7 @@ use Illuminate\Support\Collection;
  * @property array $requirements,
  * @property array $responsibilities
  * @property array|null $offers
- * @property bool $is_published
+ * @property VacancyStatusEnum $status
  * @property int $response_number
  * @property Carbon $created_at
  * @property bool $consider_without_experience,
@@ -62,6 +63,7 @@ class Vacancy extends Model
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
         'published_at' => 'datetime',
+        'status' => VacancyStatusEnum::class,
     ];
 
     protected $fillable = [
@@ -77,6 +79,7 @@ class Vacancy extends Model
         'offers',
         'consider_without_experience',
         'response_number',
+        'status',
     ];
 
     protected $hidden = [
@@ -105,12 +108,18 @@ class Vacancy extends Model
 
     public function scopeNotPublished(Builder $builder): Builder
     {
-        return $builder->where('is_published', false);
+        return $builder->where('status', VacancyStatusEnum::NOT_PUBLISHED->value);
     }
 
     public function scopePublished(Builder $builder): Builder
     {
-        return $builder->where('is_published', true);
+        return $builder->where('status', VacancyStatusEnum::PUBLISHED->value);
+    }
+
+    public function scopeAllExceptPublishedAndTrashed(Builder $builder, Employer $employer): Builder
+    {
+        return $builder->where('employer_id', $employer->id)
+            ->whereNotIn('status', [VacancyStatusEnum::PUBLISHED, VacancyStatusEnum::TRASHED]);
     }
 
     public function scopeFilter(Builder $builder, FilterInterface $filter): Builder
@@ -137,12 +146,17 @@ class Vacancy extends Model
 
     public function isPublished(): bool
     {
-        return $this->is_published;
+        return $this->status === VacancyStatusEnum::PUBLISHED;
+    }
+
+    public function isInModeration(): bool
+    {
+        return $this->status === VacancyStatusEnum::IN_MODERATION;
     }
 
     public function publish(): void
     {
-        $this->is_published = true;
+        $this->status = VacancyStatusEnum::PUBLISHED->value;
 
         $this->published_at = now();
 
@@ -151,7 +165,7 @@ class Vacancy extends Model
 
     public function unpublish(): void
     {
-        $this->is_published = false;
+        $this->status = VacancyStatusEnum::NOT_PUBLISHED->value;
 
         $this->published_at = null;
 

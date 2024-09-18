@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Persistence\Repositories\Vacancy;
 
 use App\DTO\Vacancy\VacancyDto;
+use App\Enums\Vacancy\VacancyStatusEnum;
 use App\Exceptions\VacancyUpdateException;
 use App\Persistence\Contracts\VacancyRepositoryInterface;
 use App\Persistence\Filters\Manual\FilterInterface;
@@ -31,7 +32,8 @@ class VacancyRepository implements VacancyRepositoryInterface
             'responsibilities' => $vacancyDto->responsibilities,
             'experience_time' => $vacancyDto->experienceTime,
             'employment_type' => $vacancyDto->employmentType,
-            'consider_without_experience' => $vacancyDto->considerWithoutExp
+            'consider_without_experience' => $vacancyDto->considerWithoutExp,
+            'status' => VacancyStatusEnum::IN_MODERATION->value
         ]);
 
         DB::transaction(function () use ($employer, $vacancyDto, $vacancy) {

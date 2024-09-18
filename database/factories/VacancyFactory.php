@@ -3,6 +3,7 @@
 namespace Database\Factories\Persistence\Models;
 
 use App\Enums\Vacancy\EmploymentEnum;
+use App\Enums\Vacancy\VacancyStatusEnum;
 use App\Persistence\Models\Vacancy;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -23,9 +24,14 @@ class VacancyFactory extends Factory
      */
     public function definition(): array
     {
-        $isPublished = $this->faker->boolean();
+        $status = Arr::random([
+            VacancyStatusEnum::PUBLISHED,
+            VacancyStatusEnum::NOT_APPROVED,
+            VacancyStatusEnum::TRASHED,
+            VacancyStatusEnum::IN_MODERATION
+        ]);
 
-        if ($isPublished) {
+        if ($status === VacancyStatusEnum::PUBLISHED) {
             $publishedAt = now();
         }
 
@@ -48,7 +54,7 @@ class VacancyFactory extends Factory
             'experience_time' => Arr::random([0, 1, 3, 5, 10]),
             'consider_without_experience' => $this->faker->boolean(),
             'salary' => $this->faker->numberBetween(0, 5000),
-            'is_published' => $isPublished,
+            'status' => $status,
             'published_at' => $publishedAt ?? null,
         ];
     }
@@ -57,7 +63,7 @@ class VacancyFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'is_published' => false,
+                'status' => VacancyStatusEnum::NOT_PUBLISHED->value,
                 'published_at' => null
             ];
         });
@@ -67,7 +73,7 @@ class VacancyFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'is_published' => true,
+                'status' => VacancyStatusEnum::PUBLISHED->value,
                 'published_at' => now()
             ];
         });

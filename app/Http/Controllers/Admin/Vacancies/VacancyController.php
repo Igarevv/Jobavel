@@ -25,7 +25,7 @@ class VacancyController extends Controller
 {
     public function index(): View
     {
-        return view('admin.vacancies');
+        return view('admin.vacancy.list');
     }
 
     public function fetchVacancies(AdminVacanciesSearchRequest $request, GetVacanciesPaginatedAction $action): AdminTable

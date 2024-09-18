@@ -33,7 +33,7 @@ return new class extends Migration {
             $table->json('responsibilities');
             $table->json('offers')->nullable();
             $table->integer('response_number')->default(0);
-            $table->boolean('is_published')->default(false);
+            $table->tinyInteger('status');
             $table->timestamps();
             $table->timestamp('published_at')->nullable();
             $table->primary('id');

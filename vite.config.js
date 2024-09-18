@@ -36,6 +36,7 @@ export default defineConfig({
                 'resources/assets/js/admin/tables/unverifiedTable.js',
                 'resources/assets/js/admin/tables/bannedTable.js',
                 'resources/assets/js/admin/tables/adminsTable.js',
+                'resources/assets/js/admin/tables/moderateTable.js',
                 'resources/assets/js/admin/tables/vacancyTable.js',
                 'resources/assets/js/admin/fetchEmployer.js',
                 'resources/assets/js/admin/tables/skillTable.js',

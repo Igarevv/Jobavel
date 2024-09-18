@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+use App\Persistence\Models\Admin;
 use App\Persistence\Models\Employee;
 use App\Persistence\Models\Employer;
 use App\Persistence\Models\TechSkill;
 use App\Persistence\Models\Vacancy;
+use App\Policies\AdminPolicy;
 use App\Policies\ResumePolicy;
 use App\Policies\RolesAndPermissionsPolicy;
 use App\Policies\SkillsPolicy;
@@ -27,7 +29,8 @@ class AuthServiceProvider extends ServiceProvider
         Employee::class => ResumePolicy::class,
         Employer::class => ResumePolicy::class,
         Permission::class => RolesAndPermissionsPolicy::class,
-        TechSkill::class => SkillsPolicy::class
+        TechSkill::class => SkillsPolicy::class,
+        Admin::class => AdminPolicy::class
     ];
 
     /**

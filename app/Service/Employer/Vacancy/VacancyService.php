@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace App\Service\Employer\Vacancy;
 
 use App\DTO\Vacancy\VacancyDto;
+use App\Enums\Vacancy\VacancyStatusEnum as Status;
+use App\Exceptions\NotEnoughInfoToContinueException;
+use App\Exceptions\VacancyInModerationException;
+use App\Exceptions\VacancyIsNotApproved;
 use App\Persistence\Contracts\EmployerAccountRepositoryInterface;
 use App\Persistence\Contracts\VacancyRepositoryInterface;
 use App\Persistence\Filters\Manual\FilterInterface;
@@ -12,6 +16,7 @@ use App\Persistence\Models\Vacancy;
 use App\Service\Employer\Storage\EmployerLogoService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator as Paginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Str;
 
 class VacancyService
 {
@@ -20,8 +25,7 @@ class VacancyService
         protected VacancyRepositoryInterface $vacancyRepository,
         protected EmployerLogoService $employerLogoService,
         protected EmployerAccountRepositoryInterface $employerAccountRepository
-    ) {
-    }
+    ) {}
 
     public function create(string|int $employerId, VacancyDto $vacancyDto): void
     {
@@ -42,7 +46,7 @@ class VacancyService
         $vacancies->each(function (Vacancy $vacancy) use ($processedEmployerLogo) {
             $employerId = $vacancy->employer->id;
 
-            if (! $processedEmployerLogo->has($employerId)) {
+            if ( ! $processedEmployerLogo->has($employerId)) {
                 $processedEmployerLogo->put(
                     key: $employerId,
                     value: $this->employerLogoService->getImageUrlForEmployer($vacancy->employer)
@@ -55,9 +59,31 @@ class VacancyService
         return $vacancies;
     }
 
-    public function publishedFilteredVacanciesForEmployer(FilterInterface $filter, string $employerId): Paginator
+    public function publishVacancy(Vacancy $vacancy): void
     {
-        $employer = $this->employerAccountRepository->getById($employerId, ['id', 'company_name', 'company_logo']);
+        if ($vacancy->isInModeration()) {
+            throw new VacancyInModerationException();
+        }
+
+        if ($vacancy->status === Status::NOT_APPROVED) {
+            throw new VacancyIsNotApproved();
+        }
+
+        if (Str::of($vacancy->employer->company_description)->isEmpty()) {
+            throw new NotEnoughInfoToContinueException();
+        }
+
+        $vacancy->publish();
+    }
+
+    public function publishedFilteredVacanciesForEmployer(
+        FilterInterface $filter,
+        string $employerId
+    ): Paginator {
+        $employer = $this->employerAccountRepository->getById(
+            $employerId,
+            ['id', 'company_name', 'company_logo']
+        );
 
         $vacancies = $this->vacancyRepository->getFilteredVacanciesForEmployer($filter, $employer->id);
 
@@ -70,8 +96,10 @@ class VacancyService
         return $vacancies;
     }
 
-    public function allPublishedFilteredVacancies(FilterInterface $filter, int $paginatePerPage): Paginator
-    {
+    public function allPublishedFilteredVacancies(
+        FilterInterface $filter,
+        int $paginatePerPage
+    ): Paginator {
         $vacancies = $this->vacancyRepository->getFilteredVacancies($filter, $paginatePerPage);
 
         return $this->overrideEmployerLogos($vacancies);

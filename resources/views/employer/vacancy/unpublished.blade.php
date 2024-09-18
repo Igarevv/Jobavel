@@ -56,6 +56,7 @@
                                                             <th scope="col">ID</th>
                                                             <th scope="col">TITLE</th>
                                                             <th scope="col">SALARY</th>
+                                                            <th scope="col">STATUS</th>
                                                             <th scope="col">CREATED AT</th>
                                                             <th scope="col">UPDATED AT</th>
                                                             <th scope="col"></th>
@@ -69,6 +70,7 @@
                                                                 <td>{{ $vacancy->id }}</td>
                                                                 <td>{{ $vacancy->title }}</td>
                                                                 <td>{{ $vacancy->salary }}</td>
+                                                                <td><span class="{{ $vacancy->status->color() }} p-2">{{ $vacancy->status->toString() }}</span></td>
                                                                 <td>{{ $vacancy->created_at }}</td>
                                                                 <td>{{ $vacancy->updated_at ?? "Not updated yet"}}</td>
                                                                 <td class="text-center">

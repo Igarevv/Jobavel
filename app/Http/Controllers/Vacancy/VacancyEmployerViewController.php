@@ -21,8 +21,7 @@ class VacancyEmployerViewController extends Controller
 
     public function __construct(
         protected SkillsViewModel $skillsViewModel
-    ) {
-    }
+    ) {}
 
     public function create(): View
     {
@@ -42,7 +41,7 @@ class VacancyEmployerViewController extends Controller
         return view('employer.vacancy.edit', [
             'vacancy' => $existingVacancy,
             'existingSkills' => $this->skillsViewModel->pluckExistingSkillsFromVacancy($existingVacancy),
-            'skills' => $this->skillsViewModel->allSkills()->toArray()
+            'skills' => $this->skillsViewModel->allSkills()->toArray(),
         ]);
     }
 
@@ -61,7 +60,7 @@ class VacancyEmployerViewController extends Controller
 
         $this->authorize('view', $vacancyModel);
 
-        if (! $vacancyModel->trashed()) {
+        if ( ! $vacancyModel->trashed()) {
             abort(404);
         }
 
@@ -73,7 +72,7 @@ class VacancyEmployerViewController extends Controller
             'vacancy' => $vacancyModel,
             'employer' => $employer,
             'skillSet' => $skills,
-            'skillSetRow' => $this->skillsViewModel->skillsAsRow($skills)
+            'skillSetRow' => $this->skillsViewModel->skillsAsRow($skills),
         ]);
     }
 
@@ -90,15 +89,22 @@ class VacancyEmployerViewController extends Controller
 
         return view('employer.vacancy.published', [
             'vacancies' => $vacancies,
-            'skills' => $this->skillsViewModel->allSkills()->toArray()
+            'skills' => $this->skillsViewModel->allSkills()->toArray(),
         ]);
     }
 
     public function unpublished(Request $request): View
     {
-        $vacancies = Vacancy::query()->notPublished()
-            ->where('employer_id', $request->user()->employer->id)
-            ->paginate(5, ['id', 'title', 'salary', 'created_at', 'updated_at', 'slug']);
+        $vacancies = Vacancy::query()->allExceptPublishedAndTrashed($request->user()->employer)
+            ->paginate(5, [
+                'id',
+                'title',
+                'salary',
+                'created_at',
+                'updated_at',
+                'slug',
+                'status',
+            ]);
 
         return view(
             'employer.vacancy.unpublished',

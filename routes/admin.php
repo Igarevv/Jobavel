@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\Users\EmployeesController;
 use App\Http\Controllers\Admin\Users\EmployersController;
 use App\Http\Controllers\Admin\Users\TemporarilyDeletedUsersController;
 use App\Http\Controllers\Admin\Users\UnverifiedUsersController;
+use App\Http\Controllers\Admin\Vacancies\ModerateVacancyController;
 use App\Http\Controllers\Admin\Vacancies\VacancyController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Vacancy\VacancyEmployerViewController;
@@ -175,6 +176,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
                 Route::get('/table', 'fetchVacancies')->name('table');
 
                 Route::post('/{vacancy}/delete', 'deleteVacancyByAdmin')->withTrashed()->name('delete');
+            });
+
+        Route::controller(ModerateVacancyController::class)->prefix('vacancies')
+            ->name('vacancies.')
+            ->group(function () {
+                Route::get('/moderate', 'index')->name('moderate');
+
+                Route::get('/moderate/table', 'fetchVacanciesToModerate')->name('table');
+
+                Route::get('/{vacancy}/moderate', 'vacancyModerateView')->name('moderate-view');
             });
 
         Route::get('/vacancy/{vacancy}/trashed', [VacancyEmployerViewController::class, 'showTrashedPreview'])->name('vacancy.trashed');

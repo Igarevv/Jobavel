@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Vacancy;
 
+use App\Exceptions\NotEnoughInfoToContinueException;
+use App\Exceptions\VacancyStatusException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Vacancy\VacancyCreateRequest;
-use App\Http\Requests\Vacancy\VacancyRequest;
 use App\Http\Requests\Vacancy\VacancyUpdateRequest;
-use App\Persistence\Models\Vacancy;
 use App\Service\Employer\Vacancy\VacancyService;
 use App\Support\SlugVacancy;
 use App\View\ViewModels\VacancyViewModel;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Str;
 
 class VacancyManipulationController extends Controller
 {
@@ -83,11 +82,13 @@ class VacancyManipulationController extends Controller
 
         $this->authorize('publish', $vacancyModel);
 
-        if (Str::of($vacancyModel->employer->company_description)->isEmpty()) {
+        try {
+            $this->vacancyService->publishVacancy($vacancyModel);
+        } catch (VacancyStatusException $e) {
+            return back()->with('errors', $e->getMessage());
+        } catch (NotEnoughInfoToContinueException $e) {
             return back()->with('errors', trans('alerts.employer.empty-description'));
         }
-
-        $vacancyModel->publish();
 
         return redirect()->route('employer.vacancy.published');
     }

@@ -70,6 +70,36 @@
     -webkit-overflow-scrolling: touch;
 }
 
+.status-danger {
+    background-color: #ff4e49;
+    color: white;
+}
+
+.status-warning {
+    background-color: #ff9c22;
+    color: white;
+}
+
+.status-success {
+    background-color: #6ecc5b;
+    color: white;
+}
+
+.status-info {
+    background-color: #2e6ae9;
+    color: white;
+}
+
+.status-secondary {
+    background-color: #626060;
+    color: white;
+}
+
+.status-light {
+    background-color: #c9bebe;
+    color: black;
+}
+
 .btn-bd-primary {
     --bd-violet-bg: #712cf9;
     --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
