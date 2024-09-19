@@ -13,8 +13,9 @@ document.addEventListener('DOMContentLoaded', function () {
                             ${index + 1 + (data.current_page - 1) * data.per_page}
                         </th>
                         <td class="px-3 py-4">
-                            <a href="/admin/vacancies/${vacancy.slug}/moderate" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">${vacancy.title}</a>
+                            <a href="/admin/vacancies/moderate/${vacancy.slug}/view" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">${vacancy.title}</a>
                         </td>
+                        <td class="px-3 py-4"><span class="${vacancy.status.color} p-1">${vacancy.status.name}</span></td>
                         <td class="px-3 py-4">
                             <button type="button" data-modal-target="#static-modal" data-modal-toggle="#static-modal"
                                     data-vacancy-slug="${vacancy.slug}" data-vacancy-title="${vacancy.title}"
@@ -51,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('refreshTable').addEventListener('click', (e) => {
         e.preventDefault();
 
-        fetchData('/admin/vacancies/table', {
+        fetchData('/admin/vacancies/moderate/table', {
                 page: searchParams.get('page') || 1,
                 sort: searchParams.get('sort') || 'creation-time',
                 direction: searchParams.get('direction') || 'desc',

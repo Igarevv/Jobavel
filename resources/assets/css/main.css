@@ -96,8 +96,12 @@
 }
 
 .status-light {
-    background-color: #c9bebe;
+    background-color: #fff;
     color: black;
+}
+
+.color-green {
+    color: #14cb14;
 }
 
 .btn-bd-primary {

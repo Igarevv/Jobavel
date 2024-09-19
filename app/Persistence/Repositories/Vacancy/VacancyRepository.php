@@ -56,21 +56,24 @@ class VacancyRepository implements VacancyRepositoryInterface
     public function updateWithSkills(Vacancy $vacancy, VacancyDto $newData): void
     {
         try {
-            $vacancy->update([
-                'title' => $newData->title,
-                'description' => $newData->description,
-                'responsibilities' => $newData->responsibilities,
-                'requirements' => $newData->requirements,
-                'offers' => $newData->offers,
-                'salary' => $newData->salary,
-                'location' => $newData->location,
-                'experience_time' => $newData->experienceTime,
-                'employment_type' => $newData->employmentType,
-                'consider_without_experience' => $newData->considerWithoutExp,
-                'slug' => Str::lower(Str::slug($newData->title).'-'.$vacancy->id)
-            ]);
+            DB::transaction(function () use($vacancy, $newData) {
+                $vacancy->update([
+                    'title' => $newData->title,
+                    'description' => $newData->description,
+                    'responsibilities' => $newData->responsibilities,
+                    'requirements' => $newData->requirements,
+                    'offers' => $newData->offers,
+                    'salary' => $newData->salary,
+                    'location' => $newData->location,
+                    'experience_time' => $newData->experienceTime,
+                    'employment_type' => $newData->employmentType,
+                    'consider_without_experience' => $newData->considerWithoutExp,
+                    'status' => VacancyStatusEnum::IN_MODERATION->value,
+                    'slug' => Str::lower(Str::slug($newData->title).'-'.$vacancy->id)
+                ]);
 
-            $vacancy->techSkills()->sync($newData->skillSet);
+                $vacancy->techSkills()->sync($newData->skillSet);
+            });
         } catch (\Throwable $e) {
             throw new VacancyUpdateException($e->getMessage(), $e->getCode());
         }

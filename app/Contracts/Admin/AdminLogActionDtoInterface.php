@@ -7,7 +7,7 @@ namespace App\Contracts\Admin;
 use App\Persistence\Models\Admin;
 use Illuminate\Database\Eloquent\Model;
 
-interface AdminActionDtoInterface
+interface AdminLogActionDtoInterface
 {
     public function getReasonForAction(): AdminReasonEnumInterface;
 

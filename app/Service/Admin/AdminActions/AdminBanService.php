@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Service\Admin\AdminActions;
 
 use App\DTO\Admin\AdminBannedUserDto;
-use App\Enums\Rules\BanDurationEnum;
+use App\Enums\Actions\AdminActionEnum;
+use App\Enums\Actions\BanDurationEnum;
 use App\Exceptions\UserAlreadyPermanentlyBannedException;
 use App\Exceptions\UserHasAlreadyBannedException;
 use App\Persistence\Models\BannedUser;
@@ -91,7 +92,7 @@ class AdminBanService
                 $result = $this->giveTemporarilyBan($dto);
             }
 
-            $this->logActionService->log($dto, 'ban');
+            $this->logActionService->log($dto, AdminActionEnum::BAN_USER_ACTION);
 
             return $result;
         });

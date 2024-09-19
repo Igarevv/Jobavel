@@ -1,4 +1,4 @@
-@php use App\Enums\Rules\ReasonToDeleteVacancyEnum;use App\Persistence\Models\Admin;use App\Persistence\Models\User; @endphp
+@php use App\Enums\Actions\ReasonToDeleteVacancyEnum;use App\Persistence\Models\Admin;use App\Persistence\Models\User; @endphp
 <x-layout>
     <x-slot:title>{{ $vacancy->title ?? 'Jobavel' }}</x-slot:title>
 

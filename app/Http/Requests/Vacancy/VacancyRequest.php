@@ -19,7 +19,7 @@ class VacancyRequest extends FormRequest
     {
         $rules = [
             'skillset' => ['required', new TechSkillsExistsRule()],
-            'title' => ['required', 'string', 'max:40'],
+            'title' => ['required', 'string', 'max:100'],
             'salary' => ['numeric', 'between:0,999999'],
             'description' => ['required', 'string'],
             'location' => ['required', 'string'],

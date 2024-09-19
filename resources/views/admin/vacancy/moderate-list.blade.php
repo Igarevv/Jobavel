@@ -8,7 +8,16 @@
     </x-admin.header>
 
     <section class="mx-auto w-11/12 my-10">
-        @session('vacancy-deleted')
+        @session('vacancy-approved')
+        <x-admin.alerts.success>{{ $value }}</x-admin.alerts.success>
+        @endsession
+        @session('error-approve')
+        <x-admin.alerts.error>{{ $value }}</x-admin.alerts.error>
+        @endsession
+        @session('error-reject')
+        <x-admin.alerts.error>{{ $value }}</x-admin.alerts.error>
+        @endsession
+        @session('success-reject')
         <x-admin.alerts.success>{{ $value }}</x-admin.alerts.success>
         @endsession
         <x-admin.table.default>
@@ -33,6 +42,7 @@
             <x-admin.table.thead>
                 <th scope="col" class="px-3 py-3 text-sm">No.</th>
                 <th scope="col" class="px-3 py-3 text-sm">Title</th>
+                <th scope="col" class="px-3 py-3 text-sm">Status</th>
                 <th scope="col" class="px-3 py-3 text-sm">Employer Info</th>
                 <th scope="col" class="px-3 py-3 text-sm">
                     <button type="button"

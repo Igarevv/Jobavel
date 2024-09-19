@@ -49,10 +49,6 @@ class VacancyManipulationController extends Controller
 
         $vacancyModel->delete();
 
-        if ($vacancyModel->isPublished()) {
-            $vacancyModel->unpublish();
-        }
-
         return redirect()->route('employer.vacancy.unpublished')
             ->with('vacancy-trashed', trans('alerts.vacancy.trashed'));
     }
@@ -85,9 +81,9 @@ class VacancyManipulationController extends Controller
         try {
             $this->vacancyService->publishVacancy($vacancyModel);
         } catch (VacancyStatusException $e) {
-            return back()->with('errors', $e->getMessage());
+            return back()->with('errors-publish', $e->getMessage());
         } catch (NotEnoughInfoToContinueException $e) {
-            return back()->with('errors', trans('alerts.employer.empty-description'));
+            return back()->with('errors-publish', trans('alerts.employer.empty-description'));
         }
 
         return redirect()->route('employer.vacancy.published');

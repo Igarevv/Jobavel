@@ -24,7 +24,8 @@ class PermissionSeeder extends Seeder
         'permissions-view',
         'permissions-manage',
         'skills-view',
-        'skills-manage'
+        'skills-manage',
+        'vacancy-moderate'
     ];
 
     public function run(): void

@@ -3,7 +3,11 @@
 namespace App\Service\Admin\AdminActions;
 
 use App\DTO\Admin\AdminDeleteVacancyDto;
+use App\DTO\Admin\AdminRejectVacancyDto;
+use App\Enums\Actions\AdminActionEnum;
 use App\Enums\Admin\DeleteVacancyTypeEnum as DeleteEnum;
+use App\Persistence\Models\AdminAction;
+use App\Persistence\Models\Vacancy;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
@@ -32,5 +36,50 @@ class AdminVacancyService
                 $this->logActionService->log($dto, $dto->deleteVacancyTypeEnum()->toActionName());
             }
         });
+    }
+
+    public function approve(Vacancy $vacancy): void
+    {
+        $this->ensureStatusIsCorrect($vacancy);
+
+        if ($vacancy->isApproved()) {
+            throw new InvalidArgumentException('Cannot approve already approved vacancy');
+        }
+
+        if ($vacancy->isNotApproved() || $vacancy->isInModeration()) {
+            DB::transaction(function () use ($vacancy) {
+                AdminAction::query()->where('actionable_id', $vacancy->id)
+                    ->where('action_name', AdminActionEnum::REJECT_VACANCY_ACTION->value)
+                    ->delete();
+
+                $vacancy->approve();
+            });
+        }
+    }
+
+    public function reject(AdminRejectVacancyDto $dto): void
+    {
+        $vacancy = $dto->getActionableModel();
+
+        $this->ensureStatusIsCorrect($vacancy);
+
+        if ($vacancy->isNotApproved()) {
+            throw new InvalidArgumentException('Cannot reject already rejected vacancy');
+        }
+
+        if ($vacancy->isApproved() || $vacancy->isInModeration()) {
+            DB::transaction(function () use ($dto) {
+                $dto->getActionableModel()->reject();
+
+                $this->logActionService->log($dto, AdminActionEnum::REJECT_VACANCY_ACTION);
+            });
+        }
+    }
+
+    protected function ensureStatusIsCorrect(Vacancy $vacancy): void
+    {
+        if ($vacancy->isPublished() || $vacancy->isNotPublished() || $vacancy->isTrashed()) {
+            throw new InvalidArgumentException('Cannot reject vacancy with this incorrect status');
+        }
     }
 }

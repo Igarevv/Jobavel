@@ -10,7 +10,7 @@ class VacancyInModerationException extends VacancyStatusException
 {
     public function __construct(string $message = "", int $code = 0, ?Throwable $previous = null)
     {
-        parent::__construct('Vacancy has not yet been moderated.', $code, $previous);
+        parent::__construct('Vacancy has not been moderated yet.', $code, $previous);
     }
 
 }

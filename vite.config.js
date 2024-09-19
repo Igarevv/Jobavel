@@ -22,6 +22,7 @@ export default defineConfig({
                 'resources/assets/js/employer/changeLogo.js',
                 'resources/assets/js/employer/filter.js',
                 'resources/assets/js/employer/hideShowSkills.js',
+                'resources/assets/js/admin/latestRejectInfo.js',
                 'resources/assets/js/employer/verificationCode.js',
                 'resources/assets/js/addNewField.js',
                 'resources/assets/js/viewSkills.js',

@@ -1,4 +1,4 @@
-@php use App\Enums\Admin\DeleteVacancyTypeEnum;use App\Enums\Rules\ReasonToDeleteVacancyEnum;use App\Persistence\Models\User; @endphp
+@php use App\Enums\Admin\DeleteVacancyTypeEnum;use App\Enums\Actions\ReasonToDeleteVacancyEnum;use App\Persistence\Models\User; @endphp
 <x-layout>
     <x-slot:title>{{ $vacancy->title ?? 'Jobavel' }}</x-slot:title>
 
@@ -8,6 +8,10 @@
         <div class="container mt-5">
             <div class="row">
                 <div class="col-lg-8">
+                    @if($vacancy->status === \App\Enums\Vacancy\VacancyStatusEnum::IN_MODERATION)
+                        <h3 class="fst-italic text-danger fw-bold">This vacancy is being verified by our team, please
+                            wait a bit.</h3>
+                    @endif
                     <article>
                         <div class="d-flex align-items-center mb-4">
                             <div class="col-md-2">
@@ -233,35 +237,42 @@
                             <div class="card w-75 border border-dark rounded mb-4">
                                 <div class="card-body d-flex flex-column">
                                     <h5 class="card-title text-center fw-bold">Actions for you</h5>
-                                    <div class="d-flex justify-content-between align-items-center gap-3">
-                                        <a href="{{ route('employer.vacancy.show.edit', ['vacancy' => $vacancy->slug]) }}"
-                                           class="btn btn-outline-primary">Edit
-                                            vacancy</a>
-                                        <form
-                                                action="{{ route('employer.vacancy.destroy', ['vacancy' => $vacancy->slug]) }}"
-                                                method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <x-button.outline colorType="danger" type="submit">Move to trash
-                                            </x-button.outline>
-                                        </form>
-                                        @if($vacancy->isPublished())
-                                            <form
-                                                    action="{{ route('employer.vacancy.unpublish', ['vacancy' => $vacancy->slug]) }}"
-                                                    method="POST">
-                                                @csrf
-                                                <x-button.outline colorType="warning" type="submit">Unpublish vacancy
-                                                </x-button.outline>
-                                            </form>
-                                        @else
-                                            <form
-                                                    action="{{ route('employer.vacancy.publish', ['vacancy' => $vacancy->slug]) }}"
-                                                    method="POST">
-                                                @csrf
-                                                <x-button.outline colorType="success" type="submit">Publish vacancy
-                                                </x-button.outline>
-                                            </form>
-                                        @endif
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-12 mb-3">
+                                                <a href="{{ route('employer.vacancy.show.edit', ['vacancy' => $vacancy->slug]) }}"
+                                                   class="btn btn-outline-primary w-100">Edit vacancy</a>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <form action="{{ route('employer.vacancy.destroy', ['vacancy' => $vacancy->slug]) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <x-button.outline colorType="danger" type="submit" class="w-100">Move to trash</x-button.outline>
+                                                </form>
+                                            </div>
+                                            <div class="col-12">
+                                                @if($vacancy->isPublished())
+                                                    <form action="{{ route('employer.vacancy.unpublish', ['vacancy' => $vacancy->slug]) }}" method="POST">
+                                                        @csrf
+                                                        <x-button.outline colorType="warning" type="submit" class="w-100">Unpublish vacancy</x-button.outline>
+                                                    </form>
+                                                @else
+                                                    <form action="{{ route('employer.vacancy.publish', ['vacancy' => $vacancy->slug]) }}" method="POST">
+                                                        @csrf
+                                                        <x-button.outline colorType="success" type="submit" class="w-100">Publish vacancy</x-button.outline>
+                                                    </form>
+                                                @endif
+                                            </div>
+                                            @if($vacancy->isNotApproved())
+                                                <div class="col-12 mt-5">
+                                                    <x-button.default colorType="danger" type="button" class="w-100" id="show-latest-reject-modal-btn"
+                                                                      data-vacancy-slug="{{ $vacancy->slug }}"
+                                                                      data-bs-target="#reject-latest-modal" data-bs-toggle="modal">
+                                                        Why my vacancy are not approved?
+                                                    </x-button.default>
+                                                </div>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -270,7 +281,7 @@
                                 {{ $value }}
                             </div>
                             @endsession
-                            @session('errors')
+                            @session('errors-publish')
                             <div class="alert text-center alert-danger fw-bold">
                                 {{ $value }}
                             </div>
@@ -380,6 +391,37 @@
                 </div>
             @endguest
         </x-modal.index>
+        <x-modal.index id="reject-latest-modal">
+            <div class="modal-header">
+                <h5 class="modal-title">Previous reject information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-none text-center" id="not-found-reject-message">
+                    <h4 id="reject-message" class="fw-bold"></h4>
+                </div>
+                <div class="d-block" id="latest-reject-content">
+                    <div>
+                        <h5>Reason:</h5>
+                        <p class="mt-3 text-center"><span class="fw-bold" id="reject-reason"></span></p>
+                    </div>
+                    <div>
+                        <h5>Description:</h5>
+                        <p class="mt-3"><span id="reject-description"></span></p>
+                    </div>
+                    <div class="d-none" id="optional-block">
+                        <h5>Additional comments:</h5>
+                        <p class="mt-3"><span id="comment"></span></p>
+                    </div>
+                    <div>
+                        <span class="float-end text-muted" id="reject-performed-time"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </x-modal.index>
     </x-main>
     <x-footer></x-footer>
     @if($errors->has('cvType') || $errors->has('useCurrentEmail') || $errors->has('contactEmail'))
@@ -395,5 +437,10 @@
             $('#delete-modal').modal('show');
           });
         </script>
+    @endif
+    @if($vacancy->isNotApproved())
+        @pushonce('vite')
+            @vite(['resources/assets/js/admin/latestRejectInfo.js'])
+        @endpushonce
     @endif
 </x-layout>

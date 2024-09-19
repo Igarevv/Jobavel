@@ -22,6 +22,10 @@ Route::get('/admin/confirm-email/{id}/{email}', [EmailVerificationController::cl
     ->middleware('signed')
     ->name('admin.confirm-email-change');
 
+// This route is here because previous reject can view admin and employer (owner of vacancy)
+Route::get('/moderation/vacancy/{vacancy}/previous-reject', [ModerateVacancyController::class, 'latestRejectInfo'])
+    ->name('admin.vacancies.previous-reject');
+
 Route::prefix('admin')->name('admin.')->group(function () {
     /*
     * ---------------------------------
@@ -178,17 +182,27 @@ Route::prefix('admin')->name('admin.')->group(function () {
                 Route::post('/{vacancy}/delete', 'deleteVacancyByAdmin')->withTrashed()->name('delete');
             });
 
-        Route::controller(ModerateVacancyController::class)->prefix('vacancies')
+        Route::get('/vacancy/{vacancy}/trashed', [VacancyEmployerViewController::class, 'showTrashedPreview'])->name('vacancy.trashed');
+
+        /*
+        * ---------------------------------
+        * -          Moderation           -
+        * ---------------------------------
+        */
+
+        Route::controller(ModerateVacancyController::class)->prefix('vacancies/moderate')
             ->name('vacancies.')
             ->group(function () {
-                Route::get('/moderate', 'index')->name('moderate');
+                Route::get('/', 'index')->name('moderate');
 
-                Route::get('/moderate/table', 'fetchVacanciesToModerate')->name('table');
+                Route::get('/table', 'fetchVacanciesToModerate')->name('table');
 
-                Route::get('/{vacancy}/moderate', 'vacancyModerateView')->name('moderate-view');
+                Route::get('/{vacancy}/view', 'vacancyModerateView')->name('moderate-view');
+
+                Route::post('/{vacancy}/approve', 'approve')->name('approve');
+
+                Route::post('/{vacancy}/reject', 'reject')->name('reject');
             });
-
-        Route::get('/vacancy/{vacancy}/trashed', [VacancyEmployerViewController::class, 'showTrashedPreview'])->name('vacancy.trashed');
 
         /*
         * ---------------------------------

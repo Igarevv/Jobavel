@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums\Rules;
+namespace App\Enums\Actions;
 
 use Illuminate\Support\Carbon;
 

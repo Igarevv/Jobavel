@@ -3,8 +3,8 @@
 namespace App\Http\Requests\Admin\Vacancy;
 
 use App\DTO\Admin\AdminDeleteVacancyDto;
+use App\Enums\Actions\ReasonToDeleteVacancyEnum;
 use App\Enums\Admin\DeleteVacancyTypeEnum;
-use App\Enums\Rules\ReasonToDeleteVacancyEnum;
 use App\Persistence\Models\Vacancy;
 use App\Traits\AfterValidation;
 use Illuminate\Foundation\Http\FormRequest;
@@ -31,16 +31,16 @@ class AdminDeleteVacancyRequest extends FormRequest
 
     public function makeCastAndMutatorsAfterValidation(array &$data): void
     {
-        if ($this->has('delete-type')) {
-            $data['delete-type'] = DeleteVacancyTypeEnum::tryFrom($this->delete_type);
+        if ($this->has('delete_type')) {
+            $data['delete_type'] = DeleteVacancyTypeEnum::tryFrom($this->delete_type);
         }
 
-        if ($this->has('reason-type')) {
-            $data['reason-type'] = ReasonToDeleteVacancyEnum::tryFrom($this->reason_type);
+        if ($this->has('reason_type')) {
+            $data['reason_type'] = ReasonToDeleteVacancyEnum::tryFrom($this->reason_type);
         }
 
         if ($this->has('comment')) {
-            $data['comment'] = Str::of($this->reason ?? '')->trim()->value() ?: null;
+            $data['comment'] = Str::of($this->comment ?? '')->trim()->value() ?: null;
         }
     }
 
@@ -50,7 +50,7 @@ class AdminDeleteVacancyRequest extends FormRequest
 
         return new AdminDeleteVacancyDto(
             admin: $this->user('admin'),
-            vacancy: $this->route('vacancy')?->createFromSlug('id'),
+            vacancy: $this->route('vacancy')?->createFromSlug('id', 'status'),
             reasonEnum: $data['reason_type'],
             adminDeleteVacancyEnum: $data['delete_type'],
             comment: $data['comment']

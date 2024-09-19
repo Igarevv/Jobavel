@@ -15,7 +15,7 @@ return new class extends Migration
             $table->bigInteger('id')->unsigned()->generatedAs()->always();
             $table->foreignId('admin_id')->constrained()->cascadeOnDelete();
             $table->morphs('actionable');
-            $table->string('action_name');
+            $table->tinyInteger('action_name');
             $table->json('reason')->nullable();
             $table->timestamp('action_performed_at')->useCurrent();
         });

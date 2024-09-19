@@ -74,19 +74,19 @@
                                 <h6 class="fw-bold text-decoration-underline">Employment type</h6>
                                 <select class="form-select" required name="employment">
                                     <option value="{{ EmploymentEnum::EMPLOYMENT_OFFICE->value }}"
-                                            @selected($vacancy->employment_type === EmploymentEnum::EMPLOYMENT_OFFICE->value)>
+                                            @selected(old('employment') === EmploymentEnum::EMPLOYMENT_OFFICE->value || $vacancy->employment_type === EmploymentEnum::EMPLOYMENT_OFFICE->value)>
                                         Office
                                     </option>
                                     <option value="{{ EmploymentEnum::EMPLOYMENT_REMOTE->value }}"
-                                            @selected($vacancy->employment_type === EmploymentEnum::EMPLOYMENT_REMOTE->value)>
+                                            @selected(old('employment') === EmploymentEnum::EMPLOYMENT_REMOTE->value || $vacancy->employment_type === EmploymentEnum::EMPLOYMENT_REMOTE->value)>
                                         Remote
                                     </option>
                                     <option value="{{ EmploymentEnum::EMPLOYMENT_PART_TIME->value }}"
-                                            @selected($vacancy->employment_type === EmploymentEnum::EMPLOYMENT_PART_TIME->value)>
+                                            @selected(old('employment') === EmploymentEnum::EMPLOYMENT_PART_TIME->value || $vacancy->employment_type === EmploymentEnum::EMPLOYMENT_PART_TIME->value)>
                                         Part-time
                                     </option>
                                     <option value="{{ EmploymentEnum::EMPLOYMENT_MIXED->value }}"
-                                            @selected($vacancy->employment_type === EmploymentEnum::EMPLOYMENT_MIXED->value)>
+                                            @selected(old('employment') === EmploymentEnum::EMPLOYMENT_MIXED->value || $vacancy->employment_type === EmploymentEnum::EMPLOYMENT_MIXED->value)>
                                         Office / remote
                                     </option>
                                 </select>

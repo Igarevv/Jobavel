@@ -149,9 +149,36 @@ class Vacancy extends Model
         return $this->status === VacancyStatusEnum::PUBLISHED;
     }
 
+    public function isNotPublished(): bool
+    {
+        return $this->status === VacancyStatusEnum::NOT_PUBLISHED;
+    }
+
+    public function isTrashed(): bool
+    {
+        return $this->status === VacancyStatusEnum::TRASHED;
+    }
+
     public function isInModeration(): bool
     {
         return $this->status === VacancyStatusEnum::IN_MODERATION;
+    }
+
+    public function isApproved(): bool
+    {
+        return $this->status === VacancyStatusEnum::APPROVED;
+    }
+
+    public function isNotApproved(): bool
+    {
+        return $this->status === VacancyStatusEnum::NOT_APPROVED;
+    }
+
+    public function sendToModeration(): void
+    {
+        $this->status = VacancyStatusEnum::IN_MODERATION;
+
+        $this->save();
     }
 
     public function publish(): void
@@ -168,6 +195,20 @@ class Vacancy extends Model
         $this->status = VacancyStatusEnum::NOT_PUBLISHED->value;
 
         $this->published_at = null;
+
+        $this->save();
+    }
+
+    public function approve(): void
+    {
+        $this->status = VacancyStatusEnum::APPROVED->value;
+
+        $this->save();
+    }
+
+    public function reject(): void
+    {
+        $this->status = VacancyStatusEnum::NOT_APPROVED->value;
 
         $this->save();
     }

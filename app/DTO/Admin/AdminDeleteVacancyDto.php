@@ -2,13 +2,13 @@
 
 namespace App\DTO\Admin;
 
-use App\Contracts\Admin\AdminActionDtoInterface;
+use App\Contracts\Admin\AdminLogActionDtoInterface;
 use App\Enums\Admin\DeleteVacancyTypeEnum;
-use App\Enums\Rules\ReasonToDeleteVacancyEnum;
+use App\Enums\Actions\ReasonToDeleteVacancyEnum;
 use App\Persistence\Models\Admin;
 use App\Persistence\Models\Vacancy;
 
-readonly final class AdminDeleteVacancyDto implements AdminActionDtoInterface
+readonly final class AdminDeleteVacancyDto implements AdminLogActionDtoInterface
 {
 
     public function __construct(

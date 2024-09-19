@@ -2,8 +2,8 @@
 
 namespace App\Persistence\Models;
 
-use App\Enums\Rules\BanDurationEnum;
-use App\Enums\Rules\ReasonToBanEmployerEnum;
+use App\Enums\Actions\BanDurationEnum;
+use App\Enums\Actions\ReasonToBanEmployerEnum;
 use App\Persistence\Searcher\Searchers\BannedUserSearcher;
 use App\Traits\Searchable\Searchable;
 use App\Traits\Searchable\SearchDtoInterface;

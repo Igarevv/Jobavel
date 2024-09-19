@@ -3,8 +3,8 @@
 namespace App\Http\Requests\Admin\Vacancy;
 
 use App\DTO\Admin\AdminBannedUserDto;
-use App\Enums\Rules\BanDurationEnum;
-use App\Enums\Rules\ReasonToBanEmployerEnum;
+use App\Enums\Actions\BanDurationEnum;
+use App\Enums\Actions\ReasonToBanEmployerEnum;
 use App\Persistence\Models\Employee;
 use App\Persistence\Models\Employer;
 use App\Traits\AfterValidation;

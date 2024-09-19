@@ -67,3 +67,27 @@ table.want-scroll tr {
 #iframe-reset-form {
     display: none;
 }
+
+.bg-custom-red {
+    @apply bg-[#f87171];
+}
+
+.bg-custom-cyan-400 {
+    @apply bg-cyan-400;
+}
+
+.bg-custom-stone-500 {
+    @apply bg-yellow-500;
+}
+
+.bg-custom-lime-400 {
+    @apply bg-lime-400;
+}
+
+.bg-custom-yellow-500 {
+    @apply bg-yellow-500
+}
+
+.bg-custom-green-50 {
+    @apply bg-green-50;
+}

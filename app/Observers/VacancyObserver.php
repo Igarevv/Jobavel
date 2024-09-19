@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Enums\Vacancy\VacancyStatusEnum;
 use App\Persistence\Models\Vacancy;
 use App\Service\Cache\Cache;
 
@@ -28,8 +29,19 @@ class VacancyObserver
 
     public function deleted(Vacancy $vacancy): void
     {
+        $vacancy->status = VacancyStatusEnum::TRASHED;
+
+        $vacancy->save();
+
         Cache::forgetKey('vacancy', $vacancy->id);
+
         Cache::forgetKey('vacancies-published', $vacancy->employer()->first()?->employer_id);
     }
 
+    public function restored(Vacancy $vacancy): void
+    {
+        $vacancy->status = VacancyStatusEnum::NOT_PUBLISHED;
+
+        $vacancy->save();
+    }
 }

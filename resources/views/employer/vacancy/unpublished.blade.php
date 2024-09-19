@@ -25,7 +25,7 @@
                 {{ $value }}
             </div>
             @endsession
-            @session('errors')
+            @session('errors-publish')
             <div class="alert text-center alert-danger fw-bold">
                 {{ $value }}
             </div>
@@ -70,7 +70,7 @@
                                                                 <td>{{ $vacancy->id }}</td>
                                                                 <td>{{ $vacancy->title }}</td>
                                                                 <td>{{ $vacancy->salary }}</td>
-                                                                <td><span class="{{ $vacancy->status->color() }} p-2">{{ $vacancy->status->toString() }}</span></td>
+                                                                <td><span class="{{ $vacancy->status->colorBootstrap() }} p-2">{{ $vacancy->status->toString() }}</span></td>
                                                                 <td>{{ $vacancy->created_at }}</td>
                                                                 <td>{{ $vacancy->updated_at ?? "Not updated yet"}}</td>
                                                                 <td class="text-center">

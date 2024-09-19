@@ -1,4 +1,4 @@
-@php use App\Enums\Admin\DeleteVacancyTypeEnum;use App\Enums\Rules\ReasonToDeleteVacancyEnum;use App\Persistence\Models\User; @endphp
+@php use App\Enums\Admin\DeleteVacancyTypeEnum;use App\Enums\Actions\ReasonToDeleteVacancyEnum;use App\Persistence\Models\User; @endphp
 <x-layout>
     <x-slot:title>{{ $vacancy->title ?? 'Jobavel' }}</x-slot:title>
 
@@ -196,9 +196,98 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="card w-75 border border-dark rounded mb-4">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title text-center fw-bold">Admin moderate actions</h5>
+                                <div class="container d-flex flex-column align-items-center">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <form
+                                                action="{{ route('admin.vacancies.approve', ['vacancy' => $vacancy->slug]) }}"
+                                                method="POST">
+                                                @csrf
+                                                <button type="submit" class="btn btn-outline-success">Approve</button>
+                                            </form>
+                                        </div>
+                                        <div class="col-6">
+                                            <button type="button" class="btn btn-outline-danger"
+                                                    data-bs-target="#reject-modal" data-bs-toggle="modal">Reject
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-12">
+                                            <button class="btn btn-outline-info" id="show-latest-reject-modal-btn"
+                                                    data-vacancy-slug="{{ $vacancy->slug }}"
+                                                    data-bs-target="#reject-latest-modal" data-bs-toggle="modal">
+                                                Show latest reject info
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </x-main>
+    <x-modal.index id="reject-latest-modal">
+        <div class="modal-header">
+            <h5 class="modal-title">Previous reject information</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="d-none text-center" id="not-found-reject-message">
+                <h4 id="reject-message" class="fw-bold"></h4>
+            </div>
+            <div class="d-block" id="latest-reject-content">
+                <div>
+                    <h5>Reason:</h5>
+                    <p class="mt-3 text-center"><span class="fw-bold" id="reject-reason"></span></p>
+                </div>
+                <div>
+                    <h5>Description:</h5>
+                    <p class="mt-3"><span id="reject-description"></span></p>
+                </div>
+                <div class="d-none" id="optional-block">
+                    <h5>Additional comments:</h5>
+                    <p class="mt-3"><span id="comment"></span></p>
+                </div>
+                <div>
+                    <span class="float-end text-muted" id="reject-performed-time"></span>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+    </x-modal.index>
+    <x-modal.index id="reject-modal">
+        <x-modal.withform title="Reject vacancy" btnActionName="Reject"
+                          actionPath="{{ route('admin.vacancies.reject', ['vacancy' => $vacancy->slug]) }}"
+                          withClose>
+            <div class="my-2">
+                <h6>Reason to reject this vacancy (required)</h6>
+                <select class="form-select" name="reason_type" aria-label="Default select example">
+                    @foreach(\App\Enums\Actions\ReasonToRejectVacancyEnum::cases() as $enum)
+                        <option value="{{ $enum->value }}"
+                                @@selected($enum === \App\Enums\Actions\ReasonToRejectVacancyEnum::CONTENT_MISMATCH)>
+                            {{ $enum->toString() }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="my-2">
+                <h6>Additional comment (Optional)</h6>
+                <div class="input-group">
+                    <x-input.textarea id="reason" name="comment"></x-input.textarea>
+                </div>
+            </div>
+            <span class="text-danger">{{ $errors->first() }}</span>
+        </x-modal.withform>
+    </x-modal.index>
+    @pushonce('vite')
+        @vite(['resources/assets/js/admin/latestRejectInfo.js'])
+    @endpushonce
 </x-layout>

@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\DTO\Admin;
 
-use App\Contracts\Admin\AdminActionDtoInterface;
-use App\Enums\Rules\BanDurationEnum;
-use App\Enums\Rules\ReasonToBanEmployerEnum;
+use App\Contracts\Admin\AdminLogActionDtoInterface;
+use App\Enums\Actions\BanDurationEnum;
+use App\Enums\Actions\ReasonToBanEmployerEnum;
 use App\Persistence\Models\Admin;
-use App\Persistence\Models\Employer;
 use Illuminate\Database\Eloquent\Model;
 
-readonly final class AdminBannedUserDto implements AdminActionDtoInterface
+readonly final class AdminBannedUserDto implements AdminLogActionDtoInterface
 {
     public function __construct(
         private Admin $admin,
