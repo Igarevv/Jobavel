@@ -61,7 +61,7 @@ class User extends Model implements AuthContract, MustVerifyEmail, AuthorizableC
     ];
 
     protected $casts = [
-        'created_at' => 'datetime'
+        'created_at' => 'datetime',
     ];
 
     public function getAuthIdentifierName(): string
@@ -121,6 +121,11 @@ class User extends Model implements AuthContract, MustVerifyEmail, AuthorizableC
         return $this->user_id;
     }
 
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
     public function getRelationByUserRole(): HasOne
     {
         return match ($this->getRole()) {
@@ -148,7 +153,7 @@ class User extends Model implements AuthContract, MustVerifyEmail, AuthorizableC
     {
         return [
             'creation-time' => 'created_at',
-            'removed-time' => 'deleted_at'
+            'removed-time' => 'deleted_at',
         ];
     }
 

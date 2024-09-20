@@ -54,6 +54,7 @@ class AdminBanService
     {
         $ban = BannedUser::create([
             'user_id' => $dto->getActionableModelId(),
+            'email' => $dto->getActionableModelEmail(),
             'reason_type' => $dto->getReasonForAction()->value,
             'comment' => $dto->getComment(),
             'duration' => $dto->getBanDurationEnum()->value,
@@ -71,6 +72,7 @@ class AdminBanService
     {
         $ban = BannedUser::create([
             'user_id' => $dto->getActionableModelId(),
+            'email' => $dto->getActionableModelEmail(),
             'reason_type' => $dto->getReasonForAction()->value,
             'comment' => $dto->getComment(),
             'duration' => BanDurationEnum::PERMANENT->value,

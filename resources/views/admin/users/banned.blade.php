@@ -68,6 +68,7 @@
             <x-admin.table.thead>
                 <th scope="col" class="px-3 py-3 text-sm">No.</th>
                 <th scope="col" class="px-3 py-3 text-sm">User Id</th>
+                <th scope="col" class="px-3 py-3 text-sm">Email</th>
                 <th scope="col" class="px-3 py-3 text-sm">Reason</th>
                 <th scope="col" class="px-3 py-3 text-sm">Comment</th>
                 <th scope="col" class="px-3 py-3 text-sm">Duration</th>

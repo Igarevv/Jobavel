@@ -97,6 +97,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
                 Route::get('/', 'index')->name('employees');
 
                 Route::get('/table', 'fetchEmployees')->name('employees.table');
+
+                Route::post('/{employee:employee_id}/ban', 'banEmployee')->name('employees.ban');
             });
 
             /*

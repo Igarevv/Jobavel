@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
@@ -51,7 +52,7 @@ class Employee extends Model
         'experiences',
         'skills',
         'resume_file',
-        'created_at'
+        'created_at',
     ];
 
     protected $hidden = [
@@ -60,7 +61,7 @@ class Employee extends Model
 
     protected $casts = [
         'skills' => 'array',
-        'created_at' => 'datetime'
+        'created_at' => 'datetime',
     ];
 
     public function user(): BelongsTo
@@ -71,6 +72,21 @@ class Employee extends Model
     public function vacancies(): BelongsToMany
     {
         return $this->belongsToMany(Vacancy::class)->withPivot('applied_at', 'has_cv');
+    }
+
+    public function actionsMadeByAdmin(): MorphMany
+    {
+        return $this->morphMany(AdminAction::class, 'actionable');
+    }
+
+    public function userId(): string
+    {
+        return $this->user->getUuidKey();
+    }
+
+    public function getAccountEmail(): string
+    {
+        return $this->user->getEmail();
     }
 
     public function experiences(): Attribute
@@ -126,7 +142,7 @@ class Employee extends Model
     {
         return [
             'creation-time' => 'created_at',
-            'full-name' => 'last_name, first_name'
+            'full-name' => 'last_name, first_name',
         ];
     }
 

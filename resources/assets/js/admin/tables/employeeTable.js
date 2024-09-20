@@ -23,13 +23,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td class="px-3 py-4">${employee.email}</td>
                 <td class="px-3 py-4">${employee.createdAt}</td>
                 <td class="px-3 py-4">
-                    <form action="" method="POST" class="ban-form">
-                        <input type="hidden" name="token" value="${CSRFtoken}" autocomplete="off">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit" class="unstyled-button font-medium text-red-600 dark:text-blue-500 hover:underline">
-                            Ban
-                        </button>
-                    </form>
+                    <button type="submit" data-modal-target="#ban-employee-modal" data-modal-toggle="#ban-employee-modal"
+                                    data-employee-id="${employee.id}" data-employee-name="${employee.name}"
+                                    class="open-ban-modal-btn unstyled-button font-medium text-red-600 dark:text-blue-500 hover:underline">
+                                    Ban
+                    </button>
                 </td>
             </tr>
         `;
@@ -136,4 +134,26 @@ document.addEventListener('DOMContentLoaded', function () {
             }, tableBody, data => renderTable(data, tableBody, renderRow), data => renderPagination(data, paginationContainer, onPageClick));
         });
     });
+});
+
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('open-ban-modal-btn')) {
+        const employerId = e.target.getAttribute('data-employee-id');
+        document.querySelector('.employer-name').innerText = e.target.getAttribute('data-employee-name');
+
+        const modalElement = document.getElementById('ban-employee-modal');
+        const modal = new Modal(modalElement);
+        modal.show();
+
+        const closeModalBtn = modalElement.querySelector('.hide-modal-btn');
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', () => {
+                modal.hide();
+            });
+        }
+
+        const form = document.getElementById('ban-form');
+        const action = form.getAttribute('action').replace(':id', employerId);
+        form.setAttribute('action', action);
+    }
 });

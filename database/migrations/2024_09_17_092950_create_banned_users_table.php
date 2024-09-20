@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('banned_users', function (Blueprint $table) {
             $table->bigInteger('id')->unsigned()->generatedAs()->always();
             $table->uuid('user_id');
+            $table->string('email');
             $table->tinyInteger('reason_type');
             $table->string('comment')->nullable();
             $table->tinyInteger('duration');

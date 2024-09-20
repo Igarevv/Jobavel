@@ -14,7 +14,7 @@ readonly final class AdminBannedUserDto implements AdminLogActionDtoInterface
 {
     public function __construct(
         private Admin $admin,
-        private Model $user,
+        private Model $actionableUser,
         private ReasonToBanEmployerEnum $reasonToBanEnum,
         private BanDurationEnum $banDurationEnum,
         private ?string $comment = null
@@ -27,14 +27,18 @@ readonly final class AdminBannedUserDto implements AdminLogActionDtoInterface
 
     public function getActionableModel(): Model
     {
-        return $this->user;
+        return $this->actionableUser;
     }
 
     public function getActionableModelId(): string
     {
-        return $this->user->getUuid();
+        return $this->actionableUser->userId();
     }
 
+    public function getActionableModelEmail(): string
+    {
+        return $this->actionableUser->getAccountEmail();
+    }
 
     public function getReasonForAction(): ReasonToBanEmployerEnum
     {

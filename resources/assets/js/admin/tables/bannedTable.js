@@ -1,4 +1,9 @@
-import { fetchData, renderPagination, renderTable } from './dataTables.js';
+import {
+    fetchData,
+    renderPagination,
+    renderTable,
+    searchData,
+} from './dataTables.js';
 
 document.addEventListener('DOMContentLoaded', function () {
     const tableBody = document.querySelector('.banned-body');
@@ -21,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             ${index + 1 + (data.current_page - 1) * data.per_page}
                         </th>
                         <td class="px-3 py-4 cursor-pointer" id="id-field-${index}">${banned.idEncrypted}</td>
+                        <td class="px-3 py-4">${banned.email}</td>
                         <td class="px-3 py-4">${banned.reason}</td>
                         ${banned.comment ? btnToViewComment : `<td class="px-3 py-4">No comment</td>`}
                         <td class="px-3 py-4">${banned.duration}</td>
@@ -63,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
         const searchBy = document.getElementById('searchBy').value;
         const search = document.getElementById('search-dropdown').value;
-        searchData('/admin/users/employers/table', {
+        searchData('/admin/users/banned/table', {
             searchBy,
             search,
             page: searchParams.get('page') || 1,

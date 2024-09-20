@@ -32,6 +32,7 @@ class BannedUser extends Model
         'comment',
         'duration',
         'banned_until',
+        'email'
     ];
 
     protected $casts = [

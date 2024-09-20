@@ -9,17 +9,21 @@ enum AdminBannedSearchEnum:int implements SearchEnumInterface
 
     case ID = 0;
 
+    case EMAIL = 1;
+
     public function toDbField(): string
     {
         return match ($this) {
-            self::ID => 'user_id'
+            self::ID => 'user_id',
+            self::EMAIL => 'email'
         };
     }
 
     public function toString(): string
     {
         return match ($this) {
-            self::ID => 'ID'
+            self::ID => 'ID',
+            self::EMAIL => 'Email'
         };
     }
 

@@ -16,8 +16,16 @@ class BannedUserSearcher extends BaseSearcher
     {
         return $builder->when(
             value: $searchDto->getSearchBy() === AdminBannedSearchEnum::ID,
-            callback: fn(Builder $builder) => $this->applySearchByEmployerId($builder, $searchDto)
+            callback: fn(Builder $builder) => $this->applySearchByEmployerId($builder, $searchDto),
+            default: fn(Builder $builder) => $this->applySearchByDefault($builder, $searchDto)
         );
+    }
+
+    private function applySearchByDefault(Builder $builder, SearchDtoInterface $searchDto): Builder
+    {
+        return $builder->whereRaw("LOWER({$searchDto->getSearchBy()->toDbField()}) LIKE ?", [
+            '%'.$searchDto->getSearchable().'%'
+        ]);
     }
 
     private function applySearchByEmployerId(Builder $builder, SearchDtoInterface $searchDto): Builder

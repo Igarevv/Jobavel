@@ -47,7 +47,7 @@ class AdminBanUserRequest extends FormRequest
 
         return new AdminBannedUserDto(
             admin: $this->user('admin'),
-            user: $this->guessUser(),
+            actionableUser: $this->guessUser(),
             reasonToBanEnum: $data['reason_type'],
             banDurationEnum: $data['duration'],
             comment: $data['comment']
@@ -57,11 +57,11 @@ class AdminBanUserRequest extends FormRequest
     protected function guessUser(): ?Model
     {
         if ($this->route('employer')) {
-            return Employer::findByUuid($this->route('employer'));
+            return Employer::findByUuid($this->route('employer'), ['id', 'user_id', 'employer_id']);
         }
 
         if ($this->route('employee')) {
-            return Employee::findByUuid($this->route('employee'));
+            return Employee::findByUuid($this->route('employee'), ['id', 'user_id', 'employee_id']);
         }
 
         abort(404);

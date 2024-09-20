@@ -40,6 +40,7 @@ class GetBannedUsersPaginatedAction
             return (object) [
                 'id' => $bannedUser->user_id,
                 'idEncrypted' => Str::mask($bannedUser->user_id, '*', 5, -2),
+                'email' => $bannedUser->email,
                 'reason' => $bannedUser->reason_type->toString(),
                 'duration' => $bannedUser->duration->toString(),
                 'comment' => $bannedUser->comment,

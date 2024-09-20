@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Collection;
 use Ramsey\Uuid\Uuid;
 
@@ -79,9 +79,19 @@ class Employer extends Model
         return $this->hasManyThrough(EmployeeVacancy::class, Vacancy::class, 'employer_id', 'vacancy_id');
     }
 
-    public function actionsMadeByAdmin(): MorphOne
+    public function actionsMadeByAdmin(): MorphMany
     {
-        return $this->morphOne(AdminAction::class, 'actionable');
+        return $this->morphMany(AdminAction::class, 'actionable');
+    }
+
+    public function userId(): string
+    {
+        return $this->user->getUuidKey();
+    }
+
+    public function getAccountEmail(): string
+    {
+        return $this->user->getEmail();
     }
 
     public function appliedVacanciesForTodayAndMonth(): array
