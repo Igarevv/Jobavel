@@ -60,7 +60,7 @@ class ModerateVacancyController extends Controller
 
     public function approve(SlugVacancy $vacancy, AdminVacancyService $service): RedirectResponse
     {
-        $vacancyModel = $vacancy->createFromSlug('id', 'status');
+        $vacancyModel = $vacancy->createFromSlug('id', 'status', 'deleted_at');
 
         $this->authorize('moderate', [Admin::class, $vacancyModel]);
 

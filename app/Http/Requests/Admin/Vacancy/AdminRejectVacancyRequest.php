@@ -19,7 +19,7 @@ class AdminRejectVacancyRequest extends FormRequest
 
     public function authorize(): bool
     {
-        $this->vacancy = $this->route('vacancy')?->createFromSlug('id', 'status');
+        $this->vacancy = $this->route('vacancy')?->createFromSlug('id', 'status', 'deleted_at');
 
         return $this->user('admin')?->can('moderate', [Admin::class, $this->vacancy]) !== null;
     }

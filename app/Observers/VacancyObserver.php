@@ -31,8 +31,6 @@ class VacancyObserver
     {
         $vacancy->status = VacancyStatusEnum::TRASHED;
 
-        $vacancy->save();
-
         Cache::forgetKey('vacancy', $vacancy->id);
 
         Cache::forgetKey('vacancies-published', $vacancy->employer()->first()?->employer_id);

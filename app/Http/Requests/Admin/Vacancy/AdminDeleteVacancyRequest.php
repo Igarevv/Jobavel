@@ -50,7 +50,7 @@ class AdminDeleteVacancyRequest extends FormRequest
 
         return new AdminDeleteVacancyDto(
             admin: $this->user('admin'),
-            vacancy: $this->route('vacancy')?->createFromSlug('id', 'status'),
+            vacancy: $this->route('vacancy')?->createFromSlug('id', 'status', 'deleted_at', 'employer_id'),
             reasonEnum: $data['reason_type'],
             adminDeleteVacancyEnum: $data['delete_type'],
             comment: $data['comment']

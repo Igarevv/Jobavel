@@ -57,11 +57,11 @@ class AdminBanUserRequest extends FormRequest
     protected function guessUser(): ?Model
     {
         if ($this->route('employer')) {
-            return Employer::findByUuid($this->route('employer'), ['id', 'user_id', 'employer_id']);
+            return Employer::findByUuid($this->route('employer'), ['id', 'user_id', 'employer_id', 'company_name']);
         }
 
         if ($this->route('employee')) {
-            return Employee::findByUuid($this->route('employee'), ['id', 'user_id', 'employee_id']);
+            return Employee::findByUuid($this->route('employee'), ['id', 'user_id', 'employee_id', 'last_name', 'first_name']);
         }
 
         abort(404);

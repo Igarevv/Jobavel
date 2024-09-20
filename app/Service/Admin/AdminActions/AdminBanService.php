@@ -7,21 +7,28 @@ namespace App\Service\Admin\AdminActions;
 use App\DTO\Admin\AdminBannedUserDto;
 use App\Enums\Actions\AdminActionEnum;
 use App\Enums\Actions\BanDurationEnum;
+use App\Events\UserBanned;
 use App\Exceptions\UserAlreadyPermanentlyBannedException;
 use App\Exceptions\UserHasAlreadyBannedException;
 use App\Persistence\Models\BannedUser;
+use App\Persistence\Models\Employer;
+use App\Service\Employer\Vacancy\EmployerVacancyService;
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
 class AdminBanService
 {
+
     public const BANNED_PERMANENTLY = 0;
 
     public const BANNED_TEMPORARILY = 1;
 
     public function __construct(
-        protected AdminLogActionService $logActionService
+        protected AdminLogActionService $logActionService,
+        protected Dispatcher $dispatcher,
+        protected EmployerVacancyService $vacancyService
     ) {}
 
     /**
@@ -34,7 +41,7 @@ class AdminBanService
 
         $lastBan = $banHistory->last();
 
-        if ($lastBan?->banned_until && $lastBan?->banned_until > now()) {
+        if ($lastBan?->banned_until && now()->lessThan($lastBan->banned_until)) {
             throw new UserHasAlreadyBannedException();
         }
 
@@ -61,7 +68,7 @@ class AdminBanService
             'banned_until' => $dto->getBanDurationEnum()->toDateTime(),
         ]);
 
-        if (! $ban->wasRecentlyCreated) {
+        if ( ! $ban->wasRecentlyCreated) {
             throw new RuntimeException('Ban action was not applied');
         }
 
@@ -78,7 +85,7 @@ class AdminBanService
             'duration' => BanDurationEnum::PERMANENT->value,
         ]);
 
-        if (! $ban->wasRecentlyCreated) {
+        if ( ! $ban->wasRecentlyCreated) {
             throw new RuntimeException('Ban action was not applied');
         }
 
@@ -87,16 +94,30 @@ class AdminBanService
 
     protected function banAndLogUser(AdminBannedUserDto $dto, Collection $banHistory): int
     {
-        return DB::transaction(function () use($dto, $banHistory) {
+        return DB::transaction(function () use ($dto, $banHistory) {
             if ($banHistory->count() >= 2) {
                 $result = $this->givePermanentBan($dto);
             } else {
                 $result = $this->giveTemporarilyBan($dto);
             }
 
-            $this->logActionService->log($dto, AdminActionEnum::BAN_USER_ACTION);
+            if ($dto->getActionableModel() instanceof Employer) {
+                $this->vacancyService->unpublishAllVacanciesForEmployer($dto->getActionableModel());
+            }
+
+            $this->log($dto);
 
             return $result;
         });
     }
+
+    protected function log(AdminBannedUserDto $dto): void
+    {
+        $this->dispatcher->dispatch(
+            new UserBanned($dto, $dto->getBanDurationEnum()->toDayDateTimeString())
+        );
+
+        $this->logActionService->log($dto, AdminActionEnum::BAN_USER_ACTION);
+    }
+
 }

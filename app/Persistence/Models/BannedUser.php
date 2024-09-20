@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * @property \Carbon\Carbon $banned_until
  * @method static BannedUser create(array $attributes = [])
  * @method static Builder|static sortBy(SortedValues $sortedValues)
  * @method Builder|static search(Builder $builder, SearchDtoInterface $searchDto)
@@ -32,7 +33,7 @@ class BannedUser extends Model
         'comment',
         'duration',
         'banned_until',
-        'email'
+        'email',
     ];
 
     protected $casts = [
@@ -52,6 +53,15 @@ class BannedUser extends Model
         return $this->banned_until
             ? $this->banned_until->format('Y-m-d H:i').' '.$this->banned_until->getTimezone()
             : '-';
+    }
+
+    public static function latestBanForUser(?User $user, array $columns = ['*']): ?BannedUser
+    {
+        if (! $user) {
+            return null;
+        }
+
+        return static::where('user_id', $user->user_id)->latest('banned_at')->first($columns);
     }
 
     protected function searcher(): string

@@ -7,11 +7,15 @@ use App\Events\EmployerUpdated;
 use App\Events\JobFailedInAdminPanel;
 use App\Events\NewAdminCreated;
 use App\Events\UserAccountRestored;
+use App\Events\UserBanned;
 use App\Events\UserDeletedTemporarily;
+use App\Events\VacancyDeletedPermanentlyByAdmin;
 use App\Listeners\AuthEventSubscriber;
 use App\Listeners\CodeSendingOnEmployerUpdate;
 use App\Listeners\SendEmailAboutFailedJobToSuperAdmin;
+use App\Listeners\SendEmailAboutPermanentDeletionOfVacancy;
 use App\Listeners\SendEmailToAdminToConfirmEmailChange;
+use App\Listeners\SendEmailToBannedUser;
 use App\Listeners\SendEmailToNewAdminWithTempPassword;
 use App\Listeners\SendEmailToUserWhoWantsToRestoreAccount;
 use App\Listeners\SendEmailWhenUserDeleted;
@@ -50,6 +54,12 @@ class EventServiceProvider extends ServiceProvider
         ],
         AdminUpdateEmail::class => [
             SendEmailToAdminToConfirmEmailChange::class
+        ],
+        VacancyDeletedPermanentlyByAdmin::class => [
+            SendEmailAboutPermanentDeletionOfVacancy::class
+        ],
+        UserBanned::class => [
+            SendEmailToBannedUser::class
         ]
     ];
 

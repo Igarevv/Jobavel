@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\AuthAdminApi;
 use App\Http\Middleware\AuthenticateAdmin;
+use App\Http\Middleware\DenyAccessForBannedUsers;
 use App\Http\Middleware\RedirectIfEmailVerified;
 use App\Http\Middleware\RoleRedirectionMiddleware;
 use App\Http\Middleware\SetHeaders;
@@ -31,6 +32,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
+            DenyAccessForBannedUsers::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,

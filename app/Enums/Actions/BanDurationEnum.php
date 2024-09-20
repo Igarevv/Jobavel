@@ -56,4 +56,18 @@ enum BanDurationEnum: int
 
         return $result;
     }
+
+    public function toDayDateTimeString(): ?string
+    {
+        $datetime = match ($this) {
+            self::DAY => now()->addDay(),
+            self::THREE_DAYS => now()->addDays(3),
+            self::WEEK => now()->addWeek(),
+            self::MONTH => now()->addMonth(),
+            self::YEAR => now()->addYear(),
+            self::PERMANENT => null
+        };
+
+        return $datetime?->toDayDateTimeString();
+    }
 }

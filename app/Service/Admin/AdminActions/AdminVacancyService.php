@@ -6,8 +6,10 @@ use App\DTO\Admin\AdminDeleteVacancyDto;
 use App\DTO\Admin\AdminRejectVacancyDto;
 use App\Enums\Actions\AdminActionEnum;
 use App\Enums\Admin\DeleteVacancyTypeEnum as DeleteEnum;
+use App\Events\VacancyDeletedPermanentlyByAdmin;
 use App\Persistence\Models\AdminAction;
 use App\Persistence\Models\Vacancy;
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
@@ -15,7 +17,8 @@ use InvalidArgumentException;
 class AdminVacancyService
 {
     public function __construct(
-        protected AdminLogActionService $logActionService
+        protected AdminLogActionService $logActionService,
+        protected Dispatcher $dispatcher
     ) {}
 
     public function delete(AdminDeleteVacancyDto $dto): void
@@ -28,10 +31,9 @@ class AdminVacancyService
 
         DB::transaction(function () use($dto, $vacancy) {
             if ($dto->deleteVacancyTypeEnum() === DeleteEnum::DELETE_PERMANENTLY) {
-                $result = $vacancy->forceDelete();
+                $result = $this->deletePermanently($vacancy, $dto);
             } else {
-                $result = $vacancy->delete();
-                $vacancy->reject();
+                $result = $this->deleteTemporarily($vacancy);
             }
 
             if ($result) {
@@ -81,10 +83,28 @@ class AdminVacancyService
         }
     }
 
+    protected function deletePermanently(Vacancy $vacancy, AdminDeleteVacancyDto $dto): ?bool
+    {
+        $result = $vacancy->forceDelete();
+
+        $this->dispatcher->dispatch(new VacancyDeletedPermanentlyByAdmin($dto));
+
+        return $result;
+    }
+
+    protected function deleteTemporarily(Vacancy $vacancy): ?bool
+    {
+        $result = $vacancy->delete();
+
+        $vacancy->reject();
+
+        return $result;
+    }
+
     protected function ensureStatusIsCorrect(Vacancy $vacancy): void
     {
-        if ($vacancy->isPublished() || $vacancy->isNotPublished() || $vacancy->isTrashed()) {
-            throw new InvalidArgumentException('Cannot reject vacancy with this incorrect status');
+        if ($vacancy->isPublished() || $vacancy->isNotPublished() || $vacancy->trashed()) {
+            throw new InvalidArgumentException('Cannot perform this action to this vacancy with this incorrect status or when vacancy is trashed.');
         }
     }
 }
