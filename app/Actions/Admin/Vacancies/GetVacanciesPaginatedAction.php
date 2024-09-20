@@ -3,6 +3,7 @@
 namespace App\Actions\Admin\Vacancies;
 
 use App\DTO\Admin\AdminSearchDto;
+use App\Enums\Vacancy\VacancyStatusEnum;
 use App\Persistence\Models\Vacancy;
 use App\Traits\Sortable\VO\SortedValues;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -22,10 +23,12 @@ class GetVacanciesPaginatedAction
     private function getSortedOnly(SortedValues $sortedValues): LengthAwarePaginator
     {
         return Vacancy::withTrashed()
+            ->whereNotIn('status', [VacancyStatusEnum::NOT_APPROVED, VacancyStatusEnum::IN_MODERATION])
             ->sortBy($sortedValues)
             ->paginate(20, [
                 'slug',
                 'title',
+                'status',
                 'employment_type',
                 'response_number',
                 'created_at',
@@ -37,6 +40,7 @@ class GetVacanciesPaginatedAction
     private function getSearchedSorted(AdminSearchDto $searchDto, SortedValues $sortedValues): LengthAwarePaginator
     {
         return Vacancy::withTrashed()
+            ->whereNotIn('status', [VacancyStatusEnum::NOT_APPROVED, VacancyStatusEnum::IN_MODERATION])
             ->search($searchDto)
             ->sortBy($sortedValues)
             ->paginate(20, [
@@ -56,6 +60,10 @@ class GetVacanciesPaginatedAction
             return (object) [
                 'slug' => $vacancy->slug,
                 'title' => $vacancy->title,
+                'status' => (object) [
+                    'name' => $vacancy->status->toString(),
+                    'color' => $vacancy->status->colorTailwind()
+                ],
                 'employment' => $vacancy->employment_type,
                 'responses' => $vacancy->response_number,
                 'createdAt' => $vacancy->createdAtString(),

@@ -22,12 +22,12 @@ class VacancySeeder extends Seeder
             ]);
         }
 
-        $vacancies = Vacancy::all();
+        $vacancies = Vacancy::withTrashed()->get();
 
         foreach ($vacancies as $vacancy) {
+            $vacancy->update(['slug' => Str::lower(Str::slug($vacancy->title).'-'.$vacancy->id)]);
             $randomTechSkills = TechSkill::inRandomOrder()->take(5)->get();
             $vacancy->techSkills()->sync($randomTechSkills);
-            $vacancy->update(['slug' => Str::lower(Str::slug($vacancy->title).'-'.$vacancy->id)]);
         }
     }
 }

@@ -76,8 +76,8 @@ table.want-scroll tr {
     @apply bg-cyan-400;
 }
 
-.bg-custom-stone-500 {
-    @apply bg-yellow-500;
+.bg-custom-dark-stone {
+    @apply bg-[#6a5e4a];
 }
 
 .bg-custom-lime-400 {

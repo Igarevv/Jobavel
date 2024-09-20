@@ -8,6 +8,9 @@
         <div class="container mt-5">
             <div class="row">
                 <div class="col-lg-8">
+                    @if($vacancy->trashed())
+                        <h2 class="fst-italic text-danger fw-bold">Attention! This vacancy is trashed</h2>
+                    @endif
                     <article>
                         <div class="d-flex align-items-center mb-4">
                             <div class="col-md-2">
@@ -215,15 +218,17 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <div class="row mt-2">
-                                        <div class="col-12">
-                                            <button class="btn btn-outline-info" id="show-latest-reject-modal-btn"
-                                                    data-vacancy-slug="{{ $vacancy->slug }}"
-                                                    data-bs-target="#reject-latest-modal" data-bs-toggle="modal">
-                                                Show latest reject info
-                                            </button>
+                                    @if($vacancy->isNotApproved())
+                                        <div class="row mt-2">
+                                            <div class="col-12">
+                                                <button class="btn btn-outline-info" id="show-latest-reject-modal-btn"
+                                                        data-vacancy-slug="{{ $vacancy->slug }}"
+                                                        data-bs-target="#reject-latest-modal" data-bs-toggle="modal">
+                                                    Show latest reject info
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -287,7 +292,39 @@
             <span class="text-danger">{{ $errors->first() }}</span>
         </x-modal.withform>
     </x-modal.index>
-    @pushonce('vite')
+    <x-modal.index id="trashed-info-modal">
+        <div class="modal-header">
+            <h5 class="modal-title">Trash info</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="d-none text-center" id="not-found-trash-message">
+                <h4 id="trash-message" class="fw-bold"></h4>
+            </div>
+            <div class="d-block" id="trash-info-content">
+                <div>
+                    <h5>Reason:</h5>
+                    <p class="mt-3 text-center"><span class="fw-bold" id="trash-reason"></span></p>
+                </div>
+                <div>
+                    <h5>Description:</h5>
+                    <p class="mt-3"><span id="trash-description"></span></p>
+                </div>
+                <div class="d-none" id="optional-block">
+                    <h5>Additional comments:</h5>
+                    <p class="mt-3"><span id="trash-comment"></span></p>
+                </div>
+                <div>
+                    <span class="float-end text-muted" id="trash-performed-time"></span>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+    </x-modal.index>
+
+@pushonce('vite')
         @vite(['resources/assets/js/admin/latestRejectInfo.js'])
     @endpushonce
 </x-layout>

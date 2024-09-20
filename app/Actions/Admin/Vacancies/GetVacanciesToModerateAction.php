@@ -14,10 +14,10 @@ class GetVacanciesToModerateAction
 
     public function handle(SortedValues $sortedValues): LengthAwarePaginator
     {
-        $vacancies = Vacancy::query()
-            ->whereIn('status', [VacancyStatusEnum::IN_MODERATION, VacancyStatusEnum::NOT_APPROVED])
+        $vacancies = Vacancy::withTrashed()
+            ->whereIn('status', [VacancyStatusEnum::IN_MODERATION->value, VacancyStatusEnum::NOT_APPROVED->value])
             ->sortBy($sortedValues)
-            ->paginate(10, ['title', 'slug', 'id', 'created_at', 'status']);
+            ->paginate(10, ['title', 'slug', 'id', 'created_at', 'status', 'deleted_at']);
 
         return $this->prepareData($vacancies);
     }
@@ -33,6 +33,7 @@ class GetVacanciesToModerateAction
                     'color' => $vacancy->status->colorTailwind()
                 ],
                 'createdAt' => $vacancy->createdAtString(),
+                'isTrashed' => $vacancy->trashed()
             ];
         });
     }

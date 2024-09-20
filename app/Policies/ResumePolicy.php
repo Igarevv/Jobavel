@@ -11,14 +11,17 @@ use App\Persistence\Models\User;
 use App\Persistence\Models\Vacancy;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Log;
 
 class ResumePolicy
 {
 
-    public function before(User $user, string $ability): ?true
+    public function before(Admin|User|null $user, string $ability): ?true
     {
-        return $user->hasRole(Admin::SUPER_ADMIN) || $user->hasRole(Admin::ADMIN) ? true : null;
+        if ($user instanceof Admin && $user->hasRole(Admin::ADMIN)) {
+            return true;
+        }
+
+        return null;
     }
 
     public function view(?User $user, Employee $employee, ?Employer $employer = null): Response

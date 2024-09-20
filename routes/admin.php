@@ -18,14 +18,6 @@ use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Vacancy\VacancyEmployerViewController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/admin/confirm-email/{id}/{email}', [EmailVerificationController::class, 'confirmAdminEmailChanging'])
-    ->middleware('signed')
-    ->name('admin.confirm-email-change');
-
-// This route is here because previous reject can view admin and employer (owner of vacancy)
-Route::get('/moderation/vacancy/{vacancy}/previous-reject', [ModerateVacancyController::class, 'latestRejectInfo'])
-    ->name('admin.vacancies.previous-reject');
-
 Route::prefix('admin')->name('admin.')->group(function () {
     /*
     * ---------------------------------
@@ -47,7 +39,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::post('/sign-in', [AdminAuthController::class, 'login'])->name('sign-in');
     });
-    Route::post('/logout', [AdminAuthController::class, 'logout'])->middleware('auth.admin')->name('logout');
+    Route::post('/logout', [AdminAuthController::class, 'logout'])->middleware('auth.admin')->name(
+        'logout'
+    );
 
     Route::prefix('users')->name('users.')->group(function () {
         /*
@@ -63,15 +57,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
             * ---------------------------------
             */
 
-            Route::controller(UnverifiedUsersController::class)->prefix('unverified')->group(function () {
-                Route::get('/', 'index')->name('unverified');
+            Route::controller(UnverifiedUsersController::class)->prefix('unverified')->group(
+                function () {
+                    Route::get('/', 'index')->name('unverified');
 
-                Route::get('/table', 'fetchUnverified')->name('unverified.table');
+                    Route::get('/table', 'fetchUnverified')->name('unverified.table');
 
-                Route::delete('/{identity:user_id}/softdel', 'delete')->name('unverified.delete');
+                    Route::delete('/{identity:user_id}/softdel', 'delete')->name('unverified.delete');
 
-                Route::post('/emails/send-to-unverified', 'sendEmailToVerifyUsers')->name('emails.send');
-            });
+                    Route::post('/emails/send-to-unverified', 'sendEmailToVerifyUsers')->name(
+                        'emails.send'
+                    );
+                }
+            );
 
             /*
             * ---------------------------------
@@ -107,17 +105,21 @@ Route::prefix('admin')->name('admin.')->group(function () {
             * ---------------------------------
             */
 
-            Route::controller(TemporarilyDeletedUsersController::class)->prefix('temporarily-deleted')->group(
-                function () {
-                    Route::get('/', 'index')->name('temporarily-deleted');
+            Route::controller(TemporarilyDeletedUsersController::class)
+                ->prefix('temporarily-deleted')
+                ->group(
+                    function () {
+                        Route::get('/', 'index')->name('temporarily-deleted');
 
-                    Route::get('/table', 'fetchTemporarilyDeletedUsers')->name('temporarily-deleted.table');
+                        Route::get('/table', 'fetchTemporarilyDeletedUsers')->name(
+                            'temporarily-deleted.table'
+                        );
 
-                    Route::post('/{identity:user_id}/give-second-chance', 'sendEmailToRestoreUser')
-                        ->withTrashed()
-                        ->name('temporarily-deleted.restore');
-                }
-            );
+                        Route::post('/{identity:user_id}/give-second-chance', 'sendEmailToRestoreUser')
+                            ->withTrashed()
+                            ->name('temporarily-deleted.restore');
+                    }
+                );
 
             /*
             * ---------------------------------
@@ -184,7 +186,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
                 Route::post('/{vacancy}/delete', 'deleteVacancyByAdmin')->withTrashed()->name('delete');
             });
 
-        Route::get('/vacancy/{vacancy}/trashed', [VacancyEmployerViewController::class, 'showTrashedPreview'])->name('vacancy.trashed');
+        Route::get(
+            '/vacancy/{vacancy}/trashed',
+            [VacancyEmployerViewController::class, 'showTrashedPreview']
+        )->name('vacancy.trashed');
 
         /*
         * ---------------------------------
@@ -245,11 +250,33 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::controller(AdminPermissionsController::class)->group(function () {
             Route::post('/permission/store', 'storePermission')->name('permission.store');
 
-            Route::post('/link-permissions-to-role', 'linkPermissionsToRole')->name('permissions-roles.link');
+            Route::post('/link-permissions-to-role', 'linkPermissionsToRole')->name(
+                'permissions-roles.link'
+            );
 
-            Route::post('/link-permissions-to-admin', 'linkPermissionsToAdmin')->name('permissions-admin.link');
+            Route::post('/link-permissions-to-admin', 'linkPermissionsToAdmin')->name(
+                'permissions-admin.link'
+            );
 
             Route::delete('/permission/{permission}/remove', 'delete')->name('permissions.remove');
         });
     });
 });
+
+
+Route::get('/admin/confirm-email/{id}/{email}', [
+    EmailVerificationController::class,
+    'confirmAdminEmailChanging'
+])->middleware('signed')->name('admin.confirm-email-change');
+
+/*
+ * This routes is here because this actions can view admin and employer (owner of vacancy)
+ */
+Route::controller(ModerateVacancyController::class)->prefix('moderation')
+    ->group(function () {
+        Route::get('/vacancy/{vacancy}/previous-reject', 'latestRejectInfo')
+            ->name('admin.vacancies.previous-reject');
+
+        Route::get('/vacancy/{vacancy}/trash-info', 'latestTrashInfo')
+            ->name('admin.vacancies.trash-info');
+    });

@@ -63,7 +63,7 @@ class VacancyEmployerViewController extends Controller
         if ( ! $vacancyModel->trashed()) {
             abort(404);
         }
-
+        // was trashed by admin не работает
         $employer = $vacancyViewModel->vacancyEmployerData($vacancyModel);
 
         $skills = $vacancyModel->techSkillsAsArrayOfBase();

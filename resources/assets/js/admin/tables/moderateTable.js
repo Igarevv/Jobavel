@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         </th>
                         <td class="px-3 py-4">
                             <a href="/admin/vacancies/moderate/${vacancy.slug}/view" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">${vacancy.title}</a>
+                            ${vacancy.isTrashed ? `<span class="text-red-500 text-sm font-bold">(Trashed)</span>` : ''}
                         </td>
                         <td class="px-3 py-4"><span class="${vacancy.status.color} p-1">${vacancy.status.name}</span></td>
                         <td class="px-3 py-4">
@@ -87,15 +88,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 descIcon.classList.add('text-red-100', 'dark:text-white');
             }
 
-            const searchBy = document.getElementById('searchBy').value || searchParams.get('searchBy');
-            const search = document.getElementById('search-dropdown').value || searchParams.get('search');
-
             fetchData('/admin/vacancies/moderate/table', {
                 page: 1,
                 sort,
                 direction,
-                searchBy: searchBy || null,
-                search: search || null,
             }, tableBody, data => renderTable(data, tableBody, renderRow), data => renderPagination(data, paginationContainer, onPageClick));
         });
     });

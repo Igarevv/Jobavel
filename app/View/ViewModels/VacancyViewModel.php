@@ -21,15 +21,15 @@ class VacancyViewModel
     ) {
     }
 
-    public function vacancy(int $vacancy, array $columns = ['*']): Vacancy
+    public function vacancy(int $vacancy, array $columns = ['*'], bool $withTrashed = false): Vacancy
     {
         $cacheKey = $this->cache->getCacheKey('vacancy', $vacancy);
 
         return $this->cache->repository()->remember(
             $cacheKey,
             CarbonInterval::month()->totalSeconds,
-            function () use ($vacancy, $columns) {
-                return $this->vacancyRepository->getVacancyById($vacancy, $columns);
+            function () use ($vacancy, $columns, $withTrashed) {
+                return $this->vacancyRepository->getVacancyById($vacancy, $columns, $withTrashed);
             }
         );
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Admin\Vacancies;
 
 use App\Actions\Admin\Vacancies\GetPreviousRejectVacancyInfoAction as PreviousRejectAction;
+use App\Actions\Admin\Vacancies\GetPreviousTrashInfoAction as PreviousTrashAction;
 use App\Actions\Admin\Vacancies\GetVacanciesToModerateAction as Action;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Vacancy\AdminRejectVacancyRequest as RejectRequest;
@@ -41,7 +42,7 @@ class ModerateVacancyController extends Controller
 
     public function vacancyModerateView(Vacancy $vacancy, VacancyVM $vacancyVm, SKillsVM $skillsVm): View
     {
-        $vacancyModel = $vacancyVm->vacancy($vacancy->getIdFromSlug());
+        $vacancyModel = $vacancyVm->vacancy($vacancy->getIdFromSlug(), withTrashed: true);
 
         $this->authorize('moderate', [Admin::class, $vacancyModel]);
 
@@ -89,7 +90,24 @@ class ModerateVacancyController extends Controller
     {
         $vacancyModel = $vacancy->createFromSlug('id', 'status', 'employer_id');
 
-        $this->authorize('viewRejectInfo', [Admin::class, $vacancyModel]);
+        if (auth('admin')->check()) {
+            auth()->shouldUse('admin');
+        }
+
+        $this->authorize('viewActionsInfo', [Admin::class, $vacancyModel]);
+
+        return response()->json($action->handle($vacancyModel));
+    }
+
+    public function latestTrashInfo(SlugVacancy $vacancy, PreviousTrashAction $action): JsonResponse
+    {
+        $vacancyModel = $vacancy->createFromSlug('id', 'status', 'employer_id');
+
+        if (auth('admin')->check()) {
+            auth()->shouldUse('admin');
+        }
+
+        $this->authorize('viewActionsInfo', [Admin::class, $vacancyModel]);
 
         return response()->json($action->handle($vacancyModel));
     }

@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let searchParams = new URLSearchParams(window.location.search);
 
     function renderRow(vacancy, index, data) {
-        const linkToVacancy = vacancy.isTrashed ? '/admin/vacancy/' + vacancy.slug + '/trashed' : '/vacancies/' + vacancy.slug;
+        const linkToVacancy = vacancy.isTrashed ? `/admin/vacancy/${vacancy.slug}/trashed` : `/vacancies/${vacancy.slug}`
         return `
             <tr class="tbody-content-row bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <a href="${linkToVacancy}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">${vacancy.title}</a>
                             ${vacancy.isTrashed ? `<span class="text-red-500 text-sm font-bold">(Trashed)</span>` : ''}
                         </td>
+                        <td class="px-3 py-4"><span class="${vacancy.status.color} p-1">${vacancy.status.name}</span></td>
                         <td class="px-3 py-4">${vacancy.employment}</td>
                         <td class="px-3 py-4">${vacancy.responses}</td>
                         <td class="px-3 py-4">

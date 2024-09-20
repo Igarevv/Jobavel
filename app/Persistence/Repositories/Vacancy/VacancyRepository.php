@@ -48,8 +48,12 @@ class VacancyRepository implements VacancyRepositoryInterface
         });
     }
 
-    public function getVacancyById(int $id, array $columns = ['*']): Vacancy
+    public function getVacancyById(int $id, array $columns = ['*'], bool $withTrashed = false): Vacancy
     {
+        if ($withTrashed) {
+            return Vacancy::withTrashed()->with(['techSkills:id,skill_name'])->findOrFail($id, $columns);
+        }
+
         return Vacancy::with(['techSkills:id,skill_name'])->findOrFail($id, $columns);
     }
 

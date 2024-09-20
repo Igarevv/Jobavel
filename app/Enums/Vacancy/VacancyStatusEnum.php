@@ -46,7 +46,7 @@ enum VacancyStatusEnum: int
             self::IN_MODERATION => 'bg-custom-cyan-400 text-white',
             self::PUBLISHED => 'bg-custom-lime-400 text-white',
             self::NOT_APPROVED => 'bg-custom-red text-white',
-            self::TRASHED => 'bg-custom-stone-500 text-white',
+            self::TRASHED => 'bg-custom-dark-stone text-white',
             self::NOT_PUBLISHED => 'bg-custom-yellow-500 text-white',
             self::APPROVED => 'bg-custom-green-50 text-green-500'
         };

@@ -4,6 +4,9 @@
 
     <x-header></x-header>
 
+    @php
+    $wasDeletedByAdmin = $vacancy->wasTrashedByAdmin();
+    @endphp
     <x-main>
         <div class="container mt-5">
             <div class="row">
@@ -201,24 +204,39 @@
                             <div class="card w-75 border border-dark rounded mb-4">
                                 <div class="card-body d-flex flex-column">
                                     <h5 class="card-title text-center fw-bold">Actions for you</h5>
-                                    <div class="d-flex justify-content-between align-items-center gap-3">
-                                        <form
-                                                action="{{ route('employer.vacancy.restore', ['vacancy' => $vacancy->slug]) }}"
-                                                method="POST">
-                                            @csrf
-                                            <x-button.outline colorType="success"
-                                                              type="submit">Restore
-                                            </x-button.outline>
-                                        </form>
-                                        <form
-                                                action="{{ route('employer.vacancy.delete-forever', ['vacancy' => $vacancy->slug]) }}"
-                                                method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <x-button.outline colorType="danger"
-                                                              type="submit">Delete forever
-                                            </x-button.outline>
-                                        </form>
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-12 mb-3">
+                                                <form
+                                                    action="{{ route('employer.vacancy.restore', ['vacancy' => $vacancy->slug]) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    <x-button.outline colorType="success" class="w-100"
+                                                                      type="submit">Restore
+                                                    </x-button.outline>
+                                                </form>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <form
+                                                    action="{{ route('employer.vacancy.delete-forever', ['vacancy' => $vacancy->slug]) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <x-button.outline colorType="danger" class="w-100"
+                                                                      type="submit">Delete forever
+                                                    </x-button.outline>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        @if($wasDeletedByAdmin)
+                                            <div class="col-12">
+                                                <x-button.default colorType="danger" id="open-button-trashed-modal" class="w-100"
+                                                                  data-bs-target="#trashed-info-modal" data-bs-toggle="modal"
+                                                                  data-vacancy-slug="{{ $vacancy->slug }}"
+                                                                  type="button">Why this vacancy was trashed by service?
+                                                </x-button.default>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -228,10 +246,17 @@
                         <div class="card w-75 border border-dark rounded mb-4">
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title text-center fw-bold">Admin actions</h5>
-                                <div class="d-flex justify-content-center align-items-center gap-3">
+                                <div class="d-flex justify-content-center align-items-center gap-3 flex-column">
+                                    @if($wasDeletedByAdmin)
+                                        <x-button.default colorType="info" id="open-button-trashed-modal" class="w-100"
+                                                          data-bs-target="#trashed-info-modal" data-bs-toggle="modal"
+                                                          data-vacancy-slug="{{ $vacancy->slug }}"
+                                                          type="button">Why this vacancy was trashed by service?
+                                        </x-button.default>
+                                    @endif
                                     <x-button.default class="float-end mt-3" colorType="danger"
                                                       data-bs-toggle="modal" data-bs-target="#delete-forever-modal">
-                                        Delete vacancy
+                                        Permanently delete vacancy
                                     </x-button.default>
                                 </div>
                             </div>
@@ -278,6 +303,39 @@
             @endsession
         </x-modal.withform>
     </x-modal.index>
+
+    <x-modal.index id="trashed-info-modal">
+        <div class="modal-header">
+            <h5 class="modal-title">Trash info</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="d-none text-center" id="not-found-trash-message">
+                <h4 id="trash-message" class="fw-bold"></h4>
+            </div>
+            <div class="d-block" id="trash-info-content">
+                <div>
+                    <h5>Reason:</h5>
+                    <p class="mt-3 text-center"><span class="fw-bold" id="trash-reason"></span></p>
+                </div>
+                <div>
+                    <h5>Description:</h5>
+                    <p class="mt-3"><span id="trash-description"></span></p>
+                </div>
+                <div class="d-none" id="optional-block">
+                    <h5>Additional comments:</h5>
+                    <p class="mt-3"><span id="trash-comment"></span></p>
+                </div>
+                <div>
+                    <span class="float-end text-muted" id="trash-performed-time"></span>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+    </x-modal.index>
+
     <x-footer></x-footer>
     @if($errors->any())
         <script type="module">
@@ -286,4 +344,8 @@
           });
         </script>
     @endif
+
+    @pushonce('vite')
+        @vite(['resources/assets/js/admin/vacancyTrashInfo.js'])
+    @endpushonce
 </x-layout>

@@ -8,6 +8,7 @@ use App\Enums\Actions\AdminActionEnum;
 use App\Enums\Admin\DeleteVacancyTypeEnum as DeleteEnum;
 use App\Persistence\Models\AdminAction;
 use App\Persistence\Models\Vacancy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
@@ -30,6 +31,7 @@ class AdminVacancyService
                 $result = $vacancy->forceDelete();
             } else {
                 $result = $vacancy->delete();
+                $vacancy->reject();
             }
 
             if ($result) {
@@ -49,7 +51,10 @@ class AdminVacancyService
         if ($vacancy->isNotApproved() || $vacancy->isInModeration()) {
             DB::transaction(function () use ($vacancy) {
                 AdminAction::query()->where('actionable_id', $vacancy->id)
-                    ->where('action_name', AdminActionEnum::REJECT_VACANCY_ACTION->value)
+                    ->where(function (Builder $builder) {
+                        $builder->where('action_name', AdminActionEnum::REJECT_VACANCY_ACTION)
+                            ->orWhere('action_name', AdminActionEnum::DELETE_VACANCY_TEMP_ACTION);
+                    })
                     ->delete();
 
                 $vacancy->approve();

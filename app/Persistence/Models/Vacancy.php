@@ -2,6 +2,7 @@
 
 namespace App\Persistence\Models;
 
+use App\Enums\Actions\AdminActionEnum;
 use App\Enums\Vacancy\ExperienceEnum;
 use App\Enums\Vacancy\VacancyStatusEnum;
 use App\Observers\VacancyObserver;
@@ -104,6 +105,14 @@ class Vacancy extends Model
     public function actionsMadeByAdmin(): MorphMany
     {
         return $this->morphMany(AdminAction::class, 'actionable');
+    }
+
+    public function wasTrashedByAdmin(): bool
+    {
+        return $this->actionsMadeByAdmin()
+            ->where('action_name', AdminActionEnum::DELETE_VACANCY_TEMP_ACTION)
+            ->latest('action_performed_at')
+            ->exists();
     }
 
     public function scopeNotPublished(Builder $builder): Builder

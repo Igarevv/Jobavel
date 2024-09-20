@@ -6,11 +6,8 @@ use App\Actions\Employee\GetEmployeeCvFileAction;
 use App\Actions\Employee\GetEmployeeInfoAction;
 use App\Http\Controllers\Controller;
 use App\Persistence\Models\Employee;
-use App\Persistence\Models\TechSkill;
 use App\View\ViewModels\SkillsViewModel;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -24,6 +21,10 @@ class DisplayCvController extends Controller
 
     public function showResume(Request $request, Employee $employee): BinaryFileResponse|View
     {
+        if (auth('admin')->check()) {
+            auth()->shouldUse('admin');
+        }
+
         $this->authorize('view', [$employee, $request->user()?->employer]);
 
         $this->validate($request, ['type' => 'in:file,manual']);
