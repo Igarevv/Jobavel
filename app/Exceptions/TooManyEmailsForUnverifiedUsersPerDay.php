@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Exceptions;
 
-class TooManyEmailsForUnverifiedUsersPerDay extends \Exception
+use Exception;
+
+class TooManyEmailsForUnverifiedUsersPerDay extends Exception
 {
 
 }

@@ -14,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Throwable;
 
 class AdminPermissionsController
 {
@@ -23,7 +24,7 @@ class AdminPermissionsController
 
         try {
             Permission::create(['name' => $data['permission'], 'guard' => $data['guard']]);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             throw new PermissionsException($e->getMessage(), $e->getCode());
         }
 

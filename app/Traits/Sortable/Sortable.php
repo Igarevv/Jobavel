@@ -6,6 +6,7 @@ namespace App\Traits\Sortable;
 
 use App\Traits\Sortable\VO\SortedValues;
 use Illuminate\Database\Eloquent\Builder;
+use InvalidArgumentException;
 
 trait Sortable
 {
@@ -20,7 +21,7 @@ trait Sortable
                 ->implode(',');
 
             return $builder->orderByRaw($parts);
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             return $builder;
         }
     }
@@ -37,7 +38,7 @@ trait Sortable
             return $fieldAlias;
         }
 
-        throw new \InvalidArgumentException("Field {$fieldAlias} not exists. Check your sortableFields() method");
+        throw new InvalidArgumentException("Field {$fieldAlias} not exists. Check your sortableFields() method");
     }
 
     abstract protected function sortableFields(): array;

@@ -8,6 +8,7 @@ use App\Persistence\Contracts\VerificationCodeRepositoryInterface;
 use App\Persistence\Models\Employer;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use stdClass;
 
 class VerificationCodeRepository implements VerificationCodeRepositoryInterface
 {
@@ -41,7 +42,7 @@ class VerificationCodeRepository implements VerificationCodeRepositoryInterface
         });
     }
 
-    public function getCodeByUserId(string $userId): ?\stdClass
+    public function getCodeByUserId(string $userId): ?stdClass
     {
         return DB::table('verification_codes')->where('user_id', $userId)->first();
     }

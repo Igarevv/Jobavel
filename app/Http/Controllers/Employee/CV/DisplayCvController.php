@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Employee\СV;
+namespace App\Http\Controllers\Employee\CV;
 
 use App\Actions\Employee\GetEmployeeCvFileAction;
 use App\Actions\Employee\GetEmployeeInfoAction;

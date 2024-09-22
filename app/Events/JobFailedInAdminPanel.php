@@ -9,7 +9,10 @@ use Throwable;
 
 class JobFailedInAdminPanel
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     public function __construct(
         public readonly ?Throwable $exception

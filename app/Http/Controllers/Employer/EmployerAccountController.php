@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Employer\UpdateEmployerRequest;
 use App\Service\Account\Employer\CodeVerificationService;
 use App\Service\Account\Employer\EmployerAccountService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -59,7 +60,7 @@ class EmployerAccountController extends Controller
         return back()->with('verification-success', trans('alerts.employer-account.email-verified'));
     }
 
-    public function resendCode(Request $request): \Illuminate\Http\JsonResponse
+    public function resendCode(Request $request): JsonResponse
     {
         $this->verificationService->resendEmail(session('user.emp_id'));
 

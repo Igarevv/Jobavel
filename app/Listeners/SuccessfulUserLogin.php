@@ -16,8 +16,8 @@ class SuccessfulUserLogin
             session([
                 'user' => [
                     'account_id' => $event->user->user_id,
-                    'emp_id' => $user->getUuid(),
-                    'name' => $user->getFullName(),
+                    'emp_id' => $user?->getUuid(),
+                    'name' => $user?->getFullName(),
                     'role' => $event->user->getRole(),
                 ],
             ]);

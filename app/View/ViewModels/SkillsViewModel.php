@@ -10,6 +10,7 @@ use App\Service\Cache\Cache;
 use Carbon\CarbonInterval;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use stdClass;
 
 class SkillsViewModel
 {
@@ -47,7 +48,7 @@ class SkillsViewModel
             return null;
         }
 
-        return $skills->implode(function (\stdClass $skill) {
+        return $skills->implode(function (stdClass $skill) {
             return $skill->skillName;
         }, $delimiter);
     }

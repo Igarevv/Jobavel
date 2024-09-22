@@ -7,6 +7,7 @@ use App\Events\UserAccountRestored;
 use App\Mail\RestoreAccountMail;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
+use Throwable;
 
 class SendEmailToUserWhoWantsToRestoreAccount implements ShouldQueue
 {
@@ -19,7 +20,7 @@ class SendEmailToUserWhoWantsToRestoreAccount implements ShouldQueue
         }
     }
 
-    public function failed(UserAccountRestored $accountRestored, \Throwable $throwable): void
+    public function failed(UserAccountRestored $accountRestored, Throwable $throwable): void
     {
         event(new JobFailedInAdminPanel($throwable));
     }

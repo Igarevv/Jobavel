@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Throwable;
 
 class VacancyRepository implements VacancyRepositoryInterface
 {
@@ -78,7 +79,7 @@ class VacancyRepository implements VacancyRepositoryInterface
 
                 $vacancy->techSkills()->sync($newData->skillSet);
             });
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             throw new VacancyUpdateException($e->getMessage(), $e->getCode());
         }
     }

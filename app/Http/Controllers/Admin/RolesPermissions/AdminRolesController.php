@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Throwable;
 
 class AdminRolesController extends Controller
 {
@@ -32,7 +33,7 @@ class AdminRolesController extends Controller
 
         try {
             Role::create(['name' => $data['role'], 'guard_name' => $data['guard']]);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             throw new RoleException($e);
         }
 

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Exceptions;
 
-class UnknownUserTryToVerifyCodeException extends \Exception
+use Exception;
+
+class UnknownUserTryToVerifyCodeException extends Exception
 {
     public function render(): never
     {

@@ -1,13 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Employee\СV;
+namespace App\Http\Controllers\Employee\CV;
 
-use App\Actions\Employee\GetEmployeeCvFileAction;
-use App\Actions\Employee\GetEmployeeInfoAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Employee\UploadCvRequest;
 use App\Persistence\Models\Employee;
-use App\Persistence\Models\TechSkill;
 use App\Persistence\Models\Vacancy;
 use App\Service\Employer\Storage\EmployeeCvService;
 use Illuminate\Http\RedirectResponse;

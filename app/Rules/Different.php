@@ -15,7 +15,7 @@ class Different implements ValidationRule
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if ($value === request()->get($this->fieldName)) {
+        if ($value === request()?->get($this->fieldName)) {
             $fail("The $this->messageAttribute cannot be same.");
         }
     }

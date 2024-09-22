@@ -21,6 +21,7 @@ use App\Persistence\Repositories\User\UserRepository;
 use App\Persistence\Repositories\Vacancy\VacancyRepository;
 use App\Service\Cache\Cache;
 use App\Traits\Searchable\SearchDtoInterface;
+use BadMethodCallException;
 use Clockwork\Support\Laravel\ClockworkServiceProvider;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Contracts\Foundation\Application;
@@ -69,7 +70,7 @@ class AppServiceProvider extends ServiceProvider
             if (method_exists($model, 'search')) {
                 return $model->search($this, $searchDto);
             }
-            throw new \BadMethodCallException("Method search does not exist on model ".get_class($model));
+            throw new BadMethodCallException("Method search does not exist on model ".get_class($model));
         });
     }
 

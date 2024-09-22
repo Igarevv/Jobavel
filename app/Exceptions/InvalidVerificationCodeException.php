@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Exceptions;
 
-class InvalidVerificationCodeException extends \Exception
+use Exception;
+
+class InvalidVerificationCodeException extends Exception
 {
 
 }

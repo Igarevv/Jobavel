@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\URL;
 
 class NeedToVerifyEmailOrAccountWillDeleteMail extends Mailable
 {
-    use Queueable, SerializesModels;
+
+    use Queueable;
+    use SerializesModels;
 
     public function __construct(
         private User $user

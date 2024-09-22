@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Exceptions;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Throwable;
 
 class FormDefaultDataModifiedException extends HttpException
 {
@@ -15,7 +16,7 @@ class FormDefaultDataModifiedException extends HttpException
         int $statusCode,
         string $fallbackUrl,
         string $message = '',
-        ?\Throwable $previous = null,
+        ?Throwable $previous = null,
         array $headers = [],
         int $code = 0
     ) {

@@ -6,6 +6,7 @@ use App\Persistence\Models\User;
 use Database\Factories\Persistence\Models\UserFactory;
 use Illuminate\Console\Command;
 use Spatie\Permission\Models\Role;
+use Throwable;
 
 class RetrieveUserForLogin extends Command
 {
@@ -36,7 +37,7 @@ class RetrieveUserForLogin extends Command
             $this->table(['Email', 'Password'], [[$user->email, UserFactory::TEST_PASSWORD]]);
 
             $this->newLine();
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             $this->error('Something went wrong when retrieve user from db: ', $throwable->getMessage());
         }
     }

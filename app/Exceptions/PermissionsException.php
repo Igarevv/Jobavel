@@ -2,10 +2,11 @@
 
 namespace App\Exceptions;
 
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
 
-class PermissionsException extends \Exception
+class PermissionsException extends Exception
 {
     public function report(): void
     {

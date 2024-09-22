@@ -8,7 +8,10 @@ use Illuminate\Queue\SerializesModels;
 
 class AdminUpdateEmail
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     public function __construct(
         public readonly string $id,

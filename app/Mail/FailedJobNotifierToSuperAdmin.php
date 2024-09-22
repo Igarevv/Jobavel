@@ -11,7 +11,9 @@ use Throwable;
 
 class FailedJobNotifierToSuperAdmin extends Mailable
 {
-    use Queueable, SerializesModels;
+
+    use Queueable;
+    use SerializesModels;
 
     public function __construct(
         private ?Throwable $throwable

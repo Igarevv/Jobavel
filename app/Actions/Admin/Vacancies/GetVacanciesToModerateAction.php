@@ -22,7 +22,7 @@ class GetVacanciesToModerateAction
         return $this->prepareData($vacancies);
     }
 
-    private function prepareData(LengthAwarePaginator $vacancies)
+    private function prepareData(LengthAwarePaginator $vacancies): LengthAwarePaginator
     {
         return $vacancies->through(function (Vacancy $vacancy) {
             return (object)[

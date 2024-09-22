@@ -31,7 +31,7 @@ class AdminPolicy
 
     public function viewActionsInfo(Admin|User|null $user, Vacancy $vacancy): Response
     {
-        if ($user instanceof User && $user?->employer->id === $vacancy->employer_id) {
+        if ($user instanceof User && $user->employer->id === $vacancy->employer_id) {
             return Response::allow();
         }
 

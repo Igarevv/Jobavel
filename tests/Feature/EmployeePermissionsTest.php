@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature;
+namespace Tests\Feature;
 
 use App\Persistence\Models\Employee;
 use App\Persistence\Models\Employer;

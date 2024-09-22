@@ -9,6 +9,7 @@ use App\Service\Admin\FirstLoginService;
 use Database\Seeders\AdminSeeder;
 use Database\Seeders\PermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mockery;
 use Tests\TestCase;
 
 class AdminAccountServiceTest extends TestCase
@@ -26,11 +27,11 @@ class AdminAccountServiceTest extends TestCase
     {
         $admin = Admin::factory()->create();
 
-        $firstLogin = \Mockery::mock(FirstLoginService::class);
+        $firstLogin = Mockery::mock(FirstLoginService::class);
 
         $accountService = new AccountService($firstLogin);
 
-        $accountDtoMock = \Mockery::mock(AdminAccountDto::class);
+        $accountDtoMock = Mockery::mock(AdminAccountDto::class);
         $accountDtoMock->shouldReceive('getFirstName')
             ->andReturn($admin->first_name);
         $accountDtoMock->shouldReceive('getLastName')
@@ -39,6 +40,6 @@ class AdminAccountServiceTest extends TestCase
         $accountService->updateName($admin, $accountDtoMock);
         $admin->refresh();
 
-        $this->assertEquals($admin->last_name, 'Doe');
+        $this->assertEquals('Doe', $admin->last_name);
     }
 }

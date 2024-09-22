@@ -11,6 +11,7 @@ use App\Persistence\Contracts\AdminFirstLoginRepositoryInterface;
 use App\Persistence\Models\Admin;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use stdClass;
 
 class AdminAuthRepository implements AdminAuthRepositoryInterface, AdminFirstLoginRepositoryInterface
 {
@@ -51,7 +52,7 @@ class AdminAuthRepository implements AdminAuthRepositoryInterface, AdminFirstLog
             ]);
     }
 
-    public function getAdminFirstLogin(Admin $admin): ?\stdClass
+    public function getAdminFirstLogin(Admin $admin): ?stdClass
     {
         return DB::table('admins_login')->where('admin_id', $admin->admin_id)->first();
     }

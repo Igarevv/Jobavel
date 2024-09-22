@@ -7,6 +7,7 @@ namespace App\Service\Cache;
 use Illuminate\Cache\TaggedCache;
 use Illuminate\Contracts\Cache\Repository as CacheRepository;
 use Illuminate\Support\Facades\Cache as LaravelCache;
+use InvalidArgumentException;
 
 final class Cache
 {
@@ -19,7 +20,7 @@ final class Cache
         $configKey = config('cache.keys.'.$prefix);
 
         if ($configKey === null) {
-            throw new \InvalidArgumentException('Cache key prefix must be defined in cache config in \'keys\' array');
+            throw new InvalidArgumentException('Cache key prefix must be defined in cache config in \'keys\' array');
         }
 
         return $identifier === null ? $configKey : sprintf($configKey, $identifier);

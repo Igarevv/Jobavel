@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature;
+namespace Tests\Feature;
 
 use App\Persistence\Models\User;
 use Database\Factories\Persistence\Models\UserFactory;
@@ -10,11 +10,6 @@ use Tests\TestCase;
 class AdminUsersTest extends TestCase
 {
     use RefreshDatabase;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
 
     public function test_deleted_users_cannot_login_to_account(): void
     {
@@ -31,4 +26,6 @@ class AdminUsersTest extends TestCase
             'email' => 'Wrong email or password. Please try again'
         ]);
     }
+
+
 }

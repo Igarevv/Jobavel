@@ -13,7 +13,8 @@ use Illuminate\Queue\SerializesModels;
 class VacancyDeletedPermanently extends Mailable
 {
 
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public function __construct(
         private Employer $employer,

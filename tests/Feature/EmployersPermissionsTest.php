@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature;
+namespace Tests\Feature;
 
 use App\Enums\Vacancy\VacancyStatusEnum;
 use App\Exceptions\VacancyInModerationException;

@@ -10,7 +10,9 @@ use Illuminate\Queue\SerializesModels;
 
 class UserDeletedMail extends Mailable
 {
-    use Queueable, SerializesModels;
+
+    use Queueable;
+    use SerializesModels;
 
     public function envelope(): Envelope
     {

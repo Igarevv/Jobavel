@@ -206,6 +206,28 @@ class BanUserTest extends TestCase
         ]);
     }
 
+    public function test_banned_users_cannot_be_logged_in(): void
+    {
+        $employer = $this->makeAdditionalEmployer();
+
+        $dto = $this->makeBanDto($employer, ReasonToBanEmployerEnum::SPAM, BanDurationEnum::MONTH);
+        $this->vacancyService->shouldReceive('unpublishAllVacanciesForEmployer');
+
+        $banService = $this->makeBanService($this->logActionService, $this->dispatcher, $this->vacancyService);
+
+        $responseWhenUserNotBanned = $this->actingAs($employer->user)
+            ->get(route('home'));
+
+        $responseWhenUserNotBanned->assertOk();
+
+        $banService->ban($dto);
+
+        $response = $this->actingAs($employer->user)
+            ->get(route('home'));
+
+        $response->assertForbidden()->assertSee('Your account has been suspended');
+    }
+
     protected function makeBanDto(
         Model $actionableModel,
         AdminReasonEnumInterface $reason,
