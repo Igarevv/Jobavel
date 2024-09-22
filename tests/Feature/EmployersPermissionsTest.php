@@ -2,6 +2,9 @@
 
 namespace Feature;
 
+use App\Enums\Vacancy\VacancyStatusEnum;
+use App\Exceptions\VacancyInModerationException;
+use App\Exceptions\VacancyIsNotApprovedException;
 use App\Persistence\Models\Employee;
 use App\Persistence\Models\Employer;
 use App\Persistence\Models\User;
@@ -16,6 +19,7 @@ use Tests\TestCase;
 
 class EmployersPermissionsTest extends TestCase
 {
+
     use RefreshDatabase;
 
     private Collection $usersAsEmployer;
@@ -161,17 +165,57 @@ class EmployersPermissionsTest extends TestCase
             ->withSession(['user' => ['emp_id' => $userAsEmployee->employee->employee_id]])
             ->post(route('vacancies.employee.apply', ['vacancy' => $vacancy->slug]), [
                 'cvType' => Employee::CV_TYPE_MANUAL,
-                'useCurrentEmail' => true
+                'useCurrentEmail' => true,
             ]);
 
         $responseStrangerEmployerWantsViewEmployeeResume = $this->actingAs($this->usersAsEmployer[1])
-            ->get(route('employee.resume', ['employee' => $userAsEmployee->employee->employee_id, 'type' => 'manual']));
+            ->get(
+                route(
+                    'employee.resume',
+                    ['employee' => $userAsEmployee->employee->employee_id, 'type' => 'manual']
+                )
+            );
 
         $responseVacancyOwnerWantsViewEmployeeResume = $this->actingAs($userAsEmployer)
-            ->get(route('employee.resume', ['employee' => $userAsEmployee->employee->employee_id, 'type' => 'manual']));
+            ->get(
+                route(
+                    'employee.resume',
+                    ['employee' => $userAsEmployee->employee->employee_id, 'type' => 'manual']
+                )
+            );
 
         $responseStrangerEmployerWantsViewEmployeeResume->assertNotFound();
         $responseVacancyOwnerWantsViewEmployeeResume->assertOk();
+    }
+
+    public function test_employer_cannot_publish_not_approved_vacancy(): void
+    {
+        $vacancy = $this->generateVacancy($this->usersAsEmployer->first()->employer);
+
+        $vacancy->status = VacancyStatusEnum::IN_MODERATION;
+        $vacancy->save();
+
+        $responseWhenVacancyInModeration = $this->actingAs($this->usersAsEmployer->first())
+            ->post(
+                route('employer.vacancy.publish', ['vacancy' => $vacancy->slug])
+            );
+
+        $responseWhenVacancyInModeration->assertSessionHas(
+            'errors-publish',
+            (new VacancyInModerationException())->getMessage()
+        );
+
+        $vacancy->status = VacancyStatusEnum::NOT_APPROVED;
+        $vacancy->save();
+
+        $responseWhenVacancyNotApproved = $this->post(
+            route('employer.vacancy.publish', ['vacancy' => $vacancy->slug])
+        );
+
+        $responseWhenVacancyNotApproved->assertSessionHas(
+            'errors-publish',
+            (new VacancyIsNotApprovedException())->getMessage()
+        );
     }
 
     private function generateVacancy(Employer $employer): Vacancy
@@ -184,4 +228,5 @@ class EmployersPermissionsTest extends TestCase
 
         return $vacancy;
     }
+
 }

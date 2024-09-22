@@ -88,6 +88,7 @@ document.addEventListener('click', async function (e) {
                             link: `/vacancies/${vacancy.slug}`
                         },
                         vacancy.location,
+                        vacancy.status,
                         vacancy.employment,
                         vacancy.response,
                         vacancy.publishedAt,
@@ -97,14 +98,15 @@ document.addEventListener('click', async function (e) {
                     cells.forEach((cell, index) => {
                         const td = document.createElement('td');
                         td.className = 'px-3 py-4';
-
                         if (index === 0 && cell.link) {
                             const a = document.createElement('a');
                             a.href = cell.link;
                             a.className = 'font-medium text-blue-600 dark:text-blue-500 hover:underline';
                             a.textContent = cell.content;
                             td.appendChild(a);
-                        } else {
+                        } else if (index === 2 && cell && typeof cell === 'object' && 'name' in cell && 'color' in cell) {
+                            td.innerHTML = `<span class="p-1 ${cell.color}">${cell.name}</span>`;
+                        }  else {
                             td.textContent = cell;
                         }
 

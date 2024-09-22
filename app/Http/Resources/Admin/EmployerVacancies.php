@@ -14,6 +14,10 @@ class EmployerVacancies extends JsonResource
             return (object) [
                 'id' => $vacancy->id,
                 'slug' => $vacancy->slug,
+                'status' => (object) [
+                    'name' => $vacancy->status->toString(),
+                    'color' => $vacancy->status->colorTailwind()
+                ],
                 'title' => $vacancy->title,
                 'location' => $vacancy->location,
                 'employment' => $vacancy->employment_type,

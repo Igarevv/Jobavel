@@ -24,7 +24,7 @@ class EmployerViewModel
         [$today, $month] = $employer->appliedVacanciesForTodayAndMonth();
 
         return (object)[
-            'totalVacancies' => $employer->vacancy()->count(),
+            'totalVacancies' => $employer->vacancies()->count(),
             'skills' => $topSkills,
             'today' => $today,
             'month' => $month

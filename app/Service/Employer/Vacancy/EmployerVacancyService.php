@@ -11,6 +11,6 @@ class EmployerVacancyService
 {
     public function unpublishAllVacanciesForEmployer(Employer $employer): void
     {
-        $employer->vacancy()->update(['status' => VacancyStatusEnum::TRASHED]);
+        $employer->vacancies()->update(['status' => VacancyStatusEnum::TRASHED->value]);
     }
 }

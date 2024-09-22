@@ -8,7 +8,7 @@ use App\DTO\Vacancy\VacancyDto;
 use App\Enums\Vacancy\VacancyStatusEnum as Status;
 use App\Exceptions\NotEnoughInfoToContinueException;
 use App\Exceptions\VacancyInModerationException;
-use App\Exceptions\VacancyIsNotApproved;
+use App\Exceptions\VacancyIsNotApprovedException;
 use App\Persistence\Contracts\EmployerAccountRepositoryInterface;
 use App\Persistence\Contracts\VacancyRepositoryInterface;
 use App\Persistence\Filters\Manual\FilterInterface;
@@ -66,7 +66,7 @@ class VacancyService
         }
 
         if ($vacancy->status === Status::NOT_APPROVED) {
-            throw new VacancyIsNotApproved();
+            throw new VacancyIsNotApprovedException();
         }
 
         if (Str::of($vacancy->employer->company_description)->isEmpty()) {

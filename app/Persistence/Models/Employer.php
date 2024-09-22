@@ -42,6 +42,7 @@ class Employer extends Model
 
     protected $fillable = [
         'user_id',
+        'status',
         'company_name',
         'contact_email',
         'company_description',
@@ -64,7 +65,7 @@ class Employer extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function vacancy(): HasMany
+    public function vacancies(): HasMany
     {
         return $this->hasMany(Vacancy::class);
     }

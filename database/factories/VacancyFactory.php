@@ -26,16 +26,11 @@ class VacancyFactory extends Factory
     {
         $status = Arr::random([
             VacancyStatusEnum::PUBLISHED,
-            VacancyStatusEnum::TRASHED,
             VacancyStatusEnum::IN_MODERATION
         ]);
 
         if ($status === VacancyStatusEnum::PUBLISHED) {
             $publishedAt = now();
-        }
-
-        if ($status === VacancyStatusEnum::TRASHED) {
-            $deletedAt = now();
         }
 
         return [
@@ -59,7 +54,6 @@ class VacancyFactory extends Factory
             'salary' => $this->faker->numberBetween(0, 5000),
             'status' => $status,
             'published_at' => $publishedAt ?? null,
-            'deleted_at' => $deletedAt ?? null
         ];
     }
 
@@ -78,7 +72,7 @@ class VacancyFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'status' => VacancyStatusEnum::PUBLISHED->value,
-                'published_at' => now()
+                'published_at' => now(),
             ];
         });
     }

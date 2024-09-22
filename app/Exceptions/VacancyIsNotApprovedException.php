@@ -6,7 +6,7 @@ namespace App\Exceptions;
 
 use Throwable;
 
-class VacancyIsNotApproved extends VacancyStatusException
+class VacancyIsNotApprovedException extends VacancyStatusException
 {
     public function __construct(string $message = "", int $code = 0, ?Throwable $previous = null)
     {

@@ -1,4 +1,4 @@
-@php use App\Enums\Actions\BanDurationEnum;use App\Enums\Actions\ReasonToBanEmployerEnum;use App\Enums\Admin\AdminEmployeesSearchEnum as SearchEnum; @endphp
+@php use App\Enums\Actions\BanDurationEnum;use App\Enums\Admin\AdminEmployeesSearchEnum as SearchEnum; @endphp
 <x-admin.layout>
     <x-admin.header>
         <x-slot:title>Users > Employees</x-slot:title>
@@ -123,9 +123,9 @@
                     <select id="reason" name="reason_type"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             required>
-                        @foreach(ReasonToBanEmployerEnum::cases() as $enum)
+                        @foreach(\App\Enums\Actions\ReasonToBanEmployeeEnum::cases() as $enum)
                             <option
-                                value="{{ $enum->value }}" @selected($enum === ReasonToBanEmployerEnum::SPAM)>{{ $enum->toString() }}
+                                value="{{ $enum->value }}" @selected($enum === \App\Enums\Actions\ReasonToBanEmployeeEnum::INAPPROPRIATE_CONTENT)>{{ $enum->toString() }}
                             </option>
                         @endforeach
                     </select>

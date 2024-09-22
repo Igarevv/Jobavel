@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\Admin\Vacancy;
 
+use App\Contracts\Admin\AdminReasonEnumInterface;
 use App\DTO\Admin\AdminBannedUserDto;
 use App\Enums\Actions\BanDurationEnum;
+use App\Enums\Actions\ReasonToBanEmployeeEnum;
 use App\Enums\Actions\ReasonToBanEmployerEnum;
 use App\Persistence\Models\Employee;
 use App\Persistence\Models\Employer;
@@ -29,7 +31,7 @@ class AdminBanUserRequest extends FormRequest
     public function makeCastAndMutatorsAfterValidation(array &$data): void
     {
         if ($this->has('reason_type')) {
-            $data['reason_type'] = ReasonToBanEmployerEnum::tryFrom((int)$this->reason_type);
+            $data['reason_type'] = (int)$this->reason_type;
         }
 
         if ($this->has('duration')) {
@@ -48,7 +50,7 @@ class AdminBanUserRequest extends FormRequest
         return new AdminBannedUserDto(
             admin: $this->user('admin'),
             actionableUser: $this->guessUser(),
-            reasonToBanEnum: $data['reason_type'],
+            reasonToBanEnum: $this->guessReasonType($data['reason_type']),
             banDurationEnum: $data['duration'],
             comment: $data['comment']
         );
@@ -65,5 +67,18 @@ class AdminBanUserRequest extends FormRequest
         }
 
         abort(404);
+    }
+
+    protected function guessReasonType(int $reason): AdminReasonEnumInterface
+    {
+        if ($this->route('employer')) {
+            return ReasonToBanEmployerEnum::tryFrom($reason);
+        }
+
+        if ($this->route('employee')) {
+            return ReasonToBanEmployeeEnum::tryFrom($reason);
+        }
+
+        abort(400);
     }
 }

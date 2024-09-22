@@ -37,7 +37,7 @@ class VacancyRepository implements VacancyRepositoryInterface
         ]);
 
         DB::transaction(function () use ($employer, $vacancyDto, $vacancy) {
-            $vacancy = $employer->vacancy()->save($vacancy);
+            $vacancy = $employer->vacancies()->save($vacancy);
 
             if ($vacancy) {
                 $vacancy->techSkills()->sync($vacancyDto->skillSet);

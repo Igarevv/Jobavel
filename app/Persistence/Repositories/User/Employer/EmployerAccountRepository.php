@@ -50,7 +50,7 @@ class EmployerAccountRepository implements EmployerAccountRepositoryInterface
 
     public function takeRandomEmployerLogos(int $count): Collection
     {
-        return Employer::query()->has('vacancy')
+        return Employer::query()->has('vacancies')
             ->inRandomOrder()->take($count)->get(['id', 'company_logo']);
     }
 

@@ -43,6 +43,7 @@ class VacancyController extends Controller
         $vacancies = $vacancyViewModel->getAllVacanciesRelatedToEmployer($employer, [
             'id',
             'slug',
+            'status',
             'title',
             'location',
             'employment_type',

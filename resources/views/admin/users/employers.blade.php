@@ -158,7 +158,7 @@
         <x-admin.modal.footer></x-admin.modal.footer>
     </x-admin.modal.index>
 
-    <x-admin.modal.index>
+    <x-admin.modal.index class="!max-w-full !w-auto">
         <x-admin.modal.header>
             <x-slot:title><span class="employer-name font-bold"></span> vacancies</x-slot:title>
         </x-admin.modal.header>
@@ -186,6 +186,7 @@
                     <th scope="col" class="px-3 py-3 text-sm">No.</th>
                     <th scope="col" class="px-3 py-3 text-sm">Title</th>
                     <th scope="col" class="px-3 py-3 text-sm">Location</th>
+                    <th scope="col" class="px-3 py-3 text-sm">Status</th>
                     <th scope="col" class="px-3 py-3 text-sm">Employment Type</th>
                     <th scope="col" class="px-3 py-3 text-sm">Response number</th>
                     <th scope="col" class="px-3 py-3 text-sm">Published At</th>

@@ -27,7 +27,16 @@ class AdminFactory extends Factory
             'password' => Hash::make('admin12345'),
             'is_super_admin' => false,
             'account_status' => AdminAccountStatusEnum::ACTIVE->value,
-            'api_token' => Str::random(60)
+            'api_token' => Str::random(60),
         ];
+    }
+
+    public function superUser(): AdminFactory|Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'is_super_admin' => true
+            ];
+        });
     }
 }
