@@ -16,6 +16,7 @@ use App\Persistence\Models\Vacancy;
 use App\Service\Employer\Storage\EmployerLogoService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator as Paginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class VacancyService
@@ -74,6 +75,19 @@ class VacancyService
         }
 
         $vacancy->publish();
+    }
+
+    public function restore(Vacancy $vacancy): void
+    {
+        if ($vacancy->wasTrashedByAdmin()) {
+            DB::transaction(function () use($vacancy) {
+                $vacancy->restore();
+
+                $vacancy->markAsNotApproved();
+            });
+        } else {
+            $vacancy->restore();
+        }
     }
 
     public function publishedFilteredVacanciesForEmployer(FilterInterface $filter,

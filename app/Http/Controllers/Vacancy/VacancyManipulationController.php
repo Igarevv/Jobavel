@@ -47,7 +47,7 @@ class VacancyManipulationController extends Controller
 
         $this->authorize('delete', $vacancyModel);
 
-        $vacancyModel->delete();
+        $vacancyModel->moveToTrash();
 
         return redirect()->route('employer.vacancy.unpublished')
             ->with('vacancy-trashed', trans('alerts.vacancy.trashed'));
@@ -55,7 +55,7 @@ class VacancyManipulationController extends Controller
 
     public function restore(SlugVacancy $vacancy): RedirectResponse
     {
-        $vacancy->createFromSlug()->restore();
+        $this->vacancyService->restore($vacancy->createFromSlug('id', 'status'));
 
         return redirect()->route('employer.vacancy.unpublished')
             ->with('vacancy-restored', trans('alerts.vacancy.restored'));

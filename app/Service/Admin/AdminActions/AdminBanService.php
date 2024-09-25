@@ -113,11 +113,11 @@ class AdminBanService
 
     protected function log(AdminBannedUserDto $dto): void
     {
+        $this->logActionService->log($dto, AdminActionEnum::BAN_USER_ACTION);
+
         $this->dispatcher->dispatch(
             new UserBanned($dto, $dto->getBanDurationEnum()->toDayDateTimeString())
         );
-
-        $this->logActionService->log($dto, AdminActionEnum::BAN_USER_ACTION);
     }
 
 }

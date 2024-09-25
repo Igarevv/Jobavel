@@ -2,6 +2,7 @@
 
 namespace App\Persistence\Models;
 
+use App\Enums\Actions\AdminActionEnum;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -24,6 +25,7 @@ class AdminAction extends Model
 
     protected $casts = [
         'action_performed_at' => 'datetime',
+        'action_name' => AdminActionEnum::class
     ];
 
     public function admin(): BelongsTo

@@ -2,6 +2,7 @@
 
 namespace App\Persistence\Models;
 
+use App\Persistence\Contracts\GetPublicIdentifierForActionInterface;
 use App\Persistence\Searcher\Searchers\EmployerSearcher;
 use App\Service\Cache\Cache;
 use App\Traits\Searchable\Searchable;
@@ -30,7 +31,7 @@ use Ramsey\Uuid\Uuid;
  * @method static Employer|static findOrFail($id, $columns = ['*'])
  * @method static Builder|static sortBy(Builder $builder, SortedValues $sortedValues)
  */
-class Employer extends Model
+class Employer extends Model implements GetPublicIdentifierForActionInterface
 {
     use Searchable;
     use HasFactory;
@@ -138,6 +139,11 @@ class Employer extends Model
     public function getFullName(): string
     {
         return $this->company_name;
+    }
+
+    public function getIdentifier(): string
+    {
+        return $this->employer_id;
     }
 
     public function companyType(): Attribute

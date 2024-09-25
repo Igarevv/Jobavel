@@ -34,7 +34,10 @@ class GetAdminsPaginatedAction
                 'idEncrypted' => Str::mask($admin->admin_id, '*', 5, -2),
                 'email' => $admin->email,
                 'name' => $admin->getFullName(),
-                'status' => $admin->account_status->toString(),
+                'status' => (object) [
+                    'name' => $admin->account_status->toString(),
+                    'color' => $admin->account_status->statusColor()
+                ],
                 'createdAt' => $admin->created_at->format('Y-m-d H:i').' '.$admin->created_at->getTimezone()
             ];
         });

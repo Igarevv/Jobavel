@@ -50,6 +50,7 @@ class GetVacanciesPaginatedAction
                 'response_number',
                 'vacancies.created_at',
                 'published_at',
+                'status',
                 'deleted_at'
             ]);
     }

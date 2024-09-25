@@ -7,6 +7,23 @@ document.addEventListener('DOMContentLoaded', function () {
     let searchParams = new URLSearchParams(window.location.search);
 
     function renderRow(admin, index, data) {
+        let button;
+
+        if (admin.status.name === 'Deactivated') {
+            button = `
+                <button type="button" data-modal-target="#popup-activate-modal" data-modal-toggle="#popup-activate-modal"
+                     data-id="${admin.id}"
+                     class="activate-modal-btn unstyled-button font-medium text-green-400 dark:text-green-400 hover:underline">
+                     Activate
+                </button>`;
+        } else {
+            button = `
+                <button type="button" data-modal-target="#popup-deactivate-modal" data-modal-toggle="#popup-deactivate-modal"
+                     data-id="${admin.id}"
+                     class="deactivate-modal-btn unstyled-button font-medium text-red-600 dark:text-red-500 hover:underline">
+                     Deactivate
+                </button>`;
+        }
         return `
         <tr class="tbody-contexnt-row bg-white border-b dark:bg-gray-800 dark:border-gray-700">
             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -15,8 +32,18 @@ document.addEventListener('DOMContentLoaded', function () {
             <td class="px-3 py-4 cursor-pointer" id="id-field-${index}">${admin.idEncrypted}</td>
             <td class="px-3 py-4">${admin.name}</td>
             <td class="px-3 py-4">${admin.email}</td>
-            <td class="px-3 py-4">${admin.status}</td>
+            <td class="px-3 py-4 ${admin.status.color}">${admin.status.name}</td>
             <td class="px-3 py-4">${admin.createdAt}</td>
+            <td class="px-3 py-4">
+                <button type="button" data-modal-target="#actions-modal" data-modal-toggle="#actions-modal"
+                     data-id="${admin.id}" data-name="${admin.name}"
+                     class="open-actions-modal-btn unstyled-button font-medium text-blue-600 dark:text-blud-500 hover:underline">
+                     View
+                </button>
+            </td>
+            <td class="px-3 py-4">
+                ${button}
+            </td>
         </tr>
     `;
     }

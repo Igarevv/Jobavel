@@ -5,7 +5,7 @@ document.querySelectorAll('.open-settings-modal').forEach(button => {
 
         const status = document.getElementById('settings-status');
         status.innerText = user.status.name;
-        status.style.backgroundColor = user.status.color;
+        status.classList.add(user.status.color);
         document.getElementById('settings-email').value = user.email;
         document.getElementById('settings-created').innerText = user.createdAt;
         document.getElementById('settings-first-name').value = user.firstName;
@@ -55,9 +55,9 @@ updateForm.addEventListener('submit', async (e) => {
 })
 
 
-function sendUpdateRequest(form) {
-    const formData = new FormData(updateForm);
-    const response = fetch(updateForm.action, {
+async function sendUpdateRequest(form) {
+    const formData = new FormData(form);
+    const response = await fetch(form.action, {
         method: 'POST',
         body: formData,
         headers: {
@@ -65,5 +65,5 @@ function sendUpdateRequest(form) {
         }
     })
 
-    return response.json();
+    return await response.json();
 }

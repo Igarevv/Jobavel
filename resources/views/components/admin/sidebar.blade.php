@@ -10,7 +10,9 @@
                 </button>
                 <a href="{{ route('admin.island') }}" class="flex ms-2 md:me-24">
                     <img src="{{ asset('favicon.ico') }}" class="h-8 me-3" alt="FlowBite Logo" />
-                    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Job<span class="text-red-100">avel</span> Admin</span>
+                    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Job<span class="text-red-100">avel</span>
+                        @if(auth('admin')->user()->isSuperAdmin()) Super @endif Admin
+                    </span>
                 </a>
             </div>
             <div class="flex items-center">

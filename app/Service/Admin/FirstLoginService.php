@@ -28,6 +28,8 @@ class FirstLoginService
 
         if ($firstLogin->first_login_at !== null) {
             $this->deactivate($admin);
+
+            throw new TryToSignInWithTempPasswordSecondTime();
         }
 
         $this->adminFirstLoginRepository->allowAdminMakeFirstLogin($admin);
@@ -63,8 +65,6 @@ class FirstLoginService
         $admin->deactivate();
 
         $this->adminFirstLoginRepository->deleteAdminFromFirstLogin($admin);
-
-        throw new TryToSignInWithTempPasswordSecondTime();
     }
 
 }

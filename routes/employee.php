@@ -1,10 +1,10 @@
 <?php
 
+use App\Http\Controllers\Employee\CV\DisplayCvController;
+use App\Http\Controllers\Employee\CV\ManipulateCvController;
 use App\Http\Controllers\Employee\EmployeeAccountController;
 use App\Http\Controllers\Employee\HomeController;
 use App\Http\Controllers\Employee\RegisterController;
-use App\Http\Controllers\Employee\СV\DisplayCvController;
-use App\Http\Controllers\Employee\СV\ManipulateCvController;
 use App\Http\Controllers\Vacancy\VacancyEmployeeController;
 use Illuminate\Support\Facades\Route;
 

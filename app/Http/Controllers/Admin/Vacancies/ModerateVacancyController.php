@@ -76,8 +76,12 @@ class ModerateVacancyController extends Controller
 
     public function reject(RejectRequest $request, AdminVacancyService $service): RedirectResponse
     {
+        $dto = $request->getDto();
+
+        $this->authorize('moderate', [Admin::class, $dto->getActionableModel()]);
+
         try {
-            $service->reject($request->getDto());
+            $service->reject($dto);
         } catch (InvalidArgumentException $e) {
             return redirect()->route('admin.vacancies.moderate')->with('error-reject', $e->getMessage());
         }

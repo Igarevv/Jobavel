@@ -8,7 +8,7 @@
         </x-slot:title>
         <span class="text-yellow-800 bg-yellow-300 dark:bg-gray-900 dark:text-yellow-300 px-1">Attention!</span>
         In this section, you must manage roles and permissions carefully, otherwise users may do things
-        they are now allowed to do.
+        they are not allowed to do.
     </x-admin.header>
 
     <section class="w-full my-10">

@@ -2,6 +2,7 @@
 
 namespace App\Persistence\Models;
 
+use App\Persistence\Contracts\GetPublicIdentifierForActionInterface;
 use App\Persistence\Searcher\Searchers\EmployeeSearcher;
 use App\Traits\Searchable\Searchable;
 use App\Traits\Sortable\Sortable;
@@ -27,8 +28,9 @@ use Ramsey\Uuid\Uuid;
  * @property string $resume_file
  * @property Carbon|null $created_at
  */
-class Employee extends Model
+class Employee extends Model implements GetPublicIdentifierForActionInterface
 {
+
     use Searchable;
     use HasFactory;
     use Sortable;
@@ -128,6 +130,11 @@ class Employee extends Model
         $this->save();
     }
 
+    public function getIdentifier(): string
+    {
+        return $this->employee_id;
+    }
+
     public static function findByUuid(string $uuid, array $columns = ['*']): static
     {
         return static::where('employee_id', $uuid)->firstOrFail($columns);
@@ -151,9 +158,10 @@ class Employee extends Model
         parent::boot();
 
         static::creating(function (Employee $employee) {
-            if (! $employee->employee_id) {
+            if ( ! $employee->employee_id) {
                 $employee->employee_id = Uuid::uuid7()->toString();
             }
         });
     }
+
 }

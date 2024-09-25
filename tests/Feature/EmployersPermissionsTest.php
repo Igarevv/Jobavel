@@ -141,7 +141,7 @@ class EmployersPermissionsTest extends TestCase
         $vacancy = $this->generateVacancy($this->usersAsEmployer->first()->employer);
 
         // make vacancy trashed
-        $vacancy->delete();
+        $vacancy->moveToTrash();
 
         $responseStrangerViewTrashed = $this->actingAs($this->usersAsEmployer[1])
             ->get(route('employer.vacancy.trashed.preview', ['vacancy' => $vacancy->slug]));

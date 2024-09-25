@@ -85,9 +85,21 @@ table.want-scroll tr {
 }
 
 .bg-custom-yellow-500 {
-    @apply bg-yellow-500
+    @apply bg-yellow-500;
 }
 
 .bg-custom-green-50 {
     @apply bg-green-50;
+}
+
+.status-custom-active {
+    @apply text-[#43d33c];
+}
+
+.status-custom-deactivated {
+    @apply text-[#f9322c];
+}
+
+.status-custom-pending {
+    @apply text-[#ffb40a];
 }

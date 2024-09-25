@@ -23,7 +23,7 @@ class AdminPolicy
         }
 
         if (! $admin->hasPermissionTo('vacancy-moderate')) {
-            return Response::deny('Only super admin and permitted admin can have access to moderation');
+            abort(403, 'Only super admin and permitted admin can have access to moderation');
         }
 
         return Response::allow();

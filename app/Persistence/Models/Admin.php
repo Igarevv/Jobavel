@@ -119,14 +119,22 @@ class Admin extends Model implements Authenticatable, \Illuminate\Contracts\Auth
 
     public function deactivate(): void
     {
-        $this->account_status = AdminAccountStatusEnum::DEACTIVATED->value;
-        $this->save();
+        $this->update(['account_status' => AdminAccountStatusEnum::DEACTIVATED->value]);
     }
 
     public function activate(): void
     {
-        $this->account_status = AdminAccountStatusEnum::ACTIVE->value;
-        $this->save();
+        $this->update(['account_status' => AdminAccountStatusEnum::ACTIVE->value]);
+    }
+
+    public function isDeactivated(): bool
+    {
+        return $this->account_status === AdminAccountStatusEnum::DEACTIVATED;
+    }
+
+    public function isActivated(): bool
+    {
+        return $this->account_status === AdminAccountStatusEnum::ACTIVE;
     }
 
     public function createApiToken(): string

@@ -42,6 +42,7 @@ export default defineConfig({
                 'resources/assets/js/admin/tables/vacancyTable.js',
                 'resources/assets/js/admin/fetchEmployer.js',
                 'resources/assets/js/admin/tables/skillTable.js',
+                'resources/assets/js/admin/adminActionsTable.js',
             ],
             refresh: true,
         }),

@@ -94,7 +94,7 @@ class AdminVacancyService
 
     protected function deleteTemporarily(Vacancy $vacancy): ?bool
     {
-        $result = $vacancy->delete();
+        $result = $vacancy->moveToTrash();
 
         $vacancy->reject();
 

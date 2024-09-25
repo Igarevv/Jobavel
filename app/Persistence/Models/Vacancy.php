@@ -6,6 +6,7 @@ use App\Enums\Actions\AdminActionEnum;
 use App\Enums\Vacancy\ExperienceEnum;
 use App\Enums\Vacancy\VacancyStatusEnum;
 use App\Observers\VacancyObserver;
+use App\Persistence\Contracts\GetPublicIdentifierForActionInterface;
 use App\Persistence\Filters\Manual\FilterInterface;
 use App\Persistence\Filters\Pipeline\PipelineFilterInterface;
 use App\Persistence\Searcher\Searchers\VacancySearcher;
@@ -49,7 +50,7 @@ use Illuminate\Support\Collection;
  * @method Builder|static filter(FilterInterface $filter)
  */
 #[ObservedBy(VacancyObserver::class)]
-class Vacancy extends Model
+class Vacancy extends Model implements GetPublicIdentifierForActionInterface
 {
 
     use HasFactory;
@@ -190,6 +191,13 @@ class Vacancy extends Model
         $this->save();
     }
 
+    public function markAsNotApproved(): void
+    {
+        $this->status = VacancyStatusEnum::NOT_APPROVED;
+
+        $this->save();
+    }
+
     public function publish(): void
     {
         $this->status = VacancyStatusEnum::PUBLISHED->value;
@@ -206,6 +214,17 @@ class Vacancy extends Model
         $this->published_at = null;
 
         $this->save();
+    }
+
+    public function moveToTrash(): ?bool
+    {
+        $result = $this->delete();
+
+        $this->published_at = null;
+
+        $this->save();
+
+        return $result;
     }
 
     public function approve(): void
@@ -242,6 +261,11 @@ class Vacancy extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    public function getIdentifier(): string
+    {
+        return $this->slug;
     }
 
     protected function offers(): Attribute

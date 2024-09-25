@@ -18,7 +18,7 @@ use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Vacancy\VacancyEmployerViewController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     /*
     * ---------------------------------
     * -       Admin Main Page         -
@@ -147,6 +147,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
                 Route::get('/', 'index')->name('admins');
 
                 Route::get('/table', 'fetchAdmins')->name('admins.table');
+
+                Route::get('/{admin:admin_id}/actions', 'fetchActionsMadeByAdmin')->name('admins.actions');
+
+                Route::post('/{identity:admin_id}/deactivate', 'deactivateAdmin')->name('admins.deactivate');
+
+                Route::post('/{identity:admin_id}/activate', 'activateAdmin')->name('admins.activate');
             });
 
             Route::post('/register', [AdminAuthController::class, 'register'])->name('admins.register');
@@ -267,12 +273,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
 Route::get('/admin/confirm-email/{id}/{email}', [
     EmailVerificationController::class,
     'confirmAdminEmailChanging'
-])->middleware('signed')->name('admin.confirm-email-change');
+])->middleware(['admin', 'signed'])->name('admin.confirm-email-change');
 
 /*
  * This routes is here because this actions can view admin and employer (owner of vacancy)
  */
 Route::controller(ModerateVacancyController::class)->prefix('moderation')
+    ->middleware('admin')
     ->group(function () {
         Route::get('/vacancy/{vacancy}/previous-reject', 'latestRejectInfo')
             ->name('admin.vacancies.previous-reject');

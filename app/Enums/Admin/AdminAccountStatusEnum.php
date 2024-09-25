@@ -22,9 +22,9 @@ enum AdminAccountStatusEnum: int
     public function statusColor(): string
     {
         return match ($this) {
-            self::ACTIVE => '#43d33c',
-            self::DEACTIVATED => '#f9322c',
-            self::PENDING_TO_AUTHORIZE => '#ffb40a'
+            self::ACTIVE => 'status-custom-active',
+            self::DEACTIVATED => 'status-custom-deactivated',
+            self::PENDING_TO_AUTHORIZE => 'status-custom-pending'
         };
     }
 }

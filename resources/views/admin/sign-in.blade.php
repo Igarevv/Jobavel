@@ -33,6 +33,11 @@
         </a>
         <div class="w-full login-container bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
             <div class="p-8 space-y-6">
+                @session('deactivated')
+                <x-admin.alerts.error>
+                    {{ $value }}
+                </x-admin.alerts.error>
+                @endsession
                 <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                     Sign in to your account
                 </h1>

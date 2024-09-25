@@ -11,6 +11,7 @@ use App\Http\Requests\Admin\Vacancy\AdminDeleteVacancyRequest;
 use App\Http\Requests\Admin\Vacancy\AdminVacanciesSearchRequest;
 use App\Http\Resources\Admin\AdminTable;
 use App\Http\Resources\Admin\EmployerVacancies;
+use App\Persistence\Models\Admin;
 use App\Persistence\Models\Employer;
 use App\Service\Admin\AdminActions\AdminVacancyService;
 use App\Support\SlugVacancy;
@@ -64,8 +65,12 @@ class VacancyController extends Controller
 
     public function deleteVacancyByAdmin(AdminDeleteVacancyRequest $request, AdminVacancyService $vacancyService): RedirectResponse
     {
+        $dto = $request->getDto();
+
+        $this->authorize('moderate', [Admin::class, $dto->getActionableModel()]);
+
         try {
-            $vacancyService->delete($request->getDto());
+            $vacancyService->delete($dto);
         } catch (InvalidArgumentException $e) {
             return back()->with('error', $e->getMessage());
         }
