@@ -68,6 +68,22 @@ table.want-scroll tr {
     display: none;
 }
 
+.bg-tailwind-red-100 {
+    background-color: rgb(254 226 226);
+}
+
+.bg-tailwind-red-900 {
+    background-color: rgb(127 29 29);
+}
+
+.text-tailwind-red-800 {
+    color: rgb(153 27 27);
+}
+
+.text-tailwind-red-300 {
+    color: rgb(252 165 165);
+}
+
 .bg-custom-red {
     @apply bg-[#f87171];
 }

@@ -125,6 +125,7 @@ return [
         'logo' => 'logo-url-%s',
         'related-vacancies-for-employee' => 'v-rel-emp-%s',
         'all-employer-vacancies' => 'all-v-e-%s',
-        'admin-send-emails-once-per-day' => 'admin-send-emails-once-per-day'
+        'admin-send-emails-once-per-day' => 'admin-send-emails-once-per-day',
+        'online-admins' => 'online-a-%s'
     ]
 ];

@@ -55,6 +55,11 @@ class Admin extends Model implements Authenticatable, \Illuminate\Contracts\Auth
         return $this->hasMany(AdminAction::class);
     }
 
+    public function getAdminId(): string
+    {
+        return $this->admin_id;
+    }
+
     public function makeAdminAsSuperAdmin(): void
     {
         $this->is_super_admin = true;

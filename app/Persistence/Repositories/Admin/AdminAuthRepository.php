@@ -54,17 +54,17 @@ class AdminAuthRepository implements AdminAuthRepositoryInterface, AdminFirstLog
 
     public function getAdminFirstLogin(Admin $admin): ?stdClass
     {
-        return DB::table('admins_login')->where('admin_id', $admin->admin_id)->first();
+        return DB::table('admins_login')->where('admin_id', $admin->id)->first();
     }
 
     public function deleteAdminFromFirstLogin(Admin $admin): void
     {
-        DB::table('admins_login')->where('admin_id', $admin->admin_id)->delete();
+        DB::table('admins_login')->where('admin_id', $admin->id)->delete();
     }
 
     public function allowAdminMakeFirstLogin(Admin $admin): void
     {
-        DB::table('admins_login')->where('admin_id', $admin->admin_id)->update([
+        DB::table('admins_login')->where('admin_id', $admin->id)->update([
             'first_login_at' => now()
         ]);
     }

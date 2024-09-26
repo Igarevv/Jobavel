@@ -1,8 +1,4 @@
-***In development***
-
 ## Jobavel-application
-
-** app name is not registered, and just using locally
 
 This application is my first study application wrote on [Laravel](https://laravel.com) framework.
 
@@ -17,9 +13,10 @@ This is CRUD application
 - CRUD functionality for vacancy with trash using soft deletes
 - Upload employer logo via [AWS S3](https://aws.amazon.com/s3/) storage and also via local storage
 - Simple frontend
-- Filtering
+- Filtering, searching (default and full-text)
 - Caching with [Redis](https://redis.io/)
 - Employee response to a vacancy (with CV created by app and own file)
+- Admin Panel (moderation, ban system etc.)
 
 ## Configuration:
 

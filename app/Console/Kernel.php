@@ -11,7 +11,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('verification:clear-outdated-requests')->everyTenMinutes();
-        $schedule->command('admin:statistics-dash')->monthly();
+        $schedule->command('admin:statistics-dash')->weeklyOn(1);
     }
 
     protected function commands(): void

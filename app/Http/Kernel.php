@@ -8,6 +8,7 @@ use App\Http\Middleware\AuthenticateAdmin;
 use App\Http\Middleware\DenyAccessForBannedUsers;
 use App\Http\Middleware\DenyAccessToAdminPanelForDeactivatedAdmins;
 use App\Http\Middleware\EncryptCookies;
+use App\Http\Middleware\OnlineAdmins;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\RedirectIfEmailVerified;
@@ -67,6 +68,7 @@ class Kernel extends HttpKernel
             AddQueuedCookiesToResponse::class,
             StartSession::class,
             DenyAccessToAdminPanelForDeactivatedAdmins::class,
+            OnlineAdmins::class,
             ShareErrorsFromSession::class,
             VerifyCsrfToken::class,
             SubstituteBindings::class,
