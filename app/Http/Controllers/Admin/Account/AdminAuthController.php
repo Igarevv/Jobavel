@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 
 class AdminAuthController extends Controller
@@ -46,6 +47,8 @@ class AdminAuthController extends Controller
 
     public function logout(Request $request): RedirectResponse
     {
+        Cache::forget('online-a-'.$request->user('admin')->getAdminId());
+        
         Auth::guard('admin')->logout();
 
         $request->session()->invalidate();
