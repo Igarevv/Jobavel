@@ -9,11 +9,13 @@ use Illuminate\View\View;
 
 class AdminHomeController extends Controller
 {
+
     public function index(Statistics $statistics, OnlineAdmins $admins): View
     {
         return view('admin.main', [
             'statistic' => $statistics->handle(),
-            'admins' => $admins->handle()
+            'admins' => $admins->handle()->sortBy(fn($user) => $user->id !== auth('admin')->id()),
         ]);
     }
+
 }
