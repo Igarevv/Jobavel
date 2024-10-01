@@ -15,7 +15,7 @@
                     <article>
                         <div class="d-flex align-items-center mb-4">
                             <div class="col-md-2">
-                                <img nonce="{{ csp_nonce() }}" src="{{ $employer->logo }}" class="img-fluid"
+                                <img src="{{ $employer->logo }}" class="img-fluid"
                                      alt="{{ $employer->company }}">
                             </div>
                             <header class="flex-grow-1 ms-3">
@@ -244,30 +244,41 @@
                                                    class="btn btn-outline-primary w-100">Edit vacancy</a>
                                             </div>
                                             <div class="col-12 mb-3">
-                                                <form action="{{ route('employer.vacancy.destroy', ['vacancy' => $vacancy->slug]) }}" method="POST">
+                                                <form action="{{ route('employer.vacancy.destroy', ['vacancy' => $vacancy->slug]) }}"
+                                                      method="POST">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <x-button.outline colorType="danger" type="submit" class="w-100">Move to trash</x-button.outline>
+                                                    <x-button.outline colorType="danger" type="submit" class="w-100">
+                                                        Move to trash
+                                                    </x-button.outline>
                                                 </form>
                                             </div>
                                             <div class="col-12">
                                                 @if($vacancy->isPublished())
-                                                    <form action="{{ route('employer.vacancy.unpublish', ['vacancy' => $vacancy->slug]) }}" method="POST">
+                                                    <form action="{{ route('employer.vacancy.unpublish', ['vacancy' => $vacancy->slug]) }}"
+                                                          method="POST">
                                                         @csrf
-                                                        <x-button.outline colorType="warning" type="submit" class="w-100">Unpublish vacancy</x-button.outline>
+                                                        <x-button.outline colorType="warning" type="submit"
+                                                                          class="w-100">Unpublish vacancy
+                                                        </x-button.outline>
                                                     </form>
                                                 @else
-                                                    <form action="{{ route('employer.vacancy.publish', ['vacancy' => $vacancy->slug]) }}" method="POST">
+                                                    <form action="{{ route('employer.vacancy.publish', ['vacancy' => $vacancy->slug]) }}"
+                                                          method="POST">
                                                         @csrf
-                                                        <x-button.outline colorType="success" type="submit" class="w-100">Publish vacancy</x-button.outline>
+                                                        <x-button.outline colorType="success" type="submit"
+                                                                          class="w-100">Publish vacancy
+                                                        </x-button.outline>
                                                     </form>
                                                 @endif
                                             </div>
                                             @if($vacancy->isNotApproved())
                                                 <div class="col-12 mt-5">
-                                                    <x-button.default colorType="danger" type="button" class="w-100" id="show-latest-reject-modal-btn"
+                                                    <x-button.default colorType="danger" type="button" class="w-100"
+                                                                      id="show-latest-reject-modal-btn"
                                                                       data-vacancy-slug="{{ $vacancy->slug }}"
-                                                                      data-bs-target="#reject-latest-modal" data-bs-toggle="modal">
+                                                                      data-bs-target="#reject-latest-modal"
+                                                                      data-bs-toggle="modal">
                                                         Why my vacancy are not approved?
                                                     </x-button.default>
                                                 </div>
@@ -426,16 +437,16 @@
     <x-footer></x-footer>
     @if($errors->has('cvType') || $errors->has('useCurrentEmail') || $errors->has('contactEmail'))
         <script type="module">
-          $(document).ready(function () {
-            $('#apply-modal').modal('show');
-          });
+            $(document).ready(function () {
+                $('#apply-modal').modal('show');
+            });
         </script>
     @endif
     @if($errors->has('delete-type') || $errors->has('reason'))
         <script type="module">
-          $(document).ready(function () {
-            $('#delete-modal').modal('show');
-          });
+            $(document).ready(function () {
+                $('#delete-modal').modal('show');
+            });
         </script>
     @endif
     @if($vacancy->isNotApproved())
