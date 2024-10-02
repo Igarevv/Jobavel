@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Account;
 
-use App\Exceptions\TryToSignInWithTempPasswordSecondTime;
+use App\Exceptions\AppException\TryToSignInWithTempPasswordSecondTime;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Auth\AdminLoginRequest;
 use App\Http\Requests\Admin\Auth\AdminRegisterRequest;
@@ -48,7 +48,7 @@ class AdminAuthController extends Controller
     public function logout(Request $request): RedirectResponse
     {
         Cache::forget('online-a-'.$request->user('admin')->getAdminId());
-        
+
         Auth::guard('admin')->logout();
 
         $request->session()->invalidate();

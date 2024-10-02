@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Admin\Users\Unverified;
 
-use App\Exceptions\TooManyEmailsForUnverifiedUsersPerDay;
+use App\Exceptions\AdminException\General\TooManyEmailsForUnverifiedUsersPerDay;
 use App\Jobs\SendEmailToAllUnverifiedUsers;
 use App\Persistence\Models\User;
 use App\Service\Cache\Cache;

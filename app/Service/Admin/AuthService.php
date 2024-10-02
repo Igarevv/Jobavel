@@ -6,7 +6,7 @@ namespace App\Service\Admin;
 
 use App\DTO\Auth\AdminRegisterDto;
 use App\Events\NewAdminCreated;
-use App\Exceptions\TryToSignInWithTempPasswordSecondTime;
+use App\Exceptions\AppException\TryToSignInWithTempPasswordSecondTime;
 use App\Persistence\Contracts\AdminAuthRepositoryInterface;
 use App\Persistence\Models\Admin;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Employer;
 
-use App\Exceptions\InvalidVerificationCodeException;
-use App\Exceptions\VerificationCodeTimeExpiredException;
+use App\Exceptions\AppException\InvalidVerificationCodeException;
+use App\Exceptions\AppException\VerificationCodeTimeExpiredException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Employer\UpdateEmployerRequest;
 use App\Service\Account\Employer\CodeVerificationService;

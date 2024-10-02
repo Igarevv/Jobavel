@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Users;
 
 use App\Actions\Admin\Users\Employees\GetEmployeesPaginatedAction;
-use App\Exceptions\BanException;
+use App\Exceptions\AdminException\Ban\BanException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Users\AdminEmployeesSearchRequest;
 use App\Http\Requests\Admin\Vacancy\AdminBanUserRequest;
@@ -21,8 +21,10 @@ class EmployeesController extends Controller
         return view('admin.users.employees');
     }
 
-    public function fetchEmployees(AdminEmployeesSearchRequest $request, GetEmployeesPaginatedAction $action): AdminTable
-    {
+    public function fetchEmployees(
+        AdminEmployeesSearchRequest $request,
+        GetEmployeesPaginatedAction $action
+    ): AdminTable {
         $employers = $action->handle(
             searchDto: $request->getDto(),
             sortedValues: SortedValues::fromRequest(
@@ -47,7 +49,11 @@ class EmployeesController extends Controller
 
         $message = $result === AdminBanService::BANNED_PERMANENTLY
             ? sprintf(trans('alerts.admin.ban-perm'), $dto->getActionableModelId())
-            : sprintf(trans('alerts.admin.ban-temp'), $dto->getActionableModelId(), $dto->getBanDurationEnum()->toString());
+            : sprintf(
+                trans('alerts.admin.ban-temp'),
+                $dto->getActionableModelId(),
+                $dto->getBanDurationEnum()->toString()
+            );
 
         return redirect()->route('admin.users.banned')->with('success-ban', $message);
     }

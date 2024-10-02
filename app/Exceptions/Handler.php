@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
+use Sentry\Laravel\Integration;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 
@@ -23,6 +24,9 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (ModelNotFoundException $e) {
             Log::error($e->getMessage());
+            
+            Integration::captureUnhandledException($e);
+
             return response()->json([
                 'message' => 'Invalid Entity ID specified',
             ], 404);

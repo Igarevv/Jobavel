@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Account;
 
-use App\Exceptions\InvalidRoleException;
+use App\Exceptions\AdminException\RolePermissions\InvalidRoleException;
 use App\Persistence\Contracts\AccountRepositoryInterface;
 use App\Persistence\Models\User;
 use App\Persistence\Repositories\User\Employee\EmployeeAccountRepository;

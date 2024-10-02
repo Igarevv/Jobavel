@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Service\Account\Employer;
 
 use App\Events\ContactEmailUpdatedEvent;
-use App\Exceptions\InvalidVerificationCodeException;
-use App\Exceptions\UnknownUserTryToVerifyCodeException;
-use App\Exceptions\VerificationCodeTimeExpiredException;
+use App\Exceptions\AppException\InvalidVerificationCodeException;
+use App\Exceptions\AppException\UnknownUserTryToVerifyCodeException;
+use App\Exceptions\AppException\VerificationCodeTimeExpiredException;
 use App\Persistence\Contracts\VerificationCodeRepositoryInterface;
 
 class CodeVerificationService

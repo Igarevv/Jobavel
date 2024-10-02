@@ -3,7 +3,7 @@
 namespace App\Persistence\Models;
 
 use App\Enums\Role;
-use App\Exceptions\InvalidRoleException;
+use App\Exceptions\AdminException\RolePermissions\InvalidRoleException;
 use App\Persistence\Searcher\Searchers\UserSearcher;
 use App\Traits\Searchable\Searchable;
 use App\Traits\Searchable\SearchDtoInterface;

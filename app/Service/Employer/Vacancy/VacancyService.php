@@ -6,9 +6,9 @@ namespace App\Service\Employer\Vacancy;
 
 use App\DTO\Vacancy\VacancyDto;
 use App\Enums\Vacancy\VacancyStatusEnum as Status;
-use App\Exceptions\NotEnoughInfoToContinueException;
-use App\Exceptions\VacancyInModerationException;
-use App\Exceptions\VacancyIsNotApprovedException;
+use App\Exceptions\AdminException\Vacancy\VacancyInModerationException;
+use App\Exceptions\AppException\NotEnoughInfoToContinueException;
+use App\Exceptions\AppException\VacancyIsNotApprovedException;
 use App\Persistence\Contracts\EmployerAccountRepositoryInterface;
 use App\Persistence\Contracts\VacancyRepositoryInterface;
 use App\Persistence\Filters\Manual\FilterInterface;
@@ -26,7 +26,8 @@ class VacancyService
         protected VacancyRepositoryInterface $vacancyRepository,
         protected EmployerLogoService $employerLogoService,
         protected EmployerAccountRepositoryInterface $employerAccountRepository
-    ) {}
+    ) {
+    }
 
     public function create(string|int $employerId, VacancyDto $vacancyDto): void
     {
@@ -47,7 +48,7 @@ class VacancyService
         $vacancies->each(function (Vacancy $vacancy) use ($processedEmployerLogo) {
             $employerId = $vacancy->employer->id;
 
-            if ( ! $processedEmployerLogo->has($employerId)) {
+            if (! $processedEmployerLogo->has($employerId)) {
                 $processedEmployerLogo->put(
                     key: $employerId,
                     value: $this->employerLogoService->getImageUrlForEmployer($vacancy->employer)
@@ -80,7 +81,7 @@ class VacancyService
     public function restore(Vacancy $vacancy): void
     {
         if ($vacancy->wasTrashedByAdmin()) {
-            DB::transaction(function () use($vacancy) {
+            DB::transaction(function () use ($vacancy) {
                 $vacancy->restore();
 
                 $vacancy->markAsNotApproved();
@@ -90,7 +91,8 @@ class VacancyService
         }
     }
 
-    public function publishedFilteredVacanciesForEmployer(FilterInterface $filter,
+    public function publishedFilteredVacanciesForEmployer(
+        FilterInterface $filter,
         string $employerId
     ): Paginator {
         $employer = $this->employerAccountRepository->getById(

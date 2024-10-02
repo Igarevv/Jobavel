@@ -16,6 +16,7 @@
     "laravel/tinker": "^2.8",
     "league/flysystem-aws-s3-v3": "^3.0",
     "predis/predis": "^2.2",
+    "sentry/sentry-laravel": "^4.9",
     "spatie/laravel-csp": "^2.10",
     "spatie/laravel-permission": "^6.9"
   },

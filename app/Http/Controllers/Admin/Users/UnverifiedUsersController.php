@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Admin\Users;
 use App\Actions\Admin\Users\Unverified\GetUnverifiedUsersPaginatedAction;
 use App\Actions\Admin\Users\Unverified\SendEmailToAllUnverifiedUsersAction;
 use App\Events\UserDeletedTemporarily;
-use App\Exceptions\TooManyEmailsForUnverifiedUsersPerDay;
+use App\Exceptions\AdminException\General\TooManyEmailsForUnverifiedUsersPerDay;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\AdminTable;
 use App\Persistence\Models\User;

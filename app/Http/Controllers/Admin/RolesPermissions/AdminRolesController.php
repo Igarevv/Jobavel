@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\RolesPermissions;
 
 use App\Actions\Admin\RolesPermissions\GetRolesWithPermissionsAction;
-use App\Exceptions\RoleException;
+use App\Exceptions\AdminException\RolePermissions\RoleException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\RolesPermissions\RoleStoringRequest;
 use Illuminate\Http\RedirectResponse;

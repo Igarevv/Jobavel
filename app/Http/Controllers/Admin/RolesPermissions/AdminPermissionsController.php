@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Admin\RolesPermissions;
 
-use App\Exceptions\PermissionsException;
+use App\Exceptions\AdminException\RolePermissions\PermissionsException;
 use App\Http\Requests\Admin\RolesPermissions\AdminLinkPermissionToAdminRequest;
 use App\Http\Requests\Admin\RolesPermissions\PermissionStoringRequest;
 use App\Http\Requests\Admin\RolesPermissions\RolePermissionsLinkRequest;
