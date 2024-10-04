@@ -91,10 +91,8 @@ class VacancyService
         }
     }
 
-    public function publishedFilteredVacanciesForEmployer(
-        FilterInterface $filter,
-        string $employerId
-    ): Paginator {
+    public function publishedFilteredVacanciesForEmployer(FilterInterface $filter, string $employerId): Paginator
+    {
         $employer = $this->employerAccountRepository->getById(
             $employerId,
             ['id', 'company_name', 'company_logo']
@@ -111,10 +109,8 @@ class VacancyService
         return $vacancies;
     }
 
-    public function allPublishedFilteredVacancies(
-        FilterInterface $filter,
-        int $paginatePerPage
-    ): Paginator {
+    public function allPublishedFilteredVacancies(FilterInterface $filter, int $paginatePerPage): Paginator
+    {
         $vacancies = $this->vacancyRepository->getFilteredVacancies($filter, $paginatePerPage);
 
         return $this->overrideEmployerLogos($vacancies);

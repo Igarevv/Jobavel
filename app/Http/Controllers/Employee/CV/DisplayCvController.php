@@ -8,8 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Persistence\Models\Employee;
 use App\View\ViewModels\SkillsViewModel;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class DisplayCvController extends Controller
 {
@@ -17,9 +15,10 @@ class DisplayCvController extends Controller
         private GetEmployeeInfoAction $employeeInfoAction,
         private GetEmployeeCvFileAction $employeeCvFileAction,
         private SkillsViewModel $skillsView
-    ) {}
+    ) {
+    }
 
-    public function showResume(Request $request, Employee $employee): BinaryFileResponse|View
+    public function showResume(Request $request, Employee $employee)
     {
         if (auth('admin')->check()) {
             auth()->shouldUse('admin');
@@ -38,7 +37,7 @@ class DisplayCvController extends Controller
             ]);
         }
 
-        return response()->file($this->employeeCvFileAction->handle($employee));
+        return response()->redirectTo($this->employeeCvFileAction->handle($employee));
     }
 
     private function getSkillNamesAsRow(?array $ids): ?string

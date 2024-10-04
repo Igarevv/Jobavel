@@ -356,24 +356,20 @@
                                   withClose>
                     <div class="d-flex justify-content-center gap-3">
                         <div class="custom-radio">
-                            <input type="radio" id="option1" name="cvType" class="custom-control-input" value="0"
+                            <input type="radio" id="radio1" name="cvType" class="custom-control-input" value="0"
                                    required
                                     @checked(old('cvType') == 0)>
-                            <label class="custom-control-label p-3" for="option1">
-                                <a href=""
-                                   class="link-offset-2 text-decoration-none">
-                                    <span>Manually</span> <span>created</span> <span>CV</span>
-                                </a>
+                            <label class="custom-control-label p-3 link-offset-2 text-decoration-none" for="radio1">
+                                <span>Manually</span> <span>created</span> <span>CV</span>
                             </label>
                         </div>
                         <div class="custom-radio">
-                            <input type="radio" id="option2" name="cvType" class="custom-control-input" value="1"
-                                   required @checked(old('cvType') == 1)>
-                            <label class="custom-control-label py-3 px-4" for="option2">
-                                <a href=""
-                                   class="link-offset-2 text-decoration-none">
-                                    <span>Use</span> <span>my file</span> <span>CV</span>
-                                </a>
+                            <input type="radio" id="radio2" name="cvType" class="custom-control-input" value="1"
+                                   required
+                                    @checked(old('cvType') == 1)>
+                            <label class="custom-control-label py-3 px-4 link-offset-2 text-decoration-none"
+                                   for="radio2">
+                                <span>Use</span> <span>my file</span> <span>CV</span>
                             </label>
                         </div>
                     </div>
