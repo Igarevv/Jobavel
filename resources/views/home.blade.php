@@ -83,7 +83,7 @@
             </div>
         </section>
         <h2 class="text-center my-5">These companies leave their vacancies with us</h2>
-        <div class="row justify-content-center background-greeting">
+        <div class="container-fluid d-flex justify-content-center background-greeting">
             @foreach($logos as $logo)
                 <div class="col-2 d-flex justify-content-center my-3">
                     <x-image.logo url="{{ $logo->url }}" imgColSize="4"></x-image.logo>
