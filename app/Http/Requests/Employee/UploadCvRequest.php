@@ -12,7 +12,7 @@ class UploadCvRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cv' => ['required', File::types(['pdf', 'docx'])->max(2048)]
+            'cv' => ['required', File::types(['pdf', 'docx'])->max(4096)]
         ];
     }
 }

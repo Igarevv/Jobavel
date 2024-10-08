@@ -42,7 +42,7 @@ class AdminRolesController extends Controller
 
     public function delete(Role $role): RedirectResponse
     {
-        $this->authorize('manage', Permission::class);
+        $this->authorize('manage', [Permission::class]);
 
         return $role->delete() >= 1
             ? back()->with('role-removed', 'Role was successfully removed.')

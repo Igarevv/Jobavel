@@ -36,7 +36,8 @@
                         </div>
                     </div>
                     <div class="d-flex flex-row justify-content-center align-items-center gap-3 mt-3">
-                        <a href="{{ route('employee.resume', ['employee' => session('user.emp_id'), 'type' => 'file']) }}" class="btn btn-outline-primary">
+                        <a href="{{ route('employee.resume', ['employee' => session('user.emp_id'), 'type' => 'file']) }}"
+                           target="_blank" class="btn btn-outline-primary">
                             View CV
                         </a>
                         <form action="{{ route('employee.cv.destroy') }}" method="POST">

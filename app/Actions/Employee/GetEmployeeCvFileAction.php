@@ -14,8 +14,12 @@ class GetEmployeeCvFileAction
     ) {
     }
 
-    public function handle(Employee $employee): false|string
+    public function handle(Employee $employee): ?string
     {
+        if (! $this->cvStorage->isExists($employee->resume_file)) {
+            return null;
+        }
+        
         return $this->cvStorage->get($employee->resume_file);
     }
 }

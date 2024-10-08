@@ -7,6 +7,7 @@ namespace App\Service\Employer\Storage;
 use App\Contracts\Storage\CvStorageInterface;
 use App\Persistence\Models\Employee;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 
 class EmployeeCvService
 {
@@ -17,17 +18,23 @@ class EmployeeCvService
 
     public function upload(UploadedFile $file, Employee $employee): bool
     {
-        if ($employee->resume_file !== null) {
-            $this->cvStorage->delete($employee->resume_file);
-        }
+        return DB::transaction(function () use ($file, $employee) {
+            if ($employee->resume_file !== null) {
+                $wasDeleted = $this->cvStorage->delete($employee->resume_file);
 
-        if (! $this->cvStorage->upload($file)) {
-            return false;
-        }
+                if (! $wasDeleted) {
+                    return false;
+                }
+            }
 
-        $employee->update(['resume_file' => $file->hashName()]);
+            if (! $this->cvStorage->upload($file)) {
+                return false;
+            }
 
-        return true;
+            $employee->update(['resume_file' => $file->hashName()]);
+
+            return true;
+        });
     }
 
     public function delete(Employee $employee): bool

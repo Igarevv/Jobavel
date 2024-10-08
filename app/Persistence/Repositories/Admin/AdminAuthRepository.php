@@ -29,7 +29,7 @@ class AdminAuthRepository implements AdminAuthRepositoryInterface, AdminFirstLog
             $admin->assignRole(Admin::ADMIN);
 
             DB::table('admins_login')->insert([
-                'admin_id' => $admin->admin_id,
+                'admin_id' => $admin->id,
             ]);
 
             return $admin;

@@ -35,7 +35,7 @@ class ManipulateCvController extends Controller
             return redirect()->route('login.show');
         }
 
-        $employee = Employee::findByUuid(session('user.emp_id'), ['id']);
+        $employee = Employee::findByUuid(session('user.emp_id'), ['id', 'resume_file']);
 
         if ($this->cvService->upload($request->file('cv'), $employee)) {
             return back()->with('upload-success', trans('alerts.employee-account.cv-uploaded'));
