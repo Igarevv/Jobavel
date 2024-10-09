@@ -15,7 +15,14 @@ class AdminTechSkillRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'skill' => ['required', 'string', 'unique:tech_skills,skill_name'],
+            'skill' => ['required', 'string', 'iunique:tech_skills,skill_name'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'iunique' => 'Tech skill must be unique.'
         ];
     }
 }
