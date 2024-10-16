@@ -9,6 +9,7 @@ use App\Traits\Searchable\Searchable;
 use App\Traits\Searchable\SearchDtoInterface;
 use App\Traits\Sortable\Sortable;
 use App\Traits\Sortable\VO\SortedValues;
+use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -62,6 +63,16 @@ class BannedUser extends Model
         }
 
         return static::where('user_id', $user->user_id)->latest('banned_at')->first($columns);
+    }
+
+    public function isBannedPermanently(): bool
+    {
+        return is_null($this->banned_until);
+    }
+
+    public function isBannedTemporarily(): bool
+    {
+        return ! is_null($this->banned_until);
     }
 
     protected function searcher(): string

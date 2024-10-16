@@ -4,10 +4,11 @@ namespace App\Events;
 
 use App\Contracts\Admin\AdminLogActionDtoInterface;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class VacancyDeletedPermanentlyByAdmin
+class VacancyDeletedPermanentlyByAdmin implements ShouldDispatchAfterCommit
 {
 
     use Dispatchable;
