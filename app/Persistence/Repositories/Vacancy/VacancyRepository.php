@@ -42,10 +42,11 @@ class VacancyRepository implements VacancyRepositoryInterface
 
             if ($vacancy) {
                 $vacancy->techSkills()->sync($vacancyDto->skillSet);
-            }
 
-            $vacancy->slug = Str::lower(Str::slug($vacancy->title).'-'.$vacancy->id);
-            $vacancy->save();
+                $vacancy->slug = Str::lower(Str::slug($vacancy->title).'-'.$vacancy->id);
+
+                $vacancy->save();
+            }
         });
     }
 

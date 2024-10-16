@@ -15,14 +15,19 @@ class RetrieveUserForLogin extends Command
 
     protected $description = 'Simple way quickly retrieve registered user for login';
 
-    //TODO не работает
     public function handle(): void
     {
-        $role = $this->choice(
-            question: 'Which type of user do you want to retrieve?',
-            choices: [User::EMPLOYEE, User::EMPLOYER],
-            attempts: 3
-        );
+        $role = $this->argument('role');
+
+        if (! in_array($role, [0, 1])) {
+            $role = $this->choice(
+                question: 'Which type of user do you want to retrieve?',
+                choices: [User::EMPLOYEE, User::EMPLOYER],
+                attempts: 3
+            );
+        } else {
+            $role = $role == 0 ? User::EMPLOYEE : User::EMPLOYER;
+        }
 
         try {
             $user = User::role($role)->inRandomOrder()->first(['email']);

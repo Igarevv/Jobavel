@@ -21,7 +21,6 @@ yarn-error.log
 storage/clockwork
 storage/debugbar
 worker.log
-Makefile
 package-lock.json
 composer.lock
 /public/logo

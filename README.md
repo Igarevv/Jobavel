@@ -50,67 +50,24 @@ To switch from local storage to S3 or vice versa, define in .env FILE_STORAGE_PR
 
 ## Installation:
 
-Project use Docker
+Project assembly management is carried out through Makefile.
 
-Start docker
-
+To view more info:
 ````
-docker-compose up --build -d
+make help
 ````
-
-Then, run composer
-
+Sequence to correctly start project:
 ````
-docker-compose exec php composer install --prefer-dist --no-dev -o
+make build
 ````
-
-Generate application key
-
 ````
-docker-compose exec php php artisan key:generate
+make build-front-(build|dev)
 ````
-
-Then, build frontend assets
-
+Optional
 ````
-docker-compose exec php sh -c "npm install && npm run build|dev"
+make app-optimize
 ````
-
-Run migration
-
-````
-docker-compose exec php php artisan migrate:fresh --seed
-````
-
-Create symbolic link for local storage use command:
-
-````
-docker-compose exec php php artisan storage:link
-````
-
-You can also get test user data for login:
-
-````
-docker exec -it php php artisan test:give-user
-````
-And test super-admin for admin panel:
-
-````
-docker exec -it php php artisan admin:super
-````
-Cache routes, views, configs
-
-````
-docker-compose exec php php artisan route:cache
-````
-
-````
-docker-compose exec php php artisan config:cache
-````
-
-````
-docker-compose exec php php artisan view:cache
-````
+see more in help section.
 
 ## Additional
 CSP Policies applied only when debug mode is off or app is in production,
