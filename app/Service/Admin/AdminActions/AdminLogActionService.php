@@ -6,7 +6,7 @@ namespace App\Service\Admin\AdminActions;
 
 use App\Contracts\Admin\AdminLogActionDtoInterface;
 use App\Enums\Actions\AdminActionEnum;
-use App\Exceptions\AdminActionException;
+use App\Exceptions\AdminException\General\AdminActionException;
 use App\Persistence\Contracts\GetPublicIdentifierForActionInterface;
 use App\Persistence\Models\AdminAction;
 

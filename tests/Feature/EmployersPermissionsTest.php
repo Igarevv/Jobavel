@@ -3,8 +3,8 @@
 namespace Tests\Feature;
 
 use App\Enums\Vacancy\VacancyStatusEnum;
-use App\Exceptions\VacancyInModerationException;
-use App\Exceptions\VacancyIsNotApprovedException;
+use App\Exceptions\AdminException\Vacancy\VacancyInModerationException;
+use App\Exceptions\AppException\VacancyIsNotApprovedException;
 use App\Persistence\Models\Employee;
 use App\Persistence\Models\Employer;
 use App\Persistence\Models\User;

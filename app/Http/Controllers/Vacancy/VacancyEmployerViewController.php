@@ -21,7 +21,8 @@ class VacancyEmployerViewController extends Controller
 
     public function __construct(
         protected SkillsViewModel $skillsViewModel
-    ) {}
+    ) {
+    }
 
     public function create(): View
     {
@@ -60,10 +61,10 @@ class VacancyEmployerViewController extends Controller
 
         $this->authorize('view', $vacancyModel);
 
-        if ( ! $vacancyModel->trashed()) {
+        if (! $vacancyModel->trashed()) {
             abort(404);
         }
-        // was trashed by admin не работает
+
         $employer = $vacancyViewModel->vacancyEmployerData($vacancyModel);
 
         $skills = $vacancyModel->techSkillsAsArrayOfBase();
@@ -112,12 +113,12 @@ class VacancyEmployerViewController extends Controller
         );
     }
 
-    public function applied(Request $request, VacancyViewModel $vacancyViewModel): View
+    public function applied(Request $request): View
     {
-        $vacancies = $vacancyViewModel->getAllVacanciesRelatedToEmployer(
-            employer: $request->user()->employer,
-            columns: ['id', 'title', 'slug', 'created_at']
-        );
+        $vacancies = Vacancy::query()
+            ->published()
+            ->where('employer_id', $request->user()->employer->id)
+            ->get(['id', 'title', 'slug', 'created_at']);
 
         return view('employer.vacancy.applied', ['vacancies' => $vacancies]);
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exceptions;
+namespace App\Exceptions\AdminException\RolePermissions;
 
 use Exception;
 use Illuminate\Http\RedirectResponse;

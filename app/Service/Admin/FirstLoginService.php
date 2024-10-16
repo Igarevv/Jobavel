@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Admin;
 
-use App\Exceptions\TryToSignInWithTempPasswordSecondTime;
+use App\Exceptions\AppException\TryToSignInWithTempPasswordSecondTime;
 use App\Persistence\Contracts\AdminFirstLoginRepositoryInterface;
 use App\Persistence\Models\Admin;
 

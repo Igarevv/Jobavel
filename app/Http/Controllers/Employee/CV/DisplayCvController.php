@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Employee\CV;
 use App\Actions\Employee\GetEmployeeCvFileAction;
 use App\Actions\Employee\GetEmployeeInfoAction;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Employee\ShowResumeRequest;
 use App\Persistence\Models\Employee;
 use App\View\ViewModels\SkillsViewModel;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class DisplayCvController extends Controller
 {
@@ -17,28 +17,45 @@ class DisplayCvController extends Controller
         private GetEmployeeInfoAction $employeeInfoAction,
         private GetEmployeeCvFileAction $employeeCvFileAction,
         private SkillsViewModel $skillsView
-    ) {}
+    ) {
+    }
 
-    public function showResume(Request $request, Employee $employee): BinaryFileResponse|View
+    public function showResume(ShowResumeRequest $request, Employee $employee): View|RedirectResponse
     {
         if (auth('admin')->check()) {
             auth()->shouldUse('admin');
         }
 
-        $this->authorize('view', [$employee, $request->user()?->employer]);
-
-        $this->validate($request, ['type' => 'in:file,manual']);
-
         if ($request->input('type') === 'manual') {
-            $employeePresent = $this->employeeInfoAction->handle($employee);
-
-            return view('employee.cv.manual', [
-                'employee' => $employeePresent,
-                'skillsInRaw' => $this->getSkillNamesAsRow($employeePresent->skills)
-            ]);
+            return $this->handleManualResume($employee);
         }
 
-        return response()->file($this->employeeCvFileAction->handle($employee));
+        return $this->handleFileResume($employee);
+    }
+
+    private function handleManualResume(Employee $employee): View
+    {
+        if (! $employee->hasMinimallyFilledPersonalInfo()) {
+            abort(404);
+        }
+
+        $employeePresent = $this->employeeInfoAction->handle($employee);
+
+        return view('employee.cv.manual', [
+            'employee' => $employeePresent,
+            'skillsInRaw' => $this->getSkillNamesAsRow($employeePresent->skills)
+        ]);
+    }
+
+    private function handleFileResume(Employee $employee): RedirectResponse
+    {
+        $filePath = $this->employeeCvFileAction->handle($employee);
+
+        if (! $filePath) {
+            abort(404);
+        }
+
+        return response()->redirectTo($filePath);
     }
 
     private function getSkillNamesAsRow(?array $ids): ?string

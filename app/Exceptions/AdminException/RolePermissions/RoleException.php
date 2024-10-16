@@ -1,27 +1,23 @@
 <?php
 
-declare(strict_types=1);
-
-namespace App\Exceptions;
+namespace App\Exceptions\AdminException\RolePermissions;
 
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
 
-class VacancyUpdateException extends Exception
+class RoleException extends Exception
 {
-
     public function report(): void
     {
-        Log::critical('Vacancy not updated', [
+        Log::critical('Exception in role creation system', [
             'message' => $this->getMessage(),
             'code' => $this->getCode(),
-            'file' => $this->getFile()
         ]);
     }
 
     public function render(): RedirectResponse
     {
-        return back()->withErrors('Something went wrong. Please contact to support', 'edit-errors');
+        return back()->with('role-error', 'Something went wrong. Please try again or contact devs');
     }
 }

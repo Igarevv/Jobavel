@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Admin\RolesPermissions;
 
-use App\Exceptions\PermissionsException;
+use App\Exceptions\AdminException\RolePermissions\PermissionsException;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\RolesPermissions\AdminLinkPermissionToAdminRequest;
 use App\Http\Requests\Admin\RolesPermissions\PermissionStoringRequest;
 use App\Http\Requests\Admin\RolesPermissions\RolePermissionsLinkRequest;
@@ -16,7 +17,7 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Throwable;
 
-class AdminPermissionsController
+class AdminPermissionsController extends Controller
 {
     public function storePermission(PermissionStoringRequest $request): RedirectResponse
     {

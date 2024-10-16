@@ -208,7 +208,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
             ->group(function () {
                 Route::get('/', 'index')->name('moderate');
 
-                Route::get('/table', 'fetchVacanciesToModerate')->name('table');
+                Route::get('/table', 'fetchVacanciesToModerate')->name('moderate-table');
 
                 Route::get('/{vacancy}/view', 'vacancyModerateView')->name('moderate-view');
 

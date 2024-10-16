@@ -8,8 +8,8 @@ use App\DTO\Admin\AdminBannedUserDto;
 use App\Enums\Actions\AdminActionEnum;
 use App\Enums\Actions\BanDurationEnum;
 use App\Events\UserBanned;
-use App\Exceptions\UserAlreadyPermanentlyBannedException;
-use App\Exceptions\UserHasAlreadyBannedException;
+use App\Exceptions\AdminException\Ban\UserAlreadyPermanentlyBannedException;
+use App\Exceptions\AdminException\Ban\UserHasAlreadyBannedException;
 use App\Persistence\Models\BannedUser;
 use App\Persistence\Models\Employer;
 use App\Service\Employer\Vacancy\EmployerVacancyService;
@@ -29,10 +29,11 @@ class AdminBanService
         protected AdminLogActionService $logActionService,
         protected Dispatcher $dispatcher,
         protected EmployerVacancyService $vacancyService
-    ) {}
+    ) {
+    }
 
     /**
-     * @throws \App\Exceptions\BanException
+     * @throws \App\Exceptions\AdminException\Ban\BanException
      * @throws RuntimeException
      */
     public function ban(AdminBannedUserDto $dto): int
@@ -68,7 +69,7 @@ class AdminBanService
             'banned_until' => $dto->getBanDurationEnum()->toDateTime(),
         ]);
 
-        if ( ! $ban->wasRecentlyCreated) {
+        if (! $ban->wasRecentlyCreated) {
             throw new RuntimeException('Ban action was not applied');
         }
 
@@ -85,7 +86,7 @@ class AdminBanService
             'duration' => BanDurationEnum::PERMANENT->value,
         ]);
 
-        if ( ! $ban->wasRecentlyCreated) {
+        if (! $ban->wasRecentlyCreated) {
             throw new RuntimeException('Ban action was not applied');
         }
 

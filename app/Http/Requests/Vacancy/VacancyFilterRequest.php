@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Vacancy;
 
 use App\Enums\Vacancy\EmploymentEnum;
-use App\Exceptions\FormDefaultDataModifiedException;
+use App\Exceptions\AppException\FormDefaultDataModifiedException;
 use App\Rules\TechSkillsExistsRule;
 use App\Traits\AfterValidation;
 use Illuminate\Contracts\Validation\Validator;

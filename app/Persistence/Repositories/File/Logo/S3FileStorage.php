@@ -22,9 +22,7 @@ class S3FileStorage implements LogoStorageInterface
 
     public function get(string $fileId): string|false
     {
-        $path = 'employer-logo/'.$fileId;
-
-        return Storage::disk($this->disk)->url($path);
+        return Storage::disk($this->disk)->url('employer-logo/'.$fileId);
     }
 
     public function delete(string $fileId): bool

@@ -23,6 +23,7 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (ModelNotFoundException $e) {
             Log::error($e->getMessage());
+
             return response()->json([
                 'message' => 'Invalid Entity ID specified',
             ], 404);

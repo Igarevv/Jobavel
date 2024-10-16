@@ -55,6 +55,7 @@ Route::prefix('/auth/email/verify')->middleware('auth:web')->group(
             ->withoutMiddleware('auth:web');
 
         Route::post('/resend', [EmailVerificationController::class, 'resendEmail'])
+            ->middleware('throttle:2')
             ->name('verification.send');
     }
 );

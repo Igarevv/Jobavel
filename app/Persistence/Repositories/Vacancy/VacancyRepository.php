@@ -6,7 +6,7 @@ namespace App\Persistence\Repositories\Vacancy;
 
 use App\DTO\Vacancy\VacancyDto;
 use App\Enums\Vacancy\VacancyStatusEnum;
-use App\Exceptions\VacancyUpdateException;
+use App\Exceptions\AppException\VacancyUpdateException;
 use App\Persistence\Contracts\VacancyRepositoryInterface;
 use App\Persistence\Filters\Manual\FilterInterface;
 use App\Persistence\Models\Employer;
@@ -61,7 +61,7 @@ class VacancyRepository implements VacancyRepositoryInterface
     public function updateWithSkills(Vacancy $vacancy, VacancyDto $newData): void
     {
         try {
-            DB::transaction(function () use($vacancy, $newData) {
+            DB::transaction(function () use ($vacancy, $newData) {
                 $vacancy->update([
                     'title' => $newData->title,
                     'description' => $newData->description,

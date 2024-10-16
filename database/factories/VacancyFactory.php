@@ -24,6 +24,24 @@ class VacancyFactory extends Factory
      */
     public function definition(): array
     {
+        $itJobTitles = [
+            'Software Engineer',
+            'Backend Developer',
+            'Frontend Developer',
+            'DevOps Engineer',
+            'Full Stack Developer',
+            'System Administrator',
+            'Database Administrator',
+            'Cloud Engineer',
+            'IT Support Specialist',
+            'Cybersecurity Analyst',
+            'QA Engineer',
+            'Data Analyst',
+            'Data Scientist',
+            'Mobile Developer',
+            'Network Administrator',
+        ];
+
         $status = Arr::random([
             VacancyStatusEnum::PUBLISHED,
             VacancyStatusEnum::IN_MODERATION
@@ -34,7 +52,7 @@ class VacancyFactory extends Factory
         }
 
         return [
-            'title' => $this->faker->jobTitle(),
+            'title' => $this->faker->randomElement($itJobTitles),
             'description' => $this->faker->paragraph(10),
             'responsibilities' => $this->faker->sentences(5),
             'requirements' => $this->faker->sentences(5),

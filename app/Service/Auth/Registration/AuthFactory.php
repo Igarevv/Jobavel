@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Service\Auth\Registration;
 
 use App\Contracts\Auth\RoleAuthServiceInterface;
-use App\Exceptions\InvalidRoleException;
+use App\Exceptions\AdminException\RolePermissions\InvalidRoleException;
 use App\Persistence\Contracts\UserRepositoryInterface;
 use App\Persistence\Models\User;
 use App\Service\Auth\Registration\Employee\EmployeeRegister;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Vacancy;
 
-use App\Exceptions\NotEnoughInfoToContinueException;
-use App\Exceptions\VacancyStatusException;
+use App\Exceptions\AppException\NotEnoughInfoToContinueException;
+use App\Exceptions\AppException\VacancyStatusException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Vacancy\VacancyCreateRequest;
 use App\Http\Requests\Vacancy\VacancyUpdateRequest;
@@ -22,8 +22,11 @@ class VacancyManipulationController extends Controller
     ) {
     }
 
-    public function update(SlugVacancy $vacancy, VacancyUpdateRequest $request, VacancyViewModel $viewModel): RedirectResponse
-    {
+    public function update(
+        SlugVacancy $vacancy,
+        VacancyUpdateRequest $request,
+        VacancyViewModel $viewModel
+    ): RedirectResponse {
         $existedVacancy = $viewModel->vacancy($vacancy->getIdFromSlug());
 
         $this->vacancyService->update($existedVacancy, $request->getDto());

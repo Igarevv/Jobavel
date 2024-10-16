@@ -191,7 +191,6 @@
                     <th scope="col" class="px-3 py-3 text-sm">Response number</th>
                     <th scope="col" class="px-3 py-3 text-sm">Published At</th>
                     <th scope="col" class="px-3 py-3 text-sm">Created At</th>
-                    <th scope="col" class="px-3 py-3 text-sm"></th>
                 </x-admin.table.thead>
                 <x-admin.table.tbody class="table-body"/>
             </x-admin.table.default>
@@ -204,6 +203,6 @@
     @endpushonce
 
     <script nonce="{{ csp_nonce() }}">
-      window.Laravel = {!! json_encode(['token' => auth('admin')->user()?->api_token]) !!}
+        window.Laravel = {!! json_encode(['token' => auth('admin')->user()?->api_token]) !!}
     </script>
 </x-admin.layout>

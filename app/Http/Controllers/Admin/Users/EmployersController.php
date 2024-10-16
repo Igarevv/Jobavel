@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Users;
 
 use App\Actions\Admin\Users\Employers\GetEmployersPaginatedAction as EmployersAction;
-use App\Exceptions\BanException;
+use App\Exceptions\AdminException\Ban\BanException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Users\AdminEmployersSearchRequest as SearchRequest;
 use App\Http\Requests\Admin\Vacancy\AdminBanUserRequest;
@@ -17,7 +17,9 @@ use RuntimeException;
 class EmployersController extends Controller
 {
 
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     public function index(): View
     {
@@ -50,7 +52,11 @@ class EmployersController extends Controller
 
         $message = $result === AdminBanService::BANNED_PERMANENTLY
             ? sprintf(trans('alerts.admin.ban-perm'), $dto->getActionableModelId())
-            : sprintf(trans('alerts.admin.ban-temp'), $dto->getActionableModelId(), $dto->getBanDurationEnum()->toString());
+            : sprintf(
+                trans('alerts.admin.ban-temp'),
+                $dto->getActionableModelId(),
+                $dto->getBanDurationEnum()->toString()
+            );
 
         return redirect()->route('admin.users.banned')->with('success-ban', $message);
     }

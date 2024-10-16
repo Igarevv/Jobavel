@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
@@ -36,6 +37,14 @@ class ValidationServiceProvider extends ServiceProvider
 
         Validator::extend('uuid_or_email', function ($attribute, $value, $parameters, $validator) {
             return Uuid::isValid($value ?? '') || filter_var($value, FILTER_VALIDATE_EMAIL);
+        });
+
+        Validator::extend('iunique', function ($attribute, $value, $parameters, $validator) {
+            $query = DB::table($parameters[0]);
+
+            $column = $query->getGrammar()->wrap($parameters[1]);
+
+            return ! $query->whereRaw("lower({$column}) = lower(?)", [$value])->count();
         });
     }
 

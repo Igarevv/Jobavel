@@ -16,7 +16,7 @@
 </head>
 
 <body {{ $attributes->class([$injectBody ?? '']) }}>
-
+<script>0</script>
 {{ $slot }}
 </body>
 </html>

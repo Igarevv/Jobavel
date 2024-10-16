@@ -17,6 +17,10 @@ class ClearOutdatedContactEmailVerificationRequests extends Command
 
     public function handle(): void
     {
-        DB::table('verification_codes')->whereDate('created_at', '<', Carbon::now()->subHour())->delete();
+        DB::connection('pgsql')->table('verification_codes')->whereDate(
+            'created_at',
+            '<',
+            Carbon::now()->subHour()
+        )->delete();
     }
 }

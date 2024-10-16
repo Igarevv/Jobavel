@@ -18,17 +18,31 @@ class EmployeeFactory extends Factory
 
     public function definition(): array
     {
+        $itProfessions = [
+            'Software Engineer',
+            'Backend Developer',
+            'Frontend Developer',
+            'DevOps Engineer',
+            'System Administrator',
+            'Data Scientist',
+            'Security Analyst',
+            'Database Administrator',
+            'Cloud Architect',
+            'Network Engineer',
+            'Mobile Developer'
+        ];
+
         return [
             'employee_id' => Uuid::uuid7()->toString(),
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName(),
-            'position' => $this->faker->jobTitle,
+            'position' => $this->faker->randomElement($itProfessions),
             'preferred_salary' => $this->faker->randomElement([5000, 3500, 4000, 2000, 1000]),
             'about_me' => $this->faker->paragraph(5),
             'created_at' => now(),
             'experiences' => [
                 Str::random(8) => [
-                    'position' => $this->faker->jobTitle,
+                    'position' => $this->faker->randomElement($itProfessions),
                     'company' => $this->faker->company,
                     'from' => Carbon::now()->subYears(2)->format('Y-m-d'),
                     'to' => Carbon::now()->format('Y-m-d'),
