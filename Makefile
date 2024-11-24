@@ -2,7 +2,7 @@
 
 build: ## Build application
 	docker-compose up --build -d
-	docker-compose exec php composer install --prefer-dist --no-dev -o
+	docker-compose exec php composer install --prefer-dist -o
 	docker-compose exec php php artisan key:generate
 	docker-compose exec php php artisan migrate:fresh --seed
 	docker-compose exec php php artisan storage:link
